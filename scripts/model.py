@@ -46,7 +46,7 @@ def fit(games, team_conf, cfg, as_of=None, iters=60):
         hs, as_ = cap_score(g["hs"], g["as"], cfg["max_margin"])
         rows.append((g["home_id"], g["away_id"], hs, as_, w, 0.0 if g.get("neutral") else 1.0))
 
-    teams = sorted({r[0] for r in rows} | {r[1] for r in rows})
+    teams = sorted({r[0] for r in rows} | {r[1] for r in rows}, key=str)
     confs = sorted({team_conf.get(t, "other") for t in teams})
     att = {t: 0.0 for t in teams}
     dfn = {t: 0.0 for t in teams}
