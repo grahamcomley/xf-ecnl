@@ -21,7 +21,7 @@ def _cache_path(path):
     return os.path.join(CACHE_DIR, safe + ".json")
 
 
-def get(path, max_age_hours=0.0, permanent=False):
+def get(path, max_age_hours=0.0, permanent=False, cache=True):
     """GET an API path. Returns the `data` field, or None.
 
     permanent=True: use the cache forever once fetched (past seasons).
@@ -29,7 +29,7 @@ def get(path, max_age_hours=0.0, permanent=False):
     On failure, falls back to any cached copy.
     """
     cp = _cache_path(path)
-    if os.path.exists(cp):
+    if cache and os.path.exists(cp):
         age_h = (time.time() - os.path.getmtime(cp)) / 3600
         if permanent or age_h < max_age_hours:
             stats["cached"] += 1
@@ -58,11 +58,13 @@ def get(path, max_age_hours=0.0, permanent=False):
             time.sleep(2 * (attempt + 1))
     if data is None:
         stats["failed"] += 1
-        if os.path.exists(cp):
+        if cache and os.path.exists(cp):
             with open(cp) as f:
                 return json.load(f)
         return None
     stats["live"] += 1
+    if not cache:
+        return data
     os.makedirs(CACHE_DIR, exist_ok=True)
     with open(cp, "w") as f:
         json.dump(data, f)

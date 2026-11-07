@@ -33,7 +33,7 @@ def short_name(name):
 
 def norm_key(club_id, name):
     s = (name or "").lower()
-    s = re.sub(r"\b(ecnl|rl|[bg]\d{2,4}(/\d{2,4})?|u\d{2})\b", " ", s)
+    s = re.sub(r"\b(ecnl|rl|academy|cda|fc|sc|soccer|club|[bg]\d{2,4}(/\d{2,4})?|u\d{2})\b", " ", s)
     s = re.sub(r"[^a-z0-9]+", " ", s).strip()
     return f"{club_id}|{s}"
 
@@ -92,6 +92,34 @@ def event_name(event_id, permanent=False):
     return f"Event {event_id}"
 
 
+def discover_history(name, dh):
+    """Find last season's events once (by org + season id); cached in data/history_catalog.json."""
+    path = os.path.join(ROOT, "data", "history_catalog.json")
+    cat = {}
+    if os.path.exists(path):
+        with open(path) as f:
+            cat = json.load(f)
+    key = f"{dh['org_id']}-{dh['org_season_id']}"
+    if key in cat:
+        return cat[key]
+    if "--offline" in sys.argv:
+        return []
+    found = []
+    lo, hi = dh["id_range"]
+    print(f"  scanning events {lo}-{hi} for org {dh['org_id']} season {dh['org_season_id']} (one time)")
+    for ev in range(lo, hi + 1):
+        d = api.get(f"team/get-event-details-by-eventid/{ev}", cache=False)
+        if isinstance(d, list) and d:
+            d = d[0]
+        if isinstance(d, dict) and d.get("orgID") == dh["org_id"] and d.get("orgSeasonID") == dh["org_season_id"]:
+            found.append({"event_id": ev, "label": d.get("name") or f"Event {ev}"})
+            print(f"    {ev}: {d.get('name')}")
+    cat[key] = found
+    with open(path, "w") as f:
+        json.dump(cat, f, indent=1)
+    return found
+
+
 def build_pool(name, pc, cfg):
     """Return (games, team_conf, team_names, conf_names, club_conf)."""
     games, team_conf, names, conf_names = [], {}, {}, {}
@@ -135,24 +163,40 @@ def build_pool(name, pc, cfg):
                 current_by_key.setdefault(k, tid)
                 if k.endswith(" 1"):  # "XF ... 1" was probably plain "XF ..." last season
                     current_by_key.setdefault(k[:-2], tid)
-    for h in pc.get("history_events") or []:
-        _, flights = division_flights(h["event_id"], h.get("division_name", div), permanent=True)
-        for fl in flights:
-            hist = normalize(api.flight_schedule(h["event_id"], fl, permanent=True), "national",
-                             neutral=True, weight=cfg["model"]["history_weight"], source="history")
-            for g in hist:
-                for side in ("home", "away"):
-                    tid, club = g[f"{side}_id"], g[f"{side}_club"]
-                    if not tid:
-                        continue
-                    alias = (pc.get("team_aliases") or {}).get(g[side])
-                    mapped = current_by_name.get(alias) if alias else current_by_key.get(norm_key(club, g[side]))
-                    if mapped:
-                        g[f"{side}_id"] = mapped
-                    else:
-                        g[f"{side}_id"] = f"h{tid}"
-                        names.setdefault(f"h{tid}", g[side])
-            games += hist
+    club_alias = {int(k): v for k, v in (pc.get("club_aliases") or {}).items() if k.isdigit()}
+    team_alias = {k: v for k, v in (pc.get("team_aliases") or {}).items() if not k.startswith("_")}
+    for oc, nc in club_alias.items():
+        if nc in club_conf:
+            club_conf[oc] = club_conf[nc]
+    dw = pc.get("history_division_weight", 1.0)
+    hist_events = list(pc.get("history_events") or [])
+    if pc.get("discover_history"):
+        known = {h["event_id"] for h in hist_events}
+        default_divs = hist_events[0].get("division_names") if hist_events else [div]
+        for h in discover_history(name, pc["discover_history"]):
+            if h["event_id"] not in known:
+                hist_events.append({**h, "division_names": default_divs})
+    for h in hist_events:
+        for dname in h.get("division_names") or [h.get("division_name", div)]:
+            _, flights = division_flights(h["event_id"], dname, permanent=True)
+            for fl in flights:
+                hist = normalize(api.flight_schedule(h["event_id"], fl, permanent=True), "national",
+                                 neutral=True, weight=cfg["model"]["history_weight"] * dw, source="history")
+                for g in hist:
+                    for side in ("home", "away"):
+                        tid, club = g[f"{side}_id"], g[f"{side}_club"]
+                        if not tid:
+                            continue
+                        club = club_alias.get(club, club)
+                        g[f"{side}_club"] = club
+                        alias = team_alias.get(g[side])
+                        mapped = current_by_name.get(alias) if alias else current_by_key.get(norm_key(club, g[side]))
+                        if mapped:
+                            g[f"{side}_id"] = mapped
+                        else:
+                            g[f"{side}_id"] = f"h{tid}"
+                            names.setdefault(f"h{tid}", g[side])
+                games += hist
     # teams seen only at national events: conference from their club
     for g in games:
         for side in ("home", "away"):

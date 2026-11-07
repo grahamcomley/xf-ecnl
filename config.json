@@ -13,7 +13,9 @@
       "focus_team": "XF ECNL B2010/11 1",
       "playoff_spots": 4,
       "playoff_label": "Top 4 = ECNL Playoffs",
-      "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings"
+      "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings",
+      "age_label": "U16 Boys (2010/11)",
+      "context": "ECNL Boys Northwest conference"
     },
     {
       "id": "xf1-phoenix",
@@ -24,7 +26,9 @@
       "division_id": 22974,
       "flight_id": 42012,
       "focus_team": "XF ECNL B2010/11 1",
-      "ecnl_link": "https://app.athleteone.com/public/event/4429/schedules-standings"
+      "ecnl_link": "https://app.athleteone.com/public/event/4429/schedules-standings",
+      "age_label": "U16 Boys (2010/11)",
+      "context": "ECNL Phoenix national event \u00b7 Nov 20\u201322 \u00b7 \"Zoom\" group of 8"
     },
     {
       "id": "xf-rl-gu13",
@@ -37,12 +41,14 @@
       "focus_team": "XF ECNL RL G2013/14",
       "playoff_spots": null,
       "playoff_label": null,
-      "ecnl_link": "https://app.athleteone.com/public/event/4311/schedules-standings"
+      "ecnl_link": "https://app.athleteone.com/public/event/4311/schedules-standings",
+      "age_label": "U13 Girls (2013/14)",
+      "context": "ECNL Regional League Girls Northwest"
     }
   ],
   "pools": {
     "boys-u16": {
-      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12). history_events = last season's national events for the same birth year (they were U15 = B2011), used to link conferences.",
+      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12). history_events = last season's national events, B2011 age group only (the same players, then U15).",
       "discover_org_id": 12,
       "division_name": "BU16",
       "national_events": [
@@ -51,34 +57,58 @@
       "history_events": [
         {
           "event_id": 4119,
-          "division_name": "B2011",
-          "label": "2025-26 ECNL Florida"
+          "label": "2025-26 ECNL Florida",
+          "division_names": [
+            "B2011"
+          ]
         },
         {
           "event_id": 4122,
-          "division_name": "B2011",
-          "label": "2025-26 ECNL Las Vegas"
+          "label": "2025-26 ECNL Las Vegas",
+          "division_names": [
+            "B2011"
+          ]
         },
         {
           "event_id": 4134,
-          "division_name": "B2011",
-          "label": "2025-26 ECNL Indianapolis"
+          "label": "2025-26 ECNL Indianapolis",
+          "division_names": [
+            "B2011"
+          ]
         },
         {
           "event_id": 4132,
-          "division_name": "B2011",
-          "label": "2025-26 ECNL Virginia"
+          "label": "2025-26 ECNL Virginia",
+          "division_names": [
+            "B2011"
+          ]
         },
         {
           "event_id": 4250,
-          "division_name": "B2011",
-          "label": "2025-26 ECNL Playoffs"
+          "label": "2025-26 ECNL Playoffs",
+          "division_names": [
+            "B2011"
+          ]
         }
       ],
       "team_aliases": {
-        "_help": "Last season's team name -> this season's name, when the automatic match can't tell (clubs with two teams).",
+        "_help": "Last season's exact team name -> this season's name, when the automatic match picks wrong.",
         "XF Academy ECNL B11": "XF ECNL B2010/11 1",
         "XF ECNL B11": "XF ECNL B2010/11 2"
+      },
+      "history_division_weight": 1.0,
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID, for clubs that changed name/ID.",
+        "96": 3360
+      },
+      "discover_history": {
+        "_help": "One-time scan for last season's ECNL Boys events (orgSeasonID 70). Results saved in data/history_catalog.json; delete that file to rescan.",
+        "org_id": 12,
+        "org_season_id": 70,
+        "id_range": [
+          3550,
+          4272
+        ]
       }
     },
     "girls-rl-u13": {

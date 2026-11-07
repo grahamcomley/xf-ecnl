@@ -39,6 +39,18 @@ tr.me td{background:#fff1f2;font-weight:600}tr.cut td{border-bottom:2px dashed v
 .path{display:grid;grid-template-columns:1fr;gap:8px}.node{border-left:3px solid var(--red);padding:4px 10px}
 a{color:var(--blu)}footer{font-size:12px;color:var(--mut);text-align:center;margin-top:20px}
 .scroll{overflow-x:auto}
+.ctx{background:#fff;border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.ctx-team{font-size:22px;font-weight:800}.ctx-sub{font-size:13px;color:var(--mut);margin-top:2px}
+.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}.sec-head h2{margin:0;color:var(--ink);text-transform:none;letter-spacing:0;font-size:17px}
+.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.chip-us{background:var(--red);color:#fff}.chip-div{background:#e5e7eb;color:#374151}.chip-past{background:#f3f4f6;color:var(--mut)}
+.sec-us{border-left:5px solid var(--red)}.sec-past{background:#fbfbfc}
+h3{font-size:14px;margin:4px 0 6px}
+details{margin-top:10px}summary{cursor:pointer;color:var(--blu);font-size:14px;padding:6px 0}
+.rrow{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rd{color:var(--mut);font-size:12px;min-width:84px}.rt{flex:1}
+.res{font-size:11px;font-weight:800;width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#fff}
+.res-w{background:var(--grn)}.res-d{background:#9ca3af}.res-l{background:var(--red)}
 </style>
 </head>
 <body>
@@ -172,6 +184,18 @@ function fixtureCard(D, M, g, opts = {}) {
   </div>`;
 }
 
+function sec(kind, chip, title, sub, body) {
+  return `<section class="card sec-${kind}"><div class="sec-head"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2></div>
+    ${sub ? `<div class="mut" style="margin:-4px 0 10px">${sub}</div>` : ""}${body}</section>`;
+}
+function resultRow(D, g, focus) {
+  const H = teamName(D, g.home_id, g.home), A = teamName(D, g.away_id, g.away);
+  let tag = "";
+  if (focus) { const us = g.home_id === focus.id ? g.hs : g.as, them = g.home_id === focus.id ? g.as : g.hs;
+    tag = `<span class="res res-${us > them ? "w" : us === them ? "d" : "l"}">${us > them ? "W" : us === them ? "D" : "L"}</span>`; }
+  return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${esc(H)} <b>${g.hs}–${g.as}</b> ${esc(A)}</span></div>`;
+}
+
 function renderConference(D) {
   const M = makeModel(D), today = todayISO();
   const ids = D.teams.map(t => t.id), focus = D.teams.find(t => t.name === D.comp.focus_team);
@@ -223,10 +247,15 @@ function renderConference(D) {
   const levOf = id => lev.find(x => x.g.id === id);
   const rootLine = g => {
     const L = levOf(g.id); if (!L || !focus || L.swing < 0.03) return "";
-    const involves = g.home_id === focus.id || g.away_id === focus.id;
+    const race = keyLabel === "1st" ? "finishing 1st" : `finishing ${keyLabel.toLowerCase()}`;
+    if (g.home_id === focus.id || g.away_id === focus.id) {
+      const usHome = g.home_id === focus.id;
+      const W = L.res[usHome ? "H" : "A"].key, Dr = L.res.D.key, Lo = L.res[usHome ? "A" : "H"].key;
+      return `<div class="root">Chance of ${race}: <b>win → ${pct(W)}</b> · draw → ${pct(Dr)} · loss → ${pct(Lo)}</div>`;
+    }
     const who = L.best === "H" ? teamName(D, g.home_id) : L.best === "A" ? teamName(D, g.away_id) : "a draw";
     const k = L.res[L.best].key, lo = Math.min(L.res.H.key, L.res.D.key, L.res.A.key);
-    return `<div class="root">${involves ? "Stakes" : "Root for"}: <b>${esc(who)}</b> · ${esc(focus.short)} ${keyLabel} chance ${pct(lo)} → ${pct(k)} depending on result</div>`;
+    return `<div class="root">Root for <b>${esc(who)}</b>: ${esc(focus.short)}'s chance of ${race} goes ${pct(lo)} → ${pct(k)}</div>`;
   };
 
   // official vs computed check
@@ -245,38 +274,63 @@ function renderConference(D) {
   const projected = [...ids].sort((a, b) => cur.get(b).ppg - cur.get(a).ppg);
   const rangeOf = id => { const p = cur.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
 
+  const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
+  const ours = future.filter(isMe);
+  const pendingOurs = remaining.filter(g => g.pending && isMe(g));
+  const nextOurs = pendingOurs.concat(ours).slice(0, 3);
+  const weekendOthers = weekend.filter(g => !isMe(g));
+  const pendingOthers = remaining.filter(g => g.pending && !isMe(g));
+  const shown = new Set([...nextOurs, ...weekendOthers, ...pendingOthers].map(g => g.id));
+  const otherImportant = lev.filter(x => !isMe(x.g) && !shown.has(x.g.id) && x.swing >= 0.03).slice(0, 4);
+  const restSchedule = remaining.filter(g => !shown.has(g.id)).sort((a, b) => a.date.localeCompare(b.date));
+  const ourResults = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date));
+  const divResults = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
+  const me = focus ? esc(focus.short) : "Your team";
+  const raceText = keyLabel === "1st" && spots
+    ? `The top-${spots} playoff spot is ${pct(atOrAbove(base, focus.id, spots - 1))} likely already, so what matters now is finishing 1st.`
+    : `Ranked by how much each result changes ${me}'s chance of finishing ${keyLabel === "1st" ? "1st" : keyLabel.toLowerCase()}.`;
+
   $("#app").innerHTML = `
-  ${nForced ? `<div class="warn">What-if mode: ${nForced} result${nForced>1?"s":""} set by you. Numbers show the change. <button class="reset" id="reset">Clear what-ifs</button></div>` : ""}
-  ${focus ? `<div class="card"><h2>${esc(focus.short)}</h2><div class="focus">
-     <div class="stat"><div class="v">${fPos}${["st","nd","rd"][fPos-1]||"th"}</div><div class="k">Current place (by PPG)</div></div>
-     <div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, 0))} ${nForced ? delta(atOrAbove(cur, focus.id, 0), atOrAbove(base, focus.id, 0)) : ""}</div><div class="k">Chance to finish 1st</div></div>
-     ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, spots - 1))} ${nForced ? delta(atOrAbove(cur, focus.id, spots - 1), atOrAbove(base, focus.id, spots - 1)) : ""}</div><div class="k">${esc(D.comp.playoff_label || keyLabel)}</div></div>` : ""}
-     <div class="stat"><div class="v">${fS.ppg.toFixed(2)}</div><div class="k">Projected final PPG · finish ${rangeOf(focus.id)}</div></div>
-   </div></div>` : ""}
+  <div class="ctx"><div class="ctx-team">${me}</div>
+    <div class="ctx-sub">${esc(D.comp.age_label || "")} · ${esc(D.comp.context || "")} · ${ids.length} teams${spots ? ` · ${esc(D.comp.playoff_label)}` : ""}</div></div>
+  ${nForced ? `<div class="warn"><b>What-if mode:</b> you've set ${nForced} result${nForced>1?"s":""}. Everything below includes them; green/red numbers show the change. <button class="reset" id="reset">Clear what-ifs</button></div>` : ""}
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores: ${mismatch.map(esc).join("; ")}. Our table uses the scores.</div>` : ""}
-  ${pending.length ? `<div class="warn">Awaiting scores: ${pending.map(g => `${esc(teamName(D,g.home_id))} v ${esc(teamName(D,g.away_id))} (${fmtDate(g.date)})`).join(", ")}</div>` : ""}
-  <div class="row2">
-    <div class="card"><h2>Next up · ${start ? fmtDate(start) : "no games scheduled"}</h2>
-      <div class="mut" style="margin-bottom:8px">Tap a result to see how it changes everything.</div>
-      ${weekend.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("") || "<div class='mut'>Nothing scheduled.</div>"}
-    </div>
-    <div class="card"><h2>Games that matter most to ${focus ? esc(focus.short) : "you"}</h2>
-      <div class="mut" style="margin-bottom:8px">Ranked by how much each result swings ${focus ? esc(focus.short) : ""}'s chance of finishing ${keyLabel === "1st" ? "1st" : keyLabel.toLowerCase()}${keyLabel === "1st" && spots ? ` (the top-${spots} spot is ${pct(atOrAbove(base, focus.id, spots - 1))} likely already, so the race that matters is 1st)` : ""}.</div>
-      ${lev.filter(x => !weekend.includes(x.g)).slice(0, 5).map(x => fixtureCard(D, M, x.g, {toggles: true, root: rootLine(x.g)})).join("") || "<div class='mut'>—</div>"}
-    </div>
-  </div>
-  <div class="card scroll"><h2>Standings now</h2><table>
+
+  ${sec("us", me, "1 · Where we stand", "Current standings, ranked by points per game.", `
+    ${focus ? `<div class="focus" style="margin-bottom:12px">
+      <div class="stat"><div class="v">${fPos}${["st","nd","rd"][fPos-1]||"th"}</div><div class="k">Place now</div></div>
+      <div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, 0))} ${nForced ? delta(atOrAbove(cur, focus.id, 0), atOrAbove(base, focus.id, 0)) : ""}</div><div class="k">Chance to finish 1st</div></div>
+      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, spots - 1))} ${nForced ? delta(atOrAbove(cur, focus.id, spots - 1), atOrAbove(base, focus.id, spots - 1)) : ""}</div><div class="k">Chance of top ${spots} (playoffs)</div></div>` : ""}
+      <div class="stat"><div class="v">${rangeOf(focus.id)}</div><div class="k">Most likely final place</div></div>
+    </div>` : ""}
+    <div class="scroll"><table>
     <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th></tr>
     ${now.map((r, i) => `<tr class="${focus && r.id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i+1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td></tr>`).join("")}
-  </table>${spots ? `<div class="mut" style="margin-top:6px">Dashed line = ${esc(D.comp.playoff_label)}. Ranked by points per game.</div>` : ""}</div>
-  <div class="card scroll"><h2>Projected finish${nForced ? " (with your what-ifs)" : ""}</h2><table>
+    </table></div>${spots ? `<div class="mut" style="margin-top:6px">Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`)}
+
+  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, "Predicted odds for each game. Tap a result to see what it does to the table.",
+    nextOurs.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("") || "<div class='mut'>No more games scheduled.</div>")}
+
+  ${sec("div", "Division", `3 · Rest of the division ${start ? "· " + fmtDate(start) + (endD && endD !== start ? " weekend" : "") : ""}`, "Everyone else playing the next game weekend, and who to root for.",
+    (weekendOthers.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("") || "<div class='mut'>No other division games that weekend.</div>") +
+    (pendingOthers.length ? `<h3 style="margin-top:12px">Earlier games still waiting for a score</h3>${pendingOthers.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("")}` : ""))}
+
+  ${otherImportant.length ? sec("div", "Division", "4 · Other games that matter to us", raceText,
+    otherImportant.map(x => fixtureCard(D, M, x.g, {toggles: true, root: rootLine(x.g)})).join("")) : ""}
+
+  ${sec("div", "Division", `${otherImportant.length ? 5 : 4} · Rest-of-season prediction${nForced ? " (with your what-ifs)" : ""}`,
+    `Every remaining game simulated 3,000 times. Rating = expected goal difference against an average team, built from ${D.pool.games_rated} games across ${D.pool.teams_rated} teams.`, `
+    <div class="scroll"><table>
     <tr><th class="t">Team</th><th>Rating</th><th>Proj PPG</th><th>Likely place</th><th>1st</th>${spots ? `<th>Top ${spots}</th>` : ""}</tr>
     ${projected.map(id => { const t = D.teams.find(x => x.id === id); const S = cur.get(id), B = base.get(id);
       return `<tr class="${focus && id === focus.id ? "me" : ""}"><td class="t">${esc(t.short)}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${S.ppg.toFixed(2)}</td><td>${rangeOf(id)}</td>
       <td>${pct(S.pos[0])} ${nForced ? delta(S.pos[0], B.pos[0]) : ""}</td>${spots ? `<td>${pct(atOrAbove(cur, id, spots - 1))} ${nForced ? delta(atOrAbove(cur, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
-  </table><div class="mut" style="margin-top:6px">Rating = expected goal difference against an average ${esc(D.pool.name.includes("boys") ? "ECNL U16" : "")} team. Based on ${D.pool.games_rated} games across ${D.pool.teams_rated} teams, simulated 3,000 times.</div></div>
-  <div class="card"><h2>All remaining games</h2>${remaining.filter(g => !weekend.includes(g)).sort((a,b)=>a.date.localeCompare(b.date)).map(g => fixtureCard(D, M, g, {toggles: true})).join("")}</div>
-  <div class="card"><h2>Results</h2>${played.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(g => fixtureCard(D, M, g)).join("")}</div>
+    </table></div>
+    <details><summary>Full remaining schedule (${restSchedule.length} more games)</summary>${restSchedule.map(g => fixtureCard(D, M, g, {toggles: true})).join("")}</details>`)}
+
+  ${sec("past", "Past", "Past games", "Final scores.", `
+    <h3>${me}</h3>${ourResults.map(g => resultRow(D, g, focus)).join("") || "<div class='mut'>None yet.</div>"}
+    <details><summary>Rest of the division (${divResults.length} games)</summary>${divResults.map(g => resultRow(D, g, null)).join("")}</details>`)}
   ${footer(D)}`;
   bindToggles();
 }
@@ -355,16 +409,22 @@ function renderBracket(D) {
   }).join("");
   const first = games.filter(g => g.home_id && g.away_id);
   const anyLow = focus && first.some(g => (g.home_id === focus.id || g.away_id === focus.id) && confidence(D, g.home_id, g.away_id)[0] === "Low");
+  const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
+  const me = focus ? esc(focus.short) : "Your team";
+  const ourFirst = first.filter(g => isMe(g) && g.hs == null);
+  const othersFirst = first.filter(g => !isMe(g) && g.hs == null);
+  const done = games.filter(g => g.hs != null && g.as != null);
   $("#app").innerHTML = `
-    ${anyLow ? `<div class="warn">These teams come from different conferences with few games linking them yet, so cross-conference odds are rough. They sharpen as soon as Phoenix results come in, and every game played here feeds the ratings.</div>` : ""}
-    ${focus ? `<div class="card"><h2>${esc(focus.short)}'s possible path</h2><div class="mut" style="margin-bottom:8px">Each later game depends on earlier results. A win sends you to the winners' side, a loss to the losers' side. Draws in bracket games assumed to go to penalties (50/50).</div><div class="path">${path}</div>
-       <div class="mut" style="margin-top:8px">Chance ${esc(focus.short)} wins the group: <b>${pct((wins.get(focus.id) || 0) / N)}</b></div></div>` : ""}
-    <div class="card"><h2>Opening games</h2>${first.map(g => fixtureCard(D, M, g, {neutral: true})).join("")}</div>
-    <div class="card scroll"><h2>The group</h2><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games</th><th>Win group</th></tr>
-      ${D.teams.slice().sort((a, b) => b.strength - a.strength).map(card).join("")}</table>
-      <div class="mut" style="margin-top:6px">Rank = position among all ${D.pool.teams_rated} rated U16 teams. Games = how many results the rating is built on (this season plus last season's national events). Fewer games means a less certain rating.</div></div>
-    <div class="card"><h2>All bracket games</h2>${games.map(g => `<div class="fx"><div class="when"><span>Game ${g.num} · ${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${esc(g.venue)}</span></div>
-      <div class="teams"><div>${esc(g.home_id ? tn(g.home_id) : g.home)}</div><div class="score">${g.hs != null ? `${g.hs}–${g.as}` : "v"}</div><div class="a">${esc(g.away_id ? tn(g.away_id) : g.away)}</div></div></div>`).join("")}</div>
+    <div class="ctx"><div class="ctx-team">${me}</div>
+      <div class="ctx-sub">${esc(D.comp.age_label || "")} · ${esc(D.comp.context || "")} · knockout bracket, 3 games each · <b>does not count toward conference standings</b></div></div>
+    ${anyLow ? `<div class="warn">These teams come from different conferences with few games linking them yet, so cross-conference odds are rough. They sharpen as Phoenix results come in.</div>` : ""}
+    ${ourFirst.length ? sec("us", me, "1 · Our first game", "Neutral field, so no home advantage.", ourFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("")) : ""}
+    ${focus ? sec("us", me, `${ourFirst.length ? 2 : 1} · Our possible path`, `A win sends ${me} to the winners' side, a loss to the consolation side. Tied bracket games assumed to go to penalties (50/50). Chance ${me} wins the group: <b>${pct((wins.get(focus.id) || 0) / N)}</b>.`, `<div class="path">${path}</div>`) : ""}
+    ${sec("div", "Group", "Other opening games", "These decide who we could meet on day 2.", othersFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("") || "<div class='mut'>All played.</div>")}
+    ${sec("div", "Group", "The 8 teams", `Conf W-D-L = this season in their own conference. Rank = among all ${D.pool.teams_rated} rated U16 teams. Games = results the rating is built on (this season plus last season's B2011 national events); fewer games = less certain.`, `
+      <div class="scroll"><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games</th><th>Win group</th></tr>
+      ${D.teams.slice().sort((a, b) => b.strength - a.strength).map(card).join("")}</table></div>`)}
+    ${sec("past", "Schedule", done.length ? "Bracket results & schedule" : "Full bracket schedule", "", games.map(g => `<div class="rrow"><span class="rd">G${g.num} · ${fmtDate(g.date)}<br>${fmtTime(g.time)}</span><span class="rt">${esc(g.home_id ? tn(g.home_id) : g.home)} <b>${g.hs != null ? `${g.hs}–${g.as}` : "v"}</b> ${esc(g.away_id ? tn(g.away_id) : g.away)}</span></div>`).join(""))}
     ${footer(D)}`;
 }
 
