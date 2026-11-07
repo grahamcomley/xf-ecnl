@@ -1,0 +1,105 @@
+{
+ "matched": {
+  "Legends FC Del Mar GU13 ECNL": "Legends FC Del Mar ECNL G2013/14",
+  "San Diego Surf ECNL RL Southwest G13": "San Diego Surf ECNL RL G2013/14",
+  "Elk Grove Soccer ECNL RL G2013/14": "Elk Grove Soccer ECNL RL G2013/14",
+  "Mustang SC U13 ECNL": "Mustang SC ECNL G2013/14",
+  "Slammers FC ECNL U13 Boatman": "SLAMMERS FC ECNL G2013/14",
+  "Slammers HBK ECNL U13": "SLAMMERS FC ECNL G2013/14",
+  "Avalanche ECNL 2013/14 G": "Avalanche ECNL G2013/14",
+  "Placer United ECNL U13G, Starr": "Placer United ECNL G2013/14",
+  "Rebels SC ECNL GU13 Martinez": "Rebels SC ECNL G2013/14",
+  "LAFC So Cal Youth GU13 ECNL": "LAFC So Cal ECNL G2013/14",
+  "XF Academy ECNL GU13": "XF ECNL G2013/14",
+  "Rebels SC Pre-ECNL GU12": "Rebels SC ECNL G2013/14",
+  "Slammers HB Pre ECNL": "SLAMMERS FC ECNL G2013/14",
+  "Slammers FC Pre-ECNL, U12, Boatman": "SLAMMERS FC ECNL G2013/14",
+  "Pateadores ECNL GU13": "Pateadores ECNL G2013/14",
+  "Seattle United GU13 ECNL James-Turner": "Seattle United ECNL G2013/14",
+  "Marin U13 Blue ECNL": "Marin FC ECNL G2013/14",
+  "LA Breakers FC GU13 ECNL team": "LA Breakers FC ECNL G2013/14",
+  "ECNL U13 San Juan Spirits": "San Juan SC ECNL G2013/14",
+  "Sporting California USA GU13 ECNL": "Sporting California USA ECNL G2013/14",
+  "Pleasanton Rage, GU13 ECNL, Herman": "Pleasanton RAGE ECNL G2013/14",
+  "Empire Surf GU13 ECNL-RL": "Empire Surf ECNL RL G2013/14",
+  "PacNW U13 ECNL": "PacNW SC ECNL G2013/14",
+  "Oregon Surf ECNL G2013/2014": "Oregon Surf ECNL G2013/14",
+  "Folsom Lake Surf ECNL RL G2013/14": "Folsom Lake Surf ECNL RL G2013/14",
+  "COSC ECNL GU13": "COSC ECNL G2013/14",
+  "Legends FC ECNL RL GU13, Chavez": "Legends FC (CA) ECNL RL G2013/14",
+  "Pateadores ECNL RL GU13": "Pateadores ECNL RL G2013/14",
+  "Santa Clara Sporting 13/14G ECNL RL": "Santa Clara Sporting ECNL RL G2013/14",
+  "Slammers FC HB Koge ECNL RL GU13 Reid": "Slammers FC HB Koge ECNL RL G2013/14",
+  "Mustang 2014G ECNL-RL": "Mustang SC ECNL RL G2013/14",
+  "Legends FC SD, GU13 ECNL RL, Leuregans": "Legends FC (CA) ECNL RL G2013/14",
+  "San Juan RL G14": "San Juan SC ECNL RL G2013/14",
+  "XF Crossfire Premier GU13 G13-14 ECNL-RL": "XF ECNL RL G2013/14",
+  "Placer United ECNL-RL U13G, Moreno": "Placer United ECNL RL G2013/14",
+  "Slammers FC, ECNL RL S. Cal, GU13, Larsen": "SLAMMERS FC ECNL RL S.Cal G2013/14",
+  "La Breakers GU13 ECNL-RL Mitrovitch": "LA Breakers ECNL RL G2013/2014",
+  "Livermore Fusion SC 2014G ECNL RL": "Livermore Fusion SC ECNL RL G2013/14",
+  "Utah Surf Soccer - U13G KS ECNL RL": "Utah Surf ECNL RL G2013/14",
+  "Pleasanton Rage 2015 Pre-ECNL": "Pleasanton RAGE ECNL G2013/14",
+  "San Ramon U13G ECNL-RL": "San Ramon FC ECNL RL G2013/14",
+  "Seattle United G13 ECNL RL - Sam Adelman": "Seattle United ECNL RL G2013/14",
+  "Legends GU13 ECNL RL SoCal Raffi": "Legends FC (CA) ECNL RL G2013/14"
+ },
+ "check_these": [
+  {
+   "name": "Blues GU13 ECNL RL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Alameda SC, 2014G ECNL-RL, Higgins",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "ECNL RL SoCal G2013/14 NB",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Surf U13 ECNL- Walker",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Royals AZ ECNL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Match Fit GU13 ECNL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Beach GU13 ECNL - De Melo",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "SRU U13G Gold-ECNL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Blues Soccer Club GU13 ECNL RL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Sporting CA USA, U13, ECNL RL, Roman",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "GU13 ECNL RL SC, Wheeler",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "North Coast FC U13 ECNL-RL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Walnut Creek ECNL RL GU13",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Monterey Surf U13G ECNL RL",
+   "reason": "no ECNL/RL team with that club name"
+  }
+ ]
+}

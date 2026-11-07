@@ -1,0 +1,87 @@
+{
+ "matched": {
+  "LA Breakers BU16 ECNL": "LA Breakers FC ECNL B2010/11",
+  "SDSC Surf ECNL BU16 Quinn": "SDSC Surf ECNL B2010/11",
+  "San Diego Surf ECNL U16 Gnaulati": "San Diego Surf ECNL B2010/11",
+  "Legends FC Del Mar U16 ECNL": "Legends FC Del Mar ECNL B2010/11",
+  "Sting ECNL RL B2010/11": "Sting ECNL RL B2010/11",
+  "Folsom Lake Surf ECNL RL B2010/11": "Folsom Lake Surf ECNL RL B2010/11",
+  "Playmaker Futbol Academy ECNL-RL BU16, Carroll": "Playmaker Futbol Academy ECNL-RL B2010/11",
+  "Placer United 2010/11B ECNL-RL, Bloom": "Placer United ECNL RL B2010/11",
+  "LA Breakers BU16 ECNL-RL Red": "LA Breakers ECNL RL B2010/2011 Red",
+  "Empire Surf ECNL RL Bu16": "Empire Surf ECNL RL B2010/11",
+  "1974 Newark FC ECNL RL B2010/11, ECNL RL, U16, Felipe": "1974 Newark FC ECNL RL B2010/11",
+  "Rebels SC BU16 ECNL-RL": "Rebels SC ECNL RL B2010/11",
+  "Rebels ECNL B16 Rodriguez": "Rebels SC ECNL B2010/11",
+  "Eastside FC ECNL BU16 Spencer": "Eastside FC ECNL B2010/11",
+  "XF BU16 ECNL 1": "XF ECNL B2010/11 1",
+  "Folsom Lake Surf ECNL B2010/11": "Folsom Lake Surf ECNL B2010/11",
+  "SEATTLE UNITED B10 ECNL": "Seattle United ECNL B2010/11",
+  "Placer United 2010/11B ECNL, Williams": "Placer United ECNL B2010/11",
+  "PacNW SC ECNL B2010/11, Flaten": "PacNW SC ECNL B2010/11",
+  "XF U16 B10-11 ECNL 2": "XF ECNL B2010/11 2",
+  "Napa United U16B ECNL": "Napa United ECNL B2010/11",
+  "PACNW BU16 ECNL RL (Bravick)": "PacNW SC ECNL RL B2010/11",
+  "Dnamo FC ECNL RL B 2010/11 Delta": "Dnamo FC ECNL RL B2010/11 Delta",
+  "FC Fresno ECNL-RL, U-16, Velasco": "FC Fresno Academy ECNL RL B2010/11",
+  "San Ramon ECNL-RL B2010/11": "San Ramon FC ECNL-RL B2010/11"
+ },
+ "check_these": [
+  {
+   "name": "Slammers ECNL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "SD Surf Boys U16 ECNL-RL White (Rastok)",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Slammers ECNL RL Maroon",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "VUSC ENCL-RL B10/11 Masterson",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "SD Surf BU16 ECNL RL Blue - Mendez",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Beach FC 2011 RL Maudlin",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Sporting CA ECNL, BU16, Mendiola",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Beach FC 2010/2011 ECNL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "WCFC BU16 ECNL- Moreno",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Legends FC ECNL RL BU16",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Union Boys u16 ECNL RL",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Slammers ECNL RL White",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Sporting CA ECNL RL, BU16, Padilla",
+   "reason": "no ECNL/RL team with that club name"
+  },
+  {
+   "name": "Pateadores NB/RL BU16",
+   "reason": "no ECNL/RL team with that club name"
+  }
+ ]
+}
