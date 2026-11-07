@@ -1,0 +1,522 @@
+<!-- https://soccer.sincsports.com/ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    
+    <meta charset="utf-8" />
+    <title>SincSports - Youth Soccer Events, Schedules &amp; Scores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Your event weekend, all in one place. Schedules, scores, standings, rankings, and field maps for every youth soccer event that runs on SincSports." />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="/css/bs5/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bs5/sincsports-bootstrap-theme.css" rel="stylesheet">
+
+    <!-- Material Design Icons -->
+    <link href='/css/material/6.1.95/css/materialdesignicons.min.css' media='all' rel='stylesheet' type='text/css' />
+
+    <link href="/css/home.css?v=5" rel="stylesheet">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top bg-white" id="top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#top">
+                <img src="https://sincsports.com/assets/img/sinc_line.png" alt="SincSports logo" />
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <i class="mdi mdi-menu" style="font-size: 1.8rem;"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/events.aspx">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sicclubs.aspx">Teams &amp; Clubs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rank.aspx">Rankings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="lnkSICNav" class="nav-link" onclick="sincTrack(&#39;recruiting_click&#39;,{placement:&#39;nav&#39;});" href="https://soccerincollege.com/Default.aspx?utm_source=hub&amp;utm_medium=nav">Recruiting <i class="mdi mdi-arrow-top-right"></i></a>
+                    </li>
+
+                    <!-- LOGIN BUTTON (green) -->
+                    <li class="nav-item ms-lg-3">
+                        <a id="lnkLogin" class="btn btn-sm btn-login" href="TTLogin.aspx">
+                            <i class="mdi mdi-login me-1"></i>Log in / My team
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO: real matchday photo, matchday-sheet type -->
+    <section class="mh-hero">
+        <img id="imgHero" class="mh-hero-photo" fetchpriority="high" src="images/home/hero-soccer.jpg" alt="Floodlit soccer fields at dusk during a SincSports event weekend" border="0" />
+        <div class="mh-hero-scrim" aria-hidden="true"></div>
+        <div class="container mh-hero-inner">
+
+            <div id="pnlHeroAnon">
+	
+                <p class="mh-kicker reveal">Youth soccer events</p>
+                <h1 class="mh-title reveal" style="transition-delay: 80ms;">Your event weekend,<br />all in one place.</h1>
+                <p class="mh-sub reveal" style="transition-delay: 160ms;">
+                    Schedules, scores, standings, and field maps for every event that runs on
+                    SincSports, updated the moment anything changes.
+                </p>
+            
+</div>
+
+            
+
+            <div class="reveal" style="transition-delay: 240ms;">
+                <div class="mh-search">
+                    <input type="text" id="hubQ" placeholder="Search events, teams, or clubs..." aria-label="Search events, teams, or clubs" />
+                    <button type="button" class="mh-search-btn" onclick="hubSearch();">Search</button>
+                </div>
+                <div class="mh-scope mt-2" role="group" aria-label="Search type">
+                    <button type="button" class="active" data-scope="events" onclick="hubScope(this);">Events</button>
+                    <button type="button" data-scope="teams" onclick="hubScope(this);">Teams</button>
+                    <button type="button" data-scope="clubs" onclick="hubScope(this);">Clubs</button>
+                </div>
+            </div>
+
+            <div class="mh-quick reveal" style="transition-delay: 320ms;">
+                <a id="lnkQuick1" href="TTLogin.aspx">My schedule</a>
+                <a href="/events.aspx">Live scores</a>
+                <a href="/rank.aspx">Rankings</a>
+                <a href="#getapp">Get the app</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- THIS WEEKEND: fixture list, not cards -->
+    <div id="pnlWeekend">
+	
+    <section class="mh-sect">
+        <div class="container">
+            <div class="mh-secthead reveal">
+                <p class="mh-eyebrow">On SincSports</p>
+                <div class="d-flex flex-wrap justify-content-between align-items-baseline gap-2">
+                    <h2 class="mh-h2 mb-0">Upcoming events</h2>
+                    <a class="mh-more" href="/events.aspx">All events <i class="mdi mdi-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="mh-fixtures stagger-children">
+                
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=WILDTS' data-tid='WILDTS' data-sc='N'>
+                            <span class="mh-fix-date"><b>5</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/WILDTS.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>Wild Turkey Shootout</b>
+                                <span>Gulfport, MS</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=FARSS' data-tid='FARSS' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/FARSS.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>Alabama Soccer Showdown</b>
+                                <span>Birmingham, AL</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=BELITECUP' data-tid='BELITECUP' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/BELITECUP.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>CO Rush East Cup</b>
+                                <span>Denver, CO</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=CROSPK' data-tid='CROSPK' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/CROSPK.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>Crossville SPOOKtacular Soccer Tournament</b>
+                                <span>Crossville, Tennessee</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=GCOLLID' data-tid='GCOLLID' data-sc='Y'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/GCOLLID.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>Girls November College ID Showcase</b>
+                                <span>Loves Park</span>
+                            </span>
+                            <span class='mh-fix-tag ev-tag-sc'>College Showcase</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=LIGHTHC' data-tid='LIGHTHC' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/LIGHTHC.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>Lighthouse Cup</b>
+                                <span>Coquille Park</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=MYSAFC' data-tid='MYSAFC' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/MYSAFC.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>MYSA Fall Champions Cup</b>
+                                <span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+                        <a class="mh-fix reveal" href='TTIntro.aspx?tid=NOCC' data-tid='NOCC' data-sc='N'>
+                            <span class="mh-fix-date"><b>6</b><i>NOV</i></span>
+                            <span class="mh-fix-logo"><img src='photos/NOCC.jpg' alt="" loading="lazy" /></span>
+                            <span class="mh-fix-main">
+                                <b>New Orleans Champions Cup</b>
+                                <span>Metairie, LA</span>
+                            </span>
+                            <span class='mh-fix-tag '>Tournament</span>
+                        </a>
+                    
+            </div>
+        </div>
+    </section>
+    
+</div>
+
+    <!-- USA RANK -->
+    <section class="mh-sect mh-sect-ruled">
+        <div class="container">
+            <div class="row align-items-end g-4">
+                <div class="col-lg-8 reveal-left">
+                    <p class="mh-eyebrow">USA Rank</p>
+                    <h2 class="mh-h2">Where does your team stand?</h2>
+                    <p class="mh-body mb-0">
+                        The only fully objective national rankings: computed from every real game
+                        result recorded over the past year, never from how many events a team
+                        pays to enter.
+                    </p>
+                    <p class="mh-note mt-2 mb-0">Follow your team to get an alert when its ranking moves.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end reveal-right">
+                    <a href="/rank.aspx" class="mh-btn" onclick="sincTrack('select_content',{content_type:'rankings'});">
+                        See the rankings <i class="mdi mdi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECRUITING BAND: quiet gray bulletin -->
+    <section class="mh-band mh-band-gray">
+        <div class="container">
+            <p class="mh-band-label">College recruiting</p>
+            <div class="mh-band-inner">
+                <div class="mh-band-logo d-none d-md-flex">
+                    <img id="imgSICLogo" src="/images/logos/soccer14.png" alt="Recruiting platform logo" border="0" />
+                </div>
+                <div class="mh-band-copy">
+                    <h2>Playing to get recruited?</h2>
+                    <p>SoccerInCollege.com is our college recruiting platform:
+                    a free player profile, a directory of 1,500+ college programs, and, before every
+                    showcase, the list of coaches registered to attend.</p>
+                </div>
+                <div class="mh-band-cta">
+                    <a id="lnkSICEver" class="mh-btn" onclick="sincTrack(&#39;recruiting_click&#39;,{placement:&#39;band&#39;,variant:&#39;evergreen&#39;});" href="https://soccerincollege.com/Default.aspx?utm_source=hub&amp;utm_medium=band&amp;utm_campaign=evergreen">Explore recruiting <i class="mdi mdi-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVERYTHING FOR YOUR TEAM: asymmetric split, ruled list -->
+    <section class="mh-sect" id="getapp">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-5 reveal-left">
+                    <p class="mh-eyebrow">Players, parents &amp; team managers</p>
+                    <h2 class="mh-h2">One login for every event your team plays</h2>
+                    <p class="mh-body">Your team's whole season lives here, whichever events it enters.
+                    Take it to the field with the SincSports app.</p>
+                    <div class="mh-stores mt-3">
+                        <a href="https://apps.apple.com/us/app/sincsports/id496116823" target="_blank" rel="noopener" class="mh-btn-outline"><i class="mdi mdi-apple me-1"></i>App Store</a>
+                        <a href="https://play.google.com/store/apps/details?id=com.sincsports.SincSports" target="_blank" rel="noopener" class="mh-btn-outline"><i class="mdi mdi-google-play me-1"></i>Google Play</a>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="mh-deflist stagger-children">
+                        <div class="mh-def reveal">
+                            <b>Team hub</b>
+                            <p>Roster, calendar sync, RSVPs, and team chat. Every event your team plays, in one place.</p>
+                        </div>
+                        <div class="mh-def reveal">
+                            <b>Real-time updates</b>
+                            <p>Schedule changes, weather delays, and field moves, pushed to your phone before you're in the car.</p>
+                        </div>
+                        <div class="mh-def reveal">
+                            <b>Game-day info</b>
+                            <p>Field maps, directions, rules, brackets, and results. No more parking-lot confusion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIRECTOR BAND: flat navy strip -->
+    <section class="mh-band mh-band-navy">
+        <div class="container">
+            <p class="mh-band-label">For event organizers</p>
+            <div class="mh-band-inner">
+                <div class="mh-band-copy">
+                    <h2>Run tournaments or leagues?</h2>
+                    <p>SincSports powers hundreds of events nationwide: registration, scheduling, live
+                    scoring, payments, and the only built-in college recruiting layer.</p>
+                </div>
+                <div class="mh-band-cta">
+                    <a href="https://www.sincsports.com/?utm_source=soccerhub&amp;utm_medium=band&amp;utm_campaign=directors" class="mh-btn" onclick="sincTrack('director_click',{placement:'band'});">
+                        Explore the platform <i class="mdi mdi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERSONA ROUTER: ruled index, not cards -->
+    <section class="mh-sect mh-sect-tight">
+        <div class="container">
+            <div class="mh-secthead reveal">
+                <p class="mh-eyebrow">Looking for something else?</p>
+            </div>
+            <div class="mh-index stagger-children">
+                <a id="lnkRouterSIC" class="mh-index-row reveal" onclick="sincTrack(&#39;persona_route&#39;,{persona:&#39;athlete&#39;});" href="https://soccerincollege.com/Default.aspx?utm_source=hub&amp;utm_medium=router">
+                    <b>Athlete or parent</b>
+                    <span>College recruiting profiles, coach messaging, showcase intel.</span>
+                    <em>soccerincollege.com <i class="mdi mdi-arrow-top-right"></i></em>
+                </a>
+                <div class="mh-index-row mh-index-here reveal">
+                    <b>Playing in an event</b>
+                    <span>Schedules, scores, standings, and team tools.</span>
+                    <em>You're in the right place <i class="mdi mdi-check"></i></em>
+                </div>
+                <a class="mh-index-row reveal" href="https://www.sincsports.com/?utm_source=soccerhub&amp;utm_medium=router&amp;utm_campaign=directors" onclick="sincTrack('persona_route',{persona:'director'});">
+                    <b>Run events or a club</b>
+                    <span>Tournament, league &amp; showcase software.</span>
+                    <em>sincsports.com <i class="mdi mdi-arrow-top-right"></i></em>
+                </a>
+                <a id="lnkCoach" class="mh-index-row reveal" onclick="sincTrack(&#39;persona_route&#39;,{persona:&#39;coach&#39;});" href="https://soccerincollege.com/TTLogin.aspx?signup=Y&amp;college=Y">
+                    <b>College coach</b>
+                    <span>Free scouting tools for every showcase you attend.</span>
+                    <em>Free access <i class="mdi mdi-arrow-top-right"></i></em>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="sinc-footer mt-5">
+        <div class="container py-5">
+
+            <div class="row gy-4">
+
+                <!-- Brand -->
+                <div class="col-lg-3">
+                    <div class="footer-brand">
+                        <div class="px-lg-0 px-4">
+                            <img src="https://sincsports.com/assets/img/sinc_line_dark_bg.png" class="img-fluid" />
+                        </div>
+                    </div>
+
+                    <p class="footer-text mt-2">
+                        Where youth soccer happens: events, rankings, and college recruiting.
+                    </p>
+
+                    <div class="footer-social mt-3 d-flex gap-3">
+                        <a href="https://facebook.com/sportsincollege" class="footer-social-link">
+                            <i class="mdi mdi-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/sincsports/" class="footer-social-link">
+                            <i class="mdi mdi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                </div>
+                <!-- Navigation -->
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Platform</div>
+                    <ul class="footer-links">
+                        <li><a href="/events.aspx">Events</a></li>
+                        <li><a href="/sicClubs.aspx">Clubs &amp; Teams</a></li>
+                        <li><a href="/rank.aspx">Rankings</a></li>
+                        <li><a id="lnkSIC2" href="https://soccerincollege.com/Default.aspx">College Recruiting</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Products</div>
+                    <ul class="footer-links">
+                        <li><a id="lnkSIC3" href="https://soccerincollege.com/Default.aspx">Soccer in College</a></li>
+                        <li><a href="https://www.sincsports.com/?utm_source=soccerhub&amp;utm_medium=footer&amp;utm_campaign=directors" onclick="sincTrack('director_click',{placement:'footer'});">For Event Directors</a></li>
+                        <li><a href="https://www.sincsports.com/services/onlinecheckin">Online CheckIn</a></li>
+                        <li><a href="https://usarank.com">USA Rank</a></li>
+                        <li><a href="https://usatournaments.com">USA Tournaments</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="/contact.aspx">Contact Support</a></li>
+                        <li><a href="/helpcenter.aspx">Help Center</a></li>
+                        <li><a href="/TTLogin.aspx">Create Account</a></li>
+                        <li><a href="/TTLogin.aspx">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Company</div>
+                    <ul class="footer-links">
+                        <li><a href="https://www.sincsports.com">About Us</a></li>
+                        <li><a href="/terms.aspx">Terms of Service</a></li>
+                        <li><a href="/privacy.aspx">Privacy Policy</a></li>
+                        <li><a href="/cookiepolicy.aspx">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider my-4">
+
+            <div class="footer-bottom d-flex flex-column flex-sm-row justify-content-between">
+                <p class="mb-0 footer-text small">
+                    Copyright &copy;
+                    2026
+                    SincSports. All rights reserved.
+                </p>
+                <p class="mb-0 footer-text small">
+                    Built for players, parents, teams, clubs and event organizers everywhere.
+                </p>
+                <span id="lblMenuState" class="menustatelbl" style="visibility: hidden;">1</span>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type='text/javascript' src='/js/2026.js?v=5.4'></script>
+    <script src="/bs/allbs5.js?v=5.3"></script>
+
+    <script>
+        // GA4 event helper - gtag only exists when the user accepted analytics cookies
+        function sincTrack(name, params) {
+            if (typeof window.gtag === 'function') {
+                gtag('event', name, params || {});
+            }
+            return true;
+        }
+
+        // Hero search: scope segments + redirect into the existing search pages
+        function hubScope(btn) {
+            var pills = document.querySelectorAll('.mh-scope button');
+            for (var i = 0; i < pills.length; i++) { pills[i].classList.remove('active'); }
+            btn.classList.add('active');
+        }
+        function hubSearch() {
+            var q = document.getElementById('hubQ').value.trim();
+            var scopeBtn = document.querySelector('.mh-scope button.active');
+            var scope = scopeBtn ? scopeBtn.getAttribute('data-scope') : 'events';
+            sincTrack('search', { search_term: q, scope: scope });
+            var url;
+            if (scope === 'events') {
+                url = '/events.aspx' + (q ? '?search=' + encodeURIComponent(q) : '');
+            } else {
+                url = '/sicclubs.aspx' + (q ? '?search=' + encodeURIComponent(q) : '');
+            }
+            window.location = url;
+        }
+        document.getElementById('hubQ').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { hubSearch(); }
+        });
+
+        // Fixture row click tracking
+        (function () {
+            var cards = document.querySelectorAll('.mh-fix');
+            for (var i = 0; i < cards.length; i++) {
+                cards[i].addEventListener('click', function () {
+                    sincTrack('select_content', {
+                        content_type: 'event',
+                        item_id: this.getAttribute('data-tid'),
+                        is_showcase: this.getAttribute('data-sc')
+                    });
+                });
+            }
+        })();
+
+        // Scroll Reveal Animation System
+        (function() {
+            var revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+            if ('IntersectionObserver' in window) {
+                var revealObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                            revealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                revealElements.forEach(function(el) {
+                    revealObserver.observe(el);
+                });
+            } else {
+                // Fallback for older browsers
+                revealElements.forEach(function(el) {
+                    el.classList.add('revealed');
+                });
+            }
+        })();
+
+        // Navbar scroll effect
+        (function() {
+            var navbar = document.querySelector('.navbar');
+            var scrollThreshold = 50;
+
+            function handleScroll() {
+                if (window.scrollY > scrollThreshold) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll(); // Check initial state
+        })();
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"d8c0a8d5c1d34adea3ab10341fc53ca9","spa":2}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5699ede2b8fb97d',t:'MTc5NDAyNjAxNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5699ede2b8fb97d',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

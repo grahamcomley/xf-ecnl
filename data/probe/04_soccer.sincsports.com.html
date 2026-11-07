@@ -1,0 +1,2361 @@
+<!-- https://soccer.sincsports.com/events.aspx -->
+
+<!DOCTYPE html>
+<html>
+<head id="ctl00_Head1"><meta charset="utf-8" /><meta http-equiv="x-ua-compatible" content="ie=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href="https://www.soccerincollege.com/events.aspx" />
+    <meta property="og:title" content="SincSports Events" />
+    <meta property="og:url" content="https://www.soccerincollege.com/events.aspx" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Soccer in College" />
+    <meta name="twitter:card" content="summary" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "Soccer in College",
+      "url": "https://www.soccerincollege.com/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Soccer in College",
+          "item": "https://www.soccerincollege.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "SincSports Events"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<title>
+	SincSports Events
+</title><link rel='icon' type='image/ico' href='/design/logo/soccer.ico'> <link rel='stylesheet' href='/css/ui/custom/jquery-ui-1.8.23.custom.css'>
+<link rel='stylesheet' href='/js/ui/jquery.ui.timepicker.css'>
+<link href='/css/material/6.1.95/css/materialdesignicons.min.css' media='all' rel='stylesheet' type='text/css' />
+<script type='text/javascript' src='/js/2026.js?v=5.4'></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" /><link href="https://fonts.googleapis.com/css2?family=Economica:ital,wght@0,400;0,700;1,400;1,700&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=Sora:wght@100..800&amp;family=Poppins:wght@400;500;600;700&amp;family=Ubuntu+Condensed&amp;display=swap" rel="stylesheet" /><link href="/css/aos-2.3.4.css" rel="stylesheet" />
+
+    <!-- Bootstrap 5 CSS (host locally in production) -->
+    <link href="/css/bs5/bootstrap.min.css?v=1" rel="stylesheet" /><link href="/css/bs5/sincsports-bootstrap-theme.css?v=1.2" rel="stylesheet" />
+
+    <!-- Material Design Icons -->
+    
+    <link href="/bs/flatpickr/flatpickr.min.css" rel="stylesheet" />
+    <link href="/bs/flatpickr/themes/airbnb.css" rel="stylesheet" />
+    <script src="/bs/flatpickr/flatpickr.min.js"></script>
+    <style type="text/css">
+
+        @media screen and (min-width: 999px) {
+
+            #ctl00_ContentPlaceHolder1_cblLevel td { width: 33%; }
+                #ctl00_ContentPlaceHolder1_cblLevel td:nth-child(2) { padding-left: 15px; }
+                #ctl00_ContentPlaceHolder1_cblLevel td:nth-child(3) { padding-left: 20px; }
+        }
+        .form-group { margin-bottom:10px;}
+        .featured { margin-bottom:10px; transition: all 0.3s ease-in-out;
+                    background-image: linear-gradient(to left, #212529 , #505962);
+                    padding:4px;
+        }
+        .featured:hover { 
+                 background-image: linear-gradient(to right, #212529 , #505962);transition: all 0.3s ease-in-out;
+        }
+        .fedetails {
+      background-color:#fff;
+    }
+        .blue { color: #015cab;}
+        .text-right { text-align:right;}
+        @media screen and (max-width: 998px) {
+            .ages { padding:10px;}
+            .eventWrap { padding:10px 5px}
+            .cbg { background-color:#f0f1f3!important }
+        }
+        @media screen and (min-width: 999px) {
+            .rside { height:86px;position:relative;}
+            .buttons {position:absolute;bottom:0;right:20px;}
+            .ages { text-align:right;}
+            .cbg { background-color:transparent !important; border:0 !important;}
+            
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (typeof flatpickr !== 'undefined') {
+                flatpickr('#ctl00_ContentPlaceHolder1_tbFrom', { dateFormat: 'm/d/Y', allowInput: true });
+            }
+            $('#ctl00_ContentPlaceHolder1_tbAlpha').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "services/AutoComplete.asmx/GetTournaments",
+                        dataType: "json",
+                        data: JSON.stringify({ state: '', prefix: request.term }),
+                        success: function (data) {
+                            response($.map(data.d, function (item) {
+                                return {
+                                    label: item.Name,
+                                    value: item.Value
+                                }
+                            }))
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    window.location = "TTIntro.aspx?tid=" + ui.item.value;
+                },
+                open: function () {
+                    //$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+                },
+                close: function () {
+                    //$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+                }
+            });
+
+            $("div.card").find('[data-featured="1"]').addClass('featured');
+        });
+       
+        function mergeTourney(tid) {
+            getElement('tblMerge').style.display = '';
+            if (getElement('tbKeep').value == '') {
+                getElement('tbKeep').value = tid;
+            }
+            else {
+                getElement('tbRemove').value += tid + "|";
+            }
+        }
+        //-->
+    </script>
+    
+<link rel="apple-touch-icon" href="images/mobile_icon.png" /><link href="/css/sinc26.css?v=1.1" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a.tipsy').tipsy({ gravity: 'n' }); $('a.tip').tipsy({ gravity: 'n' }); $('i.tip').tipsy({ gravity: 'n' }); $('img.tip').tipsy({ gravity: 'n' });
+            AOS.init();
+
+        });
+        
+    </script>
+    
+    <link href="/css/sinc-loading.css?v=1.0" rel="stylesheet" /><link href="/css/sinc-help.css?v=1.1" rel="stylesheet" />
+    <script type="text/javascript" src="/js/sinc-help.js?v=2.1"></script>
+<style type="text/css">
+.eo_tag_style{}
+</style>
+<style type="text/css">
+table.eo_no_border_spacing { border-spacing: 0; border-collapse: collapse; }
+table.eo_td_no_padding td {padding: 0px;}
+table.eo_border_collapse { border-collapse: collapse; }
+.eo_align_center { text-align: center;}
+.eo_align_left { text-align: left;}
+.eo_transparent { filter:alpha(opacity=0);-moz-opacity:0.0;opacity:0.0; }
+.eo_fullheight { height: 100%; }
+.eo_fullwidth { width: 100%; }
+a.eo_plain_link.link { border: none; }
+a.eo_plain_link.visited { border: none; }
+a.eo_plain_link.hover { border: none; }
+a.eo_plain_link.active { border: none; }
+ul.eo_list { list-style-type: none; margin: 0px; padding: 0px; }
+ul.eo_list li { list-style: none; margin: 0px; padding: 0px; white-space: nowrap; }
+.eo_text { font-family: Verdana; font-size: 10px; }
+
+</style>
+<style type="text/css">
+.eo_css_ctrl_ctl00_DialogHelp1 {background-color:#fff;border-bottom-width:0px;border-left-width:0px;border-right-width:0px;border-top-width:0px;color:black;font-family:'Segoe UI Light', Tahoma, Helvetica, Arial, Verdana, sans-serif;font-size:18pt;padding-bottom:5px;padding-left:8px;padding-right:3px;padding-top:0}
+.eo_css_ctrl_ctl00_DialogHelp2 {background-color:#fff;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;color:#383838;padding-bottom:4px;padding-left:4px;padding-right:4px;padding-top:4px}
+.eo_css_ctrl_ctl00_DialogHelp3 {background-color:#d2d2d2;font-family:tahoma;font-size:8pt}
+
+</style></head>
+<body id="ctl00_thebody" class="soccer">
+    <form name="aspnetForm" method="post" action="./events.aspx" id="aspnetForm">
+<div>
+<input type="hidden" name="__SINCMP" id="__SINCMP" value="Sinc26.master" />
+<input type="hidden" name="eo_cb_id" id="eo_cb_id" value="" />
+<input type="hidden" name="ctl00_navbar_cpSearch_trigger" id="ctl00_navbar_cpSearch_trigger" value="" />
+<input type="hidden" name="ctl00_navbar_cpSearch_param" id="ctl00_navbar_cpSearch_param" value="" />
+<input type="hidden" name="__eo_sc" id="__eo_sc" value="" />
+<input type="hidden" name="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_trigger" id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_trigger" value="" />
+<input type="hidden" name="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_param" id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_param" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cbpMerge_trigger" id="ctl00_ContentPlaceHolder1_cbpMerge_trigger" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cbpMerge_param" id="ctl00_ContentPlaceHolder1_cbpMerge_param" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cpEvents_trigger" id="ctl00_ContentPlaceHolder1_cpEvents_trigger" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cpEvents_param" id="ctl00_ContentPlaceHolder1_cpEvents_param" value="" />
+<input type="hidden" name="ctl00_DialogHelp_ctl00_cpHelpPanel_trigger" id="ctl00_DialogHelp_ctl00_cpHelpPanel_trigger" value="" />
+<input type="hidden" name="ctl00_DialogHelp_ctl00_cpHelpPanel_param" id="ctl00_DialogHelp_ctl00_cpHelpPanel_param" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTEyODM0NzQzMTNkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYIBSRjdGwwMCRDb250ZW50UGxhY2VIb2xkZXIxJGNibExldmVsJDAFJGN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkY2JsTGV2ZWwkMQUkY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRjYmxMZXZlbCQyBSRjdGwwMCRDb250ZW50UGxhY2VIb2xkZXIxJGNibExldmVsJDMFJGN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkY2JsTGV2ZWwkNAUkY3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRjYmxMZXZlbCQ1BSRjdGwwMCRDb250ZW50UGxhY2VIb2xkZXIxJGNibExldmVsJDYFJGN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkY2JsTGV2ZWwkNi1WMtKqb2ZR/LHRWzIogRmsLefo" />
+</div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(EO25264)=='undefined'){EO25264=new Object();EO25264.f=new Object();EO25264.g=new Object();EO25264.r=new Object();EO25264.g.a=EO25264.r;EO25264.r.getVersion=function(){return "25.264";};EO25264.r.getLoader=function(){return typeof(EO25264.g.d)!='undefined'?EO25264.g.d:null;};EO25264.r.getNS=function(){return "EO25264";};};
+EO25264.r.product='EO.Web';
+EO25264.r.form='aspnetForm';
+EO25264.r.autoInit=false;
+EO25264.r.handlerUrl='/eo_web.ashx';
+
+//]]>
+</script>
+<script type="text/javascript" src="/js/eo/eo.18ccd2b5-5bb4-4e32-aeb3-adc32338a5de.js"></script>
+<script type="text/javascript" src="/js/eo/eo.310dad10-dab1-44a7-a637-c218ef9aa3b7.js"></script>
+<script type="text/javascript" src="/js/eo/eo.86c43cce-ff60-427d-9a37-1e16debbe456.js"></script>
+<script type="text/javascript" src="/js/eo/eo.e1a21eb1-352a-4a42-b2b6-bbacb24a29d1.js"></script>
+<script type="text/javascript" src="/js/eo/eo.1690bc33-6c82-4e45-a64c-c8c0fde91095.js"></script><div id="eo_root"></div>
+<script type="text/javascript" src="/js/eo/eo.20891133-56ac-42df-9870-2d95a8ab231e.js"></script>
+<script type="text/javascript" src="/js/eo/eo.59fe8f2b-e671-41c5-9491-e9b2df72e9ec.js"></script>
+<script type="text/javascript" src="/js/eo/eo.54ab8d54-4fdd-42e1-a5ec-62c40a48bb49.js"></script>
+<script type="text/javascript" src="/js/eo/eo.e955a919-0660-48a3-972b-6a7e7c13879e.js"></script>
+<script type="text/javascript" src="/js/eo/eo.a81cac04-7396-436e-96d4-99acb86cb2be.js"></script>
+        <!-- TOP NAV -->
+        
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="/home.aspx">
+            <img src="https://sincsports.com/assets/img/sinc_line.png" alt="SincSports logo" />
+        </a>
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <!-- Navigation -->
+            <ul class="navbar-nav w-100">
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Events
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDocumentation">
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item d-flex align-items-start" href="/events.aspx?sinc=Y">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-tournament"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Tournaments
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        SincSports tournament listing
+                                    </p>
+                                </div>
+                            </a>
+                            <a class="list-group-item d-flex align-items-start" href="/events.aspx?sinc=Y&leagues=Y">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-calendar"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Leagues
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        SincSports Leagues
+                                    </p>
+                                </div>
+                            </a>
+                            <a id="ctl00_navbar_lnkRankEvents" class="list-group-item d-flex align-items-start" href="/usarankevents.aspx?sinc=Y">
+                            <!-- Icon -->
+                            <div class="icon icon-sm text-primary">
+                                <span class="mdi mdi-trending-up"></span>
+                            </div>
+                            <!-- Content -->
+                            <div class="ms-4">
+                                <!-- Heading -->
+                                <h6 class="fw-bold text-uppercase mb-0">USA Rank Events
+                                </h6>
+                                <!-- Text -->
+                                <p class="fs-sm text-gray-700 mb-0">
+                                    Results included in rankings
+                                </p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sicClubs.aspx?sinc=Y">Clubs & Teams
+                    </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="usaRankLnk" href="/rank.aspx">
+                    Rankings
+                </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vip.aspx">SINC VIP
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Default.aspx">College Recruiting
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Our Products
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDocumentation">
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item d-flex align-items-start" href="https://sincsports.com" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-cached"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">SincSports
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Tournament and League Software
+                                    </p>
+                                </div>
+                            </a>
+                            <a id="ctl00_navbar_lnkSportInCollege" class="list-group-item d-flex align-items-start" href="https://www.soccerincollege.com" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-school-outline"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Sports In College
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Recruiting tools for athletes
+                                    </p>
+                                </div>
+                            </a>
+
+                            <a class="list-group-item d-flex align-items-start" href="https://usa.sincsports.com/rank/view" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-trending-up"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">USA Rank
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Rankings for youth sports
+                                    </p>
+                                </div>
+                            </a>
+                            <a class="list-group-item d-flex align-items-start" href="https://www.sincsports.com/partner/onlinecheckin" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-check-circle-outline"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Online Check-In
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        The safest way to check in your teams
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+                
+                
+                <li class=" flex-grow-1"></li>
+                <li class="nav-item dropdown">
+                    <a id="ctl00_navbar_lnkLogin" class="navbar-btn btn btn-sm btn-pill btn-white lift ml-auto text-primary" href="/TTLogin.aspx">Log In / Sign Up</a>
+                    
+                </li>
+            </ul>
+            <!-- Button -->
+
+
+        </div>
+    </div>
+</nav>
+<div class="collapse shadow-lg py-3" id="searchTB">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <select name="ctl00$navbar$ddlSearchType" id="ctl00_navbar_ddlSearchType" class="form-control mr-2">
+	<option value="people">People Search</option>
+	<option value="event">Event Search</option>
+	<option value="usarank">USA Rank ID</option>
+
+</select>
+            <input name="ctl00$navbar$tbSearch" type="text" id="ctl00_navbar_tbSearch" class="form-control mr-2" />
+            <a href="#" class="btn btn-primary" onclick="eo_Callback('cpSearch', 'search'); return false;">Search</a>
+            <a href="#" class="btn btn-link ml-2 searchTB-close" title="Close search" onclick="$('#searchTB').hide('collapse'); return false;"><i class="mdi mdi-close"></i></a>
+        </div>
+        <div>
+            <div style="position:absolute; top:-1000px;"><input type="hidden" name="eo_version" value="25.2.64.0" /><input type="hidden" name="eo_style_keys" value="/wFk" /><input type="hidden" name="__eo_obj_states"></div>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.r.product='EO.Web';
+EO25264.r.debug=0;
+EO25264.r.aspnet11=0;
+var eo_culture_i=eval('({"name":"","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":".","IsReadOnly":true,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":",","CurrencySymbol":"\u00A4","NaNSymbol":"NaN","CurrencyNegativePattern":0,"NumberNegativePattern":1,"PercentPositivePattern":0,"PercentNegativePattern":0,"NegativeInfinitySymbol":"-Infinity","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":".","NumberGroupSeparator":",","CurrencyPositivePattern":0,"PositiveInfinitySymbol":"Infinity","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":".","PercentGroupSeparator":",","PercentSymbol":"%","PerMilleSymbol":"\u2030","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"AM","Calendar":{"MinSupportedDateTime":"@-62135568000000@","MaxSupportedDateTime":"@253402300799999@","AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":true},"DateSeparator":"/","FirstDayOfWeek":0,"CalendarWeekRule":0,"FullDateTimePattern":"dddd, dd MMMM yyyy HH:mm:ss","LongDatePattern":"dddd, dd MMMM yyyy","LongTimePattern":"HH:mm:ss","MonthDayPattern":"MMMM dd","PMDesignator":"PM","RFC1123Pattern":"ddd, dd MMM yyyy HH\':\'mm\':\'ss \'GMT\'","ShortDatePattern":"MM/dd/yyyy","ShortTimePattern":"HH:mm","SortableDateTimePattern":"yyyy\'-\'MM\'-\'dd\'T\'HH\':\'mm\':\'ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\'-\'MM\'-\'dd HH\':\'mm\':\'ss\'Z\'","YearMonthPattern":"yyyy MMMM","AbbreviatedDayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"ShortestDayNames":["Su","Mo","Tu","We","Th","Fr","Sa"],"DayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"AbbreviatedMonthNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthNames":["January","February","March","April","May","June","July","August","September","October","November","December",""],"IsReadOnly":true,"NativeCalendarName":"Gregorian Calendar","AbbreviatedMonthGenitiveNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthGenitiveNames":["January","February","March","April","May","June","July","August","September","October","November","December",""]}})');//eo_culture_i
+var eo_culture=eval('({"name":"en-US","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":".","IsReadOnly":false,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":",","CurrencySymbol":"$","NaNSymbol":"NaN","CurrencyNegativePattern":0,"NumberNegativePattern":1,"PercentPositivePattern":0,"PercentNegativePattern":0,"NegativeInfinitySymbol":"-Infinity","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":".","NumberGroupSeparator":",","CurrencyPositivePattern":0,"PositiveInfinitySymbol":"Infinity","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":".","PercentGroupSeparator":",","PercentSymbol":"%","PerMilleSymbol":"‰","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"AM","Calendar":{"MinSupportedDateTime":new Date(-62135568000000),"MaxSupportedDateTime":new Date(253402300799999),"AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":false},"DateSeparator":"/","FirstDayOfWeek":0,"CalendarWeekRule":0,"FullDateTimePattern":"dddd, MMMM dd, yyyy h:mm:ss tt","LongDatePattern":"dddd, MMMM dd, yyyy","LongTimePattern":"h:mm:ss tt","MonthDayPattern":"MMMM dd","PMDesignator":"PM","RFC1123Pattern":"ddd, dd MMM yyyy HH\u0027:\u0027mm\u0027:\u0027ss \u0027GMT\u0027","ShortDatePattern":"M/d/yyyy","ShortTimePattern":"h:mm tt","SortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd\u0027T\u0027HH\u0027:\u0027mm\u0027:\u0027ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd HH\u0027:\u0027mm\u0027:\u0027ss\u0027Z\u0027","YearMonthPattern":"MMMM, yyyy","AbbreviatedDayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"ShortestDayNames":["Su","Mo","Tu","We","Th","Fr","Sa"],"DayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"AbbreviatedMonthNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthNames":["January","February","March","April","May","June","July","August","September","October","November","December",""],"IsReadOnly":false,"NativeCalendarName":"Gregorian Calendar","AbbreviatedMonthGenitiveNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthGenitiveNames":["January","February","March","April","May","June","July","August","September","October","November","December",""]}})');//eo_culture
+
+//]]>
+</script>
+<table id="ctl00_navbar_cpSearch" style="width:100%;width:100%;">
+	<tbody>
+		<tr>
+			<td>
+                
+            </td>
+		</tr>
+	</tbody>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_navbar_cpSearch=1;EO25264.r._o_ctl00_navbar_cpSearch=EO25264.f.acg(EO25264.r._o_ctl00_navbar_cpSearch,"cpSearch",new EO25264.f.aaum([[,"ctl00_navbar_cpSearch","Callback","ctl00$navbar$cpSearch",,,,,,,"__doPostBack('ctl00$navbar$cpSearch','_eo_arg_')"],,"__doPostBack('ctl00$navbar$cpSearch','')",,,,,,[],"<div class='loading'></div>",,,,,,,,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_navbar_cpSearch,1,null, 0);});
+//]]>
+</script>
+
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+.mergeAthleteDiv 
+{
+	font-family: Arial, Helvetica, sans-serif; font-size: 12px; width:250px;z-index: 10000000;margin-top:68px;
+	color: #000; padding: 10px 10px 5px 10px; -webkit-border-bottom-right-radius: 10px;-moz-border-radius-bottomright: 10px;background: #fefefe;
+	background:-moz-linear-gradient(top,#fefefe 0%,#b7b7b7); background: -webkit-gradient(linear, left top, left bottom, from(#fefefe),to(#b7b7b7));
+	border: 0px solid #474747;-moz-box-shadow:0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-webkit-box-shadow: 0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-moz-box-shadow: 2px 5px 15px #9a9a9a;-webkit-box-shadow: 3px 5px 15px #9a9a9a;
+}
+
+</style>
+<script type="text/javascript" language="javascript">
+    function MergeAthlete(img, Athleteid) {
+        $(".amerge").attr("src", "/images/mergeSignRed.png");
+        $(".pmerge").hide();
+        $(".merge").hide();
+        $(img).hide();
+        eo_Callback('ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl', Athleteid + "|" + img.id);
+        return false;
+    }
+
+    function cancelAthleteMerge() {
+        $(".amerge").attr("src", "/images/mergeSign.png");
+        $(".pmerge").show();
+        $(".amerge").show();
+        $(".merge").show();
+        var showthis = $('ctl00_navbar_sicAthleteMerge_lblFirstAthleteId').html();
+        if (showthis != "")
+            $('#' + showthis).show();
+        eo_Callback('ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl', 'clear');
+        return false;
+        
+    }
+</script>
+<table id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl">
+	<tbody>
+		<tr>
+			<td>
+        
+</td>
+		</tr>
+	</tbody>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl=1;EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl=EO25264.f.acg(EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl,"cpMergeAthleteControl",new EO25264.f.aaum([[,"ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl","Callback","ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl",,,,,,,"__doPostBack('ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl','_eo_arg_')"],,"__doPostBack('ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl','')",,,,,,[],,,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl,1,null, 0);});
+//]]>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        /* Delegated, and matching a class as well as the id, because this nav is
+           not always the one showing the link. SincShell hides this whole navbar
+           in-event and puts its own Sinc > Search row in the event strip; that
+           row carries .js-searchlnk. A direct bind to #searchlnk only ever
+           reached the row in here - the hidden one - so in-event the menu item
+           was dead. */
+        $(document).on("click", "#searchlnk, .js-searchlnk", function (e) {
+            $("#searchTB").toggle("collapse");
+            e.preventDefault();
+        });
+        $("#ctl00_navbar_ddlSearchType").change(function () {
+            if ($(this).val() == "event") {
+                $('#ctl00_navbar_tbSearch').autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "/services/AutoComplete.asmx/GetEvents",
+                            dataType: "json",
+                            data: JSON.stringify({ state: '', prefix: request.term }),
+                            success: function (data) {
+                                response($.map(data.d, function (item) {
+                                    return {
+                                        label: item.Name,
+                                        value: item.Value
+                                    }
+                                }))
+                            }
+                        });
+                    },
+                    minLength: 3,
+                    select: function (event, ui) {
+                        window.location = "TTIntro.aspx?register=Y&tid=" + ui.item.value;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                });
+
+            }
+            else {
+                $('#ctl00_navbar_tbSearch').autocomplete("destroy");
+                $('#ctl00_navbar_tbSearch').removeData('autocomplete');
+            }
+        });
+        $("#ctl00_navbar_tbSearch").keypress(function (e) {
+            if (e.which == 13) {
+                eo_Callback('cpSearch', 'search');
+                e.preventDefault();
+            }
+        });
+
+    })
+</script>
+<style type="text/css">
+    #searchTB {
+        max-height: 260px;
+        overflow: auto;
+        width: 100%;
+        background: #fff;
+        z-index: 100000;
+        position: fixed;
+    }
+
+    div.dropdown-menu div.list-group a:hover {
+        background-color: #efefef;
+    }
+
+    body.test .sinc-long {
+        background-position: 0px 0px !important;
+        width: 280px;
+    }
+
+    body.test .sincsprite {
+        display: inline-block;
+        height: 40px;
+        background-image: url(/images/testsystem.png) !important;
+        cursor: pointer;
+    }
+</style>
+
+        <input type="text" id="username" style="width:0;height:0;visibility:hidden;position:absolute;left:0;top:0" />
+        <input type="password" style="width:0;height:0;visibility:hidden;position:absolute;left:0;top:0" />
+    
+<!-- Begin EO.Web ScriptManager eosm.  -->
+
+<!-- End EO.Web ScriptManager eosm.  -->
+
+    <div id="bg">  
+            <div id="ctl00_pnlPage" class="pb-6 container-fluid">
+	
+              <div id="ctl00_pnlCrumbs">
+		
+                    
+                
+	</div>  
+                
+                <div class="row g-4">
+                    <div id="ctl00_pnlMain" class="col-12 min-vh-50 px-0">
+		
+                    
+    
+    
+ <div style="position:fixed;top:0;left:0;">
+<table id="ctl00_ContentPlaceHolder1_cbpMerge">
+			<tbody>
+				<tr>
+					<td>
+<table id="ctl00_ContentPlaceHolder1_tblMerge" cellspacing="0" cellpadding="2" border="0" style="background-color:Beige;border-color:Black;border-width:1px;border-style:solid;border-collapse:collapse;display:none;margin-top:185px;margin-left:35px;">
+						<tr>
+							<td class="header" colspan="2">
+	    Merge Tourneys
+	    </td>
+						</tr><tr>
+							<td>Keep:</td><td><input name="ctl00$ContentPlaceHolder1$tbKeep" type="text" id="ctl00_ContentPlaceHolder1_tbKeep" /></td>
+						</tr><tr>
+							<td>Remove:</td><td><input name="ctl00$ContentPlaceHolder1$tbRemove" type="text" id="ctl00_ContentPlaceHolder1_tbRemove" /></td>
+						</tr><tr>
+							<td align="center" colspan="2">
+	        <input type="button" onclick="eo_Callback('cbpMerge', '');return false;" value="Merge" />
+	    </td>
+						</tr><tr>
+							<td colspan="2"><span id="ctl00_ContentPlaceHolder1_lblMerge"></span></td>
+						</tr>
+					</table>
+</td>
+				</tr>
+			</tbody>
+		</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_ContentPlaceHolder1_cbpMerge=1;EO25264.r._o_ctl00_ContentPlaceHolder1_cbpMerge=EO25264.f.acg(EO25264.r._o_ctl00_ContentPlaceHolder1_cbpMerge,"cbpMerge",new EO25264.f.aaum([[,"ctl00_ContentPlaceHolder1_cbpMerge","Callback","ctl00$ContentPlaceHolder1$cbpMerge",,,,,,,"__doPostBack('ctl00$ContentPlaceHolder1$cbpMerge','_eo_arg_')"],,"__doPostBack('ctl00$ContentPlaceHolder1$cbpMerge','')",,,,,,[],"<img src='images/loading2.gif' />",,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_ContentPlaceHolder1_cbpMerge,1,null, 0);});
+//]]>
+</script>
+
+</div>
+    <section>
+        <div class="container ubuntufont">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>Tournaments</h1>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="https://sincsports.com" target="_blank" title="Powered by SincSports">
+                    <img src="/images/sincsports/sinc_powered.png" alt="Events Powered by SincSports" style="height:50px;" /></a>
+                </div>
+            </div>
+            
+        <div id="ctl00_ContentPlaceHolder1_pnlSearch" class="ubuntufont">
+			
+            <div class="card bg-light shadow" data-aos="fade-in" data-aos-delay="150">
+                <div class="card-body">
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <span>Gender: </span>
+                        <select name="ctl00$ContentPlaceHolder1$ddlGender" id="ctl00_ContentPlaceHolder1_ddlGender" class="form-control form-select">
+				<option selected="selected" value="B">Both</option>
+				<option value="M">Boys / Men</option>
+				<option value="F">Girls / Women</option>
+
+			</select>
+                    </div>
+                    <div class="col-md-3">
+                        <span>State: </span>
+                        <select name="ctl00$ContentPlaceHolder1$ddlStates" id="ctl00_ContentPlaceHolder1_ddlStates" class="form-control form-select">
+				<option selected="selected" value="XX">All States</option>
+				<option value="AL">Alabama</option>
+				<option value="AK">Alaska</option>
+				<option value="AZ">Arizona</option>
+				<option value="AR">Arkansas</option>
+				<option value="CA">California</option>
+				<option value="CO">Colorado</option>
+				<option value="CT">Connecticut</option>
+				<option value="DE">Delaware</option>
+				<option value="DC">District of Columbia</option>
+				<option value="FL">Florida</option>
+				<option value="GA">Georgia</option>
+				<option value="HI">Hawaii</option>
+				<option value="ID">Idaho</option>
+				<option value="IL">Illinois</option>
+				<option value="IN">Indiana</option>
+				<option value="IA">Iowa</option>
+				<option value="KS">Kansas</option>
+				<option value="KY">Kentucky</option>
+				<option value="LA">Louisiana</option>
+				<option value="ME">Maine</option>
+				<option value="MD">Maryland</option>
+				<option value="MA">Massachusetts</option>
+				<option value="MI">Michigan</option>
+				<option value="MN">Minnesota</option>
+				<option value="MS">Mississippi</option>
+				<option value="MO">Missouri</option>
+				<option value="MT">Montana</option>
+				<option value="NE">Nebraska</option>
+				<option value="NV">Nevada</option>
+				<option value="NH">New Hampshire</option>
+				<option value="NJ">New Jersey</option>
+				<option value="NM">New Mexico</option>
+				<option value="NY">New York</option>
+				<option value="NC">North Carolina</option>
+				<option value="ND">North Dakota</option>
+				<option value="OH">Ohio</option>
+				<option value="OK">Oklahoma</option>
+				<option value="OR">Oregon</option>
+				<option value="PA">Pennsylvania</option>
+				<option value="PR">Puerto Rico</option>
+				<option value="RI">Rhode Island</option>
+				<option value="SC">South Carolina</option>
+				<option value="SD">South Dakota</option>
+				<option value="TN">Tennessee</option>
+				<option value="TX">Texas</option>
+				<option value="UT">Utah</option>
+				<option value="VT">Vermont</option>
+				<option value="VA">Virginia</option>
+				<option value="WA">Washington</option>
+				<option value="WV">West Virginia</option>
+				<option value="WI">Wisconsin</option>
+				<option value="WY">Wyoming</option>
+
+			</select>
+                    </div>
+                    <div class="col-md-3">
+                        <span>From Date: </span>
+                        <input name="ctl00$ContentPlaceHolder1$tbFrom" type="text" value="11/6/2026" id="ctl00_ContentPlaceHolder1_tbFrom" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <span>Begins with: </span>
+                        <input name="ctl00$ContentPlaceHolder1$tbAlpha" type="text" id="ctl00_ContentPlaceHolder1_tbAlpha" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <span id="ctl00_ContentPlaceHolder1_cblLevel" style="display:inline-block;width:100%;"><input id="ctl00_ContentPlaceHolder1_cblLevel_0" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$0" checked="checked" /><label for="ctl00_ContentPlaceHolder1_cblLevel_0">Competitive</label><input id="ctl00_ContentPlaceHolder1_cblLevel_3" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$3" checked="checked" /><label for="ctl00_ContentPlaceHolder1_cblLevel_3">USYS</label><input id="ctl00_ContentPlaceHolder1_cblLevel_5" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$5" /><label for="ctl00_ContentPlaceHolder1_cblLevel_5">All</label><br /><input id="ctl00_ContentPlaceHolder1_cblLevel_1" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$1" checked="checked" /><label for="ctl00_ContentPlaceHolder1_cblLevel_1">Recreation</label><input id="ctl00_ContentPlaceHolder1_cblLevel_4" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$4" checked="checked" /><label for="ctl00_ContentPlaceHolder1_cblLevel_4">US Club</label><input id="ctl00_ContentPlaceHolder1_cblLevel_6" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$6" /><label for="ctl00_ContentPlaceHolder1_cblLevel_6">Only Featured</label><br /><input id="ctl00_ContentPlaceHolder1_cblLevel_2" type="checkbox" name="ctl00$ContentPlaceHolder1$cblLevel$2" checked="checked" /><label for="ctl00_ContentPlaceHolder1_cblLevel_2">Small Sided</label></span>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="submit" name="ctl00$ContentPlaceHolder1$btnSearch" value="Search" id="ctl00_ContentPlaceHolder1_btnSearch" class="btn btn-primary btn-block btn-sm w-100" />
+                    </div>
+                </div>
+                </div>
+            </div>
+        
+		</div>
+        </div>
+    </section>
+
+    <section class="pt-4">
+
+    
+    <div class="container" style="max-width:1000px">
+        
+
+     <div class="row no-gutters g-0">
+         <div class="col-md-12">
+             <table id="ctl00_ContentPlaceHolder1_cpEvents" style="width:100%;width:100%;">
+			<tbody>
+				<tr>
+					<td>
+                <div class="pt-3 pb-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <span id="ctl00_ContentPlaceHolder1_lblDisplaying">Displaying: 1 to 30</span>
+                        </div>
+                        <div class="col">
+                            <span id="ctl00_ContentPlaceHolder1_lblPager"><ul class='pagination justify-content-end'><li class='page-item active'><a class='page-link' href='#' onclick='eo_Callback("cpEvents", "1");'>1</a></li><li class='page-item'><a href='#' class='page-link' onclick='eo_Callback("cpEvents", "2");'>2</a></li><li class='page-item'><a href='#' class='page-link' onclick='eo_Callback("cpEvents", "3");'>3</a></li><li class='page-item'><a class='page-link' href='#' onclick='eo_Callback("cpEvents", "4");'>>></a></li></ul></span></div>
+                        </div>
+                    </div>
+                <div class="clear"></div>
+                <div id="ctl00_ContentPlaceHolder1_pnlAllEvents">
+						
+                    
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/WILDTS.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/WILDTS/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=WILDTS">Wild Turkey Shootout</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lblFDate" class="d-block text-muted">November 5, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lblFLocation" class="d-block">Gulfport, MS</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U14<br /><span class='blue'>GIRLS: </span>U08 - U12<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=WILDTS">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl00_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=WILDTS">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/FARSS.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/FARSS/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=FARSS">Alabama Soccer Showdown</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lblFLocation" class="d-block">Birmingham, AL</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=FARSS">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://soccer.sincsports.com/TTContent.aspx?tid=FARSS&amp;tab=6&amp;sub=0&amp;Qual=MISC0022" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl01_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=FARSS">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/BELITECUP.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/BELITECUP/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=BELITECUP">CO Rush East Cup</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lblDate" class="d-block text-muted">November 6, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lblLocation" class="d-block">Denver, CO</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lblAges"><span class='blue'>BOYS: </span>U10 - U15<br /><span class='blue'>GIRLS: </span>U10 - U15<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=BELITECUP">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=BELITECUP">View Schedule</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl02_displayEvent_lnkHotels" class="btn btn-outline-primary btn-xs d-block mb-2" href="https://soccer.sincsports.com/TTMore.aspx?tid=BELITECUP&amp;tab=7&amp;sub=0&amp;Qual=MISC&amp;Seq=3" target="_blank">Hotels</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/CROSPK.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/CROSPK/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=CROSPK">Crossville SPOOKtacular Soccer Tournament</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lblFLocation" class="d-block">Crossville, Tennessee</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=CROSPK">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl03_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=CROSPK">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/GCOLLID.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/GCOLLID/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=GCOLLID">Girls November College ID Showcase</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lblFLocation" class="d-block">Loves Park</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lblFAges"><span class='blue'>GIRLS: </span>U13 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=GCOLLID">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://athletetravel.housing-connect.com/events/50953/hotels?nav=hidden" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl04_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=GCOLLID">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/LIGHTHC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/LIGHTHC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=LIGHTHC">Lighthouse Cup</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lblDate" class="d-block text-muted">November 6, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lblLocation" class="d-block">Coquille Park</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lblAges"><span class='blue'>BOYS: </span>U09 - U12<br /><span class='blue'>GIRLS: </span>U09 - U12<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=LIGHTHC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl05_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=LIGHTHC">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/MYSAFC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/MYSAFC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=MYSAFC">MYSA Fall Champions Cup</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lblDate" class="d-block text-muted">November 6, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lblLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lblAges"><span class='blue'>BOYS: </span>U07 - U19<br /><span class='blue'>GIRLS: </span>U07 - U19<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=MYSAFC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl06_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=MYSAFC">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/NOCC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/NOCC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=NOCC">New Orleans Champions Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lblFLocation" class="d-block">Metairie, LA</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U15<br /><span class='blue'>GIRLS: </span>U08 - U15<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=NOCC">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://athletetravel.housing-connect.com/events/45991/hotels?nav=hidden" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl07_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=NOCC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/PANAMACBC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/PANAMACBC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=PANAMACBC">Panama City Beach Classic</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lblFLocation" class="d-block">Panama City Beach, FL - Presented by Snap Soccer</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=PANAMACBC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl08_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=PANAMACBC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/MARTINC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/MARTINC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=MARTINC">Rush Challenger Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lblFLocation" class="d-block">Rainbow City</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=MARTINC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl09_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=MARTINC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/STONESSI.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/STONESSI/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=STONESSI">Stones River FC Invitational</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lblFDate" class="d-block text-muted">November 6, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lblFLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=STONESSI">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://secure.thsweb.com/Event.php?TournamentID=9119&amp;Cid=1&amp;RceId=0" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl10_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=STONESSI">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/ALLACC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/ALLACC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=ALLACC">All-American City Classic</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lblFDate" class="d-block text-muted">November 7, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lblFLocation" class="d-block">Bankplus Sportsplex at Ballard Park</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U07 - U15<br /><span class='blue'>GIRLS: </span>U07 - U14<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=ALLACC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl11_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=ALLACC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/CLASHFI.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/CLASHFI/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=CLASHFI">Clashboro Fall Invitational</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lblDate" class="d-block text-muted">November 7, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lblLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lblAges"><span class='blue'>BOYS: </span>U11 - U14<br /><span class='blue'>GIRLS: </span>U11 - U19<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=CLASHFI">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl12_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=CLASHFI">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/PADFC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/PADFC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=PADFC">Paducah Fall Classic</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lblDate" class="d-block text-muted">November 7, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lblLocation" class="d-block">Paducah</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lblAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=PADFC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl13_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=PADFC">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/TRN013.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/TRN013/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=TRN013">Adidas Clash</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lblFLocation" class="d-block">Bryan Park & Truist Sports Park</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U09 - U19<br /><span class='blue'>GIRLS: </span>U09 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=TRN013">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://soccer.sincsports.com/TTCheckList.aspx?tid=TRN013&amp;tab=3&amp;sub=0&amp;Page=2" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl14_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=TRN013">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/NOVCOLID.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/NOVCOLID/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=NOVCOLID">Boys November College ID Showcase</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lblFLocation" class="d-block">8800 E Riverside Blvd, Loves Park</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U13 - U17, U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=NOVCOLID">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://athletetravel.housing-connect.com/events/50964/hotels?nav=hidden" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl15_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=NOVCOLID">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/COAACC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/COAACC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=COAACC">Coastal Academy Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lblFLocation" class="d-block">Foley Sports Tourism</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U15<br /><span class='blue'>GIRLS: </span>U08 - U15<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=COAACC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl16_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=COAACC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/HOOCCL.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/HOOCCL/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=HOOCCL">Hoover Invitational Tournament</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lblFLocation" class="d-block">Birmingham, AL</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=HOOCCL">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://soccer.sincsports.com/details.aspx?tid=HOOCCL&amp;tab=5&amp;sub=0&amp;Qual=MISC0011" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl17_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=HOOCCL">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/MSRUSHFC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/MSRUSHFC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=MSRUSHFC">MFC Rush Fall Classic</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lblDate" class="d-block text-muted">November 13, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lblLocation" class="d-block">Madison/Ridgeland</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lblAges"><span class='blue'>BOYS: </span>U08 - U16, U19<br /><span class='blue'>GIRLS: </span>U08 - U16, U19, U18<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=MSRUSHFC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=MSRUSHFC">View Schedule</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl18_displayEvent_lnkHotels" class="btn btn-outline-primary btn-xs d-block mb-2" href="https://secure.cstt.com/Tournaments/HotelList_Results.php?eventid=11586" target="_blank">Hotels</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/NUSAFC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/NUSAFC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=NUSAFC">Nashville United Soccer Academy Fall Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lblFLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U15<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=NUSAFC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl19_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=NUSAFC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/RIVFESTC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/RIVFESTC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=RIVFESTC">RiverFest Classic</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lblDate" class="d-block text-muted">November 13, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lblLocation" class="d-block">Chattanooga</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lblAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=RIVFESTC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=RIVFESTC">View Schedule</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl20_displayEvent_lnkHotels" class="btn btn-outline-primary btn-xs d-block mb-2" href="https://app.ttievent.com/admin/WebDesign/OnlineReservation?gA-GCXSOqB31BfH-LQpPPvBtcDxJFQUmQBA9HkU9uOOEoGdrlZcMbpHel77eXc5j8yo9-V3IUWt2_DB8mJWQVx2NNm1hvEO20xOP8AXhgo4" target="_blank">Hotels</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/GEOCEL.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/GEOCEL/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=GEOCEL">Rush Union Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lblFDate" class="d-block text-muted">November 13, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lblFLocation" class="d-block">14295 Birmingham Hwy, Milton</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U17<br /><span class='blue'>GIRLS: </span>U07 - U17<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=GEOCEL">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl21_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=GEOCEL">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/SAVREC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/SAVREC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=SAVREC">Adidas Savannah Cup</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lblDate" class="d-block text-muted">November 14, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lblLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lblAges"><span class='blue'>BOYS: </span>U09 - U14<br /><span class='blue'>GIRLS: </span>U09 - U14<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=SAVREC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl22_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=SAVREC">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/ARSENALCU2.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/ARSENALCU2/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=ARSENALCU2">Arsenal Cup - Fall</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lblDate" class="d-block text-muted">November 14, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lblLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lblAges"><span class='blue'>BOYS: </span>U08 - U15<br /><span class='blue'>GIRLS: </span>U08 - U15<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=ARSENALCU2">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl23_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=ARSENALCU2">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/AFUFREC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/AFUFREC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=AFUFREC">Atlanta Fire United Fall Rec Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lblFDate" class="d-block text-muted">November 14, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lblFLocation" class="d-block">Duluth</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08, U10, U12, U14, U16, U19<br /><span class='blue'>GIRLS: </span>U08, U10, U12, U14, U16, U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=AFUFREC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl24_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=AFUFREC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/GATLINBG.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/GATLINBG/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=GATLINBG">Gatlinburg College Showcase Kickoff - B&G</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lblFDate" class="d-block text-muted">November 14, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lblFLocation" class="d-block">Gatlinburg</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U13 - U19<br /><span class='blue'>GIRLS: </span>U13 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=GATLINBG">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl25_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=GATLINBG">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/CARCOLSN.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/CARCOLSN/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=CARCOLSN">Harvest Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lblFDate" class="d-block text-muted">November 14, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lblFLocation" class="d-block">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U09 - U19<br /><span class='blue'>GIRLS: </span>U09 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=CARCOLSN">Register</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lnkFHotels" class="btn btn-primary btn-pill btn-sm mr-md-4" href="https://www.t2csports.com/content/upcoming-t2c-events/2024-fsa-international-cup" target="_blank">Hotels</a>
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl26_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=CARCOLSN">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/MASITA2.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/MASITA2/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=MASITA2">Impact Premier Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lblFDate" class="d-block text-muted">November 14, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lblFLocation" class="d-block">Canton , GA</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08 - U19<br /><span class='blue'>GIRLS: </span>U08 - U19<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=MASITA2">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl27_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=MASITA2">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                            <div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_pnlStandardEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_imgLogo" class="img-fluid mb-2 mb-md-0" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/NASAARC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/NASAARC/feature.jpg" style="border-width:0px;" />
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lnkEventName" class="d-block" href="/TTIntro.aspx?tid=NASAARC">NTH Adidas Rec Cup</a></h3>
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_imgOLC" class="float-right float-end tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lblDate" class="d-block text-muted">November 14, 2026</span>
+
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lblLocation" class="d-block">Kennesaw</span>
+                </div>
+                <div class="col-md-3">
+                    <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lblAges"><span class='blue'>BOYS: </span>U07 - U08, U10, U12, U14<br /><span class='blue'>GIRLS: </span>U07 - U08, U10, U12, U14<br /></span>
+                </div>
+                
+                <div class="col-md-3">
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lnkRegister" class="btn btn-outline-primary btn-xs d-block mb-2" href="/TTApply0.aspx?tid=NASAARC">Register</a>
+                    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl28_displayEvent_lnkSchedules" class="btn btn-outline-primary btn-xs d-block mb-2" href="/schedule.aspx?tid=NASAARC">View Schedule</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+						</div>
+
+
+                            <hr />
+                        
+                            
+<div id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_pnlFeaturedEvent" data-aos="fade-in" data-aos-delay="150">
+							
+    <div class="card" data-featured="1">
+        <i class="mdi mdi-star mr-2" style="position:absolute;top:0;right:0; font-size:34pt;margin-top:-5px;z-index:8;color:#FAD776;"></i>
+        <div class="row no-gutters g-0">
+            <div class="col-md-4">
+                <div class="card-zoom">
+                    <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_imgFLogo" class="card-image-left" onerror="var s=this.src;if(s.indexOf(&#39;/feature.jpg&#39;)!=-1){this.src=&#39;/photos/RUFALLRC.jpg&#39;;}else{this.onerror=null;this.src=&#39;/photos/notournlogo.jpg&#39;;}" src="/photos/tid/RUFALLRC/feature.jpg" style="border-width:0px;width: 100%" />
+                </div>
+            </div>
+            <div class="col-md-8 fedetails">
+                <div class="d-flex flex-column h-100">
+                    <div class="p-md-4 p-5 w-100">
+                        <h2>
+    <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lnkFEventName" class="d-block" href="/TTIntro.aspx?tid=RUFALLRC">Rush Union Fall Rec Cup</a></h2>
+                        <div class="row">
+                            
+                            <div class="col-8">
+                                
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lblFDate" class="d-block text-muted">November 14, 2026</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lblFLocation" class="d-block">14295 Birmingham Hwy, Milton</span>
+                                <span id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lblFAges"><span class='blue'>BOYS: </span>U08, U10, U12, U14, U16<br /><span class='blue'>GIRLS: </span>U08, U10, U12, U14, U16<br /></span>
+                            </div>
+                            <div class="col-4">
+                                <img id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_imgFOLC" class="tip" title="Event offers online check-in" src="/images/logos/olc_check.png" style="border-width:0px;" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+        <div class="p-2 text-center w-100 align-self-end">
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lnkFRegister" class="btn btn-primary btn-pill btn-sm mr-md-4" href="/TTApply0.aspx?tid=RUFALLRC">Register</a>
+            
+            <a id="ctl00_ContentPlaceHolder1_rptAllEvents_ctl29_displayEvent_lnkFSchedules" class="btn btn-primary btn-pill btn-sm" href="/schedule.aspx?tid=RUFALLRC">View Schedule</a>
+
+        </div>
+
+    </div>
+
+
+						</div>
+
+                            <hr />
+                        
+                
+					</div>
+
+                <div><span id="ctl00_ContentPlaceHolder1_lblPager2"><ul class='pagination justify-content-end'><li class='page-item active'><a class='page-link' href='#' onclick='eo_Callback("cpEvents", "1");'>1</a></li><li class='page-item'><a href='#' class='page-link' onclick='eo_Callback("cpEvents", "2");'>2</a></li><li class='page-item'><a href='#' class='page-link' onclick='eo_Callback("cpEvents", "3");'>3</a></li><li class='page-item'><a class='page-link' href='#' onclick='eo_Callback("cpEvents", "4");'>>></a></li></ul></span></div>
+                <div class="clear"></div>
+                
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('img.tip').tipsy({ gravity: 'n' });
+                        $("#ctl00_ContentPlaceHolder1_pnlAllEvents").find('[data-featured="1"]').addClass('featured');
+                    });
+                </script>
+            </td>
+				</tr>
+			</tbody>
+		</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_ContentPlaceHolder1_cpEvents=1;EO25264.r._o_ctl00_ContentPlaceHolder1_cpEvents=EO25264.f.acg(EO25264.r._o_ctl00_ContentPlaceHolder1_cpEvents,"cpEvents",new EO25264.f.aaum([[,"ctl00_ContentPlaceHolder1_cpEvents","Callback","ctl00$ContentPlaceHolder1$cpEvents",,,,,,,"__doPostBack('ctl00$ContentPlaceHolder1$cpEvents','_eo_arg_')"],,"__doPostBack('ctl00$ContentPlaceHolder1$cpEvents','')",,,,,,[["ctl00$ContentPlaceHolder1$btnSearch","search"]],"<div class='loading'></div>",,,,,,,,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_ContentPlaceHolder1_cpEvents,1,null, 0);});
+//]]>
+</script>
+
+         </div>
+     </div>   
+    
+    
+
+    </div>
+</section>
+    <div style="visibility:hidden;">
+         <span id="ctl00_ContentPlaceHolder1_lblShow">0</span> 
+        <span id="ctl00_ContentPlaceHolder1_LblGender">Boys</span>
+        <span id="ctl00_ContentPlaceHolder1_LblStateName">All States</span>
+        <span id="ctl00_ContentPlaceHolder1_LblState">XX</span>
+        <span id="ctl00_ContentPlaceHolder1_LblBoys"></span>
+        <span id="ctl00_ContentPlaceHolder1_LblGirls"></span>
+        <span id="ctl00_ContentPlaceHolder1_LblAlpha">All</span>
+        <span id="ctl00_ContentPlaceHolder1_LblTourn"></span>
+        <span id="ctl00_ContentPlaceHolder1_LblYear"></span>
+        <span id="ctl00_ContentPlaceHolder1_LblEmail"></span>
+        <span id="ctl00_ContentPlaceHolder1_lblCode">1bEPhJ5%2b%2bIithUbRfdsnIw%3d%3d</span>
+        <span id="ctl00_ContentPlaceHolder1_lblLeague"></span>
+    </div>   
+    
+    
+ 
+                    <div class="clear"></div>
+                
+	</div>
+
+                    
+                </div>    
+            
+</div>
+        <div class="clear"></div>
+         
+        <!-- FOOTER -->
+<footer class="sinc-footer mt-5">
+    <div class="container py-5">
+
+        <div class="row gy-4">
+
+            <!-- Brand -->
+            <div class="col-md-3">
+                <div class="footer-brand">
+                    <div class="px-lg-0 px-4">
+                        <img src="https://sincsports.com/assets/img/sinc_line_dark_bg.png" class="img-fluid" />
+                    </div>
+                </div>
+
+                <p class="footer-text mt-2">
+                    Premier event management platform for youth sports.
+                </p>
+
+                <div class="footer-social mt-3 d-flex gap-3">
+                    <a href="https://facebook.com/sportsincollege" class="footer-social-link">
+                        <i class="mdi mdi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sincsports/" class="footer-social-link">
+                        <i class="mdi mdi-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+                <!-- Navigation -->
+               <div class="col-lg-2 col-6">
+                    <div class="footer-title">Platform</div>
+                    <ul class="footer-links">
+                        <li><a href="/events.aspx">Events</a></li>
+                        <li><a href="/sicClubs.aspx">Clubs & Teams</a></li>
+                        <li><a href="/rank.aspx">Rankings</a></li>
+                        <li><a id="ctl00_lnkSIC2" href="https://soccerincollege.com/Default.aspx">College Recruiting</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Products</div>
+                    <ul class="footer-links">
+                        <li><a id="ctl00_lnkSIC3" href="https://soccerincollege.com/Default.aspx">Soccer in College</a></li>
+                        <li><a href="https://www.sincsports.com/services/onlinecheckin">Online CheckIn</a></li>
+                        <li><a href="https://usarank.com">USA Rank</a></li>
+                        <li><a href="https://usatournaments.com">USA Tournaments</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="/contact.aspx">Contact Support</a></li>
+                        <li><a href="/helpcenter.aspx">Help Center</a></li>
+                        <li><a href="/TTLogin.aspx">Create Account</a></li>
+                        <li><a href="/TTLogin.aspx">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Company</div>
+                    <ul class="footer-links">
+                        <li><a href="https://www.sincsports.com">About Us</a></li>
+                        <li><a href="/terms.aspx">Terms of Service</a></li>
+                        <li><a href="/privacy.aspx">Privacy Policy</a></li>
+                        <li><a href="/cookiepolicy.aspx">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider my-4">
+
+            <div class="footer-bottom d-flex flex-column flex-sm-row justify-content-between">
+                <p class="mb-0 footer-text small">
+                    Copyright &copy; 2026 SincSports. All rights reserved.
+                </p>
+                <p class="mb-0 footer-text small">
+                    Built for event organizers, clubs, teams, parents and athletes everywhere.
+                </p><span id="ctl00_lblMenuState" class="menustatelbl" style="visibility:hidden;">1</span>
+            </div>
+
+        </div>
+</footer>      
+    </div>
+         
+        
+<div id="smMessageBar">
+    <div>
+        <span id="ctl00_sicMessage_lblMsg" class="spanDisplayMessage"></span>
+        <img id="csmb" src="/images/blank.gif" />
+    </div>
+</div>
+   
+        
+<!-- Begin EO.Web Dialog DialogHelp.  -->
+
+<script type="text/javascript">
+//<![CDATA[
+EO25264.f.asv();
+//]]>
+</script>
+<table id="ctl00_DialogHelp_bdt" cellspacing="0" cellpadding="0" border="0" style="display:none"><tr><td style="font-size:1px"><img src="/images/2013/modal/tl.png" alt="" tabindex="-1" /></td><td style="background-image:url('/images/2013/modal/t.png');background-repeat:repeat-x;font-size:1px;"></td><td style="font-size:1px"><img src="/images/2013/modal/tr.png" alt="" tabindex="-1" /></td></tr><tr><td style="background-image:url('/images/2013/modal/l.png');background-repeat:repeat-y;font-size:1px;" valign="top"></td><td><table id="ctl00_DialogHelp" border="0" class="eo_no_border_spacing" style="display:none;">
+	<tr><td align="left"><div id="ctl00_DialogHelp_headerDiv"   class="eo_css_ctrl_ctl00_DialogHelp1"><div style="position:relative;z-index:2;"><div id="ctl00_DialogHelp_headerHtml"></div><table id="ctl00_DialogHelp_headerTableR" border="0" cellspacing="0" cellpadding="0" style="position:absolute;right:0px;top:0px;"><tr><td valign="middle"><img id="ctl00_DialogHelp_close" alt="" src="/images/closeDialog.png"/></td></tr></table></div></div></td></tr><tr ><td valign="top"><table id="ctl00_DialogHelp_contentTable" border="0" style="width:100%;height:100%;" class="eo_no_border_spacing" ><tr><td height="100%" class="eo_css_ctrl_ctl00_DialogHelp2" align="left" valign="top">
+	            <table id="ctl00_DialogHelp_ctl00_cpHelpPanel">
+		<tbody>
+			<tr>
+				<td>
+	            <div id="hpdiv" style="max-height:550px; overflow:auto;">
+                    
+	                <br />
+	            </div>
+	            </td>
+			</tr>
+		</tbody>
+	</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_DialogHelp_ctl00_cpHelpPanel=1;EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel=EO25264.f.acg(EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel,"cpHelpPanel",new EO25264.f.aaum([[,"ctl00_DialogHelp_ctl00_cpHelpPanel","Callback","ctl00$DialogHelp$ctl00$cpHelpPanel",,,,,,,"__doPostBack('ctl00$DialogHelp$ctl00$cpHelpPanel','_eo_arg_')"],,"__doPostBack('ctl00$DialogHelp$ctl00$cpHelpPanel','')",,,,,,[],"<div class='loading'></div>",,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel,1,null, 0);});
+//]]>
+</script>
+
+	        </td></tr></table></td></tr><tr><td><div id="ctl00_DialogHelp_footerDiv" style="position:relative;width:auto;"><table id="ctl00_DialogHelp_footerTable" border="0" cellspacing="0" cellpadding="0" style="width:100%;"><tr><td  id="ctl00_DialogHelp_footer"  class="eo_align_center eo_css_ctrl_ctl00_DialogHelp3"></td></tr></table></div></td></tr>
+</table></td><td style="background-image:url('/images/2013/modal/r.png');background-repeat:repeat-y;font-size:1px;" valign="top"></td></tr><tr><td style="font-size:1px"><img src="/images/2013/modal/bl.png" alt="" tabindex="-1" /></td><td style="background-image:url('/images/2013/modal/b.png');background-repeat:repeat-x;font-size:1px;"></td><td style="font-size:1px"><img src="/images/2013/modal/br.png" alt="" tabindex="-1" /></td></tr></table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("ldr|i|fmt|u|ei|e|pop|dd|c|dg", function(){EO25264.g.b.ctl00_DialogHelp=1;EO25264.r._o_ctl00_DialogHelp=EO25264.f.acg(EO25264.r._o_ctl00_DialogHelp,"DialogHelp",new EO25264.f.bak([[[,"ctl00_DialogHelp","Dialog","ctl00$DialogHelp",,,,,,,"__doPostBack('ctl00$DialogHelp','_eo_arg_')"],["/images/2013/modal/tl.png","/images/2013/modal/t.png","/images/2013/modal/tr.png","/images/2013/modal/l.png","/images/2013/modal/r.png","/images/2013/modal/bl.png","/images/2013/modal/b.png","/images/2013/modal/br.png"],,,,,,,,[]],"black",50,,,,,,,,"eo_css_ctrl_ctl00_DialogHelp1","eo_css_ctrl_ctl00_DialogHelp1",,"eo_css_ctrl_ctl00_DialogHelp2",,,,,,,,,,,,-100,,,,,,"eo_css_ctrl_ctl00_DialogHelp3",,,,,,"resizableDialog",,,,,,,,"/js/eo/eo.b07569df-aab1-4833-b62f-f5d642a057b3.html",,"ctl00_DialogHelp_ctl00","ctl00_DialogHelp_ctl01",,"/images/closeDialog.png"]),"Dialog");EO25264.f.ahm(EO25264.r._o_ctl00_DialogHelp,1,500, 0);});
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+EO25264.f.asw();
+//]]>
+</script>
+
+<!-- End EO.Web Dialog DialogHelp.  -->
+ 
+    
+    
+        
+    
+        
+        <div id="ctl00_sincCookies_pnlConsent">
+	
+<div id="sincCookieBanner" style="
+    position:fixed;bottom:0;left:0;right:0;z-index:99999;
+    background:#0f172a;color:#fff;
+    font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    box-shadow:0 -4px 20px rgba(0,0,0,.25);
+    padding:0;margin:0;
+    transform:translateY(100%);
+    transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+        <div style="flex:1;min-width:280px;">
+            <strong style="font-size:15px;display:block;margin-bottom:4px;">Cookie Preferences</strong>
+            <span style="font-size:13px;color:#94a3b8;line-height:1.5;">
+                We use essential cookies to operate our site. Optional cookies help us analyze traffic and support the site through advertising.
+                <a href="/cookiepolicy.aspx" style="color:#5cb830;text-decoration:underline;">Cookie Policy</a>
+            </span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            
+            <input type="hidden" name="sincConsentR" value="/events.aspx" />
+            
+            <span id="sincConsentJs" style="display:contents;">
+                <button type="button" data-sinc-consent="all" style="background:#5cb830;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Accept All</button>
+                <button type="button" data-sinc-consent="analytics" style="background:transparent;color:#fff;border:1px solid #5cb830;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Analytics Only</button>
+                <button type="button" data-sinc-consent="essential" style="background:transparent;color:#fff;border:1px solid #475569;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Essential Only</button>
+            </span>
+            <noscript>
+                <style type="text/css">#sincConsentJs{display:none !important;}#sincCookieBanner{transform:none !important;}</style>
+                
+                <span style="display:inline-flex;flex-direction:row-reverse;flex-wrap:wrap;gap:8px;">
+                    <button type="submit" name="c" value="essential" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:transparent;color:#fff;border:1px solid #475569;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Essential Only</button>
+                    <button type="submit" name="c" value="analytics" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:transparent;color:#fff;border:1px solid #5cb830;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Analytics Only</button>
+                    <button type="submit" name="c" value="all" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:#5cb830;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Accept All</button>
+                </span>
+            </noscript>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+(function(){
+    var b=document.getElementById('sincCookieBanner');
+    if(!b) return;
+    var btns=b.querySelectorAll('button[data-sinc-consent]');
+    for(var i=0;i<btns.length;i++){
+        btns[i].addEventListener('click',function(ev){
+            ev.preventDefault();
+            var f=document.createElement('form');
+            f.method='post';
+            f.action='/services/CookieConsent.ashx';
+            var c=document.createElement('input');
+            c.type='hidden'; c.name='c'; c.value=this.getAttribute('data-sinc-consent');
+            f.appendChild(c);
+            var src=b.querySelector('input[name=sincConsentR]');
+            var r=document.createElement('input');
+            r.type='hidden'; r.name='sincConsentR'; r.value=src?src.value:'/';
+            f.appendChild(r);
+            document.body.appendChild(f);
+            f.submit();
+        });
+    }
+    setTimeout(function(){ b.style.transform='translateY(0)'; },600);
+})();
+</script>
+
+</div>
+
+    
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="ADA4D364" />
+</div></form>
+    <!-- Bootstrap JS (optional) -->
+    <script src="/bs/allbs5.js?v=5.3"></script>
+    
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5699f1d79e45f24',t:'MTc5NDAyNjAyNA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5699f1d79e45f24',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"d8c0a8d5c1d34adea3ab10341fc53ca9","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
