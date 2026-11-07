@@ -57,7 +57,15 @@ details.sec[open]>summary{padding-bottom:6px}.sec-body{padding:0 14px 14px}.sec-
 .score.final{font-size:20px;font-weight:800}.score.vs{color:var(--mut);font-weight:500;font-size:13px}
 .fx.matters{background:#f3f4f6;border-color:#d1d5db}.pill.tag{background:#374151;color:#fff}
 .picksbar{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px;position:sticky;top:96px;z-index:3}
-#predtable{transition:opacity .1s}.res-d{background:#9ca3af}.res-l{background:var(--red)}
+#predtable{transition:opacity .1s}
+.toggles button.ours{background:#e5e7eb;border-color:#9ca3af;font-weight:600}
+.toggles button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.toggles button.ours.on{background:var(--ink);color:#fff}
+table.grid th,table.grid td{border-left:1px dashed #d1d5db}table.grid th:first-child,table.grid td:first-child{border-left:0}
+table.grid tr:nth-child(even) td{background:#fafafa}table.grid tr.me td{background:#fff1f2}
+table.grid td.chance,table.grid th.chance{background:#f1f5f9}table.grid tr:nth-child(even) td.chance{background:#eaeff5}
+table.grid .stk{position:sticky;left:0;z-index:1;background:#fff}table.grid .stk2{position:sticky;left:24px;z-index:1;background:#fff;box-shadow:2px 0 0 #e5e7eb}
+table.grid tr:nth-child(even) .stk,table.grid tr:nth-child(even) .stk2{background:#fafafa}table.grid tr.me .stk,table.grid tr.me .stk2{background:#fff1f2}.res-d{background:#9ca3af}.res-l{background:var(--red)}
 </style>
 </head>
 <body>
@@ -73,6 +81,7 @@ const fmtTime = t => { if (!t || t === "00:00") return "Time TBD"; let [h, m] = 
 const todayISO = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
 
 // ---------- model ----------
+const DRAW_GAP = 0.03;
 function makeModel(D) {
   const T = new Map(D.teams.map(t => [t.id, t]));
   const mu = D.model ? D.model.mu : 0.3, home = D.model ? D.model.home : 0;
@@ -92,7 +101,11 @@ function makeModel(D) {
       if (p > best[o][2]) best[o] = [i, j, p];
     }
     const s = w + d + l, top = [w, d, l].indexOf(Math.max(w, d, l));
-    return {w: w / s, d: d / s, l: l / s, score: best[top].slice(0, 2), lh, la};
+    // Our pick: the more likely winner, unless it's a true toss-up (within DRAW_GAP), then a draw.
+    // Tested on 1,760 past games: calling draws more often only lowers accuracy.
+    const pick = Math.abs(w - l) / s < DRAW_GAP ? "D" : (w > l ? "H" : "A");
+    const scores = {H: best[0].slice(0, 2), D: best[1].slice(0, 2), A: best[2].slice(0, 2)};
+    return {w: w / s, d: d / s, l: l / s, score: best[top].slice(0, 2), scores, pick, lh, la};
   };
   const sample = (h, a, neutral, force, R = Math.random) => {
     const [lh, la] = lam(h, a, neutral);
@@ -191,13 +204,14 @@ function fixtureCard(D, M, g, opts = {}) {
   const P = M.probs(g.home_id, g.away_id, opts.neutral);
   const conf = opts.neutral ? confidence(D, g.home_id, g.away_id) : null;
   const f = opts.picks ? (PICKS[CUR][g.id] || "") : "";
+  const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${f === k ? "on" : ""}">${label}</button>`;
   return `<div class="${cls}">
     <div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${opts.matters ? `<span class="pill tag">Matters to us</span> ` : ""}${esc(g.venue || "")}</span></div>
     <div class="teams"><div>${bold(H, g.home_id)}</div><div class="score vs">vs</div><div class="a">${bold(A, g.away_id)}</div></div>
     <div class="bar"><div class="bh" style="width:${P.w*100}%">${pct(P.w)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${P.l*100}%">${pct(P.l)}</div></div>
     <div class="mut" style="margin-top:4px">Most likely: <b>${esc(H)} ${P.score[0]}–${P.score[1]} ${esc(A)}</b>${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
     ${opts.picks ? `<div class="toggles" data-g="${g.id}">
-      <button data-f="H" class="${f==="H"?"on":""}">${esc(H)} win</button><button data-f="D" class="${f==="D"?"on":""}">Draw</button><button data-f="A" class="${f==="A"?"on":""}">${esc(A)} win</button></div>` : ""}
+      ${btn("H", esc(H) + " win")}${btn("D", "Draw")}${btn("A", esc(A) + " win")}</div>` : ""}
     ${opts.root ? `<div class="root" data-root="${g.id}">${opts.root}</div>` : ""}
     ${g.pending ? `<div class="mut" style="margin-top:4px">⚠ Date has passed but no score is posted yet. Treated as still to play.</div>` : ""}
   </div>`;
@@ -269,7 +283,7 @@ function renderConference(D) {
       ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, focus.id, spots - 1))}</div><div class="k">Chance of top ${spots} (playoffs)</div></div>` : ""}
       <div class="stat"><div class="v">${rangeOf(base, focus.id)}</div><div class="k">Most likely final place</div></div>
     </div>` : ""}
-    <div class="scroll"><table>
+    <div class="scroll"><table class="grid">
     <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th></tr>
     ${now.map((r, i) => `<tr class="${focus && r.id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i+1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td></tr>`).join("")}
     </table></div>${spots ? `<div class="mut" style="margin-top:6px">Ranked by points per game. Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`, "s1")}
@@ -283,7 +297,7 @@ function renderConference(D) {
   ${sec("div", "Predict", "4 · Rest-of-season predictor", `Every remaining game played out ${N.toLocaleString()} times. Pick results below to see how the final table changes. Only this section changes.`, `
     <div class="picksbar" id="picksbar"></div>
     <div class="scroll" id="predtable"></div>
-    <h3 style="margin-top:14px">Remaining games (${upcoming.length}) · tap to pick a result</h3>
+    <h3 style="margin-top:14px">Remaining games (${upcoming.length}) · gray = our pick, tap to change</h3>
     <div id="predgames">${upcoming.map(g => fixtureCard(D, M, g, {picks: true})).join("")}</div>`, "s4")}
 
   ${sec("past", "Past", "5 · Past games", "Final scores.", `
@@ -328,20 +342,21 @@ function drawPredictor() {
   const {D, M, played, remaining, base, focus, spots, N, ids} = CTX;
   const picks = PICKS[CUR], nP = Object.keys(picks).length;
   const S = nP ? simulate(D, M, played, remaining, picks, N) : base;
+  // "If every pick comes true": your overrides, otherwise our pick, each with its likeliest score.
+  const rows = remaining.map(g => { const P = M.probs(g.home_id, g.away_id); const k = picks[g.id] || P.pick; const sc = P.scores[k]; return [g.home_id, g.away_id, sc[0], sc[1]]; });
+  const final = rank(table(rows, played, ids), played, rows);
   const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? ` <span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
-  const order = [...ids].sort((a, b) => (S.get(b).ppg - S.get(a).ppg) || (S.get(b).gd - S.get(a).gd));
   const rangeOf = id => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
-  const r1 = x => x.toFixed(1).replace(/\.0$/, "");
   $("#picksbar").innerHTML = nP
-    ? `<b>Your picks: ${nP}</b> · table shows the season if these happen <button class="reset" id="clearpicks">Clear all</button>`
-    : `<span class="mut">No picks yet. Table shows the most likely outcome of the whole season.</span>`;
-  $("#predtable").innerHTML = `<table>
-    <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th><th>Likely place</th><th>1st</th>${spots ? `<th>Top ${spots}</th>` : ""}</tr>
-    ${order.map((id, i) => { const s = S.get(id), b = base.get(id);
-      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, id))}</td><td>${Math.round(s.gp)}</td>
-      <td>${r1(s.w)}-${r1(s.d)}-${r1(s.l)}</td><td>${s.gd > 0 ? "+" : ""}${Math.round(s.gd)}</td><td>${r1(s.pts)}</td><td>${s.ppg.toFixed(2)}</td><td>${rangeOf(id)}</td>
-      <td>${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td>${pct(atOrAbove(S, id, spots - 1))}${nP ? delta(atOrAbove(S, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
-  </table><div class="mut" style="margin-top:6px">Final-season averages across all simulations (so W-D-L can show decimals). Green/red = change from your picks.</div>`;
+    ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}</b> (black). Gray = our pick. <button class="reset" id="clearpicks">Reset to our picks</button>`
+    : `<span>Showing <b>our pick</b> for every game (gray). Tap a different result to override it (black).</span>`;
+  $("#predtable").innerHTML = `<table class="grid">
+    <tr><th class="stk">#</th><th class="t stk2">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th><th class="chance">Likely place</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+    ${final.map((r, i) => { const id = r.id, s = S.get(id), b = base.get(id);
+      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td class="stk">${i + 1}</td><td class="t stk2">${esc(teamName(D, id))}</td><td>${r.gp}</td>
+      <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td><td class="chance">${rangeOf(id)}</td>
+      <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, id, spots - 1))}${nP ? delta(atOrAbove(S, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
+  </table><div class="mut" style="margin-top:6px"><b>Left columns:</b> final table if every pick comes true. <b>Shaded columns:</b> real chances from playing out the rest of the season ${N.toLocaleString()} times${nP ? " with your changes locked in; green/red = change" : ""}.</div>`;
   const c = $("#clearpicks");
   if (c) c.onclick = () => { PICKS[CUR] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
 }
@@ -349,7 +364,7 @@ function drawPredictor() {
 function onPick(e) {
   const b = e.target.closest(".toggles button"); if (!b) return;
   const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[CUR];
-  if (P[id] === f) { delete P[id]; b.classList.remove("on"); }
+  if (P[id] === f || b.classList.contains("ours")) { delete P[id]; wrap.querySelectorAll("button").forEach(x => x.classList.remove("on")); }
   else { P[id] = f; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
   $("#predtable").style.opacity = .55;
   setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);

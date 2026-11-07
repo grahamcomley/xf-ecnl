@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(__file__))
 import ecnl_api as api  # noqa: E402
 import model  # noqa: E402
+import catalog  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 OUT = os.path.join(ROOT, "site", "data")
@@ -124,35 +125,61 @@ def build_pool(name, pc, cfg):
     """Return (games, team_conf, team_names, conf_names, club_conf)."""
     games, team_conf, names, conf_names = [], {}, {}, {}
     club_conf = {}
-    conf_events = list(pc.get("conference_events") or [])
-    if pc.get("discover_org_id"):
-        for c in api.org_clubs(pc["discover_org_id"]):
-            ev = to_int(c.get("eventID"))
-            if ev:
-                club_conf[to_int(c.get("clubID"))] = f"ev{ev}"
-                if ev not in conf_events:
-                    conf_events.append(ev)
-    div = pc["division_name"]
-    for ev in conf_events:
-        _, flights = division_flights(ev, div)
-        if not flights:
+    rules = pc["age_rules"]
+    events = catalog.current_catalog(cfg.get("catalog", {}).get("start_id", 4240))
+    today = datetime.now(timezone.utc).date().isoformat()
+    matched = 0
+    for e in events:
+        if (e.get("start") or "") < rules["since"]:
             continue
-        ck = f"ev{ev}"
-        conf_names[ck] = event_name(ev)
-        for fl in flights:
-            gs = normalize(api.flight_schedule(ev, fl), ck, neutral=False)
-            for g in gs:
-                for tid, tn, club in ((g["home_id"], g["home"], g["home_club"]), (g["away_id"], g["away"], g["away_club"])):
-                    if tid:
-                        team_conf[tid] = ck
-                        names[tid] = tn
-                        if club:
-                            club_conf.setdefault(club, ck)
-            games += gs
-    for ev in pc.get("national_events") or []:
-        _, flights = division_flights(ev, div)
-        for fl in flights:
-            games += normalize(api.flight_schedule(ev, fl), "national", neutral=True)
+        done = (e.get("end") or "9999") < today  # finished events never change: cache forever
+        divs = [d for d in api.event_divisions(e["event_id"], permanent=done)
+                if catalog.division_matches(d.get("divisionName"), e, rules)]
+        if not divs:
+            continue
+        league = catalog.is_league(e)
+        ck = f"ev{e['event_id']}" if league else "event"
+        if league:
+            conf_names[ck] = e["name"]
+        for d in divs:
+            for fl in d.get("flightList") or []:
+                raw = api.get(f"Event/get-schedules-by-flight/{e['event_id']}/{fl.get('flightID')}/0",
+                              max_age_hours=2, permanent=done) or []
+                gs = normalize(raw, ck, neutral=not league)
+                for g in gs:
+                    g["event_name"] = e["name"]
+                    for tid, tn, club in ((g["home_id"], g["home"], g["home_club"]), (g["away_id"], g["away"], g["away_club"])):
+                        if tid:
+                            names.setdefault(tid, tn)
+                            if league:
+                                team_conf[tid] = ck
+                                if club:
+                                    club_conf.setdefault(club, ck)
+                games += gs
+                matched += 1
+    print(f"  {matched} matching flights from {len(events)} catalog events")
+    # A team entered in an outside tournament may get a new ID there: map it back to its
+    # league team when club and name match.
+    league_by_key = {}
+    for g in games:
+        if g["conf"] != "event":
+            for side in ("home", "away"):
+                if g[f"{side}_id"]:
+                    league_by_key.setdefault(norm_key(g[f"{side}_club"], g[side]), g[f"{side}_id"])
+                    k = norm_key(g[f"{side}_club"], g[side])
+                    if k.endswith(" 1"):
+                        league_by_key.setdefault(k[:-2], g[f"{side}_id"])
+    remapped = 0
+    for g in games:
+        if g["conf"] == "event":
+            for side in ("home", "away"):
+                tid = g[f"{side}_id"]
+                if tid and tid not in team_conf:
+                    m = league_by_key.get(norm_key(g[f"{side}_club"], g[side]))
+                    if m:
+                        g[f"{side}_id"] = m
+                        remapped += 1
+    print(f"  remapped {remapped} tournament entries onto league teams")
     # past seasons: map teams onto this season's team ids by club + name
     current_by_key, current_by_name = {}, {}
     for g in games:
@@ -172,12 +199,12 @@ def build_pool(name, pc, cfg):
     hist_events = list(pc.get("history_events") or [])
     if pc.get("discover_history"):
         known = {h["event_id"] for h in hist_events}
-        default_divs = hist_events[0].get("division_names") if hist_events else [div]
+        default_divs = pc.get("history_division_names") or []
         for h in discover_history(name, pc["discover_history"]):
             if h["event_id"] not in known:
                 hist_events.append({**h, "division_names": default_divs})
     for h in hist_events:
-        for dname in h.get("division_names") or [h.get("division_name", div)]:
+        for dname in h.get("division_names") or pc.get("history_division_names") or []:
             _, flights = division_flights(h["event_id"], dname, permanent=True)
             for fl in flights:
                 hist = normalize(api.flight_schedule(h["event_id"], fl, permanent=True), "national",
@@ -277,7 +304,7 @@ def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
         a, b = cur.isoformat(), nxt.isoformat()
         chunk = [g for g in ev if a <= g["date"] < b]
         if chunk:
-            m = model.fit(rg, team_conf, mcfg, as_of=a, iters=35)
+            m = model.fit(rg, team_conf, mcfg, as_of=a, iters=30)
             prior = [g for g in rg if g["date"] < a]
             if m and prior:
                 k = len(prior) + 3

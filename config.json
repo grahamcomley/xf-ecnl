@@ -48,12 +48,7 @@
   ],
   "pools": {
     "boys-u16": {
-      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12). history_events = last season's national events, B2011 age group only (the same players, then U15).",
-      "discover_org_id": 12,
-      "division_name": "BU16",
-      "national_events": [
-        4429
-      ],
+      "_help": "Every game used to rate U16 boys: every league and event on AthleteOne this season (ECNL, ECNL RL, outside tournaments) whose division matches the age rules, plus last season's B2011 ECNL games (history).",
       "history_events": [
         {
           "event_id": 4119,
@@ -109,16 +104,38 @@
           3550,
           4272
         ]
-      }
+      },
+      "age_rules": {
+        "gender": "B",
+        "age": 16,
+        "explicit": [
+          "2010/11",
+          "10/11",
+          "2010-11",
+          "2010/2011"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2011"
+      ]
     },
     "girls-rl-u13": {
-      "discover_org_id": null,
-      "division_name": "GU13",
-      "conference_events": [
-        4311
-      ],
-      "national_events": [],
-      "history_events": []
+      "history_events": [],
+      "_help": "Every game used to rate U13 girls: every ECNL Girls / ECNL RL Girls league and event this season plus outside tournaments, by the age rules.",
+      "age_rules": {
+        "gender": "G",
+        "age": 13,
+        "explicit": [
+          "2013/14",
+          "13/14",
+          "2013-14",
+          "2013/2014"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      }
     }
   },
   "model": {
@@ -128,5 +145,9 @@
     "team_shrink": 4.0,
     "conf_shrink": 6.0,
     "home_shrink": 20.0
+  },
+  "catalog": {
+    "_help": "Every AthleteOne event from this ID up is scanned once; later runs only check new IDs.",
+    "start_id": 4240
   }
 }
