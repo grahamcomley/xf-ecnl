@@ -120,8 +120,8 @@
       "history_division_names": [
         "B2011"
       ],
-      "surf": {
-        "_help": "Surf Sports events (Surf Cup etc.). Collected every run. weight = how much they count in ratings; 0 for now because testing on Aug-Nov 2026 ECNL/RL games showed they made predictions slightly worse (summer rosters, uncertain name matches). team_aliases = their exact team name -> our team name.",
+      "surf_off": {
+        "_help": "Surf Sports events, switched OFF (not fetched). Rename 'surf_off' back to 'surf' to turn on.",
         "division": "Boys-U16",
         "team_aliases": {},
         "weight": 0.0
@@ -142,7 +142,7 @@
         "since": "2026-06-01",
         "new_age_from": "2026-08-01"
       },
-      "surf": {
+      "surf_off": {
         "division": "Girls-U13",
         "team_aliases": {},
         "weight": 0.0
