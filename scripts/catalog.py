@@ -28,38 +28,41 @@ def _details(ev):
     return None
 
 
+_CACHE = {}
+
+
 def current_catalog(start_id=4240, tail=40):
-    """All events from start_id up; probes `tail` IDs past the highest known each run."""
-    cat = {"events": [], "max_probed": start_id - 1}
+    """All events from start_id up. Each run re-checks the `tail` IDs just past the
+    highest real event found, so newly created events are always picked up."""
+    if "events" in _CACHE:
+        return _CACHE["events"]
+    cat = {"events": []}
     if os.path.exists(PATH):
         with open(PATH) as f:
             cat = json.load(f)
     if "--offline" in sys.argv:
+        _CACHE["events"] = cat["events"]
         return cat["events"]
     known = {e["event_id"] for e in cat["events"]}
-    hi = max([cat["max_probed"]] + list(known))
-    lo = cat["max_probed"] + 1 if cat["events"] else start_id
-    misses, ev = 0, lo
-    target = hi + tail
-    new = 0
-    while ev <= target or misses < tail:
+    ev = (max(known) + 1) if known else start_id
+    misses, new = 0, 0
+    while misses < tail and ev < start_id + 5000:
         if ev not in known:
             d = _details(ev)
             if d:
                 cat["events"].append(d)
+                known.add(ev)
                 new += 1
                 misses = 0
-                target = max(target, ev + tail)
             else:
                 misses += 1
         ev += 1
-        if ev - lo > 2000:  # safety stop
-            break
-    cat["max_probed"] = ev - 1
     cat["events"].sort(key=lambda e: e["event_id"])
+    cat.pop("max_probed", None)
     with open(PATH, "w") as f:
         json.dump(cat, f, indent=1)
-    print(f"  catalog: {len(cat['events'])} events ({new} new), probed to {cat['max_probed']}")
+    print(f"  catalog: {len(cat['events'])} events ({new} new), highest {max(known) if known else '-'}")
+    _CACHE["events"] = cat["events"]
     return cat["events"]
 
 

@@ -384,7 +384,8 @@ def main():
         games, team_conf, names, conf_names = build_pool(pname, pc, cfg)
         rg = rating_games(games)
         m = model.fit(rg, team_conf, cfg["model"])
-        bt = backtest(games, team_conf, cfg["model"]) if m else None
+        # Accuracy is scored on this season's games (new age groups) only.
+        bt = backtest(games, team_conf, cfg["model"], start=pc["age_rules"]["new_age_from"]) if m else None
         print(f"  {len(games)} games, {len(rg)} rated, backtest={bt}")
         pools[pname] = dict(games=games, team_conf=team_conf, names=names,
                             conf_names=conf_names, model=m, backtest=bt,
