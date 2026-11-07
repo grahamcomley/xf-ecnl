@@ -28,7 +28,8 @@
       "focus_team": "XF ECNL B2010/11 1",
       "ecnl_link": "https://app.athleteone.com/public/event/4429/schedules-standings",
       "age_label": "U16 Boys (2010/11)",
-      "context": "ECNL Phoenix national event \u00b7 Nov 20\u201322 \u00b7 \"Zoom\" group of 8"
+      "context": "ECNL Phoenix national event \u00b7 Nov 20\u201322 \u00b7 \"Zoom\" group of 8",
+      "legacy_of": "xf1-nw-bu16"
     },
     {
       "id": "xf-rl-gu13",
@@ -140,7 +141,9 @@
         "division": "Boys-U16",
         "team_aliases": {},
         "weight": 0.0
-      }
+      },
+      "key": "u16b",
+      "label": "U16 Boys (2010/11)"
     },
     "girls-rl-u13": {
       "history_events": [],
@@ -161,7 +164,9 @@
         "division": "Girls-U13",
         "team_aliases": {},
         "weight": 0.0
-      }
+      },
+      "key": "u13g",
+      "label": "U13 Girls (2013/14)"
     },
     "boys-u17": {
       "_help": "Every game used to rate U17 boys: every league and event on AthleteOne this season by the age rules, plus last season's B2010 ECNL games (the same players, then U16) at low weight.",
@@ -235,7 +240,9 @@
       },
       "history_division_names": [
         "B2010"
-      ]
+      ],
+      "key": "u17b",
+      "label": "U17 Boys (2009/10)"
     }
   },
   "model": {

@@ -8,7 +8,7 @@ import math
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(__file__))
 import ecnl_api as api  # noqa: E402
@@ -123,6 +123,56 @@ def discover_history(name, dh):
     return found
 
 
+def _decide_mode():
+    """--auto: full refresh if the last full run is older than 2 hours on game weekends
+    (Fri-Sun, Pacific) or 6 hours on weekdays; otherwise a quick check of live games."""
+    if "--auto" not in sys.argv:
+        return
+    path = os.path.join(ROOT, "data", "last_full.txt")
+    last = None
+    if os.path.exists(path):
+        try:
+            last = datetime.fromisoformat(open(path).read().strip())
+        except ValueError:
+            last = None
+    now = datetime.now(timezone.utc)
+    pacific_weekday = (now - timedelta(hours=8)).weekday()  # Mon=0 .. Sun=6
+    limit = timedelta(hours=2 if pacific_weekday >= 4 else 6)
+    if last and now - last < limit:
+        sys.argv.append("--quick")
+
+
+_decide_mode()
+QUICK = "--quick" in sys.argv
+HOT = {"refetched": 0}
+
+
+def flight_raw(event_id, flight_id, done):
+    """Schedule for one flight. Finished events: cached forever. A flight with a game in the
+    last two days still missing its score is re-fetched every run (so new scores show fast);
+    otherwise reuse a copy younger than 2 hours (full run) or 24 hours (quick run)."""
+    path = f"Event/get-schedules-by-flight/{event_id}/{flight_id}/0"
+    if done:
+        return api.get(path, permanent=True) or []
+    cp = api._cache_path(path)
+    hot = False
+    if os.path.exists(cp):
+        try:
+            with open(cp) as f:
+                cached = json.load(f) or []
+            today = datetime.now(timezone.utc).date()
+            lo = (today - timedelta(days=2)).isoformat()
+            hi = (today + timedelta(days=1)).isoformat()
+            hot = any(lo <= (g.get("gameDate") or "")[:10] <= hi and g.get("hometeamscore") is None
+                      and g.get("hometeamID") for g in cached if isinstance(g, dict))
+        except (ValueError, OSError):
+            hot = True
+    if hot:
+        HOT["refetched"] += 1
+        return api.get(path, max_age_hours=0) or []
+    return api.get(path, max_age_hours=24 if QUICK else 2) or []
+
+
 def build_pool(name, pc, cfg):
     """Return (games, team_conf, team_names, conf_names, club_conf)."""
     games, team_conf, names, conf_names = [], {}, {}, {}
@@ -145,16 +195,19 @@ def build_pool(name, pc, cfg):
             conf_names[ck] = e["name"]
         for d in divs:
             for fl in d.get("flightList") or []:
-                raw = api.get(f"Event/get-schedules-by-flight/{e['event_id']}/{fl.get('flightID')}/0",
-                              max_age_hours=2, permanent=done) or []
+                raw = flight_raw(e["event_id"], fl.get("flightID"), done)
                 gs = normalize(raw, ck, neutral=not league)
                 for g in gs:
                     g["event_name"] = e["name"]
+                    g["event_id"] = e["event_id"]
+                    g["flight_id"] = fl.get("flightID")
+                    g["division_id"] = d.get("divisionID")
+                    g["flight_name"] = fl.get("flightName")
                     for tid, tn, club in ((g["home_id"], g["home"], g["home_club"]), (g["away_id"], g["away"], g["away_club"])):
                         if tid:
                             names.setdefault(tid, tn)
                             if league:
-                                team_conf[tid] = ck
+                                team_conf.setdefault(tid, ck)  # a team's league never gets overwritten
                                 if club:
                                     club_conf.setdefault(club, ck)
                 games += gs
@@ -392,103 +445,198 @@ def update_prediction_log(comp, games, m, log):
             "recent": sorted(done, key=lambda e: e["date"], reverse=True)[:10]}
 
 
+GAME_KEYS = ("id", "num", "type", "date", "time", "home_id", "away_id", "home", "away",
+             "hs", "as", "hpk", "apk", "venue", "status", "bad")
+
+
+def league_type(name):
+    n = (name or "").lower()
+    rl = "rl" in n.split() or "regional league" in n
+    girls = "girls" in n
+    if "ecnl" in n:
+        return f"ECNL {'RL ' if rl else ''}{'Girls' if girls else 'Boys'}"
+    return "Other leagues"
+
+
+def short_conf(name):
+    return re.sub(r"\s*20\d\d-\d\d$", "", name or "").strip()
+
+
 def main():
     offline = "--offline" in sys.argv
     if offline:
         api.DELAY = 0
         orig = api.get
 
-        def cached_only(path, max_age_hours=0, permanent=False):
+        def cached_only(path, max_age_hours=0, permanent=False, cache=True):
             if not os.path.exists(api._cache_path(path)):
                 return None
             return orig(path, permanent=True)
         api.get = cached_only
     cfg = load_config()
-    os.makedirs(OUT, exist_ok=True)
+    os.makedirs(os.path.join(OUT, "conf"), exist_ok=True)
     now = datetime.now(timezone.utc).isoformat(timespec="minutes")
-    pools = {}
-    for pname, pc in cfg["pools"].items():
-        print(f"pool {pname}")
-        games, team_conf, names, conf_names = build_pool(pname, pc, cfg)
-        rg = rating_games(games)
-        m = model.fit(rg, team_conf, cfg["model"])
-        # Accuracy is scored on this season's games (new age groups) only.
-        bt = backtest(games, team_conf, cfg["model"], start=pc["age_rules"]["new_age_from"]) if m else None
-        print(f"  {len(games)} games, {len(rg)} rated, backtest={bt}")
-        pools[pname] = dict(games=games, team_conf=team_conf, names=names,
-                            conf_names=conf_names, model=m, backtest=bt,
-                            links=conf_links(games, team_conf))
-
-    index = []
+    today = datetime.now(timezone.utc).date().isoformat()
     log = {}
     if os.path.exists(LOG_PATH):
         with open(LOG_PATH) as f:
             log = json.load(f)
-    for comp in cfg["competitions"]:
-        P = pools[comp["pool"]]
-        m = P["model"]
-        raw = api.flight_schedule(comp["event_id"], comp["flight_id"])
-        ck = f"ev{comp['event_id']}" if comp["kind"] == "conference" else "national"
-        games = normalize(raw, ck, neutral=(comp["kind"] != "conference"))
-        team_ids = sorted({i for g in games for i in (g["home_id"], g["away_id"]) if i})
-        tnames = {}
-        for g in games:
-            if g["home_id"]: tnames[g["home_id"]] = g["home"]
-            if g["away_id"]: tnames[g["away_id"]] = g["away"]
-        computed = standings_from_games(games, team_ids)
-        official = []
-        if comp["kind"] == "conference":
-            for r in api.flight_standings(comp["event_id"], comp["division_id"], comp["flight_id"]):
-                official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
-                                 "w": to_int(r.get("wins")), "d": to_int(r.get("draws")),
-                                 "l": to_int(r.get("losses")), "gf": to_int(r.get("goalsfor")),
-                                 "ga": to_int(r.get("goalsagainst")), "pts": to_int(r.get("standingpoints")),
-                                 "ppg": r.get("ppg")})
-        # rating rank across the whole pool
-        ranked = []
-        if m:
-            ranked = sorted(m["att"].keys(), key=lambda t: -model.strength(m, t))
+    bt_path = os.path.join(ROOT, "data", "backtests.json")
+    saved_bt = {}
+    if os.path.exists(bt_path):
+        with open(bt_path) as f:
+            saved_bt = json.load(f)
+    featured = {(c["event_id"], c["flight_id"]): c for c in cfg["competitions"] if c["kind"] == "conference"}
+    # carry the live prediction record over from the old per-tab names
+    for c in featured.values():
+        newk = f"{cfg['pools'][c['pool']]['key']}-{c['event_id']}-{c['flight_id']}"
+        if c["id"] in log and newk not in log:
+            log[newk] = log.pop(c["id"])
+    teams_index, legacy, written = {}, {}, set()
+
+    for pname, pc in cfg["pools"].items():
+        pkey = pc["key"]
+        print(f"pool {pname}")
+        games, team_conf, names, conf_names = build_pool(pname, pc, cfg)
+        rg = rating_games(games)
+        m = model.fit(rg, team_conf, cfg["model"])
+        if QUICK and pname in saved_bt:
+            bt = saved_bt[pname]
+        else:
+            bt = backtest(games, team_conf, cfg["model"], start=pc["age_rules"]["new_age_from"]) if m else None
+            saved_bt[pname] = bt
+        print(f"  {len(games)} games, {len(rg)} rated, backtest={bt and (bt['games'], bt['accuracy'])}")
+        links = conf_links(games, team_conf)
+        ranked = sorted(m["att"].keys(), key=lambda t: -model.strength(m, t)) if m else []
         rank_of = {t: i + 1 for i, t in enumerate(ranked)}
-        teams = []
-        for tid in team_ids:
-            conf = P["team_conf"].get(tid, "other")
-            conf_games = [g for g in P["games"] if g["conf"] == conf and g["source"] == "current"]
-            rec = None
-            if comp["kind"] == "bracket":
-                peers = {i for g in conf_games for i in (g["home_id"], g["away_id"]) if i}
-                rec = next((r for r in standings_from_games(conf_games, peers) if r["id"] == tid), None)
-            teams.append({
-                "id": tid, "name": tnames.get(tid), "short": short_name(tnames.get(tid)),
-                "p": team_params(m, tid) if m else [0, 0],
-                "strength": round(model.strength(m, tid), 2) if m else 0,
-                "pool_rank": rank_of.get(tid), "conf": conf,
-                "conf_name": P["conf_names"].get(conf, "Other"),
-                "conf_links": round(P["links"].get(conf, 0), 1),
-                "games_rated": sum(1 for g in rating_games(P["games"]) if tid in (g["home_id"], g["away_id"])),
-                "games_new": sum(1 for g in rating_games(P["games"]) if tid in (g["home_id"], g["away_id"])
-                                 and g["date"] >= cfg["pools"][comp["pool"]]["age_rules"]["new_age_from"]),
-                "conf_record": rec,
-            })
-        out = {
-            "comp": comp, "updated": now,
-            "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
-            "pool": {"name": comp["pool"], "teams_rated": len(ranked),
-                     "games_rated": len(rating_games(P["games"])), "backtest": P["backtest"]},
-            "teams": teams, "games": [{k: g[k] for k in ("id", "num", "type", "date", "time", "home_id", "away_id",
-                                                          "home", "away", "hs", "as", "hpk", "apk", "venue", "status", "bad")}
-                                      for g in games],
-            "official": official, "computed": computed,
-            "live_record": update_prediction_log(comp, games, m, log),
-        }
-        with open(os.path.join(OUT, f"{comp['id']}.json"), "w") as f:
-            json.dump(out, f, separators=(",", ":"))
-        index.append({"id": comp["id"], "title": comp["title"], "kind": comp["kind"]})
-        print(f"comp {comp['id']}: {len(games)} games, {len(teams)} teams")
+        new_from = pc["age_rules"]["new_age_from"]
+        rated_count, new_count = {}, {}
+        for g in rg:
+            for t in (g["home_id"], g["away_id"]):
+                rated_count[t] = rated_count.get(t, 0) + 1
+                if g["date"] >= new_from:
+                    new_count[t] = new_count.get(t, 0) + 1
+        conf_record_cache = {}
+
+        def conf_record(tid):
+            c = team_conf.get(tid)
+            if not c:
+                return None
+            if c not in conf_record_cache:
+                cg = [g for g in games if g["conf"] == c and g["source"] == "current"]
+                peers = {i for g in cg for i in (g["home_id"], g["away_id"]) if i}
+                conf_record_cache[c] = {r["id"]: r for r in standings_from_games(cg, peers)}
+            return conf_record_cache[c].get(tid)
+
+        def team_obj(tid, with_record=False):
+            c = team_conf.get(tid, "other")
+            o = {"id": tid, "name": names.get(tid), "short": short_name(names.get(tid)),
+                 "p": team_params(m, tid) if m else [0, 0],
+                 "strength": round(model.strength(m, tid), 2) if m else 0,
+                 "pool_rank": rank_of.get(tid), "conf": c, "conf_name": short_conf(conf_names.get(c, "Other")),
+                 "conf_links": round(links.get(c, 0), 1),
+                 "games_rated": rated_count.get(tid, 0), "games_new": new_count.get(tid, 0)}
+            if with_record:
+                o["conf_record"] = conf_record(tid)
+            return o
+
+        # Events (national events, tournaments) happening soon or just played: attach to their teams.
+        ev_groups = {}
+        for g in games:
+            if g["conf"] == "event" and g["source"] == "current" and g.get("flight_id"):
+                ev_groups.setdefault((g["event_id"], g["flight_id"]), []).append(g)
+        soon = (datetime.now(timezone.utc).date() + timedelta(days=30)).isoformat()
+        recent = (datetime.now(timezone.utc).date() - timedelta(days=3)).isoformat()
+        events_by_team = {}
+        for (eid, fid), gs in ev_groups.items():
+            dates = [g["date"] for g in gs]
+            if max(dates) < recent or min(dates) > soon:
+                continue
+            tids = sorted({t for g in gs for t in (g["home_id"], g["away_id"]) if t}, key=str)
+            block = {"event_id": eid, "flight_id": fid, "name": gs[0].get("event_name"),
+                     "flight": gs[0].get("flight_name"),
+                     "bracket": any(g["type"] == "Bracket" or re.search(r"winner|loser", (g["home"] or ""), re.I) for g in gs),
+                     "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
+                     "games": [{k: g[k] for k in GAME_KEYS} for g in gs],
+                     "teams": [team_obj(t, with_record=True) for t in tids]}
+            for t in tids:
+                events_by_team.setdefault(t, []).append(block)
+
+        # One file per league flight (conference).
+        flights = {}
+        for g in games:
+            if re.match(r"ev\d+$", g["conf"]) and g["source"] == "current" and g.get("flight_id"):
+                flights.setdefault((g["event_id"], g["flight_id"]), []).append(g)
+        for (eid, fid), gs in flights.items():
+            tids = sorted({t for g in gs for t in (g["home_id"], g["away_id"]) if t}, key=str)
+            if len(tids) < 3:
+                continue
+            fkey = f"{pkey}-{eid}-{fid}"
+            comp = featured.get((eid, fid), {})
+            cname = short_conf(gs[0].get("event_name"))
+            official = []
+            if comp:
+                for r in api.flight_standings(eid, comp["division_id"], fid):
+                    official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
+                                     "pts": to_int(r.get("standingpoints"))})
+            # each event stored once; teams point to it by index
+            ev_list, ev_index, evs = [], {}, {}
+            for t in tids:
+                for b in events_by_team.get(t, []):
+                    k = (b["event_id"], b["flight_id"])
+                    if k not in ev_index:
+                        ev_index[k] = len(ev_list)
+                        ev_list.append(b)
+                    evs.setdefault(str(t), []).append(ev_index[k])
+            pseudo = {"id": fkey, "kind": "conference"}
+            out = {
+                "key": fkey, "pool": pname, "pool_key": pkey, "updated": now,
+                "conf_name": cname, "league": league_type(gs[0].get("event_name")),
+                "age_label": pc.get("label", ""), "flight": gs[0].get("flight_name"),
+                "playoff_spots": comp.get("playoff_spots"), "playoff_label": comp.get("playoff_label"),
+                "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
+                "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
+                "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt},
+                "teams": [team_obj(t) for t in tids],
+                "games": [{k: g[k] for k in GAME_KEYS} for g in gs],
+                "official": official, "computed": standings_from_games(gs, tids),
+                "events": ev_list, "team_events": evs,
+                "live_record": update_prediction_log(pseudo, gs, m, log),
+            }
+            with open(os.path.join(OUT, "conf", fkey + ".json"), "w") as f:
+                json.dump(out, f, separators=(",", ":"))
+            written.add(fkey + ".json")
+            for t in tids:
+                tk = f"{pkey}-{t}"
+                # a team can sit in several league flights (stages, league cups): keep the one with most games
+                score = (sum(1 for g in gs if t in (g["home_id"], g["away_id"])), "cup" not in cname.lower())
+                if tk not in teams_index or score > teams_index[tk][0]:
+                    teams_index[tk] = (score, {"k": tk, "n": names.get(t), "s": short_name(names.get(t)), "c": cname,
+                                               "l": out["league"], "a": pc.get("label", ""), "f": fkey})
+                if comp and names.get(t) == comp.get("focus_team"):
+                    legacy[comp["id"]] = tk
+        print(f"  wrote {len([w for w in written if w.startswith(pkey)])} conference files")
+
+    # remove conference files no longer produced
+    for fn in os.listdir(os.path.join(OUT, "conf")):
+        if fn not in written:
+            os.remove(os.path.join(OUT, "conf", fn))
+    teams_index = sorted((e for _, e in teams_index.values()), key=lambda x: (x["a"], x["l"], x["c"], x["s"] or ""))
+    with open(os.path.join(OUT, "teams.json"), "w") as f:
+        json.dump(teams_index, f, separators=(",", ":"))
+    legacy.update({c["id"]: legacy.get(c.get("legacy_of", ""), "") for c in cfg["competitions"] if c.get("legacy_of")})
+    with open(os.path.join(OUT, "index.json"), "w") as f:
+        json.dump({"updated": now, "legacy": legacy, "pools": [p.get("label") for p in cfg["pools"].values()]}, f)
+    with open(os.path.join(OUT, "status.json"), "w") as f:
+        json.dump({"checked": now, "mode": "quick" if QUICK else "full", "refetched_flights": HOT["refetched"]}, f)
     with open(LOG_PATH, "w") as f:
         json.dump(log, f, indent=1)
-    with open(os.path.join(OUT, "index.json"), "w") as f:
-        json.dump({"updated": now, "competitions": index, "api": api.stats}, f)
-    print("api", api.stats)
+    with open(bt_path, "w") as f:
+        json.dump(saved_bt, f)
+    if not QUICK and not offline:
+        with open(os.path.join(ROOT, "data", "last_full.txt"), "w") as f:
+            f.write(datetime.now(timezone.utc).isoformat())
+    print("mode", "quick" if QUICK else "full", "api", api.stats, "hot flights refetched", HOT["refetched"])
 
 
 if __name__ == "__main__":

@@ -3,90 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d1015">
 <link rel="icon" href="data:,">
-<title>XF ECNL · Standings & Predictions</title>
+<title>ECNL Standings & Predictions</title>
 <style>
-:root{--ink:#16181d;--mut:#6b7280;--line:#e5e7eb;--bg:#f6f7f9;--card:#fff;--red:#c8102e;--grn:#15803d;--amb:#b45309;--blu:#1d4ed8}
-*{box-sizing:border-box}body{margin:0;font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
-header{background:#111;color:#fff;padding:14px 16px 0;position:sticky;top:0;z-index:5}
-header h1{margin:0 0 10px;font-size:17px;letter-spacing:.2px}header h1 b{color:#ff4d61}
-.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}.tabs button{flex:none;border:0;background:none;color:#bbb;padding:9px 12px;font:inherit;font-weight:600;border-bottom:3px solid transparent;cursor:pointer}
-.tabs button.on{color:#fff;border-color:var(--red)}
-main{max-width:980px;margin:0 auto;padding:14px 12px 60px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
-h2{font-size:15px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
-.focus{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.stat{background:var(--bg);border-radius:10px;padding:10px}.stat .v{font-size:24px;font-weight:700}.stat .k{font-size:12px;color:var(--mut)}
-table{width:100%;border-collapse:collapse;font-size:14px}th{font-size:11px;color:var(--mut);text-align:right;font-weight:600;padding:6px 4px;border-bottom:1px solid var(--line)}
-td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}td.t,th.t{text-align:left;white-space:normal}
-tr.me td{background:#fff1f2;font-weight:600}tr.cut td{border-bottom:2px dashed var(--red)}
-.fx{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px}
-.fx .when{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:8px}
-.fx .teams{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin:6px 0}
-.fx .teams .a{text-align:right}.fx .score{font-weight:700;font-size:16px;text-align:center;min-width:44px}
-.bar{display:flex;height:22px;border-radius:6px;overflow:hidden;font-size:11px;font-weight:600;color:#fff}
-.bar div{display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden}
-.bh{background:#2f6fde}.bd{background:#9ca3af}.ba{background:#e2552d}
-.toggles{display:flex;gap:6px;margin-top:8px}.toggles button{flex:1;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 4px;font:inherit;font-size:12px;cursor:pointer}
-.toggles button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;background:var(--bg);color:var(--mut);font-weight:600}
-.pill.g{background:#dcfce7;color:var(--grn)}.pill.a{background:#fef3c7;color:var(--amb)}.pill.r{background:#fee2e2;color:var(--red)}
-.root{font-size:12px;margin-top:6px;color:var(--ink)}.root b{color:var(--grn)}
-.mut{color:var(--mut);font-size:12px}.warn{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px;font-size:13px;margin-bottom:14px}
-.delta{font-size:12px;font-weight:700}.up{color:var(--grn)}.dn{color:var(--red)}
-.row2{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:820px){.row2{grid-template-columns:1fr 1fr}}
-.reset{float:right;border:0;background:none;color:var(--blu);font:inherit;font-size:13px;cursor:pointer}
-.path{display:grid;grid-template-columns:1fr;gap:8px}.node{border-left:3px solid var(--red);padding:4px 10px}
-a{color:var(--blu)}footer{font-size:12px;color:var(--mut);text-align:center;margin-top:20px}
+/* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
+:root{
+  --bg:#0d1015; --card:#161a21; --card2:#1e232c; --line:#2c333e; --line2:#3a4250;
+  --ink:#e8eaed; --mut:#a3acb9; --accent:#ff6b7d; --red:#c8102e; --link:#8ab4ff;
+  --up:#4ade80; --dn:#fb7185; --me:#3a1520; --chance:#18202c; --chance2:#1c2533;
+  --bh:#2563eb; --bd:#4b5563; --ba:#c2410c;
+  --warnbg:#2a2108; --warnline:#6b5216; --warnink:#fcd34d;
+}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--link)}
+header{background:#07090c;border-bottom:1px solid var(--line);padding:10px 12px 8px;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:8px;margin-bottom:8px}.brand h1{margin:0;font-size:16px;font-weight:700}.brand h1 b{color:var(--accent)}
+.pills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.pills::-webkit-scrollbar{display:none}
+.pill-btn{flex:none;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.pill-btn.on{background:var(--red);border-color:var(--red);color:#fff}
+.pill-btn.find{background:transparent;border-style:dashed;color:var(--ink)}
+main{max-width:980px;margin:0 auto;padding:12px 10px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
+.ctx{padding:12px 14px;border-left:5px solid var(--red)}
+.ctx-top{display:flex;align-items:center;gap:8px}.ctx-team{font-size:22px;font-weight:800;flex:1}
+.ctx-sub{font-size:13px;color:var(--mut);margin-top:2px}
+.icon-btn{border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.icon-btn.starred{color:#fde047;border-color:#a16207}
+details.sec>summary{list-style:none;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec h2{margin:0;font-size:17px;flex:1}
+.caret{color:var(--mut);transition:transform .15s}details:not([open])>summary .caret{transform:rotate(-90deg)}
+.sec-body{padding:0 12px 14px}.sec-sub{color:var(--mut);font-size:13px;margin:0 0 10px}
+.chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.chip-us{background:var(--red);color:#fff}.chip-div{background:#2f3743;color:#e5e7eb}.chip-past{background:#252b35;color:#d1d5db}
+.sec-us{border-left:5px solid var(--red)}
+.focus{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:var(--card2);border-radius:10px;padding:10px}.stat .v{font-size:22px;font-weight:800}.stat .k{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:11px;color:var(--mut);text-align:right;font-weight:700;padding:6px 3px;border-bottom:1px solid var(--line)}
+td{padding:7px 3px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+td.t,th.t{text-align:left;white-space:normal}
+table.grid th,table.grid td{border-left:1px dashed var(--line2)}table.grid th:first-child,table.grid td:first-child{border-left:0}
+table.grid tr:nth-child(even) td{background:#12161c}
+table.grid td.chance,table.grid th.chance{background:var(--chance)}table.grid tr:nth-child(even) td.chance{background:var(--chance2)}
+table.grid tr.me td{background:var(--me)}
+tr.cut td{border-bottom:2px dashed var(--accent)}
+td .sub{font-size:11px;color:var(--mut);font-weight:400}
+.fx{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:var(--card)}
+.fx.matters{background:#1f2530;border-color:var(--line2)}
+.when{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:8px}
+.teams{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin:6px 0}.teams .a{text-align:right}
+.score{text-align:center;min-width:40px}.score.final{font-size:20px;font-weight:800}.score.vs{color:var(--mut);font-size:13px;font-weight:600}
+.bar{display:flex;height:22px;border-radius:6px;overflow:hidden;font-size:11px;font-weight:700;color:#fff}
+.bar div{display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bh{background:var(--bh)}.bd{background:var(--bd)}.ba{background:var(--ba)}
+.mut{color:var(--mut);font-size:12px}
+.pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;font-weight:700}
+.pill.g{background:#14361f;color:#86efac}.pill.a{background:#3a2a07;color:#fcd34d}.pill.r{background:#3d1218;color:#fda4af}.pill.tag{background:#e5e7eb;color:#111827}
+.root{font-size:13px;margin-top:6px}.root b{color:var(--up)}
+.up{color:var(--up)}.dn{color:var(--dn)}.delta{font-size:12px;font-weight:700}
+.toggles{display:flex;gap:6px;margin-top:8px}
+.toggles button{flex:1;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:8px;padding:7px 4px;font:inherit;font-size:12px;cursor:pointer}
+.toggles button.ours{background:#3a4250;border-color:#8b95a5;color:#fff;font-weight:700}
+.toggles button.on{background:#f3f4f6;border-color:#f3f4f6;color:#111827;font-weight:800}
+.picksbar{background:#172036;border:1px solid #2b3a5c;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px}
+.reset{float:right;border:0;background:none;color:var(--link);font:inherit;font-size:13px;cursor:pointer;font-weight:600}
+details.inner{margin-top:10px}details.inner>summary{cursor:pointer;color:var(--link);font-size:14px;padding:6px 0;font-weight:600}
+details.list{border:1px solid var(--line2);border-radius:10px;padding:2px 10px;margin-top:12px;background:var(--card2)}
+details.list>summary{cursor:pointer;font-weight:700;padding:10px 0;list-style:none}details.list>summary::-webkit-details-marker{display:none}
+details.missed{background:var(--warnbg);border:1px solid var(--warnline);border-radius:10px;padding:2px 10px;margin:8px 0}
+details.missed>summary{color:var(--warnink);font-weight:700}
+.warn{background:var(--warnbg);border:1px solid var(--warnline);color:var(--warnink);border-radius:10px;padding:10px;font-size:13px;margin-bottom:12px}
+.rrow{display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rd{color:var(--mut);font-size:12px;min-width:80px}.rt{flex:1}
+.res{font-size:11px;font-weight:800;width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#fff;flex:none}
+.res-w{background:#15803d}.res-d{background:#4b5563}.res-l{background:#b91c1c}
+.path{display:grid;gap:8px}.node{border-left:3px solid var(--red);padding:4px 10px}
+h3{font-size:14px;margin:10px 0 6px}
+footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 .scroll{overflow-x:auto}
-.ctx{background:#fff;border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 14px;margin-bottom:14px}
-.ctx-team{font-size:22px;font-weight:800}.ctx-sub{font-size:13px;color:var(--mut);margin-top:2px}
-.sec-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}.sec-head h2{margin:0;color:var(--ink);text-transform:none;letter-spacing:0;font-size:17px}
-.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-.chip-us{background:var(--red);color:#fff}.chip-div{background:#e5e7eb;color:#374151}.chip-past{background:#f3f4f6;color:var(--mut)}
-.sec-us{border-left:5px solid var(--red)}.sec-past{background:#fbfbfc}
-h3{font-size:14px;margin:4px 0 6px}
-details{margin-top:10px}summary{cursor:pointer;color:var(--blu);font-size:14px;padding:6px 0}
-.rrow{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
-.rd{color:var(--mut);font-size:12px;min-width:84px}.rt{flex:1}
-.res{font-size:11px;font-weight:800;width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#fff}
-.res-w{background:var(--grn)}
-details.sec{padding:0}details.sec>summary{list-style:none;padding:14px;margin:0;cursor:pointer}details.sec>summary::-webkit-details-marker{display:none}
-details.sec[open]>summary{padding-bottom:6px}.sec-body{padding:0 14px 14px}.sec-sub{margin:0 0 10px}
-.caret{margin-left:auto;color:var(--mut);transition:transform .15s}details.sec:not([open]) .caret{transform:rotate(-90deg)}
-.score.final{font-size:20px;font-weight:800}.score.vs{color:var(--mut);font-weight:500;font-size:13px}
-.fx.matters{background:#f3f4f6;border-color:#d1d5db}.pill.tag{background:#374151;color:#fff}
-.picksbar{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px;position:sticky;top:96px;z-index:3}
-#predtable{transition:opacity .1s}
-table.pred td,table.pred th{padding:7px 3px}table.pred .sub{font-size:11px;color:var(--mut);font-weight:400}
-details.missed{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:2px 10px;margin:8px 0}details.missed summary{color:#92400e;font-weight:600}
-.toggles button.ours{background:#e5e7eb;border-color:#9ca3af;font-weight:600}
-.toggles button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.toggles button.ours.on{background:var(--ink);color:#fff}
-table.grid th,table.grid td{border-left:1px dashed #d1d5db}table.grid th:first-child,table.grid td:first-child{border-left:0}
-table.grid tr:nth-child(even) td{background:#fafafa}table.grid tr.me td{background:#fff1f2}
-table.grid td.chance,table.grid th.chance{background:#f1f5f9}table.grid tr:nth-child(even) td.chance{background:#eaeff5}
-table.grid .stk{position:sticky;left:0;z-index:1;background:#fff}table.grid .stk2{position:sticky;left:24px;z-index:1;background:#fff;box-shadow:2px 0 0 #e5e7eb}
-table.grid tr:nth-child(even) .stk,table.grid tr:nth-child(even) .stk2{background:#fafafa}table.grid tr.me .stk,table.grid tr.me .stk2{background:#fff1f2}.res-d{background:#9ca3af}.res-l{background:var(--red)}
+/* finder */
+#finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto}
+#finder.open{display:block}
+.f-head{position:sticky;top:0;background:#07090c;border-bottom:1px solid var(--line);padding:10px 12px;display:flex;gap:8px;align-items:center}
+.f-head input{flex:1;background:var(--card2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:9px 10px;font:inherit;font-size:16px}
+.f-body{max-width:760px;margin:0 auto;padding:12px}
+.f-row{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid var(--line);cursor:pointer}
+.f-row:hover{background:var(--card)}.f-row .nm{flex:1}.f-row .nm div{font-size:12px;color:var(--mut)}
+.star{background:none;border:0;font-size:20px;cursor:pointer;color:#6b7280;padding:2px 6px}.star.on{color:#fde047}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#f3f4f6;color:#111827;padding:8px 14px;border-radius:8px;font-weight:700;font-size:14px;z-index:60;display:none}
 </style>
 </head>
 <body>
-<header><h1><b>XF</b> ECNL · Standings &amp; Predictions</h1><nav class="tabs" id="tabs"></nav></header>
-<main id="app"><div class="card">Loading…</div></main>
+<header>
+  <div class="brand"><h1><b>XF</b> ECNL · Standings &amp; Predictions</h1></div>
+  <nav class="pills" id="pills"></nav>
+</header>
+<main id="app"><div class="card ctx">Loading…</div></main>
+<div id="finder">
+  <div class="f-head"><input id="fq" type="search" placeholder="Search any team, club or conference" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
+  <div class="f-body" id="fbody"></div>
+</div>
+<div class="toast" id="toast"></div>
 <script>
 "use strict";
 const $ = (s, e = document) => e.querySelector(s);
-const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
 const fmtDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday:"short", month:"short", day:"numeric"});
 const fmtTime = t => { if (!t || t === "00:00") return "Time TBD"; let [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2,"0")} ${h < 12 ? "AM" : "PM"}`; };
 const todayISO = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
+const addDays = (iso, n) => new Date(new Date(iso + "T12:00:00").getTime() + n * 864e5).toISOString().slice(0, 10);
+const signed = d => (d > 0 ? "+" : d < 0 ? "−" : "±") + Math.abs(d);
+const ord = n => n + (["th","st","nd","rd"][(n % 100 - 20) % 10] || ["th","st","nd","rd"][n % 100] || "th");
+const store = {get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+               set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }};
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.style.display = "block"; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = "none", 2200); }
 
 // ---------- model ----------
-const DRAW_GAP = 0.03;
-function makeModel(D) {
-  const T = new Map(D.teams.map(t => [t.id, t]));
-  const mu = D.model ? D.model.mu : 0.3, home = D.model ? D.model.home : 0;
+const DRAW_GAP = 0.03;   // tested on 1,760 past games: calling more draws only lowers accuracy
+function makeModel(teams, model) {
+  const T = new Map(teams.map(t => [t.id, t]));
+  const mu = model ? model.mu : 0.3, home = model ? model.home : 0;
   const lam = (h, a, neutral) => {
     const H = T.get(h), A = T.get(a);
     const ha = H ? H.p[0] : 0, hd = H ? H.p[1] : 0, aa = A ? A.p[0] : 0, ad = A ? A.p[1] : 0;
@@ -94,20 +135,20 @@ function makeModel(D) {
   };
   const pois = (l, R) => { let L = Math.exp(-l), k = 0, p = 1; do { k++; p *= R(); } while (p > L && k < 15); return k - 1; };
   const pmf = (l, k) => { let p = Math.exp(-l); for (let i = 1; i <= k; i++) p *= l / i; return p; };
+  const cache = new Map();
   const probs = (h, a, neutral) => {
+    const key = `${h}|${a}|${neutral ? 1 : 0}`; if (cache.has(key)) return cache.get(key);
     const [lh, la] = lam(h, a, neutral); let w = 0, d = 0, l = 0;
-    const best = [[1, 0, -1], [0, 0, -1], [0, 1, -1]];  // likeliest score within each result
+    const best = [[1, 0, -1], [0, 0, -1], [0, 1, -1]];
     for (let i = 0; i <= 10; i++) for (let j = 0; j <= 10; j++) {
       const p = pmf(lh, i) * pmf(la, j), o = i > j ? 0 : i === j ? 1 : 2;
       if (o === 0) w += p; else if (o === 1) d += p; else l += p;
       if (p > best[o][2]) best[o] = [i, j, p];
     }
     const s = w + d + l, top = [w, d, l].indexOf(Math.max(w, d, l));
-    // Our pick: the more likely winner, unless it's a true toss-up (within DRAW_GAP), then a draw.
-    // Tested on 1,760 past games: calling draws more often only lowers accuracy.
     const pick = Math.abs(w - l) / s < DRAW_GAP ? "D" : (w > l ? "H" : "A");
-    const scores = {H: best[0].slice(0, 2), D: best[1].slice(0, 2), A: best[2].slice(0, 2)};
-    return {w: w / s, d: d / s, l: l / s, score: best[top].slice(0, 2), scores, pick, lh, la};
+    const r = {w: w / s, d: d / s, l: l / s, score: best[top].slice(0, 2), scores: {H: best[0].slice(0, 2), D: best[1].slice(0, 2), A: best[2].slice(0, 2)}, pick};
+    cache.set(key, r); return r;
   };
   const sample = (h, a, neutral, force, R = Math.random) => {
     const [lh, la] = lam(h, a, neutral);
@@ -119,361 +160,374 @@ function makeModel(D) {
   };
   return {T, probs, sample};
 }
-
-function confidence(D, a, b) {
-  const A = D.teams.find(t => t.id === a), B = D.teams.find(t => t.id === b);
+function confidence(teams, a, b) {
+  const A = teams.find(t => t.id === a), B = teams.find(t => t.id === b);
   if (!A || !B) return ["Low", "r", "No rating data for one team yet."];
   if (A.conf === B.conf && A.conf !== "other") return ["Good", "g", "Same conference: plenty of shared opponents."];
   const links = Math.min(A.conf_links || 0, B.conf_links || 0);
   if (links >= 20) return ["Good", "g", `Their conferences are linked by ${Math.round(links)}+ cross-conference games.`];
   if (links >= 6) return ["Medium", "a", `Only ~${Math.round(links)} cross-conference games link their conferences.`];
-  return ["Low", "r", "Almost no games yet link these two conferences, so this compares records against different opponents. Treat it as a rough guess until national events are played."];
+  return ["Low", "r", "Few games link these conferences yet; treat as a rough guess."];
 }
-
-// ---------- conference simulation ----------
 function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function table(rows, games, ids) {
   const t = new Map(ids.map(i => [i, {id: i, gp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0}]));
-  const add = (h, a, x, y) => {
-    const H = t.get(h), A = t.get(a); if (!H || !A) return;
+  const add = (h, a, x, y) => { const H = t.get(h), A = t.get(a); if (!H || !A) return;
     H.gp++; A.gp++; H.gf += x; H.ga += y; A.gf += y; A.ga += x;
-    if (x > y) { H.w++; H.pts += 3; A.l++; } else if (x === y) { H.d++; A.d++; H.pts++; A.pts++; } else { A.w++; A.pts += 3; H.l++; }
-  };
+    if (x > y) { H.w++; H.pts += 3; A.l++; } else if (x === y) { H.d++; A.d++; H.pts++; A.pts++; } else { A.w++; A.pts += 3; H.l++; } };
   for (const g of games) add(g.home_id, g.away_id, g.hs, g.as);
   for (const r of rows) add(r[0], r[1], r[2], r[3]);
-  const list = [...t.values()];
-  for (const r of list) { r.ppg = r.gp ? r.pts / r.gp : 0; r.gd = r.gf - r.ga; }
+  const list = [...t.values()]; for (const r of list) { r.ppg = r.gp ? r.pts / r.gp : 0; r.gd = r.gf - r.ga; }
   return list;
 }
 function rank(list, games, extra) {
-  const h2h = (a, b) => { let p = 0; const all = games.map(g => [g.home_id, g.away_id, g.hs, g.as]).concat(extra || []);
-    for (const [h, aw, x, y] of all) { if (h === a && aw === b) p += x > y ? 3 : x === y ? 1 : 0; if (h === b && aw === a) p += y > x ? 3 : x === y ? 1 : 0; } return p; };
-  const ptsCount = {}; for (const r of list) ptsCount[r.pts] = (ptsCount[r.pts] || 0) + 1;
-  return list.sort((a, b) => (b.ppg - a.ppg) || (b.pts - a.pts) ||
-    (ptsCount[a.pts] === 2 ? h2h(b.id, a.id) - h2h(a.id, b.id) : 0) || (b.gd - a.gd) || (b.gf - a.gf) || (a.ga - b.ga));
+  const all = games.map(g => [g.home_id, g.away_id, g.hs, g.as]).concat(extra || []);
+  const h2h = (a, b) => { let p = 0; for (const [h, aw, x, y] of all) { if (h === a && aw === b) p += x > y ? 3 : x === y ? 1 : 0; if (h === b && aw === a) p += y > x ? 3 : x === y ? 1 : 0; } return p; };
+  const cnt = {}; for (const r of list) cnt[r.pts] = (cnt[r.pts] || 0) + 1;
+  return list.sort((a, b) => (b.ppg - a.ppg) || (b.pts - a.pts) || (cnt[a.pts] === 2 ? h2h(b.id, a.id) - h2h(a.id, b.id) : 0) || (b.gd - a.gd) || (b.gf - a.gf) || (a.ga - b.ga));
 }
-
-function simulate(D, M, played, remaining, forced, N) {
-  // Plays out every remaining game N times. Each (simulation, game) pair has its own
-  // seeded random stream, so changing one pick doesn't reshuffle every other game.
-  const ids = D.teams.map(t => t.id), nT = ids.length;
-  const pos = new Map(ids.map(i => [i, new Array(nT).fill(0)]));
-  const sums = new Map(ids.map(i => [i, {gp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, ppg: 0}]));
+function simulate(ids, M, played, remaining, forced, N) {
+  const pos = new Map(ids.map(i => [i, new Array(ids.length).fill(0)]));
   for (let n = 0; n < N; n++) {
     const extra = remaining.map((g, gi) => { const [x, y] = M.sample(g.home_id, g.away_id, false, forced[g.id], rng(n * 7919 + gi * 104729 + 1)); return [g.home_id, g.away_id, x, y]; });
-    const r = rank(table(extra, played, ids), played, extra);
-    r.forEach((row, i) => { pos.get(row.id)[i]++; const s = sums.get(row.id); for (const k in s) s[k] += row[k]; });
+    rank(table(extra, played, ids), played, extra).forEach((row, i) => pos.get(row.id)[i]++);
   }
-  const out = new Map();
-  for (const i of ids) { const s = sums.get(i), avg = {}; for (const k in s) avg[k] = s[k] / N; out.set(i, {pos: pos.get(i).map(c => c / N), ...avg}); }
-  return out;
+  const out = new Map(); for (const i of ids) out.set(i, {pos: pos.get(i).map(c => c / N)}); return out;
 }
 const atOrAbove = (S, id, k) => S.get(id).pos.slice(0, k + 1).reduce((a, b) => a + b, 0);
+const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return [lo, hi]; };
+const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 
-// ---------- rendering ----------
-let INDEX, CUR, DATA = {}, PICKS = {}, CTX = null;
-const store = {get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-               set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }};
+// ---------- state: teams index, favorites, routing ----------
+let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
+const CONF_CACHE = {}, PICKS = {};
+const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
+const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); };
+const teamByKey = k => TEAMS.find(t => t.k === k);
+const shortLabel = t => `${t.s} · ${t.a.split(" ")[0]}${t.a.includes("Girls") ? "G" : "B"}`;
+
 async function boot() {
-  INDEX = await (await fetch("data/index.json", {cache: "no-store"})).json();
-  const nav = $("#tabs");
-  nav.innerHTML = INDEX.competitions.map(c => `<button data-id="${c.id}">${esc(c.title)}</button>`).join("");
-  nav.onclick = e => { const b = e.target.closest("button"); if (b) show(b.dataset.id); };
-  window.onhashchange = () => { if (location.hash.slice(1) !== CUR) show(location.hash.slice(1)); };
-  show(location.hash.slice(1) || INDEX.competitions[0].id);
+  const [teams, index] = await Promise.all([
+    fetch("data/teams.json", {cache: "no-store"}).then(r => r.json()),
+    fetch("data/index.json", {cache: "no-store"}).then(r => r.json())]);
+  TEAMS = teams; INDEX = index;
+  fetch("data/status.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(s => { STATUS = s; const el = $("#checked"); if (el && s) el.innerHTML = checkedTxt(); }).catch(() => {});
+  window.addEventListener("hashchange", route);
+  $("#fclose").onclick = closeFinder;
+  $("#fq").addEventListener("input", drawFinder);
+  route();
 }
-async function show(id) {
-  if (!INDEX.competitions.some(c => c.id === id)) id = INDEX.competitions[0].id;
-  CUR = id; location.hash = id;
-  document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.id === id));
-  if (!DATA[id]) DATA[id] = await (await fetch(`data/${id}.json`, {cache: "no-store"})).json();
-  PICKS[id] = PICKS[id] || {};
-  const D = DATA[id];
-  (D.comp.kind === "bracket" ? renderBracket : renderConference)(D);
-  bindSections();
+function route() {
+  let h = location.hash.slice(1);
+  if (INDEX.legacy && INDEX.legacy[h]) { h = "t=" + INDEX.legacy[h]; history.replaceState(null, "", "#" + h); }
+  const keys = (new URLSearchParams(h).get("t") || "").split(",").filter(k => teamByKey(k));
+  let f = favs();
+  if (keys.length) {
+    if (f === null) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite
+    openTeam(keys[0]);
+  } else if (f && f.length) {
+    openTeam(f[0]);
+  } else {
+    drawPills(); openFinder();
+    $("#app").innerHTML = `<div class="card ctx"><div class="ctx-team">Find your team</div><div class="ctx-sub">Search or browse every ECNL and ECNL RL team we rate, then tap ★ to keep it at the top.</div></div>`;
+  }
 }
-
-function teamName(D, id, fallback) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fallback || "TBD"); }
-
-function fixtureCard(D, M, g, opts = {}) {
-  const me = D.comp.focus_team, H = teamName(D, g.home_id, g.home), A = teamName(D, g.away_id, g.away);
-  const bold = (n, id) => (D.teams.find(t => t.id === id) || {}).name === me ? `<b>${esc(n)}</b>` : esc(n);
-  const played = g.hs != null && g.as != null;
-  const cls = "fx" + (opts.matters ? " matters" : "");
-  if (played) return `<div class="${cls}">
-    <div class="when"><span>${fmtDate(g.date)} · Final</span><span>${esc(g.venue || "")}</span></div>
-    <div class="teams"><div>${bold(H, g.home_id)}</div><div class="score final">${g.hs}–${g.as}</div><div class="a">${bold(A, g.away_id)}</div></div></div>`;
-  const P = M.probs(g.home_id, g.away_id, opts.neutral);
-  const conf = opts.neutral ? confidence(D, g.home_id, g.away_id) : null;
-  const f = opts.picks ? (PICKS[CUR][g.id] || "") : "";
-  const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${f === k ? "on" : ""}">${label}</button>`;
-  return `<div class="${cls}">
-    <div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${opts.matters ? `<span class="pill tag">Matters to us</span> ` : ""}${esc(g.venue || "")}</span></div>
-    <div class="teams"><div>${bold(H, g.home_id)}</div><div class="score vs">vs</div><div class="a">${bold(A, g.away_id)}</div></div>
-    <div class="bar"><div class="bh" style="width:${P.w*100}%">${pct(P.w)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${P.l*100}%">${pct(P.l)}</div></div>
-    <div class="mut" style="margin-top:4px">Most likely: <b>${esc(H)} ${P.score[0]}–${P.score[1]} ${esc(A)}</b>${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
-    ${opts.picks ? `<div class="toggles" data-g="${g.id}">
-      ${btn("H", esc(H) + " win")}${btn("D", "Draw")}${btn("A", esc(A) + " win")}</div>` : ""}
-    ${opts.root ? `<div class="root" data-root="${g.id}">${opts.root}</div>` : ""}
-    ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}
-  </div>`;
+function drawPills() {
+  const f = favs() || [];
+  $("#pills").innerHTML = f.filter(teamByKey).map(k => `<button class="pill-btn ${k === CUR ? "on" : ""}" data-k="${k}">${esc(shortLabel(teamByKey(k)))}</button>`).join("")
+    + `<button class="pill-btn find" id="findbtn">＋ Find a team</button>`;
+  $("#pills").onclick = e => { const b = e.target.closest("button"); if (!b) return; if (b.id === "findbtn") return openFinder(); location.hash = "t=" + b.dataset.k; };
+}
+function toggleFav(k) {
+  let f = favs() || [];
+  if (f.includes(k)) f = f.filter(x => x !== k); else f.push(k);
+  setFavs(f);
 }
 
-// Collapsible section; open/closed state remembered per tab on this device.
-function sec(kind, chip, title, sub, body, key) {
-  const k = `open:${CUR}:${key || title}`, saved = store.get(k);
-  const open = saved === null ? true : saved === "1";
-  return `<details class="card sec sec-${kind}" data-key="${esc(k)}" ${open ? "open" : ""}>
-    <summary class="sec-head"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2><span class="caret">▾</span></summary>
-    <div class="sec-body">${sub ? `<div class="mut sec-sub">${sub}</div>` : ""}${body}</div></details>`;
+// ---------- finder ----------
+let FSTATE = {};
+function openFinder() { FSTATE = {}; $("#fq").value = ""; $("#finder").classList.add("open"); drawFinder(); setTimeout(() => $("#fq").focus(), 50); }
+function closeFinder() { $("#finder").classList.remove("open"); }
+function teamRow(t) {
+  const on = (favs() || []).includes(t.k);
+  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.n)}<div>${esc(t.a)} · ${esc(t.c)}</div></div><button class="star ${on ? "on" : ""}" data-star="${t.k}" title="Favorite">★</button></div>`;
 }
-function bindSections() {
-  document.querySelectorAll("details.sec").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
+function drawFinder() {
+  const q = $("#fq").value.trim().toLowerCase(), body = $("#fbody");
+  if (q.length >= 2) {
+    const toks = q.split(/\s+/);
+    const hits = TEAMS.filter(t => { const s = `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase(); return toks.every(x => s.includes(x)); }).slice(0, 80);
+    body.innerHTML = `<div class="mut" style="margin-bottom:6px">${hits.length === 80 ? "First 80 matches" : hits.length + " matches"}</div>` + hits.map(teamRow).join("");
+  } else {
+    const {a, l, c} = FSTATE;
+    const uniq = arr => [...new Set(arr)];
+    let html = `<div class="crumbs">${[a, l, c].filter(Boolean).map((x, i) => `<button class="pill-btn" data-up="${i}">${esc(x)} ✕</button>`).join("")}</div>`;
+    if (!a) html += `<h3>Age group</h3>` + uniq(TEAMS.map(t => t.a)).map(x => `<div class="f-row" data-a="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
+    else if (!l) html += `<h3>League</h3>` + uniq(TEAMS.filter(t => t.a === a).map(t => t.l)).map(x => `<div class="f-row" data-l="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
+    else if (!c) html += `<h3>Conference</h3>` + uniq(TEAMS.filter(t => t.a === a && t.l === l).map(t => t.c)).sort().map(x => `<div class="f-row" data-c="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
+    else html += `<h3>Team</h3>` + TEAMS.filter(t => t.a === a && t.l === l && t.c === c).map(teamRow).join("");
+    body.innerHTML = html;
+  }
+  body.onclick = e => {
+    const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); st.classList.toggle("on"); return; }
+    const up = e.target.closest("[data-up]"); if (up) { const i = +up.dataset.up; if (i <= 0) FSTATE = {}; else if (i === 1) FSTATE = {a: FSTATE.a}; else FSTATE = {a: FSTATE.a, l: FSTATE.l}; return drawFinder(); }
+    const r = e.target.closest(".f-row"); if (!r) return;
+    if (r.dataset.a) { FSTATE = {a: r.dataset.a}; return drawFinder(); }
+    if (r.dataset.l) { FSTATE.l = r.dataset.l; return drawFinder(); }
+    if (r.dataset.c) { FSTATE.c = r.dataset.c; return drawFinder(); }
+    if (r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
+  };
 }
-function resultRow(D, g, focus) {
-  const H = teamName(D, g.home_id, g.home), A = teamName(D, g.away_id, g.away);
-  let tag = "";
-  if (focus) { const us = g.home_id === focus.id ? g.hs : g.as, them = g.home_id === focus.id ? g.as : g.hs;
-    tag = `<span class="res res-${us > them ? "w" : us === them ? "d" : "l"}">${us > them ? "W" : us === them ? "D" : "L"}</span>`; }
-  return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${esc(H)} <b>${g.hs}–${g.as}</b> ${esc(A)}</span></div>`;
-}
-const addDays = (iso, n) => new Date(new Date(iso + "T12:00:00").getTime() + n * 864e5).toISOString().slice(0, 10);
-const signed = d => (d > 0 ? "+" : d < 0 ? "−" : "±") + Math.abs(d);
-const ord = n => n + (["th","st","nd","rd"][(n % 100 - 20) % 10] || ["th","st","nd","rd"][n % 100] || "th");
 
-function renderConference(D) {
-  const M = makeModel(D), today = todayISO();
-  const ids = D.teams.map(t => t.id), focus = D.teams.find(t => t.name === D.comp.focus_team);
+// ---------- team page ----------
+async function openTeam(k) {
+  CUR = k; closeFinder(); drawPills();
+  const t = teamByKey(k);
+  if (!CONF_CACHE[t.f]) CONF_CACHE[t.f] = await fetch(`data/conf/${t.f}.json`, {cache: "no-store"}).then(r => r.json());
+  const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
+  PICKS[t.f] = PICKS[t.f] || {};
+  renderTeam(D, fid, k);
+  window.scrollTo(0, 0);
+}
+function sec(kind, chip, title, sub, body, key, defOpen = true) {
+  const sk = `open:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
+  return `<details class="card sec sec-${kind}" data-key="${sk}" ${open ? "open" : ""}><summary><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2><span class="caret">▾</span></summary>
+    <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></details>`;
+}
+function teamName(D, id, fb) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fb || "TBD"); }
+
+// Game card. If the team we're following plays, it's on the left: "XF 1 vs Eastside" (home) or "XF 1 @ PacNW" (away).
+function fixtureCard(D, M, g, o = {}) {
+  const f = o.focus, us = f && (g.home_id === f || g.away_id === f), flip = us && g.away_id === f;
+  const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
+  const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
+  const sep = us ? (flip ? "@" : "vs") : "vs";
+  const cls = "fx" + (o.matters ? " matters" : "");
+  const nameL = us ? `<b>${esc(LN)}</b>` : esc(LN);
+  if (g.hs != null && g.as != null) {
+    const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
+    return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · Final</span><span>${esc(g.venue || "")}</span></div>
+      <div class="teams"><div>${nameL} <span class="mut">${sep}</span></div><div class="score final">${ls}–${rs}</div><div class="a">${esc(RN)}</div></div></div>`;
+  }
+  const P = M.probs(g.home_id, g.away_id, o.neutral);
+  const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l;
+  const sL = flip ? [P.score[1], P.score[0]] : P.score;
+  const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
+  let toggles = "";
+  if (o.picks) {
+    const picked = PICKS[D.__fk][g.id] || "";
+    const keyL = flip ? "A" : "H", keyR = flip ? "H" : "A";
+    const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${picked === k ? "on" : ""}">${label}</button>`;
+    toggles = `<div class="toggles" data-g="${g.id}">${btn(keyL, esc(LN) + " win")}${btn("D", "Draw")}${btn(keyR, esc(RN) + " win")}</div>`;
+  }
+  return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${o.matters ? `<span class="pill tag">Matters to us</span> ` : ""}${esc(g.venue || "")}</span></div>
+    <div class="teams"><div>${nameL}</div><div class="score vs">${sep}</div><div class="a">${esc(RN)}</div></div>
+    <div class="bar"><div class="bh" style="width:${pl*100}%">${pct(pl)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${pr*100}%">${pct(pr)}</div></div>
+    <div class="mut" style="margin-top:4px">Most likely: <b>${esc(LN)} ${sL[0]}–${sL[1]} ${esc(RN)}</b>${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
+    ${toggles}${o.root ? `<div class="root" data-root="${g.id}">${o.root}</div>` : ""}
+    ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}</div>`;
+}
+function resultRow(D, g, f) {
+  const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
+  const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id, ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
+  const tag = us ? `<span class="res res-${ls > rs ? "w" : ls === rs ? "d" : "l"}">${ls > rs ? "W" : ls === rs ? "D" : "L"}</span>` : "";
+  return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us ? (flip ? "@" : "vs") : "vs"}</span> ${esc(teamName(D, R))} · <b>${ls}–${rs}</b></span></div>`;
+}
+function checkedTxt() {
+  if (!STATUS) return "";
+  return `Scores last checked ${new Date(STATUS.checked).toLocaleString(undefined, {weekday: "short", hour: "numeric", minute: "2-digit"})}. ECNL posts scores when clubs enter them, usually within a few hours of the game.`;
+}
+
+function renderTeam(D, fid, key) {
+  D.__fk = teamByKey(key).f;
+  const M = makeModel(D.teams, D.model), today = todayISO(), ids = D.teams.map(t => t.id);
+  const focus = D.teams.find(t => t.id === fid), me = esc(focus.short);
   const valid = D.games.filter(g => g.home_id && g.away_id && !g.bad);
   const played = valid.filter(g => g.hs != null && g.as != null);
   const remaining = valid.filter(g => g.hs == null || g.as == null);
   remaining.forEach(g => g.pending = g.date < today);
-  const picks = PICKS[CUR];
+  const picks = PICKS[D.__fk];
   for (const k of Object.keys(picks)) if (!remaining.some(g => String(g.id) === k)) delete picks[k];
-  const spots = D.comp.playoff_spots;
-  const N = 4000;
-  const base = simulate(D, M, played, remaining, {}, N);
-
-  // Which race is still open for us? If the playoff spot is all but settled, 1st place is the race.
+  const spots = D.playoff_spots, N = 4000;
+  const base = simulate(ids, M, played, remaining, {}, N);
   let keyIdx = 0, keyLabel = "finishing 1st";
-  if (spots && focus) { const p = atOrAbove(base, focus.id, spots - 1); if (p > 0.03 && p < 0.97) { keyIdx = spots - 1; keyLabel = `making the top ${spots}`; } }
-  const keyNow = focus ? atOrAbove(base, focus.id, keyIdx) : 0;
-
-  const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
+  if (spots) { const p = atOrAbove(base, fid, spots - 1); if (p > 0.03 && p < 0.97) { keyIdx = spots - 1; keyLabel = `making the top ${spots}`; } }
+  const keyNow = atOrAbove(base, fid, keyIdx);
+  const isMe = g => g.home_id === fid || g.away_id === fid;
   const upcoming = remaining.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-  // Missed games: date passed, no score. Still to be played later, so still in every prediction,
-  // but shown apart until ECNL posts a new date (then they move back into the schedule automatically).
-  const missed = upcoming.filter(g => g.pending);
-  const scheduled = upcoming.filter(g => !g.pending);
+  const missed = upcoming.filter(g => g.pending), scheduled = upcoming.filter(g => !g.pending);
   const nextOurs = scheduled.filter(g => isMe(g) && g.date >= today).slice(0, 3);
   const week = scheduled.filter(g => !isMe(g) && g.date >= today && g.date <= addDays(today, 7));
-  const missedOurs = missed.filter(isMe), missedOthers = missed.filter(g => !isMe(g));
   const missedBox = (list, opts) => list.length ? `<details class="inner missed"><summary>Missed games waiting for a new date (${list.length})</summary>
-    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. They're still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts(g))).join("")}</details>` : "";
-  const ourResults = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date));
-  const divResults = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
+    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts)).join("")}</details>` : "";
+  const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
-  const fPos = focus ? now.findIndex(r => r.id === focus.id) + 1 : null;
-  const me = focus ? esc(focus.short) : "Your team";
-  const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
-  let mismatch = [];
-  for (const o of D.official) { const c = D.computed.find(x => x.id === o.id); if (c && (o.gp !== c.gp || o.pts !== c.pts)) mismatch.push(`${teamName(D, o.id)}: ECNL shows ${o.gp} GP / ${o.pts} pts, scores add up to ${c.gp} GP / ${c.pts} pts`); }
-  const BAD = "Calculating…";
+  const fPos = now.findIndex(r => r.id === fid) + 1;
+  const mismatch = D.official.filter(o => { const c = D.computed.find(x => x.id === o.id); return c && (o.gp !== c.gp || o.pts !== c.pts); });
+  const starred = (favs() || []).includes(key);
+  const evIdx = (D.team_events || {})[String(fid)] || [];
+  const events = evIdx.map(i => D.events[i]);
+  const CALC = "Calculating…";
 
   $("#app").innerHTML = `
-  <div class="ctx"><div class="ctx-team">${me}</div>
-    <div class="ctx-sub">${esc(D.comp.age_label || "")} · ${esc(D.comp.context || "")} · ${ids.length} teams${spots ? ` · ${esc(D.comp.playoff_label)}` : ""}</div></div>
-  ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores: ${mismatch.map(esc).join("; ")}. Our table uses the scores.</div>` : ""}
+  <div class="card ctx"><div class="ctx-top"><div class="ctx-team">${me}</div>
+      <button class="icon-btn ${starred ? "starred" : ""}" id="starbtn">${starred ? "★ Favorite" : "☆ Add to favorites"}</button>
+      <button class="icon-btn" id="sharebtn">Share</button></div>
+    <div class="ctx-sub">${esc(D.age_label)} · ${esc(D.conf_name)} · ${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
+  ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
-  ${sec("us", me, "1 · Where we stand", "Official results only. This section never changes when you make predictions.", `
-    ${focus ? `<div class="focus" style="margin-bottom:12px">
+  ${sec("us", me, "1 · Where we stand", "Official results. This section never changes when you make predictions.", `
+    <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now</div></div>
-      <div class="stat"><div class="v">${pct(atOrAbove(base, focus.id, 0))}</div><div class="k">Chance to finish 1st</div></div>
-      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, focus.id, spots - 1))}</div><div class="k">Chance of top ${spots} (playoffs)</div></div>` : ""}
-      <div class="stat"><div class="v">${rangeOf(base, focus.id)}</div><div class="k">Most likely final place</div></div>
-    </div>` : ""}
-    <div class="scroll"><table class="grid">
-    <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th></tr>
-    ${now.map((r, i) => `<tr class="${focus && r.id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i+1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td></tr>`).join("")}
-    </table></div>${spots ? `<div class="mut" style="margin-top:6px">Ranked by points per game. Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`, "s1")}
+      <div class="stat"><div class="v">${pct(atOrAbove(base, fid, 0))}</div><div class="k">Chance to finish 1st</div></div>
+      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, fid, spots - 1))}</div><div class="k">Chance of top ${spots}</div></div>` : ""}
+      <div class="stat"><div class="v">${placeTxt(rangeOf(base, fid))}</div><div class="k">Most likely finish</div></div>
+    </div>
+    <table class="grid"><tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>PTS</th><th>PPG</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+    ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
+      <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`).join("")}
+    </table><div class="mut" style="margin-top:6px">Ranked by points per game${spots ? `; dashed line = playoff cut` : ""}. Shaded = chances from playing out the rest of the season ${N.toLocaleString()} times.</div>`, "s1")}
 
-  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, focus ? `Win/draw/loss odds for each game, and what each result does to ${me}'s chance of ${keyLabel} (now <b>${pct(keyNow)}</b>).` : "",
-    (nextOurs.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No more games scheduled.</div>") + missedBox(missedOurs, () => ({root: BAD})), "s2")}
+  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, `Odds for each game, and what each result does to ${me}'s chance of ${keyLabel} (now <b>${pct(keyNow)}</b>).`,
+    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, root: CALC})).join("") || "<div class='mut'>No more league games scheduled.</div>") + missedBox(missed.filter(isMe), {focus: fid, root: CALC}), "s2")}
 
-  ${sec("div", "League", "3 · Rest of the league · next 7 days", `Every other league game from ${fmtDate(today)} to ${fmtDate(addDays(today, 7))}. Gray cards matter to ${me}.`,
-    (week.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>") + missedBox(missedOthers, () => ({root: BAD})), "s3")}
+  ${events.map((ev, i) => sec("us", me, `${ev.name}${ev.flight ? ` · ${esc(ev.flight)}` : ""}`, `Event games don't count toward conference standings. <a href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a>`, eventBody(D, ev, fid), "ev" + i)).join("")}
 
-  ${sec("div", "Predict", "4 · Rest-of-season predictor", `Every remaining game played out ${N.toLocaleString()} times. Pick results below to see how the final table changes. Only this section changes.`, `
+  ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
+    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3")}
+
+  ${sec("div", "League", "4 · Rest of the league · next 7 days", `Every other ${esc(D.conf_name)} game, ${fmtDate(today)} – ${fmtDate(addDays(today, 7))}. Gray cards matter to ${me}.`,
+    (week.map(g => fixtureCard(D, M, g, {root: CALC})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>")
+    + missedBox(missed.filter(g => !isMe(g)), {root: CALC})
+    + (others.length ? `<details class="inner"><summary>League results (${others.length})</summary>${others.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4")}
+
+  ${sec("div", "Predict", "5 · Rest-of-season predictor", `Gray = our pick for each game. Tap a different result to override it (white). The table updates instantly.`, `
     <div class="picksbar" id="picksbar"></div>
-    <div class="scroll" id="predtable"></div>
-    <h3 style="margin-top:14px">Remaining games (${upcoming.length}) · gray = our pick, tap to change</h3>
-    <div id="predgames">${missedBox(missed, () => ({picks: true}))}${scheduled.map(g => fixtureCard(D, M, g, {picks: true})).join("")}</div>`, "s4")}
+    <div id="predtable"></div>
+    <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
+      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => fixtureCard(D, M, g, {focus: fid, picks: true})).join("")}</div></details>`, "s5")}
 
-  ${sec("past", "Past", "5 · Past games", "Final scores.", `
-    <h3>${me}</h3>${ourResults.map(g => resultRow(D, g, focus)).join("") || "<div class='mut'>None yet.</div>"}
-    <details class="inner"><summary>Rest of the league (${divResults.length} games)</summary>${divResults.map(g => resultRow(D, g, null)).join("")}</details>`, "s5")}
-  ${footer(D)}`;
+  ${accuracy(D)}
+  <footer><div id="checked">${checkedTxt()}</div><div style="margin-top:4px">Data: <a href="${esc(D.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a> · Unofficial. Predictions are estimates, not guarantees.</div></footer>`;
 
-  CTX = {D, M, played, remaining, base, focus, spots, N, keyIdx, ids};
+  document.querySelectorAll("details.sec").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
+  $("#gamelist").addEventListener("toggle", e => store.set("open:gamelist", e.target.open ? "1" : "0"));
+  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").className = "icon-btn" + (on ? " starred" : ""); $("#starbtn").textContent = on ? "★ Favorite" : "☆ Add to favorites"; };
+  $("#sharebtn").onclick = async () => {
+    const url = location.origin + location.pathname + "#t=" + key;
+    if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
+    try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (e) { prompt("Copy this link:", url); }
+  };
+  CTX = {D, M, played, remaining, base, fid, spots, N, ids};
   drawPredictor();
   $("#predgames").addEventListener("click", onPick);
 
-  // Fill in the "what each result does" lines after the page is visible.
-  if (focus) setTimeout(() => {
+  // "What each result does" lines, filled in after the page shows.
+  setTimeout(() => {
     const need = [...nextOurs, ...week, ...missed];
-    const nowK = atOrAbove(simulate(D, M, played, remaining, {}, 1500), focus.id, keyIdx);
+    const nowK = atOrAbove(simulate(ids, M, played, remaining, {}, 1500), fid, keyIdx);
     for (const g of need) {
-      const res = {};
-      for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(D, M, played, remaining, {[g.id]: o}, 1500), focus.id, keyIdx);
       const el = document.querySelector(`[data-root="${g.id}"]`); if (!el) continue;
-      const dl = o => Math.round((res[o] - nowK) * 100);
+      const res = {}; for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(ids, M, played, remaining, {[g.id]: o}, 1500), fid, keyIdx);
       if (isMe(g)) {
-        const usH = g.home_id === focus.id, W = usH ? "H" : "A", L = usH ? "A" : "H";
-        el.innerHTML = `Chance of ${keyLabel} (now ${pct(keyNow)}): <b class="up">win ${signed(dl(W))}</b> · draw ${signed(dl("D"))} · <span class="dn">loss ${signed(dl(L))}</span>`;
+        const W = g.home_id === fid ? "H" : "A", L = W === "H" ? "A" : "H", dl = o => Math.round((res[o] - nowK) * 100);
+        el.innerHTML = `Chance of ${keyLabel} (now ${pct(keyNow)}): <b>win ${signed(dl(W))}</b> · draw ${signed(dl("D"))} · <span class="dn">loss ${signed(dl(L))}</span>`;
       } else {
         const swing = Math.max(res.H, res.D, res.A) - Math.min(res.H, res.D, res.A);
+        if (swing < 0.04) { el.remove(); continue; }
         const best = ["H", "D", "A"].reduce((a, b) => res[b] > res[a] ? b : a);
-        const who = best === "H" ? teamName(D, g.home_id) : best === "A" ? teamName(D, g.away_id) : "a draw";
-        if (swing >= 0.04) {
-          el.closest(".fx").classList.add("matters");
-          const head = el.closest(".fx").querySelector(".when span:last-child");
-          if (head && !head.querySelector(".tag")) head.insertAdjacentHTML("afterbegin", `<span class="pill tag">Matters to us</span> `);
-          const lab = o => o === "H" ? `${esc(teamName(D, g.home_id))} win` : o === "A" ? `${esc(teamName(D, g.away_id))} win` : "draw";
-          el.innerHTML = `Root for <b>${esc(who)}</b>. ${me}'s chance of ${keyLabel} (now ${pct(nowK)}): ` +
-            ["H", "D", "A"].map(o => o === best ? `<b class="up">${lab(o)} → ${pct(res[o])}</b>` : `${lab(o)} → ${pct(res[o])}`).join(" · ");
-        } else el.remove();
+        const lab = o => o === "H" ? `${esc(teamName(D, g.home_id))} win` : o === "A" ? `${esc(teamName(D, g.away_id))} win` : "draw";
+        const card = el.closest(".fx"); card.classList.add("matters");
+        const head = card.querySelector(".when span:last-child"); if (head && !head.querySelector(".tag")) head.insertAdjacentHTML("afterbegin", `<span class="pill tag">Matters to us</span> `);
+        el.innerHTML = `Root for <b>${best === "D" ? "a draw" : esc(teamName(D, best === "H" ? g.home_id : g.away_id))}</b>. ${me}'s chance of ${keyLabel} (now ${pct(nowK)}): ` + ["H", "D", "A"].map(o => o === best ? `<b>${lab(o)} → ${pct(res[o])}</b>` : `${lab(o)} → ${pct(res[o])}`).join(" · ");
       }
     }
   }, 30);
 }
 
 function drawPredictor() {
-  const {D, M, played, remaining, base, focus, spots, N, ids} = CTX;
-  const picks = PICKS[CUR], nP = Object.keys(picks).length;
-  const S = nP ? simulate(D, M, played, remaining, picks, N) : base;
-  // "If every pick comes true": your overrides, otherwise our pick, each with its likeliest score.
-  const rows = remaining.map(g => { const P = M.probs(g.home_id, g.away_id); const k = picks[g.id] || P.pick; const sc = P.scores[k]; return [g.home_id, g.away_id, sc[0], sc[1]]; });
-  const final = rank(table(rows, played, ids), played, rows);
+  const {D, M, played, remaining, base, fid, spots, N, ids} = CTX;
+  const picks = PICKS[D.__fk], nP = Object.keys(picks).length;
+  const S = nP ? simulate(ids, M, played, remaining, picks, N) : base;
+  const rows = remaining.map(g => { const P = M.probs(g.home_id, g.away_id); const sc = P.scores[picks[g.id] || P.pick]; return [g.home_id, g.away_id, sc[0], sc[1]]; });
+  const fin = rank(table(rows, played, ids), played, rows);
   const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? ` <span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
-  const rangeOf = id => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
-  $("#picksbar").innerHTML = nP
-    ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}</b> (black). Gray = our pick. <button class="reset" id="clearpicks">Reset to our picks</button>`
-    : `<span>Showing <b>our pick</b> for every game (gray). Tap a different result to override it (black).</span>`;
-  const placeTxt = id => { const r = rangeOf(id).split("–").map(Number); return r.length > 1 ? `likely ${ord(r[0])}–${ord(r[1])}` : `likely ${ord(r[0])}`; };
-  $("#predtable").innerHTML = `<table class="grid pred">
-    <tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
-    ${final.map((r, i) => { const id = r.id, s = S.get(id), b = base.get(id);
-      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td>
-      <td class="t">${esc(teamName(D, id))}<div class="sub">${placeTxt(id)}</div></td>
+  $("#picksbar").innerHTML = nP ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}.</b> <button class="reset" id="clearpicks">Reset to our picks</button>` : `Showing <b>our pick</b> for every game. Open the list below to change any of them.`;
+  $("#predtable").innerHTML = `<table class="grid"><tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+    ${fin.map((r, i) => { const s = S.get(r.id), b = base.get(r.id);
+      return `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}<div class="sub">likely ${placeTxt(rangeOf(S, r.id))}</div></td>
       <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td><b>${r.pts}</b></td>
-      <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, id, spots - 1))}${nP ? delta(atOrAbove(S, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
-  </table><div class="mut" style="margin-top:6px"><b>W-D-L, GD, PTS:</b> final table if every pick comes true (all teams play ${final[0] ? final[0].gp : ""}). <b>Shaded:</b> real chances from playing out the rest of the season ${N.toLocaleString()} times${nP ? " with your changes locked in; green/red = change" : ""}.</div>`;
-  const c = $("#clearpicks");
-  if (c) c.onclick = () => { PICKS[CUR] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
+      <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, r.id, spots - 1))}${nP ? delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
+  </table><div class="mut" style="margin-top:6px"><b>W-D-L, GD, PTS:</b> final table if every pick comes true. <b>Shaded:</b> real chances from ${N.toLocaleString()} simulated seasons${nP ? " with your changes locked in" : ""}.</div>`;
+  const c = $("#clearpicks"); if (c) c.onclick = () => { PICKS[D.__fk] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
 }
-
 function onPick(e) {
   const b = e.target.closest(".toggles button"); if (!b) return;
-  const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[CUR];
+  const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[CTX.D.__fk];
   if (P[id] === f || b.classList.contains("ours")) { delete P[id]; wrap.querySelectorAll("button").forEach(x => x.classList.remove("on")); }
   else { P[id] = f; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
-  $("#predtable").style.opacity = .55;
-  setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
+  $("#predtable").style.opacity = .55; setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
 }
 
-function footer(D) {
-  const bt = D.pool.backtest;
-  const B = bt && bt.buckets ? bt.buckets : {};
-  const row = (k, label) => B[k] ? `<tr><td class="t">${label}</td><td>${B[k].games}</td><td>${Math.round(B[k].won * 100)}%</td><td>${Math.round(B[k].not_lose * 100)}%</td></tr>` : "";
-  const LR = D.live_record;
-  const live = LR && LR.games ? `<h3 style="margin-top:12px">Live record on this page's games</h3>
-    <div>Our pick was right in <b>${LR.correct} of ${LR.games}</b> games (${Math.round(LR.correct / LR.games * 100)}%); the favorite didn't lose in ${LR.not_lost}.</div>
-    ${LR.recent.map(e => `<div class="rrow"><span class="res res-${e.result === e.pick ? "w" : "l"}">${e.result === e.pick ? "✓" : "✗"}</span><span class="rd">${fmtDate(e.date)}</span><span class="rt">${esc(e.home)} <b>${e.score}</b> ${esc(e.away)} <span class="mut">· we picked ${e.pick === "H" ? "home win" : e.pick === "A" ? "away win" : "draw"}</span></span></div>`).join("")}` :
-    `<div class="mut" style="margin-top:10px">Live record: starting now. Each game's pick is saved before it's played and scored after.</div>`;
-  return `${bt ? sec("past", "Model", "How accurate is this?", `We replayed ${bt.games.toLocaleString()} real games from this season (since the August age-group change), predicting each one using only results from before it was played.`, `
-    <div class="scroll"><table><tr><th class="t">When the favorite was given…</th><th>Games</th><th>Favorite won</th><th>Didn't lose</th></tr>
-    ${row("70+", "70% or more")}${row("60-69", "60–69%")}${row("50-59", "50–59%")}${row("<50", "under 50% (close games)")}</table></div>
-    <div class="mut" style="margin-top:6px">Overall it picks the exact result (win/draw/loss) ${Math.round(bt.accuracy * 100)}% of the time, and the favorite avoids losing ${Math.round((bt.fav_not_lose || 0) * 100)}% of the time. About 1 in 5 games end in a draw, which is why exact-result accuracy tops out around 60% even for professional models.</div>${live}`, "acc") : ""}
-  <footer>Updated ${new Date(D.updated).toLocaleString()} · Data: <a href="${esc(D.comp.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a><br>Unofficial. Predictions are estimates, not guarantees.</footer>`;
-}
-
-// ---------- bracket ----------
-function renderBracket(D) {
-  const M = makeModel(D), focus = D.teams.find(t => t.name === D.comp.focus_team);
-  const games = D.games.slice().sort((a, b) => (a.num || 0) - (b.num || 0));
-  const byNum = new Map(games.map(g => [g.num, g]));
-  const ref = s => { const m = /^(Winner|Loser)\s+(?:of\s+)?Game\s+#?(\d+)/i.exec(s || ""); return m ? [m[1].toLowerCase(), +m[2]] : null; };
-  // A game is on the winners' path if every team in it got there only by winning.
-  const winPath = new Map();
-  const isWin = g => { if (!g) return false; if (winPath.has(g.num)) return winPath.get(g.num);
-    const rh = ref(g.home), ra = ref(g.away); let v;
-    if (!rh && !ra) v = true; else if (!rh || !ra) v = false;
-    else v = rh[0] === "winner" && ra[0] === "winner" && isWin(byNum.get(rh[1])) && isWin(byNum.get(ra[1]));
-    winPath.set(g.num, v); return v; };
-  const depth = g => { const rh = ref(g.home); return rh ? 1 + depth(byNum.get(rh[1]) || {}) : 0; };
-  const wp = games.filter(g => isWin(g) && ref(g.home));
-  const champ = wp.length ? wp.reduce((a, b) => depth(b) > depth(a) ? b : a) : games[games.length - 1];
-  const stage = g => !ref(g.home) ? "Opening game" : g === champ ? "Championship" : isWin(g) ? "Winners' side" : "Consolation";
-  const N = 20000, appear = new Map(), oppCount = new Map(), wins = new Map();
-  for (const g of games) { appear.set(g.num, new Map()); oppCount.set(g.num, new Map()); }
-  for (let n = 0; n < N; n++) {
-    const res = new Map();
-    const resolve = (g, side) => {
-      const id = g[side + "_id"]; if (id) return id;
-      const r = ref(g[side]); if (!r) return null;
-      const out = play(byNum.get(r[1])); return out ? (r[0] === "winner" ? out[0] : out[1]) : null;
-    };
-    const play = g => {
-      if (!g) return null; if (res.has(g.num)) return res.get(g.num);
-      const h = resolve(g, "home"), a = resolve(g, "away"); if (!h || !a) { res.set(g.num, null); return null; }
-      let hw;
-      if (g.hs != null && g.as != null) hw = g.hs > g.as || (g.hs === g.as && (g.hpk ?? 0) > (g.apk ?? 0));
-      else { const [x, y] = M.sample(h, a, true); hw = x > y || (x === y && Math.random() < 0.5); }
-      const out = hw ? [h, a] : [a, h]; res.set(g.num, out);
-      for (const t of [h, a]) { const m = appear.get(g.num); m.set(t, (m.get(t) || 0) + 1); }
-      const key = `${h}|${a}`; const oc = oppCount.get(g.num); oc.set(key, (oc.get(key) || 0) + 1);
-      return out;
-    };
-    for (const g of games) play(g);
-    const r = res.get(champ.num); if (r) wins.set(r[0], (wins.get(r[0]) || 0) + 1);
-  }
-  const prob = (num, id) => (appear.get(num).get(id) || 0) / N;
-  const tn = id => teamName(D, id);
-  const card = t => { const r = t.conf_record; return `<tr class="${focus && t.id === focus.id ? "me" : ""}"><td class="t">${esc(t.short)}<div class="mut">${esc((t.conf_name || "").replace(/ 20\d\d-\d\d$/, ""))}</div></td>
-    <td>${r ? `${r.w}-${r.d}-${r.l}` : "—"}</td><td>${r ? (r.gd > 0 ? "+" : "") + r.gd : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_new ?? "—"} <span class="mut">/ ${t.games_rated}</span></td><td>${pct((wins.get(t.id) || 0) / N)}</td></tr>`; };
-  const fGames = focus ? games.filter(g => prob(g.num, focus.id) > 0).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time) || a.num - b.num) : [];
-  const path = fGames.map(g => {
-    const p = prob(g.num, focus.id);
-    const vs = new Map();
-    for (const [k, c] of oppCount.get(g.num).entries()) { const [h, a] = k.split("|").map(Number); if (h === focus.id) vs.set(a, (vs.get(a) || 0) + c); else if (a === focus.id) vs.set(h, (vs.get(h) || 0) + c); }
-    const lines = [...vs.entries()].sort((a, b) => b[1] - a[1]).map(([o, c]) => {
-      const P = M.probs(focus.id, o, true); const cf = confidence(D, focus.id, o);
-      return `<div style="margin:4px 0">vs <b>${esc(tn(o))}</b> <span class="mut">(${pct(c / N / p)} of the time)</span> · win ${pct(P.w)} · draw ${pct(P.d)} · lose ${pct(P.l)} <span class="pill ${cf[1]}" title="${esc(cf[2])}">${cf[0]}</span></div>`; }).join("");
-    const label = stage(g);
-    return `<div class="node"><div><b>Game ${g.num}</b> · ${fmtDate(g.date)} ${fmtTime(g.time)} · ${label} <span class="mut">· ${esc(focus.short)} plays here ${pct(p)}</span></div>${lines}</div>`;
-  }).join("");
-  const first = games.filter(g => g.home_id && g.away_id);
-  const anyLow = focus && first.some(g => (g.home_id === focus.id || g.away_id === focus.id) && confidence(D, g.home_id, g.away_id)[0] === "Low");
-  const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
-  const me = focus ? esc(focus.short) : "Your team";
-  const ourFirst = first.filter(g => isMe(g) && g.hs == null);
-  const othersFirst = first.filter(g => !isMe(g) && g.hs == null);
+// Events (national events, tournaments) inside the team page; brackets show the possible path.
+function eventBody(D, ev, fid) {
+  const M = makeModel(ev.teams, D.model), tn = id => { const t = ev.teams.find(x => x.id === id); return t ? t.short : "TBD"; };
+  const Dl = {teams: ev.teams, __fk: D.__fk};
+  const games = ev.games.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time) || (a.num || 0) - (b.num || 0));
+  const first = games.filter(g => g.home_id && g.away_id && g.hs == null && (g.home_id === fid || g.away_id === fid));
   const done = games.filter(g => g.hs != null && g.as != null);
-  $("#app").innerHTML = `
-    <div class="ctx"><div class="ctx-team">${me}</div>
-      <div class="ctx-sub">${esc(D.comp.age_label || "")} · ${esc(D.comp.context || "")} · knockout bracket, 3 games each · <b>does not count toward conference standings</b></div></div>
-    ${anyLow ? `<div class="warn">These teams come from different conferences with few games linking them yet, so cross-conference odds are rough. They sharpen as Phoenix results come in.</div>` : ""}
-    ${ourFirst.length ? sec("us", me, "1 · Our first game", "Neutral field, so no home advantage.", ourFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("")) : ""}
-    ${focus ? sec("us", me, `${ourFirst.length ? 2 : 1} · Our possible path`, `A win sends ${me} to the winners' side, a loss to the consolation side. Tied bracket games assumed to go to penalties (50/50). Chance ${me} wins the group: <b>${pct((wins.get(focus.id) || 0) / N)}</b>.`, `<div class="path">${path}</div>`) : ""}
-    ${sec("div", "Group", "Other opening games", "These decide who we could meet on day 2.", othersFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("") || "<div class='mut'>All played.</div>")}
-    ${sec("div", "Group", "The 8 teams", `Conf W-D-L = this season in their own conference. Rank = among all ${D.pool.teams_rated} rated U16 teams. Games = results the rating is built on: new-age-group games since August / all games including last season's 2011 team (counted lightly). Fewer new games = less certain.`, `
-      <div class="scroll"><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games<br><span class="mut">new / all</span></th><th>Win group</th></tr>
-      ${D.teams.slice().sort((a, b) => b.strength - a.strength).map(card).join("")}</table></div>`)}
-    ${sec("past", "Schedule", done.length ? "Bracket results & schedule" : "Full bracket schedule", "", games.map(g => `<div class="rrow"><span class="rd">G${g.num} · ${fmtDate(g.date)}<br>${fmtTime(g.time)}</span><span class="rt">${esc(g.home_id ? tn(g.home_id) : g.home)} <b>${g.hs != null ? `${g.hs}–${g.as}` : "v"}</b> ${esc(g.away_id ? tn(g.away_id) : g.away)}</span></div>`).join(""))}
-    ${footer(D)}`;
+  let path = "", WIN = "";
+  if (ev.bracket) {
+    const byNum = new Map(games.map(g => [g.num, g]));
+    const ref = s => { const m = /^(Winner|Loser)\s+(?:of\s+)?Game\s+#?(\d+)/i.exec(s || ""); return m ? [m[1].toLowerCase(), +m[2]] : null; };
+    const N = 15000, appear = new Map(games.map(g => [g.num, new Map()])), opp = new Map(games.map(g => [g.num, new Map()]));
+    const isWin = (g, seen = new Set()) => { if (!g) return false; const rh = ref(g.home), ra = ref(g.away); if (!rh && !ra) return true; if (!rh || !ra) return false; return rh[0] === "winner" && ra[0] === "winner" && isWin(byNum.get(rh[1])) && isWin(byNum.get(ra[1])); };
+    const depth = g => { const r = ref(g && g.home); return r ? 1 + depth(byNum.get(r[1])) : 0; };
+    const wp = games.filter(g => isWin(g) && ref(g.home)); const champ = wp.length ? wp.reduce((a, b) => depth(b) > depth(a) ? b : a) : null;
+    let wins = 0; 
+    for (let n = 0; n < N; n++) {
+      const res = new Map();
+      const side = (g, s) => { const id = g[s + "_id"]; if (id) return id; const r = ref(g[s]); if (!r) return null; const o = play(byNum.get(r[1])); return o ? (r[0] === "winner" ? o[0] : o[1]) : null; };
+      const play = g => { if (!g) return null; if (res.has(g.num)) return res.get(g.num);
+        const h = side(g, "home"), a = side(g, "away"); if (!h || !a) { res.set(g.num, null); return null; }
+        let hw; if (g.hs != null && g.as != null) hw = g.hs > g.as || (g.hs === g.as && (g.hpk ?? 0) > (g.apk ?? 0)); else { const [x, y] = M.sample(h, a, true); hw = x > y || (x === y && Math.random() < .5); }
+        const o = hw ? [h, a] : [a, h]; res.set(g.num, o);
+        if (h === fid || a === fid) { const m = appear.get(g.num); const other = h === fid ? a : h; m.set(other, (m.get(other) || 0) + 1); }
+        return o; };
+      games.forEach(play); if (champ && res.get(champ.num) && res.get(champ.num)[0] === fid) wins++;
+    }
+    WIN = pct(wins / N);
+    const stage = g => !ref(g.home) ? "Opening game" : g === champ ? "Championship" : isWin(g) ? "Winners' side" : "Consolation";
+    path = `<details class="inner"><summary>Possible path through the bracket</summary><div class="mut" style="margin-bottom:6px">Win → winners' side, loss → consolation. Tied bracket games assumed to go to penalties (50/50).</div><div class="path">` +
+      games.filter(g => appear.get(g.num).size).map(g => { const m = appear.get(g.num), tot = [...m.values()].reduce((a, b) => a + b, 0);
+        return `<div class="node"><b>Game ${g.num}</b> · ${fmtDate(g.date)} ${fmtTime(g.time)} · ${stage(g)} <span class="mut">· plays here ${pct(tot / N)}</span>` +
+          [...m.entries()].sort((a, b) => b[1] - a[1]).map(([o, c]) => { const P = M.probs(fid, o, true), cf = confidence(ev.teams, fid, o);
+            return `<div>vs <b>${esc(tn(o))}</b> <span class="mut">(${pct(c / tot)})</span> · win ${pct(P.w)} · draw ${pct(P.d)} · lose ${pct(P.l)} <span class="pill ${cf[1]}" title="${esc(cf[2])}">${cf[0]}</span></div>`; }).join("") + `</div>`; }).join("") + `</div></details>`;
+  }
+  const others = games.filter(g => g.home_id && g.away_id && g.hs == null && g.home_id !== fid && g.away_id !== fid);
+  const teamsTbl = `<details class="inner"><summary>Teams in the group (${ev.teams.length})</summary><div class="scroll"><table class="grid"><tr><th class="t">Team</th><th>Conf W-D-L</th><th>Rating</th><th>Rank</th><th>Games<br>new/all</th></tr>
+    ${ev.teams.slice().sort((a, b) => b.strength - a.strength).map(t => `<tr class="${t.id === fid ? "me" : ""}"><td class="t">${esc(t.short)}<div class="sub">${esc(t.conf_name)}</div></td><td>${t.conf_record ? `${t.conf_record.w}-${t.conf_record.d}-${t.conf_record.l}` : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_new} / ${t.games_rated}</td></tr>`).join("")}</table></div>
+    <div class="mut" style="margin-top:4px">Rating = expected goal difference vs an average team. Rank among all rated teams in this age group.</div></details>`;
+  return (first.map(g => fixtureCard(Dl, M, g, {focus: fid, neutral: true, teams: ev.teams})).join(""))
+    + (ev.bracket ? `<div style="margin:6px 0">Chance to win the group: <b>${WIN}</b></div>` : "") + path
+    + (done.length ? `<h3>Results</h3>` + done.map(g => resultRow(Dl, g, fid)).join("") : "")
+    + (others.length ? `<details class="inner"><summary>Other games in the group (${others.length})</summary>${others.map(g => fixtureCard(Dl, M, g, {neutral: true, teams: ev.teams})).join("")}</details>` : "")
+    + teamsTbl;
 }
 
-boot().catch(e => { $("#app").innerHTML = `<div class="card">Couldn't load data: ${esc(e.message)}</div>`; });
+function accuracy(D) {
+  const bt = D.pool_stats && D.pool_stats.backtest; if (!bt) return "";
+  const B = bt.buckets || {}, row = (k, label) => B[k] ? `<tr><td class="t">${label}</td><td>${B[k].games}</td><td>${Math.round(B[k].won * 100)}%</td><td>${Math.round(B[k].not_lose * 100)}%</td></tr>` : "";
+  const LR = D.live_record;
+  const live = LR && LR.games ? `<h3>Live record (this conference)</h3><div>Our pick was right in <b>${LR.correct} of ${LR.games}</b> games (${Math.round(LR.correct / LR.games * 100)}%).</div>`
+    + LR.recent.map(e => `<div class="rrow"><span class="res res-${e.result === e.pick ? "w" : "l"}">${e.result === e.pick ? "✓" : "✗"}</span><span class="rd">${fmtDate(e.date)}</span><span class="rt">${esc(e.home)} <b>${e.score}</b> ${esc(e.away)}</span></div>`).join("")
+    : `<div class="mut" style="margin-top:8px">Live record: each game's pick is saved before it's played and scored after.</div>`;
+  return sec("past", "Model", "How accurate is this?", `Replayed ${bt.games.toLocaleString()} ECNL / ECNL RL games from this season, predicting each from results before it.`, `
+    <table class="grid"><tr><th class="t">Favorite given…</th><th>Games</th><th>Won</th><th>Didn't lose</th></tr>${row("70+", "70% or more")}${row("60-69", "60–69%")}${row("50-59", "50–59%")}${row("<50", "under 50%")}</table>
+    <div class="mut" style="margin-top:6px">Exact result right ${Math.round(bt.accuracy * 100)}% of the time; favorite didn't lose ${Math.round((bt.fav_not_lose || 0) * 100)}%. About 1 in 5 games is a draw, so ~60% is near the ceiling even for professional models.</div>${live}`, "acc", false);
+}
+
+boot().catch(e => { $("#app").innerHTML = `<div class="card ctx">Couldn't load data: ${esc(e.message)}</div>`; });
 </script>
 </body>
 </html>

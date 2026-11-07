@@ -40,7 +40,7 @@ def current_catalog(start_id=4240, tail=40):
     if os.path.exists(PATH):
         with open(PATH) as f:
             cat = json.load(f)
-    if "--offline" in sys.argv:
+    if "--offline" in sys.argv or "--quick" in sys.argv:
         _CACHE["events"] = cat["events"]
         return cat["events"]
     known = {e["event_id"] for e in cat["events"]}
@@ -67,10 +67,13 @@ def current_catalog(start_id=4240, tail=40):
 
 
 def is_league(e):
-    """Season-long competitions (conferences/leagues) vs. weekend events."""
+    """Season-long leagues are named with the season ("ECNL Boys Northwest 2026-27");
+    national events and tournaments are not, even when their listed dates span months."""
+    if re.search(r"20\d\d-\d\d\s*$", e.get("name") or ""):
+        return True
     try:
         a, b = date.fromisoformat(e["start"]), date.fromisoformat(e["end"])
-        return (b - a).days > 45
+        return (b - a).days > 150
     except ValueError:
         return False
 

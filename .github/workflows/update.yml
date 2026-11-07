@@ -1,16 +1,18 @@
 name: Update data and publish site
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto (default), quick, or full"
+        required: false
+        default: auto
   push:
     branches: [main]
-    paths: ["site/**", "scripts/**", "config.json", ".github/workflows/**"]
+    paths: ["site/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
   schedule:
-    # Times are UTC. Game weekends (Fri-Sun Pacific): every 2 hours.
-    - cron: "23 */2 * * 5,6,0"
-    - cron: "23 0-8/2 * * 1"
-    # Weekdays: twice a day.
-    - cron: "23 3,15 * * 1-4"
+    # Backup timer (GitHub's timer can be late). The outside timer triggers every 15 minutes.
+    - cron: "23 */3 * * *"
 
 permissions:
   contents: write
@@ -36,13 +38,16 @@ jobs:
           python-version: "3.12"
 
       - name: Fetch ECNL data, rate teams, build site data
-        run: python scripts/update.py
+        run: |
+          MODE="${{ github.event.inputs.mode || 'auto' }}"
+          if [ "${{ github.event_name }}" = "push" ]; then MODE=full; fi
+          python scripts/update.py --$MODE
 
-      - name: Save data back to the repo
+      - name: Save raw data back to the repo (only when it changed)
         run: |
           git config user.name "xf-ecnl-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add site/data data/cache data/history_catalog.json data/current_catalog.json data/prediction_log.json data/surf_review_*.json
+          git add data
           if git diff --cached --quiet; then
             echo "No data changes"
           else
