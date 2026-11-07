@@ -126,10 +126,11 @@ def build_pool(name, pc, cfg):
         for fl in flights:
             games += normalize(api.flight_schedule(ev, fl), "national", neutral=True)
     # past seasons: map teams onto this season's team ids by club + name
-    current_by_key = {}
+    current_by_key, current_by_name = {}, {}
     for g in games:
         for tid, tn, club in ((g["home_id"], g["home"], g["home_club"]), (g["away_id"], g["away"], g["away_club"])):
             if tid:
+                current_by_name.setdefault(tn, tid)
                 k = norm_key(club, tn)
                 current_by_key.setdefault(k, tid)
                 if k.endswith(" 1"):  # "XF ... 1" was probably plain "XF ..." last season
@@ -144,7 +145,8 @@ def build_pool(name, pc, cfg):
                     tid, club = g[f"{side}_id"], g[f"{side}_club"]
                     if not tid:
                         continue
-                    mapped = current_by_key.get(norm_key(club, g[side]))
+                    alias = (pc.get("team_aliases") or {}).get(g[side])
+                    mapped = current_by_name.get(alias) if alias else current_by_key.get(norm_key(club, g[side]))
                     if mapped:
                         g[f"{side}_id"] = mapped
                     else:

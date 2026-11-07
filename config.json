@@ -74,7 +74,12 @@
           "division_name": "B2011",
           "label": "2025-26 ECNL Playoffs"
         }
-      ]
+      ],
+      "team_aliases": {
+        "_help": "Last season's team name -> this season's name, when the automatic match can't tell (clubs with two teams).",
+        "XF Academy ECNL B11": "XF ECNL B2010/11 1",
+        "XF ECNL B11": "XF ECNL B2010/11 2"
+      }
     },
     "girls-rl-u13": {
       "discover_org_id": null,
@@ -87,10 +92,10 @@
     }
   },
   "model": {
-    "half_life_days": 150,
+    "half_life_days": 120,
     "history_weight": 0.8,
     "max_margin": 5,
-    "team_shrink": 2.5,
+    "team_shrink": 4.0,
     "conf_shrink": 1.5,
     "home_shrink": 20.0
   }

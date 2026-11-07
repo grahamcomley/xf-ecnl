@@ -341,7 +341,7 @@ function renderBracket(D) {
   const prob = (num, id) => (appear.get(num).get(id) || 0) / N;
   const tn = id => teamName(D, id);
   const card = t => { const r = t.conf_record; return `<tr class="${focus && t.id === focus.id ? "me" : ""}"><td class="t">${esc(t.short)}<div class="mut">${esc((t.conf_name || "").replace(/ 20\d\d-\d\d$/, ""))}</div></td>
-    <td>${r ? `${r.w}-${r.d}-${r.l}` : "—"}</td><td>${r ? (r.gd > 0 ? "+" : "") + r.gd : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${pct((wins.get(t.id) || 0) / N)}</td></tr>`; };
+    <td>${r ? `${r.w}-${r.d}-${r.l}` : "—"}</td><td>${r ? (r.gd > 0 ? "+" : "") + r.gd : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_rated}</td><td>${pct((wins.get(t.id) || 0) / N)}</td></tr>`; };
   const fGames = focus ? games.filter(g => prob(g.num, focus.id) > 0).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time) || a.num - b.num) : [];
   const path = fGames.map(g => {
     const p = prob(g.num, focus.id);
@@ -360,9 +360,9 @@ function renderBracket(D) {
     ${focus ? `<div class="card"><h2>${esc(focus.short)}'s possible path</h2><div class="mut" style="margin-bottom:8px">Each later game depends on earlier results. A win sends you to the winners' side, a loss to the losers' side. Draws in bracket games assumed to go to penalties (50/50).</div><div class="path">${path}</div>
        <div class="mut" style="margin-top:8px">Chance ${esc(focus.short)} wins the group: <b>${pct((wins.get(focus.id) || 0) / N)}</b></div></div>` : ""}
     <div class="card"><h2>Opening games</h2>${first.map(g => fixtureCard(D, M, g, {neutral: true})).join("")}</div>
-    <div class="card scroll"><h2>The group</h2><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Win group</th></tr>
+    <div class="card scroll"><h2>The group</h2><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games</th><th>Win group</th></tr>
       ${D.teams.slice().sort((a, b) => b.strength - a.strength).map(card).join("")}</table>
-      <div class="mut" style="margin-top:6px">Rank = position among all ${D.pool.teams_rated} rated U16 teams in our data.</div></div>
+      <div class="mut" style="margin-top:6px">Rank = position among all ${D.pool.teams_rated} rated U16 teams. Games = how many results the rating is built on (this season plus last season's national events). Fewer games means a less certain rating.</div></div>
     <div class="card"><h2>All bracket games</h2>${games.map(g => `<div class="fx"><div class="when"><span>Game ${g.num} · ${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${esc(g.venue)}</span></div>
       <div class="teams"><div>${esc(g.home_id ? tn(g.home_id) : g.home)}</div><div class="score">${g.hs != null ? `${g.hs}–${g.as}` : "v"}</div><div class="a">${esc(g.away_id ? tn(g.away_id) : g.away)}</div></div></div>`).join("")}</div>
     ${footer(D)}`;
