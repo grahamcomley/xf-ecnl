@@ -374,10 +374,15 @@ function footer(D) {
   const bt = D.pool.backtest;
   const B = bt && bt.buckets ? bt.buckets : {};
   const row = (k, label) => B[k] ? `<tr><td class="t">${label}</td><td>${B[k].games}</td><td>${Math.round(B[k].won * 100)}%</td><td>${Math.round(B[k].not_lose * 100)}%</td></tr>` : "";
+  const LR = D.live_record;
+  const live = LR && LR.games ? `<h3 style="margin-top:12px">Live record on this page's games</h3>
+    <div>Our pick was right in <b>${LR.correct} of ${LR.games}</b> games (${Math.round(LR.correct / LR.games * 100)}%); the favorite didn't lose in ${LR.not_lost}.</div>
+    ${LR.recent.map(e => `<div class="rrow"><span class="res res-${e.result === e.pick ? "w" : "l"}">${e.result === e.pick ? "✓" : "✗"}</span><span class="rd">${fmtDate(e.date)}</span><span class="rt">${esc(e.home)} <b>${e.score}</b> ${esc(e.away)} <span class="mut">· we picked ${e.pick === "H" ? "home win" : e.pick === "A" ? "away win" : "draw"}</span></span></div>`).join("")}` :
+    `<div class="mut" style="margin-top:10px">Live record: starting now. Each game's pick is saved before it's played and scored after.</div>`;
   return `${bt ? sec("past", "Model", "How accurate is this?", `We replayed ${bt.games.toLocaleString()} real games, predicting each one using only results from before it was played.`, `
     <div class="scroll"><table><tr><th class="t">When the favorite was given…</th><th>Games</th><th>Favorite won</th><th>Didn't lose</th></tr>
     ${row("70+", "70% or more")}${row("60-69", "60–69%")}${row("50-59", "50–59%")}${row("<50", "under 50% (close games)")}</table></div>
-    <div class="mut" style="margin-top:6px">Overall it picks the exact result (win/draw/loss) ${Math.round(bt.accuracy * 100)}% of the time, and the favorite avoids losing ${Math.round((bt.fav_not_lose || 0) * 100)}% of the time. About 1 in 5 games end in a draw, which is why exact-result accuracy tops out around 60% even for professional models.</div>`, "acc") : ""}
+    <div class="mut" style="margin-top:6px">Overall it picks the exact result (win/draw/loss) ${Math.round(bt.accuracy * 100)}% of the time, and the favorite avoids losing ${Math.round((bt.fav_not_lose || 0) * 100)}% of the time. About 1 in 5 games end in a draw, which is why exact-result accuracy tops out around 60% even for professional models.</div>${live}`, "acc") : ""}
   <footer>Updated ${new Date(D.updated).toLocaleString()} · Data: <a href="${esc(D.comp.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a><br>Unofficial. Predictions are estimates, not guarantees.</footer>`;
 }
 
@@ -424,7 +429,7 @@ function renderBracket(D) {
   const prob = (num, id) => (appear.get(num).get(id) || 0) / N;
   const tn = id => teamName(D, id);
   const card = t => { const r = t.conf_record; return `<tr class="${focus && t.id === focus.id ? "me" : ""}"><td class="t">${esc(t.short)}<div class="mut">${esc((t.conf_name || "").replace(/ 20\d\d-\d\d$/, ""))}</div></td>
-    <td>${r ? `${r.w}-${r.d}-${r.l}` : "—"}</td><td>${r ? (r.gd > 0 ? "+" : "") + r.gd : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_rated}</td><td>${pct((wins.get(t.id) || 0) / N)}</td></tr>`; };
+    <td>${r ? `${r.w}-${r.d}-${r.l}` : "—"}</td><td>${r ? (r.gd > 0 ? "+" : "") + r.gd : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_new ?? "—"} <span class="mut">/ ${t.games_rated}</span></td><td>${pct((wins.get(t.id) || 0) / N)}</td></tr>`; };
   const fGames = focus ? games.filter(g => prob(g.num, focus.id) > 0).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time) || a.num - b.num) : [];
   const path = fGames.map(g => {
     const p = prob(g.num, focus.id);
@@ -450,8 +455,8 @@ function renderBracket(D) {
     ${ourFirst.length ? sec("us", me, "1 · Our first game", "Neutral field, so no home advantage.", ourFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("")) : ""}
     ${focus ? sec("us", me, `${ourFirst.length ? 2 : 1} · Our possible path`, `A win sends ${me} to the winners' side, a loss to the consolation side. Tied bracket games assumed to go to penalties (50/50). Chance ${me} wins the group: <b>${pct((wins.get(focus.id) || 0) / N)}</b>.`, `<div class="path">${path}</div>`) : ""}
     ${sec("div", "Group", "Other opening games", "These decide who we could meet on day 2.", othersFirst.map(g => fixtureCard(D, M, g, {neutral: true})).join("") || "<div class='mut'>All played.</div>")}
-    ${sec("div", "Group", "The 8 teams", `Conf W-D-L = this season in their own conference. Rank = among all ${D.pool.teams_rated} rated U16 teams. Games = results the rating is built on (this season plus last season's B2011 national events); fewer games = less certain.`, `
-      <div class="scroll"><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games</th><th>Win group</th></tr>
+    ${sec("div", "Group", "The 8 teams", `Conf W-D-L = this season in their own conference. Rank = among all ${D.pool.teams_rated} rated U16 teams. Games = results the rating is built on: new-age-group games since August / all games including last season's 2011 team (counted lightly). Fewer new games = less certain.`, `
+      <div class="scroll"><table><tr><th class="t">Team</th><th>Conf W-D-L</th><th>GD</th><th>Rating</th><th>Rank</th><th>Games<br><span class="mut">new / all</span></th><th>Win group</th></tr>
       ${D.teams.slice().sort((a, b) => b.strength - a.strength).map(card).join("")}</table></div>`)}
     ${sec("past", "Schedule", done.length ? "Bracket results & schedule" : "Full bracket schedule", "", games.map(g => `<div class="rrow"><span class="rd">G${g.num} · ${fmtDate(g.date)}<br>${fmtTime(g.time)}</span><span class="rt">${esc(g.home_id ? tn(g.home_id) : g.home)} <b>${g.hs != null ? `${g.hs}–${g.as}` : "v"}</b> ${esc(g.away_id ? tn(g.away_id) : g.away)}</span></div>`).join(""))}
     ${footer(D)}`;

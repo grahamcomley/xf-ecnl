@@ -335,6 +335,35 @@ def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
                         for k, v in buckets.items()}}
 
 
+LOG_PATH = os.path.join(ROOT, "data", "prediction_log.json")
+DRAW_GAP = 0.03  # must match site/index.html
+
+
+def update_prediction_log(comp, games, m, log):
+    """Record our pick for each upcoming game once (before it's played), then
+    fill in the result when the score is posted. Gives a live accuracy record."""
+    entries = log.setdefault(comp["id"], {})
+    for g in games:
+        if not (g["home_id"] and g["away_id"]) or g["bad"]:
+            continue
+        key = str(g["id"])
+        played = g["hs"] is not None and g["as"] is not None
+        if key not in entries and not played and m:
+            lh, la = model.expected_goals(m, g["home_id"], g["away_id"], comp["kind"] != "conference")
+            w, d, l, _ = model.outcome_probs(lh, la)
+            pick = "D" if abs(w - l) < DRAW_GAP else ("H" if w > l else "A")
+            entries[key] = {"date": g["date"], "home": g["home"], "away": g["away"],
+                            "p": [round(w, 3), round(d, 3), round(l, 3)], "pick": pick}
+        if key in entries and played and "result" not in entries[key]:
+            entries[key]["result"] = "H" if g["hs"] > g["as"] else "D" if g["hs"] == g["as"] else "A"
+            entries[key]["score"] = f"{g['hs']}-{g['as']}"
+    done = [e for e in entries.values() if "result" in e]
+    fav_ok = sum(1 for e in done if e["result"] == e["pick"] or (e["pick"] != "D" and e["result"] == "D"))
+    return {"games": len(done), "correct": sum(1 for e in done if e["result"] == e["pick"]),
+            "not_lost": fav_ok,
+            "recent": sorted(done, key=lambda e: e["date"], reverse=True)[:10]}
+
+
 def main():
     offline = "--offline" in sys.argv
     if offline:
@@ -362,6 +391,10 @@ def main():
                             links=conf_links(games, team_conf))
 
     index = []
+    log = {}
+    if os.path.exists(LOG_PATH):
+        with open(LOG_PATH) as f:
+            log = json.load(f)
     for comp in cfg["competitions"]:
         P = pools[comp["pool"]]
         m = P["model"]
@@ -403,6 +436,8 @@ def main():
                 "conf_name": P["conf_names"].get(conf, "Other"),
                 "conf_links": round(P["links"].get(conf, 0), 1),
                 "games_rated": sum(1 for g in rating_games(P["games"]) if tid in (g["home_id"], g["away_id"])),
+                "games_new": sum(1 for g in rating_games(P["games"]) if tid in (g["home_id"], g["away_id"])
+                                 and g["date"] >= cfg["pools"][comp["pool"]]["age_rules"]["new_age_from"]),
                 "conf_record": rec,
             })
         out = {
@@ -414,11 +449,14 @@ def main():
                                                           "home", "away", "hs", "as", "hpk", "apk", "venue", "status", "bad")}
                                       for g in games],
             "official": official, "computed": computed,
+            "live_record": update_prediction_log(comp, games, m, log),
         }
         with open(os.path.join(OUT, f"{comp['id']}.json"), "w") as f:
             json.dump(out, f, separators=(",", ":"))
         index.append({"id": comp["id"], "title": comp["title"], "kind": comp["kind"]})
         print(f"comp {comp['id']}: {len(games)} games, {len(teams)} teams")
+    with open(LOG_PATH, "w") as f:
+        json.dump(log, f, indent=1)
     with open(os.path.join(OUT, "index.json"), "w") as f:
         json.dump({"updated": now, "competitions": index, "api": api.stats}, f)
     print("api", api.stats)
