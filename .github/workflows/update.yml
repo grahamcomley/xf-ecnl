@@ -1,0 +1,60 @@
+name: Update data and publish site
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["site/**", "scripts/**", "config.json", ".github/workflows/**"]
+  schedule:
+    # Times are UTC. Game weekends (Fri-Sun Pacific): every 2 hours.
+    - cron: "23 */2 * * 5,6,0"
+    - cron: "23 0-8/2 * * 1"
+    # Weekdays: twice a day.
+    - cron: "23 3,15 * * 1-4"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update-and-pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch ECNL data, rate teams, build site data
+        run: python scripts/update.py
+
+      - name: Save data back to the repo
+        run: |
+          git config user.name "xf-ecnl-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add site/data data/cache
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "Data update $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git pull --rebase --autostash || true
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,70 @@
+{
+  "_help": "Each competition is one page tab. To add a team: copy a block, change the IDs/names. IDs come from app.athleteone.com/public/event/<eventID>/schedules-standings.",
+  "season_label": "2026-27",
+  "competitions": [
+    {
+      "id": "xf1-nw-bu16",
+      "title": "XF1 · BU16 Northwest",
+      "kind": "conference",
+      "pool": "boys-u16",
+      "event_id": 4284,
+      "division_id": 22392,
+      "flight_id": 40524,
+      "focus_team": "XF ECNL B2010/11 1",
+      "playoff_spots": 4,
+      "playoff_label": "Top 4 = ECNL Playoffs",
+      "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings"
+    },
+    {
+      "id": "xf1-phoenix",
+      "title": "XF1 · ECNL Phoenix",
+      "kind": "bracket",
+      "pool": "boys-u16",
+      "event_id": 4429,
+      "division_id": 22974,
+      "flight_id": 42012,
+      "focus_team": "XF ECNL B2010/11 1",
+      "ecnl_link": "https://app.athleteone.com/public/event/4429/schedules-standings"
+    },
+    {
+      "id": "xf-rl-gu13",
+      "title": "XF RL · GU13 Northwest",
+      "kind": "conference",
+      "pool": "girls-rl-u13",
+      "event_id": 4311,
+      "division_id": 22256,
+      "flight_id": 41483,
+      "focus_team": "XF ECNL RL G2013/14",
+      "playoff_spots": null,
+      "playoff_label": null,
+      "ecnl_link": "https://app.athleteone.com/public/event/4311/schedules-standings"
+    }
+  ],
+  "pools": {
+    "boys-u16": {
+      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12).",
+      "discover_org_id": 12,
+      "division_name": "BU16",
+      "national_events": [4429],
+      "history_events": [
+        {"event_id": 4132, "division_name": "BU15", "label": "2025-26 ECNL Virginia"},
+        {"event_id": 4250, "division_name": "BU15", "label": "2025-26 ECNL Playoffs"}
+      ]
+    },
+    "girls-rl-u13": {
+      "discover_org_id": null,
+      "division_name": "GU13",
+      "conference_events": [4311],
+      "national_events": [],
+      "history_events": []
+    }
+  },
+  "model": {
+    "half_life_days": 150,
+    "history_weight": 0.6,
+    "max_margin": 5,
+    "team_shrink": 2.5,
+    "conf_shrink": 1.5,
+    "home_shrink": 20.0
+  }
+}
