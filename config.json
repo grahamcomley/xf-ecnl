@@ -44,6 +44,21 @@
       "ecnl_link": "https://app.athleteone.com/public/event/4311/schedules-standings",
       "age_label": "U13 Girls (2013/14)",
       "context": "ECNL Regional League Girls Northwest"
+    },
+    {
+      "id": "xf1-nw-bu17",
+      "title": "XF1 \u00b7 BU17 Northwest",
+      "kind": "conference",
+      "pool": "boys-u17",
+      "event_id": 4284,
+      "division_id": 22393,
+      "flight_id": 40525,
+      "focus_team": "XF ECNL B2009/10 1",
+      "playoff_spots": 4,
+      "playoff_label": "Top 4 = ECNL Playoffs",
+      "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings",
+      "age_label": "U17 Boys (2009/10)",
+      "context": "ECNL Boys Northwest conference"
     }
   ],
   "pools": {
@@ -147,6 +162,80 @@
         "team_aliases": {},
         "weight": 0.0
       }
+    },
+    "boys-u17": {
+      "_help": "Every game used to rate U17 boys: every league and event on AthleteOne this season by the age rules, plus last season's B2010 ECNL games (the same players, then U16) at low weight.",
+      "history_events": [
+        {
+          "event_id": 4119,
+          "label": "2025-26 ECNL Florida",
+          "division_names": [
+            "B2010"
+          ]
+        },
+        {
+          "event_id": 4122,
+          "label": "2025-26 ECNL Las Vegas",
+          "division_names": [
+            "B2010"
+          ]
+        },
+        {
+          "event_id": 4134,
+          "label": "2025-26 ECNL Indianapolis",
+          "division_names": [
+            "B2010"
+          ]
+        },
+        {
+          "event_id": 4132,
+          "label": "2025-26 ECNL Virginia",
+          "division_names": [
+            "B2010"
+          ]
+        },
+        {
+          "event_id": 4250,
+          "label": "2025-26 ECNL Playoffs",
+          "division_names": [
+            "B2010"
+          ]
+        }
+      ],
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name.",
+        "XF Academy ECNL B10": "XF ECNL B2009/10 1",
+        "XF ECNL B10": "XF ECNL B2009/10 2"
+      },
+      "history_division_weight": 1.0,
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID, for clubs that changed name/ID.",
+        "96": 3360
+      },
+      "discover_history": {
+        "_help": "One-time scan for last season's ECNL Boys events (orgSeasonID 70). Results saved in data/history_catalog.json; delete that file to rescan.",
+        "org_id": 12,
+        "org_season_id": 70,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "age_rules": {
+        "gender": "B",
+        "age": 17,
+        "explicit": [
+          "2009/10",
+          "09/10",
+          "2009-10",
+          "2009/2010"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2010"
+      ]
     }
   },
   "model": {
