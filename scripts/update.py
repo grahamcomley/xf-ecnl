@@ -14,6 +14,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 import ecnl_api as api  # noqa: E402
 import model  # noqa: E402
 import catalog  # noqa: E402
+import matcher  # noqa: E402
+import surf  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 OUT = os.path.join(ROOT, "site", "data")
@@ -180,6 +182,28 @@ def build_pool(name, pc, cfg):
                         g[f"{side}_id"] = m
                         remapped += 1
     print(f"  remapped {remapped} tournament entries onto league teams")
+    # Surf Sports events (Surf Cup etc.): match their team names to our league teams.
+    sc = pc.get("surf")
+    if sc:
+        sg = surf.pool_games(sc["division"], rules["since"])
+        other = {}
+        for g in sg:
+            other[g["home_id"]] = g["home"]
+            other[g["away_id"]] = g["away"]
+        ours = {t: names.get(t) for t in team_conf if names.get(t)}
+        mp, review = matcher.match_all(other, ours, {k: v for k, v in (sc.get("team_aliases") or {}).items() if not k.startswith("_")})
+        for g in sg:
+            for side in ("home", "away"):
+                oid = g[f"{side}_id"]
+                if oid in mp:
+                    g[f"{side}_id"] = mp[oid]
+                else:
+                    names.setdefault(oid, g[side])
+        games += sg
+        rv_path = os.path.join(ROOT, "data", f"surf_review_{name}.json")
+        with open(rv_path, "w") as f:
+            json.dump({"matched": {other[k]: names.get(v) for k, v in mp.items()}, "check_these": review}, f, indent=1)
+        print(f"  surf: {len(sg)} games, matched {len(mp)} of {len(other)} teams ({len(review)} to review)")
     # past seasons: map teams onto this season's team ids by club + name
     current_by_key, current_by_name = {}, {}
     for g in games:

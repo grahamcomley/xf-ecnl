@@ -119,7 +119,12 @@
       },
       "history_division_names": [
         "B2011"
-      ]
+      ],
+      "surf": {
+        "_help": "Surf Sports events (Surf Cup etc.). Division name on their site; aliases = their exact team name -> our team name.",
+        "division": "Boys-U16",
+        "team_aliases": {}
+      }
     },
     "girls-rl-u13": {
       "history_events": [],
@@ -135,6 +140,10 @@
         ],
         "since": "2026-06-01",
         "new_age_from": "2026-08-01"
+      },
+      "surf": {
+        "division": "Girls-U13",
+        "team_aliases": {}
       }
     }
   },
