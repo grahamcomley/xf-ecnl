@@ -1,0 +1,1416 @@
+{
+ "xf1-nw-bu16": {
+  "1075724": {
+   "date": "2026-10-17",
+   "home": "Seattle United ECNL B2010/11",
+   "away": "Snohomish United ECNL B2010/11",
+   "p": [
+    0.933,
+    0.05,
+    0.017
+   ],
+   "pick": "H"
+  },
+  "1075766": {
+   "date": "2026-11-01",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "XF ECNL B2010/11 1",
+   "p": [
+    0.124,
+    0.157,
+    0.72
+   ],
+   "pick": "A"
+  },
+  "1075772": {
+   "date": "2026-11-08",
+   "home": "Snohomish United ECNL B2010/11",
+   "away": "Columbia Premier SC ECNL B2010/11",
+   "p": [
+    0.259,
+    0.239,
+    0.502
+   ],
+   "pick": "A"
+  },
+  "1075784": {
+   "date": "2026-11-08",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "Seattle United ECNL B2010/11",
+   "p": [
+    0.322,
+    0.234,
+    0.444
+   ],
+   "pick": "A"
+  },
+  "1075778": {
+   "date": "2026-11-08",
+   "home": "XF ECNL B2010/11 2",
+   "away": "PacNW SC ECNL B2010/11",
+   "p": [
+    0.134,
+    0.162,
+    0.705
+   ],
+   "pick": "A"
+  },
+  "1075796": {
+   "date": "2026-11-14",
+   "home": "XF ECNL B2010/11 1",
+   "away": "Eastside FC ECNL B2010/11",
+   "p": [
+    0.544,
+    0.213,
+    0.243
+   ],
+   "pick": "H"
+  },
+  "1075808": {
+   "date": "2026-11-14",
+   "home": "Snohomish United ECNL B2010/11",
+   "away": "PacNW SC ECNL B2010/11",
+   "p": [
+    0.119,
+    0.155,
+    0.726
+   ],
+   "pick": "A"
+  },
+  "1075802": {
+   "date": "2026-11-14",
+   "home": "Seattle United ECNL B2010/11",
+   "away": "XF ECNL B2010/11 2",
+   "p": [
+    0.926,
+    0.054,
+    0.02
+   ],
+   "pick": "H"
+  },
+  "1075790": {
+   "date": "2026-11-14",
+   "home": "Washington Premier ECNL B2010/11",
+   "away": "Columbia Premier SC ECNL B2010/11",
+   "p": [
+    0.484,
+    0.244,
+    0.272
+   ],
+   "pick": "H"
+  },
+  "1075832": {
+   "date": "2026-12-05",
+   "home": "3RSC ECNL B2010/11",
+   "away": "Snohomish United ECNL B2010/11",
+   "p": [
+    0.837,
+    0.102,
+    0.061
+   ],
+   "pick": "H"
+  },
+  "1075820": {
+   "date": "2026-12-05",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "Washington Premier ECNL B2010/11",
+   "p": [
+    0.752,
+    0.145,
+    0.103
+   ],
+   "pick": "H"
+  },
+  "1075598": {
+   "date": "2026-12-06",
+   "home": "Washington Premier ECNL B2010/11",
+   "away": "XF ECNL B2010/11 2",
+   "p": [
+    0.625,
+    0.201,
+    0.174
+   ],
+   "pick": "H"
+  },
+  "1075838": {
+   "date": "2026-12-12",
+   "home": "XF ECNL B2010/11 1",
+   "away": "Columbia Premier SC ECNL B2010/11",
+   "p": [
+    0.876,
+    0.086,
+    0.038
+   ],
+   "pick": "H"
+  },
+  "1075844": {
+   "date": "2026-12-12",
+   "home": "XF ECNL B2010/11 2",
+   "away": "Washington Premier ECNL B2010/11",
+   "p": [
+    0.213,
+    0.218,
+    0.569
+   ],
+   "pick": "A"
+  },
+  "1075850": {
+   "date": "2026-12-12",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "3RSC ECNL B2010/11",
+   "p": [
+    0.598,
+    0.187,
+    0.215
+   ],
+   "pick": "H"
+  },
+  "1075856": {
+   "date": "2026-12-19",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "Eastside FC ECNL B2010/11",
+   "p": [
+    0.202,
+    0.185,
+    0.613
+   ],
+   "pick": "A"
+  },
+  "1075868": {
+   "date": "2027-01-09",
+   "home": "XF ECNL B2010/11 2",
+   "away": "Columbia Premier SC ECNL B2010/11",
+   "p": [
+    0.282,
+    0.24,
+    0.477
+   ],
+   "pick": "A"
+  },
+  "1075880": {
+   "date": "2027-01-09",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "Washington Premier ECNL B2010/11",
+   "p": [
+    0.53,
+    0.216,
+    0.254
+   ],
+   "pick": "H"
+  },
+  "1075886": {
+   "date": "2027-01-09",
+   "home": "Seattle United ECNL B2010/11",
+   "away": "3RSC ECNL B2010/11",
+   "p": [
+    0.666,
+    0.179,
+    0.155
+   ],
+   "pick": "H"
+  },
+  "1075874": {
+   "date": "2027-01-09",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "XF ECNL B2010/11 1",
+   "p": [
+    0.293,
+    0.223,
+    0.484
+   ],
+   "pick": "A"
+  },
+  "1075898": {
+   "date": "2027-01-16",
+   "home": "XF ECNL B2010/11 1",
+   "away": "Washington Premier ECNL B2010/11",
+   "p": [
+    0.827,
+    0.113,
+    0.06
+   ],
+   "pick": "H"
+  },
+  "1075910": {
+   "date": "2027-01-16",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "3RSC ECNL B2010/11",
+   "p": [
+    0.345,
+    0.21,
+    0.445
+   ],
+   "pick": "A"
+  },
+  "1075892": {
+   "date": "2027-01-16",
+   "home": "Columbia Premier SC ECNL B2010/11",
+   "away": "Eastside FC ECNL B2010/11",
+   "p": [
+    0.09,
+    0.138,
+    0.772
+   ],
+   "pick": "A"
+  },
+  "1075904": {
+   "date": "2027-01-16",
+   "home": "Snohomish United ECNL B2010/11",
+   "away": "XF ECNL B2010/11 2",
+   "p": [
+    0.379,
+    0.243,
+    0.379
+   ],
+   "pick": "D"
+  },
+  "1075826": {
+   "date": "2027-01-17",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "Seattle United ECNL B2010/11",
+   "p": [
+    0.146,
+    0.177,
+    0.678
+   ],
+   "pick": "A"
+  },
+  "1075916": {
+   "date": "2027-01-30",
+   "home": "3RSC ECNL B2010/11",
+   "away": "Columbia Premier SC ECNL B2010/11",
+   "p": [
+    0.694,
+    0.169,
+    0.137
+   ],
+   "pick": "H"
+  },
+  "1075928": {
+   "date": "2027-01-30",
+   "home": "PacNW SC ECNL B2010/11",
+   "away": "XF ECNL B2010/11 2",
+   "p": [
+    0.757,
+    0.14,
+    0.103
+   ],
+   "pick": "H"
+  },
+  "1075922": {
+   "date": "2027-01-30",
+   "home": "Snohomish United ECNL B2010/11",
+   "away": "XF ECNL B2010/11 1",
+   "p": [
+    0.019,
+    0.05,
+    0.931
+   ],
+   "pick": "A"
+  },
+  "1075934": {
+   "date": "2027-01-30",
+   "home": "Washington Premier ECNL B2010/11",
+   "away": "Seattle United ECNL B2010/11",
+   "p": [
+    0.096,
+    0.156,
+    0.748
+   ],
+   "pick": "A"
+  },
+  "1075946": {
+   "date": "2027-02-06",
+   "home": "3RSC ECNL B2010/11",
+   "away": "XF ECNL B2010/11 1",
+   "p": [
+    0.168,
+    0.18,
+    0.652
+   ],
+   "pick": "A"
+  },
+  "1075940": {
+   "date": "2027-02-06",
+   "home": "Columbia Premier SC ECNL B2010/11",
+   "away": "Seattle United ECNL B2010/11",
+   "p": [
+    0.064,
+    0.127,
+    0.809
+   ],
+   "pick": "A"
+  },
+  "1075952": {
+   "date": "2027-02-06",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "XF ECNL B2010/11 2",
+   "p": [
+    0.909,
+    0.062,
+    0.029
+   ],
+   "pick": "H"
+  },
+  "1075958": {
+   "date": "2027-02-07",
+   "home": "Washington Premier ECNL B2010/11",
+   "away": "Snohomish United ECNL B2010/11",
+   "p": [
+    0.648,
+    0.196,
+    0.157
+   ],
+   "pick": "H"
+  },
+  "1075964": {
+   "date": "2027-02-13",
+   "home": "Columbia Premier SC ECNL B2010/11",
+   "away": "PacNW SC ECNL B2010/11",
+   "p": [
+    0.229,
+    0.213,
+    0.558
+   ],
+   "pick": "A"
+  },
+  "1075970": {
+   "date": "2027-02-13",
+   "home": "Seattle United ECNL B2010/11",
+   "away": "XF ECNL B2010/11 1",
+   "p": [
+    0.37,
+    0.251,
+    0.379
+   ],
+   "pick": "D"
+  },
+  "1075982": {
+   "date": "2027-02-13",
+   "home": "Washington Premier ECNL B2010/11",
+   "away": "3RSC ECNL B2010/11",
+   "p": [
+    0.239,
+    0.21,
+    0.551
+   ],
+   "pick": "A"
+  },
+  "1075976": {
+   "date": "2027-02-13",
+   "home": "Eastside FC ECNL B2010/11",
+   "away": "Snohomish United ECNL B2010/11",
+   "p": [
+    0.918,
+    0.057,
+    0.025
+   ],
+   "pick": "H"
+  },
+  "1075995": {
+   "date": "2027-02-20",
+   "home": "XF ECNL B2010/11 1",
+   "away": "PacNW SC ECNL B2010/11",
+   "p": [
+    0.77,
+    0.135,
+    0.095
+   ],
+   "pick": "H"
+  },
+  "1076001": {
+   "date": "2027-02-20",
+   "home": "XF ECNL B2010/11 2",
+   "away": "3RSC ECNL B2010/11",
+   "p": [
+    0.093,
+    0.13,
+    0.776
+   ],
+   "pick": "A"
+  },
+  "1076008": {
+   "date": "2027-02-20",
+   "home": "Seattle United ECNL B2010/11",
+   "away": "Eastside FC ECNL B2010/11",
+   "p": [
+    0.502,
+    0.226,
+    0.272
+   ],
+   "pick": "H"
+  },
+  "1075988": {
+   "date": "2027-02-20",
+   "home": "Columbia Premier SC ECNL B2010/11",
+   "away": "Snohomish United ECNL B2010/11",
+   "p": [
+    0.558,
+    0.227,
+    0.216
+   ],
+   "pick": "H"
+  }
+ },
+ "xf1-phoenix": {
+  "1145551": {
+   "date": "2026-11-20",
+   "home": "XF ECNL B2010/11 1",
+   "away": "CDA Slammers FC ECNL B2010/11",
+   "p": [
+    0.402,
+    0.244,
+    0.353
+   ],
+   "pick": "H"
+  },
+  "1145552": {
+   "date": "2026-11-20",
+   "home": "Dallas Texans Academy ECNL B2010/11",
+   "away": "LAFC So Cal ECNL B2010/11",
+   "p": [
+    0.258,
+    0.262,
+    0.48
+   ],
+   "pick": "A"
+  },
+  "1145549": {
+   "date": "2026-11-20",
+   "home": "Utah Avalanche ECNL B2010/11",
+   "away": "United PDX ECNL B2010/11",
+   "p": [
+    0.508,
+    0.24,
+    0.252
+   ],
+   "pick": "H"
+  },
+  "1145550": {
+   "date": "2026-11-20",
+   "home": "Association FC ECNL B10/11",
+   "away": "Sporting Nebraska FC ECNL B2010/11",
+   "p": [
+    0.29,
+    0.261,
+    0.449
+   ],
+   "pick": "A"
+  }
+ },
+ "xf-rl-gu13": {
+  "1076336": {
+   "date": "2026-09-12",
+   "home": "3RSC ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.817,
+    0.108,
+    0.075
+   ],
+   "pick": "H"
+  },
+  "1076365": {
+   "date": "2026-10-17",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.123,
+    0.2,
+    0.677
+   ],
+   "pick": "A"
+  },
+  "1076376": {
+   "date": "2026-10-24",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.471,
+    0.193,
+    0.336
+   ],
+   "pick": "H"
+  },
+  "1076390": {
+   "date": "2026-11-07",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.014,
+    0.044,
+    0.942
+   ],
+   "pick": "A"
+  },
+  "1076389": {
+   "date": "2026-11-07",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.762,
+    0.123,
+    0.115
+   ],
+   "pick": "H"
+  },
+  "1076392": {
+   "date": "2026-11-07",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.23,
+    0.267,
+    0.502
+   ],
+   "pick": "A"
+  },
+  "1076391": {
+   "date": "2026-11-07",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.341,
+    0.249,
+    0.409
+   ],
+   "pick": "A"
+  },
+  "1076393": {
+   "date": "2026-11-07",
+   "home": "Valor Soccer ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.05,
+    0.107,
+    0.843
+   ],
+   "pick": "A"
+  },
+  "1076394": {
+   "date": "2026-11-07",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.013,
+    0.038,
+    0.949
+   ],
+   "pick": "A"
+  },
+  "1076397": {
+   "date": "2026-11-14",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "PacNW SC ECNL RL G2013/14",
+   "p": [
+    0.305,
+    0.254,
+    0.441
+   ],
+   "pick": "A"
+  },
+  "1076395": {
+   "date": "2026-11-14",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.735,
+    0.143,
+    0.122
+   ],
+   "pick": "H"
+  },
+  "1076396": {
+   "date": "2026-11-14",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.287,
+    0.246,
+    0.467
+   ],
+   "pick": "A"
+  },
+  "1076399": {
+   "date": "2026-11-14",
+   "home": "3RSC ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.982,
+    0.015,
+    0.003
+   ],
+   "pick": "H"
+  },
+  "1076398": {
+   "date": "2026-11-14",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Seattle United ECNL RL G2013/14",
+   "p": [
+    0.008,
+    0.025,
+    0.967
+   ],
+   "pick": "A"
+  },
+  "1076400": {
+   "date": "2026-11-14",
+   "home": "XF ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.701,
+    0.171,
+    0.128
+   ],
+   "pick": "H"
+  },
+  "1076403": {
+   "date": "2026-12-05",
+   "home": "XF ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.858,
+    0.092,
+    0.05
+   ],
+   "pick": "H"
+  },
+  "1076402": {
+   "date": "2026-12-05",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Northwest United ECNL RL G2013/14",
+   "p": [
+    0.889,
+    0.076,
+    0.035
+   ],
+   "pick": "H"
+  },
+  "1076401": {
+   "date": "2026-12-05",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.309,
+    0.202,
+    0.489
+   ],
+   "pick": "A"
+  },
+  "1076404": {
+   "date": "2026-12-06",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.056,
+    0.101,
+    0.843
+   ],
+   "pick": "A"
+  },
+  "1076405": {
+   "date": "2026-12-12",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.114,
+    0.137,
+    0.749
+   ],
+   "pick": "A"
+  },
+  "1076408": {
+   "date": "2026-12-12",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.313,
+    0.258,
+    0.429
+   ],
+   "pick": "A"
+  },
+  "1076409": {
+   "date": "2026-12-12",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Seattle United ECNL RL G2013/14",
+   "p": [
+    0.313,
+    0.254,
+    0.433
+   ],
+   "pick": "A"
+  },
+  "1076406": {
+   "date": "2026-12-12",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.675,
+    0.203,
+    0.121
+   ],
+   "pick": "H"
+  },
+  "1076407": {
+   "date": "2026-12-12",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.038,
+    0.079,
+    0.883
+   ],
+   "pick": "A"
+  },
+  "1076410": {
+   "date": "2026-12-13",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.758,
+    0.164,
+    0.078
+   ],
+   "pick": "H"
+  },
+  "1076412": {
+   "date": "2026-12-13",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.28,
+    0.262,
+    0.458
+   ],
+   "pick": "A"
+  },
+  "1076411": {
+   "date": "2026-12-13",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.979,
+    0.016,
+    0.004
+   ],
+   "pick": "H"
+  },
+  "1076371": {
+   "date": "2027-01-09",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.93,
+    0.054,
+    0.016
+   ],
+   "pick": "H"
+  },
+  "1076414": {
+   "date": "2027-01-16",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Seattle United ECNL RL G2013/14",
+   "p": [
+    0.281,
+    0.241,
+    0.477
+   ],
+   "pick": "A"
+  },
+  "1076415": {
+   "date": "2027-01-16",
+   "home": "3RSC ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.758,
+    0.154,
+    0.088
+   ],
+   "pick": "H"
+  },
+  "1076417": {
+   "date": "2027-01-16",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.92,
+    0.059,
+    0.021
+   ],
+   "pick": "H"
+  },
+  "1076418": {
+   "date": "2027-01-16",
+   "home": "XF ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.935,
+    0.042,
+    0.023
+   ],
+   "pick": "H"
+  },
+  "1076413": {
+   "date": "2027-01-16",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Northwest United ECNL RL G2013/14",
+   "p": [
+    0.666,
+    0.195,
+    0.139
+   ],
+   "pick": "H"
+  },
+  "1076420": {
+   "date": "2027-01-23",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Northwest United ECNL RL G2013/14",
+   "p": [
+    0.94,
+    0.046,
+    0.014
+   ],
+   "pick": "H"
+  },
+  "1076423": {
+   "date": "2027-01-23",
+   "home": "Valor Soccer ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.029,
+    0.056,
+    0.915
+   ],
+   "pick": "A"
+  },
+  "1076424": {
+   "date": "2027-01-23",
+   "home": "XF ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.779,
+    0.139,
+    0.082
+   ],
+   "pick": "H"
+  },
+  "1140434": {
+   "date": "2027-01-23",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.206,
+    0.216,
+    0.579
+   ],
+   "pick": "A"
+  },
+  "1076421": {
+   "date": "2027-01-23",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.654,
+    0.183,
+    0.163
+   ],
+   "pick": "H"
+  },
+  "1076419": {
+   "date": "2027-01-23",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.043,
+    0.113,
+    0.844
+   ],
+   "pick": "A"
+  },
+  "1076416": {
+   "date": "2027-01-24",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "PacNW SC ECNL RL G2013/14",
+   "p": [
+    0.46,
+    0.261,
+    0.278
+   ],
+   "pick": "H"
+  },
+  "1076426": {
+   "date": "2027-01-30",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.741,
+    0.169,
+    0.089
+   ],
+   "pick": "H"
+  },
+  "1076427": {
+   "date": "2027-01-30",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.14,
+    0.193,
+    0.667
+   ],
+   "pick": "A"
+  },
+  "1076430": {
+   "date": "2027-01-30",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.506,
+    0.187,
+    0.306
+   ],
+   "pick": "H"
+  },
+  "1076428": {
+   "date": "2027-01-30",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Seattle United ECNL RL G2013/14",
+   "p": [
+    0.175,
+    0.192,
+    0.633
+   ],
+   "pick": "A"
+  },
+  "1076429": {
+   "date": "2027-01-30",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.966,
+    0.027,
+    0.007
+   ],
+   "pick": "H"
+  },
+  "1076425": {
+   "date": "2027-01-30",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.006,
+    0.022,
+    0.973
+   ],
+   "pick": "A"
+  },
+  "1076431": {
+   "date": "2027-02-06",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.033,
+    0.055,
+    0.912
+   ],
+   "pick": "A"
+  },
+  "1076432": {
+   "date": "2027-02-06",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.93,
+    0.054,
+    0.016
+   ],
+   "pick": "H"
+  },
+  "1076433": {
+   "date": "2027-02-06",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.574,
+    0.228,
+    0.198
+   ],
+   "pick": "H"
+  },
+  "1076435": {
+   "date": "2027-02-06",
+   "home": "3RSC ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.711,
+    0.175,
+    0.114
+   ],
+   "pick": "H"
+  },
+  "1076436": {
+   "date": "2027-02-06",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.078,
+    0.15,
+    0.772
+   ],
+   "pick": "A"
+  },
+  "1076434": {
+   "date": "2027-02-06",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.202,
+    0.199,
+    0.598
+   ],
+   "pick": "A"
+  },
+  "1076438": {
+   "date": "2027-02-20",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "PacNW SC ECNL RL G2013/14",
+   "p": [
+    0.362,
+    0.278,
+    0.36
+   ],
+   "pick": "D"
+  },
+  "1076441": {
+   "date": "2027-02-20",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.707,
+    0.177,
+    0.116
+   ],
+   "pick": "H"
+  },
+  "1076439": {
+   "date": "2027-02-20",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Washington Premier ECNL RL G2013/14",
+   "p": [
+    0.458,
+    0.237,
+    0.304
+   ],
+   "pick": "H"
+  },
+  "1076440": {
+   "date": "2027-02-20",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.429,
+    0.195,
+    0.376
+   ],
+   "pick": "H"
+  },
+  "1076442": {
+   "date": "2027-02-28",
+   "home": "XF ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.545,
+    0.233,
+    0.222
+   ],
+   "pick": "H"
+  },
+  "1076437": {
+   "date": "2027-02-28",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.451,
+    0.251,
+    0.298
+   ],
+   "pick": "H"
+  },
+  "1076443": {
+   "date": "2027-03-06",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "PacNW SC ECNL RL G2013/14",
+   "p": [
+    0.271,
+    0.202,
+    0.528
+   ],
+   "pick": "A"
+  },
+  "1076447": {
+   "date": "2027-03-06",
+   "home": "Valor Soccer ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.001,
+    0.005,
+    0.995
+   ],
+   "pick": "A"
+  },
+  "1076446": {
+   "date": "2027-03-06",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.316,
+    0.254,
+    0.429
+   ],
+   "pick": "A"
+  },
+  "1076444": {
+   "date": "2027-03-06",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.198,
+    0.228,
+    0.574
+   ],
+   "pick": "A"
+  },
+  "1076445": {
+   "date": "2027-03-06",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "Oregon Surf ECNL RL G2013/14",
+   "p": [
+    0.028,
+    0.071,
+    0.9
+   ],
+   "pick": "A"
+  },
+  "1076448": {
+   "date": "2027-03-06",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.599,
+    0.208,
+    0.193
+   ],
+   "pick": "H"
+  },
+  "1076450": {
+   "date": "2027-03-13",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.936,
+    0.05,
+    0.014
+   ],
+   "pick": "H"
+  },
+  "1076451": {
+   "date": "2027-03-13",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.868,
+    0.092,
+    0.04
+   ],
+   "pick": "H"
+  },
+  "1076452": {
+   "date": "2027-03-13",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.205,
+    0.249,
+    0.546
+   ],
+   "pick": "A"
+  },
+  "1076454": {
+   "date": "2027-03-13",
+   "home": "Whatcom FC Rangers ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.486,
+    0.228,
+    0.287
+   ],
+   "pick": "H"
+  },
+  "1140428": {
+   "date": "2027-03-13",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.706,
+    0.147,
+    0.147
+   ],
+   "pick": "H"
+  },
+  "1076449": {
+   "date": "2027-03-13",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.001,
+    0.004,
+    0.995
+   ],
+   "pick": "A"
+  },
+  "1076456": {
+   "date": "2027-04-18",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Snohomish United ECNL RL G2013/14",
+   "p": [
+    0.545,
+    0.23,
+    0.225
+   ],
+   "pick": "H"
+  },
+  "1076457": {
+   "date": "2027-04-18",
+   "home": "PacNW SC ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.517,
+    0.241,
+    0.242
+   ],
+   "pick": "H"
+  },
+  "1076459": {
+   "date": "2027-04-18",
+   "home": "Valor Soccer ECNL RL G2013/14",
+   "away": "3RSC ECNL RL G2013/14",
+   "p": [
+    0.006,
+    0.025,
+    0.969
+   ],
+   "pick": "A"
+  },
+  "1076458": {
+   "date": "2027-04-18",
+   "home": "Seattle United ECNL RL G2013/14",
+   "away": "Northwest United ECNL RL G2013/14",
+   "p": [
+    0.982,
+    0.014,
+    0.004
+   ],
+   "pick": "H"
+  },
+  "1076460": {
+   "date": "2027-04-18",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.176,
+    0.199,
+    0.625
+   ],
+   "pick": "A"
+  },
+  "1076455": {
+   "date": "2027-04-18",
+   "home": "Eastside FC ECNL RL G2013/14",
+   "away": "Central Washington Sounders ECNL RL G2013/14",
+   "p": [
+    0.175,
+    0.171,
+    0.654
+   ],
+   "pick": "A"
+  },
+  "1076385": {
+   "date": "2027-04-25",
+   "home": "Northwest United ECNL RL G2013/14",
+   "away": "XF ECNL RL G2013/14",
+   "p": [
+    0.001,
+    0.004,
+    0.995
+   ],
+   "pick": "A"
+  },
+  "1076461": {
+   "date": "2027-05-02",
+   "home": "Central Washington Sounders ECNL RL G2013/14",
+   "away": "Seattle United ECNL RL G2013/14",
+   "p": [
+    0.171,
+    0.151,
+    0.678
+   ],
+   "pick": "A"
+  },
+  "1076462": {
+   "date": "2027-05-02",
+   "home": "Oregon Surf ECNL RL G2013/14",
+   "away": "Whatcom FC Rangers ECNL RL G2013/14",
+   "p": [
+    0.487,
+    0.24,
+    0.273
+   ],
+   "pick": "H"
+  },
+  "1076464": {
+   "date": "2027-05-02",
+   "home": "3RSC ECNL RL G2013/14",
+   "away": "PacNW SC ECNL RL G2013/14",
+   "p": [
+    0.573,
+    0.247,
+    0.18
+   ],
+   "pick": "H"
+  },
+  "1076468": {
+   "date": "2027-05-02",
+   "home": "XF ECNL RL G2013/14",
+   "away": "Eastside FC ECNL RL G2013/14",
+   "p": [
+    0.964,
+    0.028,
+    0.008
+   ],
+   "pick": "H"
+  },
+  "1076463": {
+   "date": "2027-05-02",
+   "home": "Snohomish United ECNL RL G2013/14",
+   "away": "Valor Soccer ECNL RL G2013/14",
+   "p": [
+    0.888,
+    0.08,
+    0.032
+   ],
+   "pick": "H"
+  },
+  "1076467": {
+   "date": "2027-05-02",
+   "home": "Washington Premier ECNL RL G2013/14",
+   "away": "Northwest United ECNL RL G2013/14",
+   "p": [
+    0.969,
+    0.024,
+    0.007
+   ],
+   "pick": "H"
+  }
+ }
+}
