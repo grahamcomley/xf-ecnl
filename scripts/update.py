@@ -199,6 +199,8 @@ def build_pool(name, pc, cfg):
                     g[f"{side}_id"] = mp[oid]
                 else:
                     names.setdefault(oid, g[side])
+        for g in sg:
+            g["weight_mult"] = sc.get("weight", 1.0)
         games += sg
         rv_path = os.path.join(ROOT, "data", f"surf_review_{name}.json")
         with open(rv_path, "w") as f:
@@ -309,8 +311,10 @@ def conf_links(games, team_conf):
 def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
     """Replay both seasons: every two weeks, refit using only earlier games and
     predict the next two weeks. Reports accuracy, calibration and log-loss."""
-    rg = rating_games(games)
-    ev = sorted((g for g in rg if g["date"] >= start), key=lambda g: g["date"])
+    rg = [g for g in rating_games(games) if g.get("weight_mult", 1) > 0]
+    # Score on league-team games (ECNL / ECNL RL), not outside-tournament games between unknown teams.
+    ev = sorted((g for g in rg if g["date"] >= start and g["home_id"] in team_conf and g["away_id"] in team_conf),
+                key=lambda g: g["date"])
     if len(ev) < 30:
         return None
     from datetime import date, timedelta

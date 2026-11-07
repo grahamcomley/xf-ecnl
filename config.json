@@ -121,9 +121,10 @@
         "B2011"
       ],
       "surf": {
-        "_help": "Surf Sports events (Surf Cup etc.). Division name on their site; aliases = their exact team name -> our team name.",
+        "_help": "Surf Sports events (Surf Cup etc.). Collected every run. weight = how much they count in ratings; 0 for now because testing on Aug-Nov 2026 ECNL/RL games showed they made predictions slightly worse (summer rosters, uncertain name matches). team_aliases = their exact team name -> our team name.",
         "division": "Boys-U16",
-        "team_aliases": {}
+        "team_aliases": {},
+        "weight": 0.0
       }
     },
     "girls-rl-u13": {
@@ -143,7 +144,8 @@
       },
       "surf": {
         "division": "Girls-U13",
-        "team_aliases": {}
+        "team_aliases": {},
+        "weight": 0.0
       }
     }
   },
