@@ -1412,5 +1412,469 @@
    ],
    "pick": "H"
   }
+ },
+ "xf1-nw-bu17": {
+  "1075725": {
+   "date": "2026-10-17",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "Snohomish United ECNL B2009/10",
+   "p": [
+    0.728,
+    0.154,
+    0.117
+   ],
+   "pick": "H"
+  },
+  "1075731": {
+   "date": "2026-10-24",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.867,
+    0.08,
+    0.053
+   ],
+   "pick": "H"
+  },
+  "1075767": {
+   "date": "2026-11-01",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "XF ECNL B2009/10 1",
+   "p": [
+    0.197,
+    0.189,
+    0.614
+   ],
+   "pick": "A"
+  },
+  "1075785": {
+   "date": "2026-11-08",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "Seattle United ECNL B2009/10",
+   "p": [
+    0.378,
+    0.236,
+    0.387
+   ],
+   "pick": "D"
+  },
+  "1075773": {
+   "date": "2026-11-08",
+   "home": "Snohomish United ECNL B2009/10",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.583,
+    0.185,
+    0.231
+   ],
+   "pick": "H"
+  },
+  "1075779": {
+   "date": "2026-11-08",
+   "home": "XF ECNL B2009/10 2",
+   "away": "PacNW SC ECNL B2009/10",
+   "p": [
+    0.692,
+    0.154,
+    0.154
+   ],
+   "pick": "H"
+  },
+  "1075803": {
+   "date": "2026-11-14",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "XF ECNL B2009/10 2",
+   "p": [
+    0.284,
+    0.211,
+    0.505
+   ],
+   "pick": "A"
+  },
+  "1075797": {
+   "date": "2026-11-14",
+   "home": "XF ECNL B2009/10 1",
+   "away": "Eastside FC ECNL B2009/10",
+   "p": [
+    0.673,
+    0.187,
+    0.14
+   ],
+   "pick": "H"
+  },
+  "1075809": {
+   "date": "2026-11-14",
+   "home": "Snohomish United ECNL B2009/10",
+   "away": "PacNW SC ECNL B2009/10",
+   "p": [
+    0.214,
+    0.188,
+    0.598
+   ],
+   "pick": "A"
+  },
+  "1075791": {
+   "date": "2026-11-14",
+   "home": "Washington Premier ECNL B2009/10",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.883,
+    0.072,
+    0.046
+   ],
+   "pick": "H"
+  },
+  "1075833": {
+   "date": "2026-12-05",
+   "home": "3RSC ECNL B2009/10",
+   "away": "Snohomish United ECNL B2009/10",
+   "p": [
+    0.65,
+    0.18,
+    0.17
+   ],
+   "pick": "H"
+  },
+  "1075821": {
+   "date": "2026-12-05",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "Washington Premier ECNL B2009/10",
+   "p": [
+    0.355,
+    0.234,
+    0.41
+   ],
+   "pick": "A"
+  },
+  "1075599": {
+   "date": "2026-12-06",
+   "home": "Washington Premier ECNL B2009/10",
+   "away": "XF ECNL B2009/10 2",
+   "p": [
+    0.306,
+    0.214,
+    0.48
+   ],
+   "pick": "A"
+  },
+  "1075839": {
+   "date": "2026-12-12",
+   "home": "XF ECNL B2009/10 1",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.951,
+    0.034,
+    0.015
+   ],
+   "pick": "H"
+  },
+  "1075845": {
+   "date": "2026-12-12",
+   "home": "XF ECNL B2009/10 2",
+   "away": "Washington Premier ECNL B2009/10",
+   "p": [
+    0.589,
+    0.193,
+    0.217
+   ],
+   "pick": "H"
+  },
+  "1075851": {
+   "date": "2026-12-12",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "3RSC ECNL B2009/10",
+   "p": [
+    0.475,
+    0.224,
+    0.302
+   ],
+   "pick": "H"
+  },
+  "1075911": {
+   "date": "2026-12-13",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "3RSC ECNL B2009/10",
+   "p": [
+    0.5,
+    0.197,
+    0.303
+   ],
+   "pick": "H"
+  },
+  "1075857": {
+   "date": "2026-12-19",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "Eastside FC ECNL B2009/10",
+   "p": [
+    0.446,
+    0.217,
+    0.337
+   ],
+   "pick": "H"
+  },
+  "1075869": {
+   "date": "2027-01-09",
+   "home": "XF ECNL B2009/10 2",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.95,
+    0.034,
+    0.017
+   ],
+   "pick": "H"
+  },
+  "1075881": {
+   "date": "2027-01-09",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "Washington Premier ECNL B2009/10",
+   "p": [
+    0.367,
+    0.208,
+    0.425
+   ],
+   "pick": "A"
+  },
+  "1075887": {
+   "date": "2027-01-09",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "3RSC ECNL B2009/10",
+   "p": [
+    0.545,
+    0.203,
+    0.253
+   ],
+   "pick": "H"
+  },
+  "1075875": {
+   "date": "2027-01-09",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "XF ECNL B2009/10 1",
+   "p": [
+    0.202,
+    0.219,
+    0.579
+   ],
+   "pick": "A"
+  },
+  "1075899": {
+   "date": "2027-01-16",
+   "home": "XF ECNL B2009/10 1",
+   "away": "Washington Premier ECNL B2009/10",
+   "p": [
+    0.617,
+    0.199,
+    0.184
+   ],
+   "pick": "H"
+  },
+  "1075905": {
+   "date": "2027-01-16",
+   "home": "Snohomish United ECNL B2009/10",
+   "away": "XF ECNL B2009/10 2",
+   "p": [
+    0.088,
+    0.128,
+    0.784
+   ],
+   "pick": "A"
+  },
+  "1075893": {
+   "date": "2027-01-16",
+   "home": "Columbia Premier SC ECNL B2009/10",
+   "away": "Eastside FC ECNL B2009/10",
+   "p": [
+    0.132,
+    0.147,
+    0.72
+   ],
+   "pick": "A"
+  },
+  "1075827": {
+   "date": "2027-01-17",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "Seattle United ECNL B2009/10",
+   "p": [
+    0.392,
+    0.209,
+    0.399
+   ],
+   "pick": "D"
+  },
+  "1075917": {
+   "date": "2027-01-30",
+   "home": "3RSC ECNL B2009/10",
+   "away": "Columbia Premier SC ECNL B2009/10",
+   "p": [
+    0.806,
+    0.106,
+    0.088
+   ],
+   "pick": "H"
+  },
+  "1075929": {
+   "date": "2027-01-30",
+   "home": "PacNW SC ECNL B2009/10",
+   "away": "XF ECNL B2009/10 2",
+   "p": [
+    0.234,
+    0.184,
+    0.582
+   ],
+   "pick": "A"
+  },
+  "1075923": {
+   "date": "2027-01-30",
+   "home": "Snohomish United ECNL B2009/10",
+   "away": "XF ECNL B2009/10 1",
+   "p": [
+    0.076,
+    0.131,
+    0.793
+   ],
+   "pick": "A"
+  },
+  "1075935": {
+   "date": "2027-01-30",
+   "home": "Washington Premier ECNL B2009/10",
+   "away": "Seattle United ECNL B2009/10",
+   "p": [
+    0.466,
+    0.219,
+    0.315
+   ],
+   "pick": "H"
+  },
+  "1075947": {
+   "date": "2027-02-06",
+   "home": "3RSC ECNL B2009/10",
+   "away": "XF ECNL B2009/10 1",
+   "p": [
+    0.173,
+    0.188,
+    0.639
+   ],
+   "pick": "A"
+  },
+  "1075953": {
+   "date": "2027-02-06",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "XF ECNL B2009/10 2",
+   "p": [
+    0.237,
+    0.211,
+    0.552
+   ],
+   "pick": "A"
+  },
+  "1075941": {
+   "date": "2027-02-06",
+   "home": "Columbia Premier SC ECNL B2009/10",
+   "away": "Seattle United ECNL B2009/10",
+   "p": [
+    0.096,
+    0.116,
+    0.789
+   ],
+   "pick": "A"
+  },
+  "1075959": {
+   "date": "2027-02-07",
+   "home": "Washington Premier ECNL B2009/10",
+   "away": "Snohomish United ECNL B2009/10",
+   "p": [
+    0.75,
+    0.145,
+    0.105
+   ],
+   "pick": "H"
+  },
+  "1075965": {
+   "date": "2027-02-13",
+   "home": "Columbia Premier SC ECNL B2009/10",
+   "away": "PacNW SC ECNL B2009/10",
+   "p": [
+    0.118,
+    0.12,
+    0.762
+   ],
+   "pick": "A"
+  },
+  "1075971": {
+   "date": "2027-02-13",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "XF ECNL B2009/10 1",
+   "p": [
+    0.241,
+    0.22,
+    0.538
+   ],
+   "pick": "A"
+  },
+  "1075977": {
+   "date": "2027-02-13",
+   "home": "Eastside FC ECNL B2009/10",
+   "away": "Snohomish United ECNL B2009/10",
+   "p": [
+    0.66,
+    0.188,
+    0.153
+   ],
+   "pick": "H"
+  },
+  "1075983": {
+   "date": "2027-02-13",
+   "home": "Washington Premier ECNL B2009/10",
+   "away": "3RSC ECNL B2009/10",
+   "p": [
+    0.571,
+    0.197,
+    0.233
+   ],
+   "pick": "H"
+  },
+  "1075996": {
+   "date": "2027-02-20",
+   "home": "XF ECNL B2009/10 1",
+   "away": "PacNW SC ECNL B2009/10",
+   "p": [
+    0.715,
+    0.155,
+    0.13
+   ],
+   "pick": "H"
+  },
+  "1076002": {
+   "date": "2027-02-20",
+   "home": "XF ECNL B2009/10 2",
+   "away": "3RSC ECNL B2009/10",
+   "p": [
+    0.716,
+    0.151,
+    0.134
+   ],
+   "pick": "H"
+  },
+  "1076009": {
+   "date": "2027-02-20",
+   "home": "Seattle United ECNL B2009/10",
+   "away": "Eastside FC ECNL B2009/10",
+   "p": [
+    0.488,
+    0.227,
+    0.284
+   ],
+   "pick": "H"
+  },
+  "1075989": {
+   "date": "2027-02-20",
+   "home": "Columbia Premier SC ECNL B2009/10",
+   "away": "Snohomish United ECNL B2009/10",
+   "p": [
+    0.328,
+    0.204,
+    0.468
+   ],
+   "pick": "A"
+  }
  }
 }
