@@ -58,6 +58,8 @@ details.sec[open]>summary{padding-bottom:6px}.sec-body{padding:0 14px 14px}.sec-
 .fx.matters{background:#f3f4f6;border-color:#d1d5db}.pill.tag{background:#374151;color:#fff}
 .picksbar{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px;position:sticky;top:96px;z-index:3}
 #predtable{transition:opacity .1s}
+table.pred td,table.pred th{padding:7px 3px}table.pred .sub{font-size:11px;color:var(--mut);font-weight:400}
+details.missed{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:2px 10px;margin:8px 0}details.missed summary{color:#92400e;font-weight:600}
 .toggles button.ours{background:#e5e7eb;border-color:#9ca3af;font-weight:600}
 .toggles button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .toggles button.ours.on{background:var(--ink);color:#fff}
@@ -213,7 +215,7 @@ function fixtureCard(D, M, g, opts = {}) {
     ${opts.picks ? `<div class="toggles" data-g="${g.id}">
       ${btn("H", esc(H) + " win")}${btn("D", "Draw")}${btn("A", esc(A) + " win")}</div>` : ""}
     ${opts.root ? `<div class="root" data-root="${g.id}">${opts.root}</div>` : ""}
-    ${g.pending ? `<div class="mut" style="margin-top:4px">⚠ Date has passed but no score is posted yet. Treated as still to play.</div>` : ""}
+    ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}
   </div>`;
 }
 
@@ -259,8 +261,15 @@ function renderConference(D) {
 
   const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
   const upcoming = remaining.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-  const nextOurs = upcoming.filter(g => isMe(g) && (g.pending || g.date >= today)).slice(0, 3);
-  const week = upcoming.filter(g => !isMe(g) && ((g.date >= today && g.date <= addDays(today, 7)) || g.pending));
+  // Missed games: date passed, no score. Still to be played later, so still in every prediction,
+  // but shown apart until ECNL posts a new date (then they move back into the schedule automatically).
+  const missed = upcoming.filter(g => g.pending);
+  const scheduled = upcoming.filter(g => !g.pending);
+  const nextOurs = scheduled.filter(g => isMe(g) && g.date >= today).slice(0, 3);
+  const week = scheduled.filter(g => !isMe(g) && g.date >= today && g.date <= addDays(today, 7));
+  const missedOurs = missed.filter(isMe), missedOthers = missed.filter(g => !isMe(g));
+  const missedBox = (list, opts) => list.length ? `<details class="inner missed"><summary>Missed games waiting for a new date (${list.length})</summary>
+    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. They're still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts(g))).join("")}</details>` : "";
   const ourResults = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date));
   const divResults = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
@@ -289,16 +298,16 @@ function renderConference(D) {
     </table></div>${spots ? `<div class="mut" style="margin-top:6px">Ranked by points per game. Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`, "s1")}
 
   ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, focus ? `Win/draw/loss odds for each game, and what each result does to ${me}'s chance of ${keyLabel} (now <b>${pct(keyNow)}</b>).` : "",
-    nextOurs.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No more games scheduled.</div>", "s2")}
+    (nextOurs.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No more games scheduled.</div>") + missedBox(missedOurs, () => ({root: BAD})), "s2")}
 
   ${sec("div", "League", "3 · Rest of the league · next 7 days", `Every other league game from ${fmtDate(today)} to ${fmtDate(addDays(today, 7))}. Gray cards matter to ${me}.`,
-    week.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>", "s3")}
+    (week.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>") + missedBox(missedOthers, () => ({root: BAD})), "s3")}
 
   ${sec("div", "Predict", "4 · Rest-of-season predictor", `Every remaining game played out ${N.toLocaleString()} times. Pick results below to see how the final table changes. Only this section changes.`, `
     <div class="picksbar" id="picksbar"></div>
     <div class="scroll" id="predtable"></div>
     <h3 style="margin-top:14px">Remaining games (${upcoming.length}) · gray = our pick, tap to change</h3>
-    <div id="predgames">${upcoming.map(g => fixtureCard(D, M, g, {picks: true})).join("")}</div>`, "s4")}
+    <div id="predgames">${missedBox(missed, () => ({picks: true}))}${scheduled.map(g => fixtureCard(D, M, g, {picks: true})).join("")}</div>`, "s4")}
 
   ${sec("past", "Past", "5 · Past games", "Final scores.", `
     <h3>${me}</h3>${ourResults.map(g => resultRow(D, g, focus)).join("") || "<div class='mut'>None yet.</div>"}
@@ -311,7 +320,7 @@ function renderConference(D) {
 
   // Fill in the "what each result does" lines after the page is visible.
   if (focus) setTimeout(() => {
-    const need = [...nextOurs, ...week];
+    const need = [...nextOurs, ...week, ...missed];
     const nowK = atOrAbove(simulate(D, M, played, remaining, {}, 1500), focus.id, keyIdx);
     for (const g of need) {
       const res = {};
@@ -350,13 +359,15 @@ function drawPredictor() {
   $("#picksbar").innerHTML = nP
     ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}</b> (black). Gray = our pick. <button class="reset" id="clearpicks">Reset to our picks</button>`
     : `<span>Showing <b>our pick</b> for every game (gray). Tap a different result to override it (black).</span>`;
-  $("#predtable").innerHTML = `<table class="grid">
-    <tr><th class="stk">#</th><th class="t stk2">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th><th class="chance">Likely place</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+  const placeTxt = id => { const r = rangeOf(id).split("–").map(Number); return r.length > 1 ? `likely ${ord(r[0])}–${ord(r[1])}` : `likely ${ord(r[0])}`; };
+  $("#predtable").innerHTML = `<table class="grid pred">
+    <tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
     ${final.map((r, i) => { const id = r.id, s = S.get(id), b = base.get(id);
-      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td class="stk">${i + 1}</td><td class="t stk2">${esc(teamName(D, id))}</td><td>${r.gp}</td>
-      <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td><td class="chance">${rangeOf(id)}</td>
+      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td>
+      <td class="t">${esc(teamName(D, id))}<div class="sub">${placeTxt(id)}</div></td>
+      <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td><b>${r.pts}</b></td>
       <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, id, spots - 1))}${nP ? delta(atOrAbove(S, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
-  </table><div class="mut" style="margin-top:6px"><b>Left columns:</b> final table if every pick comes true. <b>Shaded columns:</b> real chances from playing out the rest of the season ${N.toLocaleString()} times${nP ? " with your changes locked in; green/red = change" : ""}.</div>`;
+  </table><div class="mut" style="margin-top:6px"><b>W-D-L, GD, PTS:</b> final table if every pick comes true (all teams play ${final[0] ? final[0].gp : ""}). <b>Shaded:</b> real chances from playing out the rest of the season ${N.toLocaleString()} times${nP ? " with your changes locked in; green/red = change" : ""}.</div>`;
   const c = $("#clearpicks");
   if (c) c.onclick = () => { PICKS[CUR] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
 }
