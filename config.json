@@ -4,7 +4,7 @@
   "competitions": [
     {
       "id": "xf1-nw-bu16",
-      "title": "XF1 · BU16 Northwest",
+      "title": "XF1 \u00b7 BU16 Northwest",
       "kind": "conference",
       "pool": "boys-u16",
       "event_id": 4284,
@@ -17,7 +17,7 @@
     },
     {
       "id": "xf1-phoenix",
-      "title": "XF1 · ECNL Phoenix",
+      "title": "XF1 \u00b7 ECNL Phoenix",
       "kind": "bracket",
       "pool": "boys-u16",
       "event_id": 4429,
@@ -28,7 +28,7 @@
     },
     {
       "id": "xf-rl-gu13",
-      "title": "XF RL · GU13 Northwest",
+      "title": "XF RL \u00b7 GU13 Northwest",
       "kind": "conference",
       "pool": "girls-rl-u13",
       "event_id": 4311,
@@ -42,26 +42,53 @@
   ],
   "pools": {
     "boys-u16": {
-      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12).",
+      "_help": "Every game used to rate teams. Conference events are found automatically from the ECNL Boys club list (org 12). history_events = last season's national events for the same birth year (they were U15 = B2011), used to link conferences.",
       "discover_org_id": 12,
       "division_name": "BU16",
-      "national_events": [4429],
+      "national_events": [
+        4429
+      ],
       "history_events": [
-        {"event_id": 4132, "division_name": "BU15", "label": "2025-26 ECNL Virginia"},
-        {"event_id": 4250, "division_name": "BU15", "label": "2025-26 ECNL Playoffs"}
+        {
+          "event_id": 4119,
+          "division_name": "B2011",
+          "label": "2025-26 ECNL Florida"
+        },
+        {
+          "event_id": 4122,
+          "division_name": "B2011",
+          "label": "2025-26 ECNL Las Vegas"
+        },
+        {
+          "event_id": 4134,
+          "division_name": "B2011",
+          "label": "2025-26 ECNL Indianapolis"
+        },
+        {
+          "event_id": 4132,
+          "division_name": "B2011",
+          "label": "2025-26 ECNL Virginia"
+        },
+        {
+          "event_id": 4250,
+          "division_name": "B2011",
+          "label": "2025-26 ECNL Playoffs"
+        }
       ]
     },
     "girls-rl-u13": {
       "discover_org_id": null,
       "division_name": "GU13",
-      "conference_events": [4311],
+      "conference_events": [
+        4311
+      ],
       "national_events": [],
       "history_events": []
     }
   },
   "model": {
     "half_life_days": 150,
-    "history_weight": 0.6,
+    "history_weight": 0.8,
     "max_margin": 5,
     "team_shrink": 2.5,
     "conf_shrink": 1.5,

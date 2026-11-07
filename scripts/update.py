@@ -130,7 +130,10 @@ def build_pool(name, pc, cfg):
     for g in games:
         for tid, tn, club in ((g["home_id"], g["home"], g["home_club"]), (g["away_id"], g["away"], g["away_club"])):
             if tid:
-                current_by_key.setdefault(norm_key(club, tn), tid)
+                k = norm_key(club, tn)
+                current_by_key.setdefault(k, tid)
+                if k.endswith(" 1"):  # "XF ... 1" was probably plain "XF ..." last season
+                    current_by_key.setdefault(k[:-2], tid)
     for h in pc.get("history_events") or []:
         _, flights = division_flights(h["event_id"], h.get("division_name", div), permanent=True)
         for fl in flights:
