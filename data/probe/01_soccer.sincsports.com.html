@@ -1,0 +1,1240 @@
+<!-- https://soccer.sincsports.com/rank.aspx -->
+
+<!DOCTYPE html>
+<html>
+<head id="ctl00_Head1"><meta charset="utf-8" /><meta http-equiv="x-ua-compatible" content="ie=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="See where your team stands. USA Rank rates youth soccer club teams by age group, gender and state from real game results, and updates as scores come in." /><link rel="canonical" href="https://www.soccerincollege.com/rank.aspx" />
+    <meta property="og:title" content="USA Youth Soccer Rankings by State | Soccer in College" />
+    <meta property="og:description" content="See where your team stands. USA Rank rates youth soccer club teams by age group, gender and state from real game results, and updates as scores come in." />
+    <meta property="og:url" content="https://www.soccerincollege.com/rank.aspx" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Soccer in College" />
+    <meta name="twitter:card" content="summary" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "Soccer in College",
+      "url": "https://www.soccerincollege.com/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Soccer in College",
+          "item": "https://www.soccerincollege.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "USA Youth Soccer Rankings by State"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<title>
+	USA Youth Soccer Rankings by State | Soccer in College
+</title><link rel='icon' type='image/ico' href='/design/logo/soccer.ico'> <link rel='stylesheet' href='/css/ui/custom/jquery-ui-1.8.23.custom.css'>
+<link rel='stylesheet' href='/js/ui/jquery.ui.timepicker.css'>
+<link href='/css/material/6.1.95/css/materialdesignicons.min.css' media='all' rel='stylesheet' type='text/css' />
+<script type='text/javascript' src='/js/2026.js?v=5.4'></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" /><link href="https://fonts.googleapis.com/css2?family=Economica:ital,wght@0,400;0,700;1,400;1,700&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=Sora:wght@100..800&amp;family=Poppins:wght@400;500;600;700&amp;family=Ubuntu+Condensed&amp;display=swap" rel="stylesheet" /><link href="/css/aos-2.3.4.css" rel="stylesheet" />
+
+    <!-- Bootstrap 5 CSS (host locally in production) -->
+    <link href="/css/bs5/bootstrap.min.css?v=1" rel="stylesheet" /><link href="/css/bs5/sincsports-bootstrap-theme.css?v=1.2" rel="stylesheet" />
+
+    <!-- Material Design Icons -->
+    
+
+    <script type="text/javascript">
+        var isLoading = false;
+        var allTeams = false;
+        var loadSeq = 0;      // bumped per request, so a superseded response is ignored
+        var loadXhr = null;   // the request in flight, so a new search can cancel it
+        $(document).ready(function () {
+
+            $("#ctl00_ContentPlaceHolder1_ddlAge").change(function () {
+                if (parseInt($(this).val()) <= 11) {
+                    $("#ctl00_ContentPlaceHolder1_ddlStates option[value='XX']").remove();
+                    $("#ctl00_ContentPlaceHolder1_ddlStates option[value='1']").remove();
+                    $("#ctl00_ContentPlaceHolder1_ddlStates option[value='2']").remove();
+                    $("#ctl00_ContentPlaceHolder1_ddlStates option[value='3']").remove();
+                    $("#ctl00_ContentPlaceHolder1_ddlStates option[value='4']").remove();
+                }
+                else {
+                    if ($("#ctl00_ContentPlaceHolder1_ddlStates option[value='XX']").length > 0) {
+                        
+                    } else {
+                        $('#ctl00_ContentPlaceHolder1_ddlStates').prepend($('<option>', { value: '4', text: 'Region 4' }));
+                        $('#ctl00_ContentPlaceHolder1_ddlStates').prepend($('<option>', { value: '3', text: 'Region 3' }));
+                        $('#ctl00_ContentPlaceHolder1_ddlStates').prepend($('<option>', { value: '2', text: 'Region 2' }));
+                        $('#ctl00_ContentPlaceHolder1_ddlStates').prepend($('<option>', { value: '1', text: 'Region 1' }));
+                        $('#ctl00_ContentPlaceHolder1_ddlStates').prepend($('<option>', { value: 'XX', text: 'National' })); 
+                    }
+                }
+            });
+        });
+
+        function mTFunc(tmId) {
+            eo_Callback('cpCheckAccess', 'merge' + tmId);
+            return false;
+        }
+
+        function seed(tmId) {
+            eo_Callback('cpCheckAccess', 'seed' + tmId);
+            return false;
+        }
+
+        function activateTips() {
+            $('a.tip').tooltip({
+                position: 'center right', offset: [-2, 10], opacity: 0.9
+            });
+        }
+
+        // Shows or clears the busy state on the Load More button. The button stays in
+        // the DOM while busy but must not be clickable - a click during a slow request
+        // used to start another one.
+        function setMoreBusy(busy) {
+            var btn = $('#btnMore');
+            if (busy) {
+                $('#loader').show();
+                btn.html('<img src="images/loading3.gif" alt="Loading" />');
+                btn.attr('aria-busy', 'true').css('pointer-events', 'none');
+            } else {
+                $('#loader').hide();
+                btn.removeAttr('aria-busy').css('pointer-events', '');
+            }
+        }
+
+        function loadMoreTeams(clearTeams) {
+            if (clearTeams) {
+                // A new search supersedes whatever is in flight. Cancel it rather than
+                // letting an old cohort's rows append underneath the new ones. Bump the
+                // sequence BEFORE aborting: abort() runs the old request's complete
+                // handler synchronously, and this makes that handler fail its own
+                // sequence check instead of clearing state the new request is about to set.
+                loadSeq++;
+                if (loadXhr) {
+                    var stale = loadXhr;
+                    loadXhr = null;
+                    stale.abort();
+                }
+                isLoading = false;
+                $('#rankTbl').html("");
+                allTeams = false;
+                $('#ctl00_ContentPlaceHolder1_tbNext').val("1");
+            } else if (isLoading) {
+                // Already fetching a page. Every extra click and every scroll event that
+                // gets here must be dropped, not turned into another request. Without
+                // this guard a slow response let one user stack dozens of concurrent
+                // calls, which is how a slow endpoint became a site-wide outage on
+                // 2026-09-14. isLoading was declared here for years but never read.
+                return false;
+            }
+
+            if (allTeams) {
+                return false;
+            }
+
+            isLoading = true;
+            var state = $('#ctl00_ContentPlaceHolder1_ddlStates option:selected').val();
+            var gender = $('#ctl00_ContentPlaceHolder1_ddlGender option:selected').val(); 
+            var age = $('#ctl00_ContentPlaceHolder1_ddlAge option:selected').val();
+            var checked = $('#ctl00_ContentPlaceHolder1_cbRank').is(':checked');
+            var nextNumber = $('#ctl00_ContentPlaceHolder1_tbNext').val();
+            var level = $('#ctl00_ContentPlaceHolder1_ddlLevel option:selected').val();
+
+            var mySeq = ++loadSeq;
+            setMoreBusy(true);
+            loadXhr = $.ajax({
+                type: "POST",
+                url: "services/SincFuncs.asmx/GetUSARank2",
+                data: "{'age': '" + age + "', 'state':'" + state + "', 'gender':'" + gender + "', 'rank':'" + checked + "', 'level':'" + level + "', 'nextNum':'" + nextNumber + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                // Bound a request that never answers. jQuery turns a timeout into
+                // error + complete, which releases isLoading; without it a hung request
+                // would leave the guard set and wedge the page until a reload.
+                timeout: 45000,
+                success: function (msg) {
+                    // A newer search started while this was in flight - drop the answer,
+                    // otherwise the old cohort's teams append under the new heading.
+                    if (mySeq !== loadSeq) { return; }
+                    // Everything below runs inside try/catch because jQuery fires the
+                    // done callbacks before the complete callbacks: a throw in here
+                    // escapes resolveWith and complete never runs, which would leave
+                    // isLoading stuck true and permanently kill BOTH the button and
+                    // infinite scroll, since the scroll handler now reads that flag too.
+                    try {
+                        // Replace the div's content with the page method's return.
+                        if (msg.d == "") {
+
+                            allTeams = true;
+                        }
+                        else {
+                            $('#rankTbl').append(msg.d);
+                        }
+                        var nextNum = parseInt($('#ctl00_ContentPlaceHolder1_tbNext').val());
+                        nextNum += 25;
+                        $('#ctl00_ContentPlaceHolder1_tbNext').val(nextNum);
+                    }
+                    catch (ex) { }
+                },
+                complete: function () {
+                    if (mySeq !== loadSeq) { return; }
+                    loadXhr = null;
+                    isLoading = false;
+                    setMoreBusy(false);
+                    if (allTeams)
+                        $('#btnMore').hide();
+                    else {
+                        $('#btnMore').show();
+                        $('#btnMore').html("Load More");
+                    }
+                    activateTips();
+                }
+            });
+            return false;
+
+        }
+    </script>
+
+<style type="text/css">
+    
+    @media screen and (min-width: 999px) {
+            .grid_7 { width: 270px;border-right:1px dashed #828181; }
+            .grid_5 { width: 190px; }
+            ul#rankTbl { width:100%;margin: 0;padding: 0;list-style-type: none; box-sizing:border-box;}
+            #rankTbl li {position:relative;border-bottom:1px solid #636363; background:#fff; padding: 3px 0; }
+            .rankleft { float:left; width:50%;padding-top:6px; height:23px; }
+            #rankTbl li.ranktitle div.rankright { width:50%; float:left; color:#fff; }
+            #rankTbl li.team div.rankright { width:50%; float:left; color:Black;height:100%; }
+            #rankTbl li.sincsite div.rankright { width:50%; float:left; color:Black;height:100%; }
+            #rankTbl li.team div.rankmid, div.rankmid { float:left; width:25px;height:100%; } 
+            #rankTbl li.sincsite div.rankmid { float:left; width:25px;height:100%; } 
+             #rankTbl li.sincsite { height:88px; padding:0; }
+            /*#rankTbl li.sincsite { height:88px; padding:0; border:2px solid #888;-moz-box-shadow:0px 3px 25px #333;-webkit-box-shadow:0px 3px 25px #333;margin:15px 0; }*/
+            #rankTbl li.sincsite .rankleft { padding-top:12px; height:75px; }
+            #rankTbl div.nationals { float:left;clear:both;padding-left:10px; height:20px; width:100%; }
+            #rankTbl li.sincsite div.fright { padding:0;margin:0;height:100%;  }
+            #rankTbl div.fright { padding:0 3px 0 0;margin:0; }
+            #rankTbl li.sincsite img.logo { float:left; height:60px;margin-right:10px; }
+            #rankTbl div.rank { float:left;height:100%; width:20px; padding:0 5px; vertical-align:middle;margin-right:5px; }
+            #rankTbl div.grid_3, #rankTbl div.grid_2 { padding:5px; }
+            .grid_3 { width: 35%; }
+            .grid_2 { width: 22%; }
+            div.wrapper div.rankright { padding-top:6px; background-image:none !important;color:#fff;height:23px}
+            
+        }
+        @media screen and (max-width: 998px) {
+            ul#rankTbl { width:100%;margin-left: 0;padding: 0;list-style-type: none; box-sizing:border-box;}
+            #rankTbl li {border-bottom:1px solid #636363; background:#fff; }
+            div.rankmid {display:none;}
+            .grid_2 { display:none;}
+            .grid_3 { float:left; width:50%; text-align:center;}
+            #rankTbl .rankleft { padding-top:6px; height:23px; }
+            #rankTbl li.ranktitle div.rankright { width:100%; float:left; color:#fff; }
+            #rankTbl li.team div.rankright { height:100%; margin-top:5px; }
+            #rankTbl li.sincsite div.rankright { height:100%; }
+             #rankTbl li.sincsite { height:88px; padding:0; }
+            /*#rankTbl li.sincsite { height:88px; padding:0; border:2px solid #888;-moz-box-shadow:0px 3px 25px #333;-webkit-box-shadow:0px 3px 25px #333;margin:15px 0; }*/
+            #rankTbl li.sincsite .rankleft { padding-top:12px; height:75px; }
+            #rankTbl div.nationals { float:left;clear:both;padding-left:10px; height:20px; width:100%; }
+            #rankTbl li.sincsite div.fright { padding:0;margin:0;height:100%;  }
+            #rankTbl div.fright { padding:0 3px 0 0;margin:0; }
+            #rankTbl li.sincsite img.logo { float:left; height:60px;margin-right:10px; }
+            #rankTbl div.rank { float:left;height:100%; width:20px; padding:0 5px; vertical-align:middle;margin-right:5px; }
+            #rankTbl div.grid_3, #rankTbl div.grid_2 { padding:5px 0px; }
+        }
+        #rankTbl li.ranktitle { padding-left:4px; background-color:#212529;color:#fff;}
+        #sincFilter span { display:block;}
+        #btnSearch { width:133px; margin-top:5px; }
+    
+        #rank_key div { text-align:center; padding:5px;}
+        span.state { display:block; float:right;margin-right:8px;}
+    span.record, span.streak, span.champ { display:block}
+    div.rankMerge { width:15px; height:15px; background-image:url(images/mergeSign.png); }
+</style>
+<link rel="apple-touch-icon" href="images/mobile_icon.png" /><link href="/css/sinc26.css?v=1.1" rel="stylesheet" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('a.tipsy').tipsy({ gravity: 'n' }); $('a.tip').tipsy({ gravity: 'n' }); $('i.tip').tipsy({ gravity: 'n' }); $('img.tip').tipsy({ gravity: 'n' });
+            AOS.init();
+
+        });
+        
+    </script>
+    
+    <link href="/css/sinc-loading.css?v=1.0" rel="stylesheet" /><link href="/css/sinc-help.css?v=1.1" rel="stylesheet" />
+    <script type="text/javascript" src="/js/sinc-help.js?v=2.1"></script>
+<style type="text/css">
+.eo_tag_style{}
+</style>
+<style type="text/css">
+table.eo_no_border_spacing { border-spacing: 0; border-collapse: collapse; }
+table.eo_td_no_padding td {padding: 0px;}
+table.eo_border_collapse { border-collapse: collapse; }
+.eo_align_center { text-align: center;}
+.eo_align_left { text-align: left;}
+.eo_transparent { filter:alpha(opacity=0);-moz-opacity:0.0;opacity:0.0; }
+.eo_fullheight { height: 100%; }
+.eo_fullwidth { width: 100%; }
+a.eo_plain_link.link { border: none; }
+a.eo_plain_link.visited { border: none; }
+a.eo_plain_link.hover { border: none; }
+a.eo_plain_link.active { border: none; }
+ul.eo_list { list-style-type: none; margin: 0px; padding: 0px; }
+ul.eo_list li { list-style: none; margin: 0px; padding: 0px; white-space: nowrap; }
+.eo_text { font-family: Verdana; font-size: 10px; }
+
+</style>
+<style type="text/css">
+.eo_css_ctrl_ctl00_DialogHelp1 {background-color:#fff;border-bottom-width:0px;border-left-width:0px;border-right-width:0px;border-top-width:0px;color:black;font-family:'Segoe UI Light', Tahoma, Helvetica, Arial, Verdana, sans-serif;font-size:18pt;padding-bottom:5px;padding-left:8px;padding-right:3px;padding-top:0}
+.eo_css_ctrl_ctl00_DialogHelp2 {background-color:#fff;border-bottom-width:0;border-left-width:0;border-right-width:0;border-top-width:0;color:#383838;padding-bottom:4px;padding-left:4px;padding-right:4px;padding-top:4px}
+.eo_css_ctrl_ctl00_DialogHelp3 {background-color:#d2d2d2;font-family:tahoma;font-size:8pt}
+
+</style></head>
+<body id="ctl00_thebody" class="soccer">
+    <form name="aspnetForm" method="post" action="./rank.aspx" id="aspnetForm">
+<div>
+<input type="hidden" name="__SINCMP" id="__SINCMP" value="Sinc26.master" />
+<input type="hidden" name="eo_cb_id" id="eo_cb_id" value="" />
+<input type="hidden" name="ctl00_navbar_cpSearch_trigger" id="ctl00_navbar_cpSearch_trigger" value="" />
+<input type="hidden" name="ctl00_navbar_cpSearch_param" id="ctl00_navbar_cpSearch_param" value="" />
+<input type="hidden" name="__eo_sc" id="__eo_sc" value="" />
+<input type="hidden" name="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_trigger" id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_trigger" value="" />
+<input type="hidden" name="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_param" id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl_param" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cpCheckAccess_trigger" id="ctl00_ContentPlaceHolder1_cpCheckAccess_trigger" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_cpCheckAccess_param" id="ctl00_ContentPlaceHolder1_cpCheckAccess_param" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl_trigger" id="ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl_trigger" value="" />
+<input type="hidden" name="ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl_param" id="ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl_param" value="" />
+<input type="hidden" name="ctl00_DialogHelp_ctl00_cpHelpPanel_trigger" id="ctl00_DialogHelp_ctl00_cpHelpPanel_trigger" value="" />
+<input type="hidden" name="ctl00_DialogHelp_ctl00_cpHelpPanel_param" id="ctl00_DialogHelp_ctl00_cpHelpPanel_param" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTEwNTg2NTg1MA9kFgJmD2QWBAIBD2QWCgIEDxYCHgRUZXh0Bb4BPG1ldGEgbmFtZT0iZGVzY3JpcHRpb24iIGNvbnRlbnQ9IlNlZSB3aGVyZSB5b3VyIHRlYW0gc3RhbmRzLiBVU0EgUmFuayByYXRlcyB5b3V0aCBzb2NjZXIgY2x1YiB0ZWFtcyBieSBhZ2UgZ3JvdXAsIGdlbmRlciBhbmQgc3RhdGUgZnJvbSByZWFsIGdhbWUgcmVzdWx0cywgYW5kIHVwZGF0ZXMgYXMgc2NvcmVzIGNvbWUgaW4uIiAvPmQCBQ8WAh8ABfYEPGxpbmsgcmVsPSJjYW5vbmljYWwiIGhyZWY9Imh0dHBzOi8vd3d3LnNvY2NlcmluY29sbGVnZS5jb20vcmFuay5hc3B4IiAvPg0KICAgIDxtZXRhIHByb3BlcnR5PSJvZzp0aXRsZSIgY29udGVudD0iVVNBIFlvdXRoIFNvY2NlciBSYW5raW5ncyBieSBTdGF0ZSB8IFNvY2NlciBpbiBDb2xsZWdlIiAvPg0KICAgIDxtZXRhIHByb3BlcnR5PSJvZzpkZXNjcmlwdGlvbiIgY29udGVudD0iU2VlIHdoZXJlIHlvdXIgdGVhbSBzdGFuZHMuIFVTQSBSYW5rIHJhdGVzIHlvdXRoIHNvY2NlciBjbHViIHRlYW1zIGJ5IGFnZSBncm91cCwgZ2VuZGVyIGFuZCBzdGF0ZSBmcm9tIHJlYWwgZ2FtZSByZXN1bHRzLCBhbmQgdXBkYXRlcyBhcyBzY29yZXMgY29tZSBpbi4iIC8+DQogICAgPG1ldGEgcHJvcGVydHk9Im9nOnVybCIgY29udGVudD0iaHR0cHM6Ly93d3cuc29jY2VyaW5jb2xsZWdlLmNvbS9yYW5rLmFzcHgiIC8+DQogICAgPG1ldGEgcHJvcGVydHk9Im9nOnR5cGUiIGNvbnRlbnQ9IndlYnNpdGUiIC8+DQogICAgPG1ldGEgcHJvcGVydHk9Im9nOnNpdGVfbmFtZSIgY29udGVudD0iU29jY2VyIGluIENvbGxlZ2UiIC8+DQogICAgPG1ldGEgbmFtZT0idHdpdHRlcjpjYXJkIiBjb250ZW50PSJzdW1tYXJ5IiAvPg0KZAIGDxYCHwAF+gQ8c2NyaXB0IHR5cGU9ImFwcGxpY2F0aW9uL2xkK2pzb24iPg0Kew0KICAiQGNvbnRleHQiOiAiaHR0cHM6Ly9zY2hlbWEub3JnIiwNCiAgIkBncmFwaCI6IFsNCiAgICB7DQogICAgICAiQHR5cGUiOiAiV2ViU2l0ZSIsDQogICAgICAibmFtZSI6ICJTb2NjZXIgaW4gQ29sbGVnZSIsDQogICAgICAidXJsIjogImh0dHBzOi8vd3d3LnNvY2NlcmluY29sbGVnZS5jb20vIg0KICAgIH0sDQogICAgew0KICAgICAgIkB0eXBlIjogIkJyZWFkY3J1bWJMaXN0IiwNCiAgICAgICJpdGVtTGlzdEVsZW1lbnQiOiBbDQogICAgICAgIHsNCiAgICAgICAgICAiQHR5cGUiOiAiTGlzdEl0ZW0iLA0KICAgICAgICAgICJwb3NpdGlvbiI6IDEsDQogICAgICAgICAgIm5hbWUiOiAiU29jY2VyIGluIENvbGxlZ2UiLA0KICAgICAgICAgICJpdGVtIjogImh0dHBzOi8vd3d3LnNvY2NlcmluY29sbGVnZS5jb20vIg0KICAgICAgICB9LA0KICAgICAgICB7DQogICAgICAgICAgIkB0eXBlIjogIkxpc3RJdGVtIiwNCiAgICAgICAgICAicG9zaXRpb24iOiAyLA0KICAgICAgICAgICJuYW1lIjogIlVTQSBZb3V0aCBTb2NjZXIgUmFua2luZ3MgYnkgU3RhdGUiDQogICAgICAgIH0NCiAgICAgIF0NCiAgICB9DQogIF0NCn0NCjwvc2NyaXB0Pg0KZAIIDxYCHwAFQTxsaW5rIHJlbD0naWNvbicgdHlwZT0naW1hZ2UvaWNvJyBocmVmPScvZGVzaWduL2xvZ28vc29jY2VyLmljbyc+ZAIJDxYCHwAFwQIgPGxpbmsgcmVsPSdzdHlsZXNoZWV0JyBocmVmPScvY3NzL3VpL2N1c3RvbS9qcXVlcnktdWktMS44LjIzLmN1c3RvbS5jc3MnPg0KPGxpbmsgcmVsPSdzdHlsZXNoZWV0JyBocmVmPScvanMvdWkvanF1ZXJ5LnVpLnRpbWVwaWNrZXIuY3NzJz4NCjxsaW5rIGhyZWY9Jy9jc3MvbWF0ZXJpYWwvNi4xLjk1L2Nzcy9tYXRlcmlhbGRlc2lnbmljb25zLm1pbi5jc3MnIG1lZGlhPSdhbGwnIHJlbD0nc3R5bGVzaGVldCcgdHlwZT0ndGV4dC9jc3MnIC8+DQo8c2NyaXB0IHR5cGU9J3RleHQvamF2YXNjcmlwdCcgc3JjPScvanMvMjAyNi5qcz92PTUuNCc+PC9zY3JpcHQ+DQpkAgMPFgIeBWNsYXNzBQZzb2NjZXIWAgIBD2QWEgIBD2QWDgIBDxYCHwBlZAIFDw8WAh4LTmF2aWdhdGVVcmwFH2h0dHBzOi8vd3d3LnNvY2NlcmluY29sbGVnZS5jb21kZAIHDxYCHwBlZAILDxYCHwBlZAINDw8WBh4IQ3NzQ2xhc3MFQm5hdmJhci1idG4gYnRuIGJ0bi1zbSBidG4tcGlsbCBidG4td2hpdGUgbGlmdCBtbC1hdXRvIHRleHQtcHJpbWFyeR8ABRBMb2cgSW4gLyBTaWduIFVwHgRfIVNCAgJkZAIVD2VkAhcPZBYCZg9lZAIDD2VkAgUPDxYEHwMFFHBiLTYgY29udGFpbmVyLWZsdWlkHwQCAmQWBAIDDw8WBB8DBRVjb2wtMTIgbWluLXZoLTUwIHB4LTAfBAICZBYCAgEPZBYGAgEPZWQCAw9kFgQCAw8QDxYGHg1EYXRhVGV4dEZpZWxkBQlzdGF0ZW5hbWUeDkRhdGFWYWx1ZUZpZWxkBQVzdGF0ZR4LXyFEYXRhQm91bmRnZBAVPQhOYXRpb25hbAhSZWdpb24gSQlSZWdpb24gSUkKUmVnaW9uIElJSQlSZWdpb24gSVYHQWxhYmFtYQZBbGFza2EHQXJpem9uYQhBcmthbnNhcwpDYWxpZm9ybmlhBkNhbmFkYQhDb2xvcmFkbwtDb25uZWN0aWN1dAlDb3N0IFJpY2EIRGVsYXdhcmUURGlzdHJpY3Qgb2YgQ29sdW1iaWEHRmxvcmlkYQdHZW9yZ2lhBkhhd2FpaQVJZGFobwhJbGxpbm9pcwdJbmRpYW5hBElvd2EGS2Fuc2FzCEtlbnR1Y2t5CUxvdWlzaWFuYQVNYWluZQhNYXJ5bGFuZA1NYXNzYWNodXNldHRzBk1leGljbwhNaWNoaWdhbglNaW5uZXNvdGELTWlzc2lzc2lwcGkITWlzc291cmkHTW9udGFuYQhOZWJyYXNrYQZOZXZhZGENTmV3IEhhbXBzaGlyZQpOZXcgSmVyc2V5Ck5ldyBNZXhpY28ITmV3IFlvcmsOTm9ydGggQ2Fyb2xpbmEMTm9ydGggRGFrb3RhBE9oaW8IT2tsYWhvbWEGT3JlZ29uDFBlbm5zeWx2YW5pYQtQdWVydG8gUmljbwxSaG9kZSBJc2xhbmQOU291dGggQ2Fyb2xpbmEMU291dGggRGFrb3RhCVRlbm5lc3NlZQVUZXhhcwRVdGFoB1Zlcm1vbnQIVmlyZ2luaWEKV2FzaGluZ3Rvbg1XZXN0IFZpcmdpbmlhCVdpc2NvbnNpbgdXeW9taW5nEFhYLUludGVybmF0aW9uYWwVPQJYWAExATIBMwE0AkFMAkFLAkFaAkFSAkNBAkNOAkNPAkNUAkNSAkRFAkRDAkZMAkdBAkhJAklEAklMAklOAklBAktTAktZAkxBAk1FAk1EAk1BAk1YAk1JAk1OAk1TAk1PAk1UAk5FAk5WAk5IAk5KAk5NAk5ZAk5DAk5EAk9IAk9LAk9SAlBBAlBSAlJJAlNDAlNEAlROAlRYAlVUAlZUAlZBAldBAldWAldJAldZAlhYFCsDPWdnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dnZ2dkZAIFDxBkEBUMA1UwOANVMDkDVTEwA1UxMQNVMTIDVTEzA1UxNANVMTUDVTE2A1UxNwNVMTgDVTE5FQwBOAE5AjEwAjExAjEyAjEzAjE0AjE1AjE2AjE3AjE4AjE5FCsDDGdnZ2dnZ2dnZ2dnZ2RkAg0PZBYCZg9lZAIFDw8WAh4HVmlzaWJsZWhkFgICAQ9kFgICAQ8WAh8AZWQCBw8PFgIfAgUoaHR0cHM6Ly9zb2NjZXJpbmNvbGxlZ2UuY29tL0RlZmF1bHQuYXNweGRkAgkPDxYEHwIFKGh0dHBzOi8vc29jY2VyaW5jb2xsZWdlLmNvbS9EZWZhdWx0LmFzcHgfAAURU29jY2VyIGluIENvbGxlZ2VkZAILDxYCHwAFBDIwMjZkAg8PDxYCHwhoZBYCAgEPD2QPZAWUAUJ3TnFlME52Ym5SeWIyeEpSRHBpZEc1TlpYSm5aVHRRWVhKaGJXVjBaWEk2YldWeVoyVjlMSHREYjI1MGNtOXNTVVE2WW5SdVEyeGxZWEk3VUdGeVlXMWxkR1Z5T2xoOUxIdERiMjUwY205c1NVUTZZblJ1UkdWc1ZGUk1hWE4wTzFCaGNtRnRaWFJsY2pwWWZRQUEWAgIBD2QWBgIDDxBkZBYBZmQCBQ88KwAJAGQCCw9kFgICAw88KwALAGQCEw8PZA8PZAW0AkFBTWFmaTlwYldGblpYTXZNakF4TXk5dGIyUmhiQzkwYkM1d2JtY0NBeGwrTDJsdFlXZGxjeTh5TURFekwyMXZaR0ZzTDNRdWNHNW5CQU1hZmk5cGJXRm5aWE12TWpBeE15OXRiMlJoYkM5MGNpNXdibWNIQXhsK0wybHRZV2RsY3k4eU1ERXpMMjF2WkdGc0wyd3VjRzVuQ0FNWmZpOXBiV0ZuWlhNdk1qQXhNeTl0YjJSaGJDOXlMbkJ1WndzREduNHZhVzFoWjJWekx6SXdNVE12Ylc5a1lXd3ZZbXd1Y0c1bkRRTVpmaTlwYldGblpYTXZNakF4TXk5dGIyUmhiQzlpTG5CdVp3OERHbjR2YVcxaFoyVnpMekl3TVRNdmJXOWtZV3d2WW5JdWNHNW5BQUE9PCsADgEABVREQU1GWW14aFkyc05BaklBQUFBd0F3OXlaWE5wZW1GaWJHVkVhV0ZzYjJjMkFUMERHSDR2YVcxaFoyVnpMMk5zYjNObFJHbGhiRzluTG5CdVp3QUEWAmYPZBYCAgEPZWQCFw8PFgIfCGhkZGTJWejNCPZ5Y6b/PciNzPjB6stmoQ==" />
+</div>
+
+
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(EO25264)=='undefined'){EO25264=new Object();EO25264.f=new Object();EO25264.g=new Object();EO25264.r=new Object();EO25264.g.a=EO25264.r;EO25264.r.getVersion=function(){return "25.264";};EO25264.r.getLoader=function(){return typeof(EO25264.g.d)!='undefined'?EO25264.g.d:null;};EO25264.r.getNS=function(){return "EO25264";};};
+EO25264.r.product='EO.Web';
+EO25264.r.form='aspnetForm';
+EO25264.r.autoInit=false;
+EO25264.r.handlerUrl='/eo_web.ashx';
+
+//]]>
+</script>
+<script type="text/javascript" src="/js/eo/eo.18ccd2b5-5bb4-4e32-aeb3-adc32338a5de.js"></script>
+<script type="text/javascript" src="/js/eo/eo.310dad10-dab1-44a7-a637-c218ef9aa3b7.js"></script>
+<script type="text/javascript" src="/js/eo/eo.86c43cce-ff60-427d-9a37-1e16debbe456.js"></script>
+<script type="text/javascript" src="/js/eo/eo.e1a21eb1-352a-4a42-b2b6-bbacb24a29d1.js"></script>
+<script type="text/javascript" src="/js/eo/eo.1690bc33-6c82-4e45-a64c-c8c0fde91095.js"></script><div id="eo_root"></div>
+<script type="text/javascript" src="/js/eo/eo.20891133-56ac-42df-9870-2d95a8ab231e.js"></script>
+<script type="text/javascript" src="/js/eo/eo.59fe8f2b-e671-41c5-9491-e9b2df72e9ec.js"></script>
+<script type="text/javascript" src="/js/eo/eo.54ab8d54-4fdd-42e1-a5ec-62c40a48bb49.js"></script>
+<script type="text/javascript" src="/js/eo/eo.e955a919-0660-48a3-972b-6a7e7c13879e.js"></script>
+<script type="text/javascript" src="/js/eo/eo.a81cac04-7396-436e-96d4-99acb86cb2be.js"></script>
+        <!-- TOP NAV -->
+        
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="/home.aspx">
+            <img src="https://sincsports.com/assets/img/sinc_line.png" alt="SincSports logo" />
+        </a>
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <!-- Navigation -->
+            <ul class="navbar-nav w-100">
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Events
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDocumentation">
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item d-flex align-items-start" href="/events.aspx?sinc=Y">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-tournament"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Tournaments
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        SincSports tournament listing
+                                    </p>
+                                </div>
+                            </a>
+                            <a class="list-group-item d-flex align-items-start" href="/events.aspx?sinc=Y&leagues=Y">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-calendar"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Leagues
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        SincSports Leagues
+                                    </p>
+                                </div>
+                            </a>
+                            <a id="ctl00_navbar_lnkRankEvents" class="list-group-item d-flex align-items-start" href="/usarankevents.aspx?sinc=Y">
+                            <!-- Icon -->
+                            <div class="icon icon-sm text-primary">
+                                <span class="mdi mdi-trending-up"></span>
+                            </div>
+                            <!-- Content -->
+                            <div class="ms-4">
+                                <!-- Heading -->
+                                <h6 class="fw-bold text-uppercase mb-0">USA Rank Events
+                                </h6>
+                                <!-- Text -->
+                                <p class="fs-sm text-gray-700 mb-0">
+                                    Results included in rankings
+                                </p>
+                            </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sicClubs.aspx?sinc=Y">Clubs & Teams
+                    </a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="usaRankLnk" href="/rank.aspx">
+                    Rankings
+                </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vip.aspx">SINC VIP
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Default.aspx">College Recruiting
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Our Products
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDocumentation">
+                        <div class="list-group list-group-flush">
+                            <a class="list-group-item d-flex align-items-start" href="https://sincsports.com" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-cached"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">SincSports
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Tournament and League Software
+                                    </p>
+                                </div>
+                            </a>
+                            <a id="ctl00_navbar_lnkSportInCollege" class="list-group-item d-flex align-items-start" href="https://www.soccerincollege.com" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-school-outline"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Sports In College
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Recruiting tools for athletes
+                                    </p>
+                                </div>
+                            </a>
+
+                            <a class="list-group-item d-flex align-items-start" href="https://usa.sincsports.com/rank/view" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-trending-up"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">USA Rank
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        Rankings for youth sports
+                                    </p>
+                                </div>
+                            </a>
+                            <a class="list-group-item d-flex align-items-start" href="https://www.sincsports.com/partner/onlinecheckin" target="_blank">
+                                <!-- Icon -->
+                                <div class="icon icon-sm text-primary">
+                                    <span class="mdi mdi-check-circle-outline"></span>
+                                </div>
+                                <!-- Content -->
+                                <div class="ms-4">
+                                    <!-- Heading -->
+                                    <h6 class="fw-bold text-uppercase mb-0">Online Check-In
+                                    </h6>
+                                    <!-- Text -->
+                                    <p class="fs-sm text-gray-700 mb-0">
+                                        The safest way to check in your teams
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                
+                
+                
+                <li class=" flex-grow-1"></li>
+                <li class="nav-item dropdown">
+                    <a id="ctl00_navbar_lnkLogin" class="navbar-btn btn btn-sm btn-pill btn-white lift ml-auto text-primary" href="/TTLogin.aspx">Log In / Sign Up</a>
+                    
+                </li>
+            </ul>
+            <!-- Button -->
+
+
+        </div>
+    </div>
+</nav>
+<div class="collapse shadow-lg py-3" id="searchTB">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <select name="ctl00$navbar$ddlSearchType" id="ctl00_navbar_ddlSearchType" class="form-control mr-2">
+	<option value="people">People Search</option>
+	<option value="event">Event Search</option>
+	<option value="usarank">USA Rank ID</option>
+
+</select>
+            <input name="ctl00$navbar$tbSearch" type="text" id="ctl00_navbar_tbSearch" class="form-control mr-2" />
+            <a href="#" class="btn btn-primary" onclick="eo_Callback('cpSearch', 'search'); return false;">Search</a>
+            <a href="#" class="btn btn-link ml-2 searchTB-close" title="Close search" onclick="$('#searchTB').hide('collapse'); return false;"><i class="mdi mdi-close"></i></a>
+        </div>
+        <div>
+            <div style="position:absolute; top:-1000px;"><input type="hidden" name="eo_version" value="25.2.64.0" /><input type="hidden" name="eo_style_keys" value="/wFk" /><input type="hidden" name="__eo_obj_states"></div>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.r.product='EO.Web';
+EO25264.r.debug=0;
+EO25264.r.aspnet11=0;
+var eo_culture_i=eval('({"name":"","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":".","IsReadOnly":true,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":",","CurrencySymbol":"\u00A4","NaNSymbol":"NaN","CurrencyNegativePattern":0,"NumberNegativePattern":1,"PercentPositivePattern":0,"PercentNegativePattern":0,"NegativeInfinitySymbol":"-Infinity","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":".","NumberGroupSeparator":",","CurrencyPositivePattern":0,"PositiveInfinitySymbol":"Infinity","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":".","PercentGroupSeparator":",","PercentSymbol":"%","PerMilleSymbol":"\u2030","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"AM","Calendar":{"MinSupportedDateTime":"@-62135568000000@","MaxSupportedDateTime":"@253402300799999@","AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":true},"DateSeparator":"/","FirstDayOfWeek":0,"CalendarWeekRule":0,"FullDateTimePattern":"dddd, dd MMMM yyyy HH:mm:ss","LongDatePattern":"dddd, dd MMMM yyyy","LongTimePattern":"HH:mm:ss","MonthDayPattern":"MMMM dd","PMDesignator":"PM","RFC1123Pattern":"ddd, dd MMM yyyy HH\':\'mm\':\'ss \'GMT\'","ShortDatePattern":"MM/dd/yyyy","ShortTimePattern":"HH:mm","SortableDateTimePattern":"yyyy\'-\'MM\'-\'dd\'T\'HH\':\'mm\':\'ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\'-\'MM\'-\'dd HH\':\'mm\':\'ss\'Z\'","YearMonthPattern":"yyyy MMMM","AbbreviatedDayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"ShortestDayNames":["Su","Mo","Tu","We","Th","Fr","Sa"],"DayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"AbbreviatedMonthNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthNames":["January","February","March","April","May","June","July","August","September","October","November","December",""],"IsReadOnly":true,"NativeCalendarName":"Gregorian Calendar","AbbreviatedMonthGenitiveNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthGenitiveNames":["January","February","March","April","May","June","July","August","September","October","November","December",""]}})');//eo_culture_i
+var eo_culture=eval('({"name":"en-US","numberFormat":{"CurrencyDecimalDigits":2,"CurrencyDecimalSeparator":".","IsReadOnly":false,"CurrencyGroupSizes":[3],"NumberGroupSizes":[3],"PercentGroupSizes":[3],"CurrencyGroupSeparator":",","CurrencySymbol":"$","NaNSymbol":"NaN","CurrencyNegativePattern":0,"NumberNegativePattern":1,"PercentPositivePattern":0,"PercentNegativePattern":0,"NegativeInfinitySymbol":"-Infinity","NegativeSign":"-","NumberDecimalDigits":2,"NumberDecimalSeparator":".","NumberGroupSeparator":",","CurrencyPositivePattern":0,"PositiveInfinitySymbol":"Infinity","PositiveSign":"+","PercentDecimalDigits":2,"PercentDecimalSeparator":".","PercentGroupSeparator":",","PercentSymbol":"%","PerMilleSymbol":"‰","NativeDigits":["0","1","2","3","4","5","6","7","8","9"],"DigitSubstitution":1},"dateTimeFormat":{"AMDesignator":"AM","Calendar":{"MinSupportedDateTime":new Date(-62135568000000),"MaxSupportedDateTime":new Date(253402300799999),"AlgorithmType":1,"CalendarType":1,"Eras":[1],"TwoDigitYearMax":2029,"IsReadOnly":false},"DateSeparator":"/","FirstDayOfWeek":0,"CalendarWeekRule":0,"FullDateTimePattern":"dddd, MMMM dd, yyyy h:mm:ss tt","LongDatePattern":"dddd, MMMM dd, yyyy","LongTimePattern":"h:mm:ss tt","MonthDayPattern":"MMMM dd","PMDesignator":"PM","RFC1123Pattern":"ddd, dd MMM yyyy HH\u0027:\u0027mm\u0027:\u0027ss \u0027GMT\u0027","ShortDatePattern":"M/d/yyyy","ShortTimePattern":"h:mm tt","SortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd\u0027T\u0027HH\u0027:\u0027mm\u0027:\u0027ss","TimeSeparator":":","UniversalSortableDateTimePattern":"yyyy\u0027-\u0027MM\u0027-\u0027dd HH\u0027:\u0027mm\u0027:\u0027ss\u0027Z\u0027","YearMonthPattern":"MMMM, yyyy","AbbreviatedDayNames":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"ShortestDayNames":["Su","Mo","Tu","We","Th","Fr","Sa"],"DayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"AbbreviatedMonthNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthNames":["January","February","March","April","May","June","July","August","September","October","November","December",""],"IsReadOnly":false,"NativeCalendarName":"Gregorian Calendar","AbbreviatedMonthGenitiveNames":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec",""],"MonthGenitiveNames":["January","February","March","April","May","June","July","August","September","October","November","December",""]}})');//eo_culture
+
+//]]>
+</script>
+<table id="ctl00_navbar_cpSearch" style="width:100%;width:100%;">
+	<tbody>
+		<tr>
+			<td>
+                
+            </td>
+		</tr>
+	</tbody>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_navbar_cpSearch=1;EO25264.r._o_ctl00_navbar_cpSearch=EO25264.f.acg(EO25264.r._o_ctl00_navbar_cpSearch,"cpSearch",new EO25264.f.aaum([[,"ctl00_navbar_cpSearch","Callback","ctl00$navbar$cpSearch",,,,,,,"__doPostBack('ctl00$navbar$cpSearch','_eo_arg_')"],,"__doPostBack('ctl00$navbar$cpSearch','')",,,,,,[],"<div class='loading'></div>",,,,,,,,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_navbar_cpSearch,1,null, 0);});
+//]]>
+</script>
+
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+.mergeAthleteDiv 
+{
+	font-family: Arial, Helvetica, sans-serif; font-size: 12px; width:250px;z-index: 10000000;margin-top:68px;
+	color: #000; padding: 10px 10px 5px 10px; -webkit-border-bottom-right-radius: 10px;-moz-border-radius-bottomright: 10px;background: #fefefe;
+	background:-moz-linear-gradient(top,#fefefe 0%,#b7b7b7); background: -webkit-gradient(linear, left top, left bottom, from(#fefefe),to(#b7b7b7));
+	border: 0px solid #474747;-moz-box-shadow:0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-webkit-box-shadow: 0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-moz-box-shadow: 2px 5px 15px #9a9a9a;-webkit-box-shadow: 3px 5px 15px #9a9a9a;
+}
+
+</style>
+<script type="text/javascript" language="javascript">
+    function MergeAthlete(img, Athleteid) {
+        $(".amerge").attr("src", "/images/mergeSignRed.png");
+        $(".pmerge").hide();
+        $(".merge").hide();
+        $(img).hide();
+        eo_Callback('ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl', Athleteid + "|" + img.id);
+        return false;
+    }
+
+    function cancelAthleteMerge() {
+        $(".amerge").attr("src", "/images/mergeSign.png");
+        $(".pmerge").show();
+        $(".amerge").show();
+        $(".merge").show();
+        var showthis = $('ctl00_navbar_sicAthleteMerge_lblFirstAthleteId').html();
+        if (showthis != "")
+            $('#' + showthis).show();
+        eo_Callback('ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl', 'clear');
+        return false;
+        
+    }
+</script>
+<table id="ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl">
+	<tbody>
+		<tr>
+			<td>
+        
+</td>
+		</tr>
+	</tbody>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl=1;EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl=EO25264.f.acg(EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl,"cpMergeAthleteControl",new EO25264.f.aaum([[,"ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl","Callback","ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl",,,,,,,"__doPostBack('ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl','_eo_arg_')"],,"__doPostBack('ctl00$navbar$sicAthleteMerge$cpMergeAthleteControl','')",,,,,,[],,,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_navbar_sicAthleteMerge_cpMergeAthleteControl,1,null, 0);});
+//]]>
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        /* Delegated, and matching a class as well as the id, because this nav is
+           not always the one showing the link. SincShell hides this whole navbar
+           in-event and puts its own Sinc > Search row in the event strip; that
+           row carries .js-searchlnk. A direct bind to #searchlnk only ever
+           reached the row in here - the hidden one - so in-event the menu item
+           was dead. */
+        $(document).on("click", "#searchlnk, .js-searchlnk", function (e) {
+            $("#searchTB").toggle("collapse");
+            e.preventDefault();
+        });
+        $("#ctl00_navbar_ddlSearchType").change(function () {
+            if ($(this).val() == "event") {
+                $('#ctl00_navbar_tbSearch').autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "/services/AutoComplete.asmx/GetEvents",
+                            dataType: "json",
+                            data: JSON.stringify({ state: '', prefix: request.term }),
+                            success: function (data) {
+                                response($.map(data.d, function (item) {
+                                    return {
+                                        label: item.Name,
+                                        value: item.Value
+                                    }
+                                }))
+                            }
+                        });
+                    },
+                    minLength: 3,
+                    select: function (event, ui) {
+                        window.location = "TTIntro.aspx?register=Y&tid=" + ui.item.value;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                });
+
+            }
+            else {
+                $('#ctl00_navbar_tbSearch').autocomplete("destroy");
+                $('#ctl00_navbar_tbSearch').removeData('autocomplete');
+            }
+        });
+        $("#ctl00_navbar_tbSearch").keypress(function (e) {
+            if (e.which == 13) {
+                eo_Callback('cpSearch', 'search');
+                e.preventDefault();
+            }
+        });
+
+    })
+</script>
+<style type="text/css">
+    #searchTB {
+        max-height: 260px;
+        overflow: auto;
+        width: 100%;
+        background: #fff;
+        z-index: 100000;
+        position: fixed;
+    }
+
+    div.dropdown-menu div.list-group a:hover {
+        background-color: #efefef;
+    }
+
+    body.test .sinc-long {
+        background-position: 0px 0px !important;
+        width: 280px;
+    }
+
+    body.test .sincsprite {
+        display: inline-block;
+        height: 40px;
+        background-image: url(/images/testsystem.png) !important;
+        cursor: pointer;
+    }
+</style>
+
+        <input type="text" id="username" style="width:0;height:0;visibility:hidden;position:absolute;left:0;top:0" />
+        <input type="password" style="width:0;height:0;visibility:hidden;position:absolute;left:0;top:0" />
+    
+<!-- Begin EO.Web ScriptManager eosm.  -->
+
+<!-- End EO.Web ScriptManager eosm.  -->
+
+    <div id="bg">  
+            <div id="ctl00_pnlPage" class="pb-6 container-fluid">
+	
+              <div id="ctl00_pnlCrumbs">
+		
+                    
+                
+	</div>  
+                
+                <div class="row g-4">
+                    <div id="ctl00_pnlMain" class="col-12 min-vh-50 px-0">
+		
+                    
+<table id="ctl00_ContentPlaceHolder1_cpCheckAccess">
+			<tbody>
+				<tr>
+					<td>
+
+</td>
+				</tr>
+			</tbody>
+		</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_ContentPlaceHolder1_cpCheckAccess=1;EO25264.r._o_ctl00_ContentPlaceHolder1_cpCheckAccess=EO25264.f.acg(EO25264.r._o_ctl00_ContentPlaceHolder1_cpCheckAccess,"cpCheckAccess",new EO25264.f.aaum([[,"ctl00_ContentPlaceHolder1_cpCheckAccess","Callback","ctl00$ContentPlaceHolder1$cpCheckAccess",,,,,,,"__doPostBack('ctl00$ContentPlaceHolder1$cpCheckAccess','_eo_arg_')"],,"__doPostBack('ctl00$ContentPlaceHolder1$cpCheckAccess','')",,,,,,[],"<div class='loading'></div>",,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_ContentPlaceHolder1_cpCheckAccess,1,null, 0);});
+//]]>
+</script>
+
+    <div class="container">
+        <h2>USA Rank</h2>
+        <div id="ctl00_ContentPlaceHolder1_pnlSearch" class="ubuntufont">
+			
+            <div class="card bg-light shadow" data-aos="fade-in" data-aos-delay="150">
+                <div class="card-body">
+
+                    <div class="form-row row">
+
+
+                        <div class="col-md-3">
+                            <span>Gender: </span>
+                            <select name="ctl00$ContentPlaceHolder1$ddlGender" id="ctl00_ContentPlaceHolder1_ddlGender" class="form-control form-select">
+				<option selected="selected" value="M">Boys / Men</option>
+				<option value="F">Girls / Women</option>
+
+			</select>
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <span>State: </span>
+                            <select name="ctl00$ContentPlaceHolder1$ddlStates" id="ctl00_ContentPlaceHolder1_ddlStates" class="form-control form-select">
+				<option value="XX">National</option>
+				<option value="1">Region I</option>
+				<option value="2">Region II</option>
+				<option value="3">Region III</option>
+				<option value="4">Region IV</option>
+				<option value="AL">Alabama</option>
+				<option value="AK">Alaska</option>
+				<option value="AZ">Arizona</option>
+				<option value="AR">Arkansas</option>
+				<option value="CA">California</option>
+				<option value="CN">Canada</option>
+				<option value="CO">Colorado</option>
+				<option value="CT">Connecticut</option>
+				<option value="CR">Cost Rica</option>
+				<option value="DE">Delaware</option>
+				<option value="DC">District of Columbia</option>
+				<option value="FL">Florida</option>
+				<option selected="selected" value="GA">Georgia</option>
+				<option value="HI">Hawaii</option>
+				<option value="ID">Idaho</option>
+				<option value="IL">Illinois</option>
+				<option value="IN">Indiana</option>
+				<option value="IA">Iowa</option>
+				<option value="KS">Kansas</option>
+				<option value="KY">Kentucky</option>
+				<option value="LA">Louisiana</option>
+				<option value="ME">Maine</option>
+				<option value="MD">Maryland</option>
+				<option value="MA">Massachusetts</option>
+				<option value="MX">Mexico</option>
+				<option value="MI">Michigan</option>
+				<option value="MN">Minnesota</option>
+				<option value="MS">Mississippi</option>
+				<option value="MO">Missouri</option>
+				<option value="MT">Montana</option>
+				<option value="NE">Nebraska</option>
+				<option value="NV">Nevada</option>
+				<option value="NH">New Hampshire</option>
+				<option value="NJ">New Jersey</option>
+				<option value="NM">New Mexico</option>
+				<option value="NY">New York</option>
+				<option value="NC">North Carolina</option>
+				<option value="ND">North Dakota</option>
+				<option value="OH">Ohio</option>
+				<option value="OK">Oklahoma</option>
+				<option value="OR">Oregon</option>
+				<option value="PA">Pennsylvania</option>
+				<option value="PR">Puerto Rico</option>
+				<option value="RI">Rhode Island</option>
+				<option value="SC">South Carolina</option>
+				<option value="SD">South Dakota</option>
+				<option value="TN">Tennessee</option>
+				<option value="TX">Texas</option>
+				<option value="UT">Utah</option>
+				<option value="VT">Vermont</option>
+				<option value="VA">Virginia</option>
+				<option value="WA">Washington</option>
+				<option value="WV">West Virginia</option>
+				<option value="WI">Wisconsin</option>
+				<option value="WY">Wyoming</option>
+				<option value="XX">XX-International</option>
+
+			</select>
+                        </div>
+                        <div class="col-md-3">
+                            <span>Age: </span>
+                            <select name="ctl00$ContentPlaceHolder1$ddlAge" id="ctl00_ContentPlaceHolder1_ddlAge" class="form-control form-select">
+				<option value="8">U08</option>
+				<option value="9">U09</option>
+				<option value="10">U10</option>
+				<option value="11">U11</option>
+				<option value="12">U12</option>
+				<option value="13">U13</option>
+				<option value="14">U14</option>
+				<option value="15">U15</option>
+				<option value="16">U16</option>
+				<option selected="selected" value="17">U17</option>
+				<option value="18">U18</option>
+				<option value="19">U19</option>
+
+			</select>
+                        </div>
+                        <div class="col-md-3">
+                            <span>Level: </span>
+                            <select name="ctl00$ContentPlaceHolder1$ddlLevel" id="ctl00_ContentPlaceHolder1_ddlLevel" class="form-control form-select">
+				<option value="0">All Levels</option>
+				<option value="1">Gold</option>
+				<option value="2">Silver</option>
+				<option value="3">Bronze</option>
+				<option value="4">Red</option>
+				<option value="5">Blue</option>
+				<option value="6">Green</option>
+
+			</select>
+                            
+                        </div>
+                    </div>
+                    <div class="form-row row">
+                        <div class="col-md-6">
+                            
+                            <span id="ctl00_ContentPlaceHolder1_lblLink" style="float: left; margin: 5px; font-weight: bold;"><a href="usaRankEvents.aspx">View Ranking Events</a></span>
+                        </div>
+                         <div class="col-md-6 text-right text-end">
+                             <a id="btnSearch" class="btn btn-primary btn-sm" href="#" onclick="return loadMoreTeams(true);">Search</a>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        
+		</div>
+
+        <div class="row py-4 no-gutters">
+            <div class="col-md-2 text-center">
+                <div class="gold_rank py-3">1-100 Gold</div>
+            </div>
+            <div class="col-md-2 text-center">
+                <div class="silver_rank py-3">101-250 Silver</div>
+            </div>
+            <div class="col-md-2 text-center">
+                <div class="bronze_rank py-3">251-400 Bronze</div>
+            </div>
+            <div class="col-md-2 text-center">
+                <div class="red_rank py-3">401-700 Red</div>
+            </div>
+            <div class="col-md-2 text-center">
+                <div class="blue_rank py-3">701-1050 Blue</div>
+            </div>
+            <div class="col-md-2 text-center">
+                <div class="green_rank py-3">1051-1550 Green</div>
+            </div>
+        </div>
+        <div class="text-center">
+        <i>Team level determined by national rank</i><br />
+        <a href="/sicPageInfo.aspx?type=RANK">More about USA Rank</a>
+    </div>
+    </div>
+
+    <div class="position-relative">
+        <div class="shape shape-bottom shape-fluid-x svg-shim text-light">
+        <svg viewBox="0 0 2880 250" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M720 125L2160 0h720v250H0V125h720z" fill="currentColor"/></svg>
+        </div>
+    </div>
+
+    <section class="pt-4 bg-light">
+        <div class="container ubuntufont bg-white">
+            <div style="min-height: 400px;">
+                <ul id='rankTbl'></ul>
+            </div>
+            <input name="ctl00$ContentPlaceHolder1$tbNext" type="text" value="1" id="ctl00_ContentPlaceHolder1_tbNext" style="display: none;" />
+            <a class="btn" id="btnMore" href="" onclick="return loadMoreTeams(false);" style='margin-top: 5px; display: none; visibility: hidden;'>Load More</a><br />
+            <span>* This team is one of the 'seeded' teams in this age division.</span>
+
+            <div id="loader" style='display: none;'>
+                <div class='loading'></div>
+            </div>
+            <div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3157882456663027"
+                    crossorigin="anonymous"></script>
+                <!-- Sports_Responsive -->
+                <ins class="adsbygoogle"
+                    style="display: block"
+                    data-ad-client="ca-pub-3157882456663027"
+                    data-ad-slot="9693721616"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+
+        </div>
+    </section>
+
+<span id="ctl00_ContentPlaceHolder1_LblSex" style="color:White;"></span>
+<span id="ctl00_ContentPlaceHolder1_LblAge" style="color:White;"></span>
+
+  
+<style type="text/css">
+.mergeTeamDiv 
+{
+	font-family: Arial, Helvetica, sans-serif; font-size: 12px; width:250px;z-index: 100002;margin-top:68px;
+	color: #000; padding: 10px 10px 5px 10px; -webkit-border-bottom-right-radius: 10px;-moz-border-radius-bottomright: 10px;background: #fefefe;
+	background:-moz-linear-gradient(top,#fefefe 0%,#b7b7b7); background: -webkit-gradient(linear, left top, left bottom, from(#fefefe),to(#b7b7b7));
+	border: 0px solid #474747;-moz-box-shadow:0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-webkit-box-shadow: 0px 0px 0px rgba(000,000,000,0.5),inset 0px 0px 9px rgba(255,255,255,1);
+	-moz-box-shadow: 2px 5px 15px #9a9a9a;-webkit-box-shadow: 3px 5px 15px #9a9a9a;
+}
+    .floater { z-index: 100001; }
+</style>
+<script type="text/javascript" language="javascript">
+    function mergeTeam(img, teamid) {
+        $(".merge").attr("src", "/images/mergeSignRed.png");
+        $(".pmerge").hide();
+        $(".amerge").hide();
+        $(img).hide();
+        eo_Callback('ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl', teamid + "|" + img.id);
+        return false;
+    }
+    function quickMerge() {
+        eo_Callback('ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl', 'quickmerge');
+    }
+
+    function cancelTeamMerge() {
+        $(".merge").attr("src", "/images/mergeSign.png");
+        $(".pmerge").show();
+        $(".amerge").show();
+        $(".merge").show();
+        var showthis = $('ctl00_ContentPlaceHolder1_sicTeamMerge_lblFirstTeamId').html();
+        if (showthis != "")
+            $('#' + showthis).show();
+        eo_Callback('ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl', 'clear');
+        return false;
+        
+    }
+</script>
+<table id="ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl">
+			<tbody>
+				<tr>
+					<td>
+        
+</td>
+				</tr>
+			</tbody>
+		</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl=1;EO25264.r._o_ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl=EO25264.f.acg(EO25264.r._o_ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl,"cpMergeTeamControl",new EO25264.f.aaum([[,"ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl","Callback","ctl00$ContentPlaceHolder1$sicTeamMerge$cpMergeTeamControl",,,,,,,"__doPostBack('ctl00$ContentPlaceHolder1$sicTeamMerge$cpMergeTeamControl','_eo_arg_')"],,"__doPostBack('ctl00$ContentPlaceHolder1$sicTeamMerge$cpMergeTeamControl','')",,,,,,[],"<div class='loading'></div>",,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_ContentPlaceHolder1_sicTeamMerge_cpMergeTeamControl,1,null, 0);});
+//]]>
+</script>
+  
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadMoreTeams(true);
+
+            $(window).scroll(function () {
+                try {
+                    // The busy state used to be tracked by reading the button's own HTML,
+                    // which made every scroll event a possible second request. Ask
+                    // loadMoreTeams instead - it owns the isLoading guard and will drop
+                    // this call if a page is already on the way.
+                    if (isLoading || allTeams) { return; }
+                    var scrollTop = $(window).scrollTop();
+                    if (($("#btnMore").offset().top - scrollTop) < window.screen.height) {
+                        loadMoreTeams(false);
+                        return false;
+                    }
+                }
+                catch (ex) { }
+            });
+        });
+    </script>    
+
+                    <div class="clear"></div>
+                
+	</div>
+
+                    
+                </div>    
+            
+</div>
+        <div class="clear"></div>
+         
+        <!-- FOOTER -->
+<footer class="sinc-footer mt-5">
+    <div class="container py-5">
+
+        <div class="row gy-4">
+
+            <!-- Brand -->
+            <div class="col-md-3">
+                <div class="footer-brand">
+                    <div class="px-lg-0 px-4">
+                        <img src="https://sincsports.com/assets/img/sinc_line_dark_bg.png" class="img-fluid" />
+                    </div>
+                </div>
+
+                <p class="footer-text mt-2">
+                    Premier event management platform for youth sports.
+                </p>
+
+                <div class="footer-social mt-3 d-flex gap-3">
+                    <a href="https://facebook.com/sportsincollege" class="footer-social-link">
+                        <i class="mdi mdi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/sincsports/" class="footer-social-link">
+                        <i class="mdi mdi-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+                <!-- Navigation -->
+               <div class="col-lg-2 col-6">
+                    <div class="footer-title">Platform</div>
+                    <ul class="footer-links">
+                        <li><a href="/events.aspx">Events</a></li>
+                        <li><a href="/sicClubs.aspx">Clubs & Teams</a></li>
+                        <li><a href="/rank.aspx">Rankings</a></li>
+                        <li><a id="ctl00_lnkSIC2" href="https://soccerincollege.com/Default.aspx">College Recruiting</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Products</div>
+                    <ul class="footer-links">
+                        <li><a id="ctl00_lnkSIC3" href="https://soccerincollege.com/Default.aspx">Soccer in College</a></li>
+                        <li><a href="https://www.sincsports.com/services/onlinecheckin">Online CheckIn</a></li>
+                        <li><a href="https://usarank.com">USA Rank</a></li>
+                        <li><a href="https://usatournaments.com">USA Tournaments</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Support</div>
+                    <ul class="footer-links">
+                        <li><a href="/contact.aspx">Contact Support</a></li>
+                        <li><a href="/helpcenter.aspx">Help Center</a></li>
+                        <li><a href="/TTLogin.aspx">Create Account</a></li>
+                        <li><a href="/TTLogin.aspx">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-6">
+                    <div class="footer-title">Company</div>
+                    <ul class="footer-links">
+                        <li><a href="https://www.sincsports.com">About Us</a></li>
+                        <li><a href="/terms.aspx">Terms of Service</a></li>
+                        <li><a href="/privacy.aspx">Privacy Policy</a></li>
+                        <li><a href="/cookiepolicy.aspx">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider my-4">
+
+            <div class="footer-bottom d-flex flex-column flex-sm-row justify-content-between">
+                <p class="mb-0 footer-text small">
+                    Copyright &copy; 2026 SincSports. All rights reserved.
+                </p>
+                <p class="mb-0 footer-text small">
+                    Built for event organizers, clubs, teams, parents and athletes everywhere.
+                </p><span id="ctl00_lblMenuState" class="menustatelbl" style="visibility:hidden;">1</span>
+            </div>
+
+        </div>
+</footer>      
+    </div>
+         
+        
+<div id="smMessageBar">
+    <div>
+        <span id="ctl00_sicMessage_lblMsg" class="spanDisplayMessage"></span>
+        <img id="csmb" src="/images/blank.gif" />
+    </div>
+</div>
+   
+        
+<!-- Begin EO.Web Dialog DialogHelp.  -->
+
+<script type="text/javascript">
+//<![CDATA[
+EO25264.f.asv();
+//]]>
+</script>
+<table id="ctl00_DialogHelp_bdt" cellspacing="0" cellpadding="0" border="0" style="display:none"><tr><td style="font-size:1px"><img src="/images/2013/modal/tl.png" alt="" tabindex="-1" /></td><td style="background-image:url('/images/2013/modal/t.png');background-repeat:repeat-x;font-size:1px;"></td><td style="font-size:1px"><img src="/images/2013/modal/tr.png" alt="" tabindex="-1" /></td></tr><tr><td style="background-image:url('/images/2013/modal/l.png');background-repeat:repeat-y;font-size:1px;" valign="top"></td><td><table id="ctl00_DialogHelp" border="0" class="eo_no_border_spacing" style="display:none;">
+	<tr><td align="left"><div id="ctl00_DialogHelp_headerDiv"   class="eo_css_ctrl_ctl00_DialogHelp1"><div style="position:relative;z-index:2;"><div id="ctl00_DialogHelp_headerHtml"></div><table id="ctl00_DialogHelp_headerTableR" border="0" cellspacing="0" cellpadding="0" style="position:absolute;right:0px;top:0px;"><tr><td valign="middle"><img id="ctl00_DialogHelp_close" alt="" src="/images/closeDialog.png"/></td></tr></table></div></div></td></tr><tr ><td valign="top"><table id="ctl00_DialogHelp_contentTable" border="0" style="width:100%;height:100%;" class="eo_no_border_spacing" ><tr><td height="100%" class="eo_css_ctrl_ctl00_DialogHelp2" align="left" valign="top">
+	            <table id="ctl00_DialogHelp_ctl00_cpHelpPanel">
+		<tbody>
+			<tr>
+				<td>
+	            <div id="hpdiv" style="max-height:550px; overflow:auto;">
+                    
+	                <br />
+	            </div>
+	            </td>
+			</tr>
+		</tbody>
+	</table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("i|c", function(){EO25264.g.b.ctl00_DialogHelp_ctl00_cpHelpPanel=1;EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel=EO25264.f.acg(EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel,"cpHelpPanel",new EO25264.f.aaum([[,"ctl00_DialogHelp_ctl00_cpHelpPanel","Callback","ctl00$DialogHelp$ctl00$cpHelpPanel",,,,,,,"__doPostBack('ctl00$DialogHelp$ctl00$cpHelpPanel','_eo_arg_')"],,"__doPostBack('ctl00$DialogHelp$ctl00$cpHelpPanel','')",,,,,,[],"<div class='loading'></div>",,,,,,,0,0]),"Callback");EO25264.f.ahm(EO25264.r._o_ctl00_DialogHelp_ctl00_cpHelpPanel,1,null, 0);});
+//]]>
+</script>
+
+	        </td></tr></table></td></tr><tr><td><div id="ctl00_DialogHelp_footerDiv" style="position:relative;width:auto;"><table id="ctl00_DialogHelp_footerTable" border="0" cellspacing="0" cellpadding="0" style="width:100%;"><tr><td  id="ctl00_DialogHelp_footer"  class="eo_align_center eo_css_ctrl_ctl00_DialogHelp3"></td></tr></table></div></td></tr>
+</table></td><td style="background-image:url('/images/2013/modal/r.png');background-repeat:repeat-y;font-size:1px;" valign="top"></td></tr><tr><td style="font-size:1px"><img src="/images/2013/modal/bl.png" alt="" tabindex="-1" /></td><td style="background-image:url('/images/2013/modal/b.png');background-repeat:repeat-x;font-size:1px;"></td><td style="font-size:1px"><img src="/images/2013/modal/br.png" alt="" tabindex="-1" /></td></tr></table>
+<script type="text/javascript">
+//<![CDATA[
+EO25264.g.d.k("ldr|i|fmt|u|ei|e|pop|dd|c|dg", function(){EO25264.g.b.ctl00_DialogHelp=1;EO25264.r._o_ctl00_DialogHelp=EO25264.f.acg(EO25264.r._o_ctl00_DialogHelp,"DialogHelp",new EO25264.f.bak([[[,"ctl00_DialogHelp","Dialog","ctl00$DialogHelp",,,,,,,"__doPostBack('ctl00$DialogHelp','_eo_arg_')"],["/images/2013/modal/tl.png","/images/2013/modal/t.png","/images/2013/modal/tr.png","/images/2013/modal/l.png","/images/2013/modal/r.png","/images/2013/modal/bl.png","/images/2013/modal/b.png","/images/2013/modal/br.png"],,,,,,,,[]],"black",50,,,,,,,,"eo_css_ctrl_ctl00_DialogHelp1","eo_css_ctrl_ctl00_DialogHelp1",,"eo_css_ctrl_ctl00_DialogHelp2",,,,,,,,,,,,-100,,,,,,"eo_css_ctrl_ctl00_DialogHelp3",,,,,,"resizableDialog",,,,,,,,"/js/eo/eo.b07569df-aab1-4833-b62f-f5d642a057b3.html",,"ctl00_DialogHelp_ctl00","ctl00_DialogHelp_ctl01",,"/images/closeDialog.png"]),"Dialog");EO25264.f.ahm(EO25264.r._o_ctl00_DialogHelp,1,500, 0);});
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+EO25264.f.asw();
+//]]>
+</script>
+
+<!-- End EO.Web Dialog DialogHelp.  -->
+ 
+    
+    
+        
+    
+        
+        <div id="ctl00_sincCookies_pnlConsent">
+	
+<div id="sincCookieBanner" style="
+    position:fixed;bottom:0;left:0;right:0;z-index:99999;
+    background:#0f172a;color:#fff;
+    font-family:'DM Sans',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    box-shadow:0 -4px 20px rgba(0,0,0,.25);
+    padding:0;margin:0;
+    transform:translateY(100%);
+    transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);">
+    <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+        <div style="flex:1;min-width:280px;">
+            <strong style="font-size:15px;display:block;margin-bottom:4px;">Cookie Preferences</strong>
+            <span style="font-size:13px;color:#94a3b8;line-height:1.5;">
+                We use essential cookies to operate our site. Optional cookies help us analyze traffic and support the site through advertising.
+                <a href="/cookiepolicy.aspx" style="color:#5cb830;text-decoration:underline;">Cookie Policy</a>
+            </span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            
+            <input type="hidden" name="sincConsentR" value="/rank.aspx" />
+            
+            <span id="sincConsentJs" style="display:contents;">
+                <button type="button" data-sinc-consent="all" style="background:#5cb830;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Accept All</button>
+                <button type="button" data-sinc-consent="analytics" style="background:transparent;color:#fff;border:1px solid #5cb830;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Analytics Only</button>
+                <button type="button" data-sinc-consent="essential" style="background:transparent;color:#fff;border:1px solid #475569;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Essential Only</button>
+            </span>
+            <noscript>
+                <style type="text/css">#sincConsentJs{display:none !important;}#sincCookieBanner{transform:none !important;}</style>
+                
+                <span style="display:inline-flex;flex-direction:row-reverse;flex-wrap:wrap;gap:8px;">
+                    <button type="submit" name="c" value="essential" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:transparent;color:#fff;border:1px solid #475569;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Essential Only</button>
+                    <button type="submit" name="c" value="analytics" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:transparent;color:#fff;border:1px solid #5cb830;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Analytics Only</button>
+                    <button type="submit" name="c" value="all" formaction="/services/CookieConsent.ashx" formmethod="post" formnovalidate="formnovalidate" style="background:#5cb830;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;line-height:normal;font-family:inherit;transition:background .2s;text-decoration:none;display:inline-block;">Accept All</button>
+                </span>
+            </noscript>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+(function(){
+    var b=document.getElementById('sincCookieBanner');
+    if(!b) return;
+    var btns=b.querySelectorAll('button[data-sinc-consent]');
+    for(var i=0;i<btns.length;i++){
+        btns[i].addEventListener('click',function(ev){
+            ev.preventDefault();
+            var f=document.createElement('form');
+            f.method='post';
+            f.action='/services/CookieConsent.ashx';
+            var c=document.createElement('input');
+            c.type='hidden'; c.name='c'; c.value=this.getAttribute('data-sinc-consent');
+            f.appendChild(c);
+            var src=b.querySelector('input[name=sincConsentR]');
+            var r=document.createElement('input');
+            r.type='hidden'; r.name='sincConsentR'; r.value=src?src.value:'/';
+            f.appendChild(r);
+            document.body.appendChild(f);
+            f.submit();
+        });
+    }
+    setTimeout(function(){ b.style.transform='translateY(0)'; },600);
+})();
+</script>
+
+</div>
+
+    
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E4567B08" />
+</div></form>
+    <!-- Bootstrap JS (optional) -->
+    <script src="/bs/allbs5.js?v=5.3"></script>
+    
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"d8c0a8d5c1d34adea3ab10341fc53ca9","spa":2}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a569a119094e57b2',t:'MTc5NDAyNjEwNQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a569a119094e57b2',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
