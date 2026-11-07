@@ -255,35 +255,57 @@ def conf_links(games, team_conf):
     return links
 
 
-def backtest(games, team_conf, mcfg):
-    """Replay the current season: predict each matchday using only earlier games."""
-    cur = [g for g in rating_games(games) if g["source"] == "current"]
-    dates = sorted({g["date"] for g in cur})
-    if len(dates) < 4:
+def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
+    """Replay both seasons: every two weeks, refit using only earlier games and
+    predict the next two weeks. Reports accuracy, calibration and log-loss."""
+    rg = rating_games(games)
+    ev = sorted((g for g in rg if g["date"] >= start), key=lambda g: g["date"])
+    if len(ev) < 30:
         return None
-    n = ll = ll_base = correct = 0
-    for d in dates[3:]:
-        m = model.fit(rating_games(games), team_conf, mcfg, as_of=d, iters=40)
-        if not m:
-            continue
-        prior = [g for g in cur if g["date"] < d]
-        base_n = len(prior) + 3
-        hw = (sum(1 for g in prior if g["hs"] > g["as"]) + 1) / base_n
-        dr = (sum(1 for g in prior if g["hs"] == g["as"]) + 1) / base_n
-        aw = 1 - hw - dr
-        for g in (x for x in cur if x["date"] == d):
-            lh, la = model.expected_goals(m, g["home_id"], g["away_id"], g["neutral"])
-            w, dd, l, _ = model.outcome_probs(lh, la)
-            res = 0 if g["hs"] > g["as"] else 1 if g["hs"] == g["as"] else 2
-            p = [w, dd, l][res]
-            ll += -math.log(max(p, 1e-6))
-            ll_base += -math.log(max([hw, dr, aw][res], 1e-6))
-            correct += int([w, dd, l].index(max(w, dd, l)) == res)
-            n += 1
+    from datetime import date, timedelta
+
+    def d2o(d):
+        y, m, dd = (int(x) for x in d.split("-"))
+        return date(y, m, dd)
+    cur = d2o(ev[0]["date"])
+    end = d2o(ev[-1]["date"])
+    n = correct = notlose = 0
+    ll = ll_base = 0.0
+    buckets = {}
+    while cur <= end:
+        nxt = cur + timedelta(days=step_days)
+        a, b = cur.isoformat(), nxt.isoformat()
+        chunk = [g for g in ev if a <= g["date"] < b]
+        if chunk:
+            m = model.fit(rg, team_conf, mcfg, as_of=a, iters=35)
+            prior = [g for g in rg if g["date"] < a]
+            if m and prior:
+                k = len(prior) + 3
+                base = [(sum(1 for g in prior if g["hs"] > g["as"]) + 1) / k,
+                        (sum(1 for g in prior if g["hs"] == g["as"]) + 1) / k]
+                base.append(1 - base[0] - base[1])
+                for g in chunk:
+                    lh, la = model.expected_goals(m, g["home_id"], g["away_id"], g["neutral"])
+                    w, d, l, _ = model.outcome_probs(lh, la)
+                    p = [w, d, l]
+                    res = 0 if g["hs"] > g["as"] else 1 if g["hs"] == g["as"] else 2
+                    pick = p.index(max(p))
+                    n += 1
+                    correct += int(pick == res)
+                    nl = (pick == 0 and res != 2) or (pick == 2 and res != 0) or pick == 1
+                    notlose += int(nl)
+                    ll += -math.log(max(p[res], 1e-6))
+                    ll_base += -math.log(max(base[res], 1e-6))
+                    bk = "70+" if max(p) >= 0.7 else "60-69" if max(p) >= 0.6 else "50-59" if max(p) >= 0.5 else "<50"
+                    B = buckets.setdefault(bk, [0, 0, 0])
+                    B[0] += 1; B[1] += int(pick == res); B[2] += int(nl)
+        cur = nxt
     if not n:
         return None
-    return {"games": n, "accuracy": round(correct / n, 3),
-            "logloss": round(ll / n, 3), "baseline_logloss": round(ll_base / n, 3)}
+    return {"games": n, "accuracy": round(correct / n, 3), "fav_not_lose": round(notlose / n, 3),
+            "logloss": round(ll / n, 3), "baseline_logloss": round(ll_base / n, 3),
+            "buckets": {k: {"games": v[0], "won": round(v[1] / v[0], 3), "not_lose": round(v[2] / v[0], 3)}
+                        for k, v in buckets.items()}}
 
 
 def main():

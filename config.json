@@ -122,11 +122,11 @@
     }
   },
   "model": {
-    "half_life_days": 120,
+    "half_life_days": 180,
     "history_weight": 0.8,
-    "max_margin": 5,
+    "max_margin": 8,
     "team_shrink": 4.0,
-    "conf_shrink": 1.5,
+    "conf_shrink": 6.0,
     "home_shrink": 20.0
   }
 }

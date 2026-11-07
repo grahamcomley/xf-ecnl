@@ -41,7 +41,7 @@ jobs:
         run: |
           git config user.name "xf-ecnl-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add site/data data/cache
+          git add site/data data/cache data/history_catalog.json
           if git diff --cached --quiet; then
             echo "No data changes"
           else

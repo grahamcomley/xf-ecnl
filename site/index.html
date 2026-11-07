@@ -50,7 +50,14 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--blu);font-size:14px;p
 .rrow{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
 .rd{color:var(--mut);font-size:12px;min-width:84px}.rt{flex:1}
 .res{font-size:11px;font-weight:800;width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:#fff}
-.res-w{background:var(--grn)}.res-d{background:#9ca3af}.res-l{background:var(--red)}
+.res-w{background:var(--grn)}
+details.sec{padding:0}details.sec>summary{list-style:none;padding:14px;margin:0;cursor:pointer}details.sec>summary::-webkit-details-marker{display:none}
+details.sec[open]>summary{padding-bottom:6px}.sec-body{padding:0 14px 14px}.sec-sub{margin:0 0 10px}
+.caret{margin-left:auto;color:var(--mut);transition:transform .15s}details.sec:not([open]) .caret{transform:rotate(-90deg)}
+.score.final{font-size:20px;font-weight:800}.score.vs{color:var(--mut);font-weight:500;font-size:13px}
+.fx.matters{background:#f3f4f6;border-color:#d1d5db}.pill.tag{background:#374151;color:#fff}
+.picksbar{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px;position:sticky;top:96px;z-index:3}
+#predtable{transition:opacity .1s}.res-d{background:#9ca3af}.res-l{background:var(--red)}
 </style>
 </head>
 <body>
@@ -77,12 +84,15 @@ function makeModel(D) {
   const pois = (l, R) => { let L = Math.exp(-l), k = 0, p = 1; do { k++; p *= R(); } while (p > L && k < 15); return k - 1; };
   const pmf = (l, k) => { let p = Math.exp(-l); for (let i = 1; i <= k; i++) p *= l / i; return p; };
   const probs = (h, a, neutral) => {
-    const [lh, la] = lam(h, a, neutral); let w = 0, d = 0, l = 0, best = [0, 0], bp = -1;
+    const [lh, la] = lam(h, a, neutral); let w = 0, d = 0, l = 0;
+    const best = [[1, 0, -1], [0, 0, -1], [0, 1, -1]];  // likeliest score within each result
     for (let i = 0; i <= 10; i++) for (let j = 0; j <= 10; j++) {
-      const p = pmf(lh, i) * pmf(la, j); if (i > j) w += p; else if (i === j) d += p; else l += p;
-      if (p > bp) { bp = p; best = [i, j]; }
+      const p = pmf(lh, i) * pmf(la, j), o = i > j ? 0 : i === j ? 1 : 2;
+      if (o === 0) w += p; else if (o === 1) d += p; else l += p;
+      if (p > best[o][2]) best[o] = [i, j, p];
     }
-    const s = w + d + l; return {w: w / s, d: d / s, l: l / s, score: best, lh, la};
+    const s = w + d + l, top = [w, d, l].indexOf(Math.max(w, d, l));
+    return {w: w / s, d: d / s, l: l / s, score: best[top].slice(0, 2), lh, la};
   };
   const sample = (h, a, neutral, force, R = Math.random) => {
     const [lh, la] = lam(h, a, neutral);
@@ -129,20 +139,26 @@ function rank(list, games, extra) {
 }
 
 function simulate(D, M, played, remaining, forced, N) {
-  const ids = D.teams.map(t => t.id), pos = new Map(ids.map(i => [i, new Array(ids.length).fill(0)]));
-  const ppgSum = new Map(ids.map(i => [i, 0]));
+  // Plays out every remaining game N times. Each (simulation, game) pair has its own
+  // seeded random stream, so changing one pick doesn't reshuffle every other game.
+  const ids = D.teams.map(t => t.id), nT = ids.length;
+  const pos = new Map(ids.map(i => [i, new Array(nT).fill(0)]));
+  const sums = new Map(ids.map(i => [i, {gp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, ppg: 0}]));
   for (let n = 0; n < N; n++) {
     const extra = remaining.map((g, gi) => { const [x, y] = M.sample(g.home_id, g.away_id, false, forced[g.id], rng(n * 7919 + gi * 104729 + 1)); return [g.home_id, g.away_id, x, y]; });
     const r = rank(table(extra, played, ids), played, extra);
-    r.forEach((row, i) => { pos.get(row.id)[i]++; ppgSum.set(row.id, ppgSum.get(row.id) + row.ppg); });
+    r.forEach((row, i) => { pos.get(row.id)[i]++; const s = sums.get(row.id); for (const k in s) s[k] += row[k]; });
   }
   const out = new Map();
-  for (const i of ids) { const p = pos.get(i).map(c => c / N); out.set(i, {pos: p, ppg: ppgSum.get(i) / N}); }
+  for (const i of ids) { const s = sums.get(i), avg = {}; for (const k in s) avg[k] = s[k] / N; out.set(i, {pos: pos.get(i).map(c => c / N), ...avg}); }
   return out;
 }
+const atOrAbove = (S, id, k) => S.get(id).pos.slice(0, k + 1).reduce((a, b) => a + b, 0);
 
 // ---------- rendering ----------
-let INDEX, CUR, DATA = {}, FORCED = {};
+let INDEX, CUR, DATA = {}, PICKS = {}, CTX = null;
+const store = {get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+               set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }};
 async function boot() {
   INDEX = await (await fetch("data/index.json", {cache: "no-store"})).json();
   const nav = $("#tabs");
@@ -156,37 +172,47 @@ async function show(id) {
   CUR = id; location.hash = id;
   document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.id === id));
   if (!DATA[id]) DATA[id] = await (await fetch(`data/${id}.json`, {cache: "no-store"})).json();
-  FORCED[id] = FORCED[id] || {};
+  PICKS[id] = PICKS[id] || {};
   const D = DATA[id];
   (D.comp.kind === "bracket" ? renderBracket : renderConference)(D);
+  bindSections();
 }
 
 function teamName(D, id, fallback) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fallback || "TBD"); }
 
 function fixtureCard(D, M, g, opts = {}) {
-  const P = M.probs(g.home_id, g.away_id, opts.neutral);
-  const f = FORCED[CUR][g.id] || "";
   const me = D.comp.focus_team, H = teamName(D, g.home_id, g.home), A = teamName(D, g.away_id, g.away);
   const bold = (n, id) => (D.teams.find(t => t.id === id) || {}).name === me ? `<b>${esc(n)}</b>` : esc(n);
   const played = g.hs != null && g.as != null;
+  const cls = "fx" + (opts.matters ? " matters" : "");
+  if (played) return `<div class="${cls}">
+    <div class="when"><span>${fmtDate(g.date)} · Final</span><span>${esc(g.venue || "")}</span></div>
+    <div class="teams"><div>${bold(H, g.home_id)}</div><div class="score final">${g.hs}–${g.as}</div><div class="a">${bold(A, g.away_id)}</div></div></div>`;
+  const P = M.probs(g.home_id, g.away_id, opts.neutral);
   const conf = opts.neutral ? confidence(D, g.home_id, g.away_id) : null;
-  return `<div class="fx">
-    <div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${esc(g.venue || "")}</span></div>
-    <div class="teams"><div>${bold(H, g.home_id)}</div>
-      <div class="score">${played ? `${g.hs}–${g.as}` : `<span class="mut">${P.score[0]}–${P.score[1]}</span>`}</div>
-      <div class="a">${bold(A, g.away_id)}</div></div>
-    ${played ? "" : `<div class="bar"><div class="bh" style="width:${P.w*100}%">${pct(P.w)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${P.l*100}%">${pct(P.l)}</div></div>
-    <div class="mut" style="margin-top:4px">Most likely score ${P.score[0]}–${P.score[1]}${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
-    ${opts.toggles ? `<div class="toggles" data-g="${g.id}">
+  const f = opts.picks ? (PICKS[CUR][g.id] || "") : "";
+  return `<div class="${cls}">
+    <div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${opts.matters ? `<span class="pill tag">Matters to us</span> ` : ""}${esc(g.venue || "")}</span></div>
+    <div class="teams"><div>${bold(H, g.home_id)}</div><div class="score vs">vs</div><div class="a">${bold(A, g.away_id)}</div></div>
+    <div class="bar"><div class="bh" style="width:${P.w*100}%">${pct(P.w)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${P.l*100}%">${pct(P.l)}</div></div>
+    <div class="mut" style="margin-top:4px">Most likely: <b>${esc(H)} ${P.score[0]}–${P.score[1]} ${esc(A)}</b>${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
+    ${opts.picks ? `<div class="toggles" data-g="${g.id}">
       <button data-f="H" class="${f==="H"?"on":""}">${esc(H)} win</button><button data-f="D" class="${f==="D"?"on":""}">Draw</button><button data-f="A" class="${f==="A"?"on":""}">${esc(A)} win</button></div>` : ""}
-    ${opts.root || ""}`}
+    ${opts.root ? `<div class="root" data-root="${g.id}">${opts.root}</div>` : ""}
     ${g.pending ? `<div class="mut" style="margin-top:4px">⚠ Date has passed but no score is posted yet. Treated as still to play.</div>` : ""}
   </div>`;
 }
 
-function sec(kind, chip, title, sub, body) {
-  return `<section class="card sec-${kind}"><div class="sec-head"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2></div>
-    ${sub ? `<div class="mut" style="margin:-4px 0 10px">${sub}</div>` : ""}${body}</section>`;
+// Collapsible section; open/closed state remembered per tab on this device.
+function sec(kind, chip, title, sub, body, key) {
+  const k = `open:${CUR}:${key || title}`, saved = store.get(k);
+  const open = saved === null ? true : saved === "1";
+  return `<details class="card sec sec-${kind}" data-key="${esc(k)}" ${open ? "open" : ""}>
+    <summary class="sec-head"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2><span class="caret">▾</span></summary>
+    <div class="sec-body">${sub ? `<div class="mut sec-sub">${sub}</div>` : ""}${body}</div></details>`;
+}
+function bindSections() {
+  document.querySelectorAll("details.sec").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
 }
 function resultRow(D, g, focus) {
   const H = teamName(D, g.home_id, g.home), A = teamName(D, g.away_id, g.away);
@@ -195,6 +221,9 @@ function resultRow(D, g, focus) {
     tag = `<span class="res res-${us > them ? "w" : us === them ? "d" : "l"}">${us > them ? "W" : us === them ? "D" : "L"}</span>`; }
   return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${esc(H)} <b>${g.hs}–${g.as}</b> ${esc(A)}</span></div>`;
 }
+const addDays = (iso, n) => new Date(new Date(iso + "T12:00:00").getTime() + n * 864e5).toISOString().slice(0, 10);
+const signed = d => (d > 0 ? "+" : d < 0 ? "−" : "±") + Math.abs(d);
+const ord = n => n + (["th","st","nd","rd"][(n % 100 - 20) % 10] || ["th","st","nd","rd"][n % 100] || "th");
 
 function renderConference(D) {
   const M = makeModel(D), today = todayISO();
@@ -203,153 +232,138 @@ function renderConference(D) {
   const played = valid.filter(g => g.hs != null && g.as != null);
   const remaining = valid.filter(g => g.hs == null || g.as == null);
   remaining.forEach(g => g.pending = g.date < today);
-  const forced = FORCED[CUR];
-  for (const k of Object.keys(forced)) if (!remaining.some(g => String(g.id) === k)) delete forced[k];
+  const picks = PICKS[CUR];
+  for (const k of Object.keys(picks)) if (!remaining.some(g => String(g.id) === k)) delete picks[k];
   const spots = D.comp.playoff_spots;
-  const atOrAbove = (S, id, k) => S.get(id).pos.slice(0, k + 1).reduce((a, b) => a + b, 0);
+  const N = 4000;
+  const base = simulate(D, M, played, remaining, {}, N);
 
-  const base = simulate(D, M, played, remaining, {}, 3000);
-  // Which race is still open for the focus team? If the playoff spot is all but
-  // settled, the interesting question becomes 1st place (seeding).
-  let keyIdx = 0, keyLabel = "1st";
-  if (spots && focus) {
-    const pTop = atOrAbove(base, focus.id, spots - 1);
-    if (pTop > 0.03 && pTop < 0.97) { keyIdx = spots - 1; keyLabel = `Top ${spots}`; }
-  }
-  const cur = Object.keys(forced).length ? simulate(D, M, played, remaining, forced, 3000) : base;
-
-  // upcoming: next game weekend (first remaining date + 2 days)
-  const future = remaining.filter(g => g.date >= today).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-  const start = future[0] ? future[0].date : null;
-  const endD = start ? new Date(new Date(start + "T12:00:00").getTime() + 2.5 * 864e5).toISOString().slice(0, 10) : null;
-  const weekend = future.filter(g => g.date <= endD);
-  const pending = remaining.filter(g => g.pending);
-
-  // leverage: how much each upcoming result moves the focus team's key probability
-  let lev = [];
-  if (focus) {
-    const cand = remaining.filter(g => !forced[g.id]).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 14);
-    for (const g of cand) {
-      const res = {};
-      for (const o of ["H", "D", "A"]) {
-        const S = simulate(D, M, played, remaining, {...forced, [g.id]: o}, 1500);
-        res[o] = {key: atOrAbove(S, focus.id, keyIdx), first: atOrAbove(S, focus.id, 0)};
-      }
-      const P = M.probs(g.home_id, g.away_id);
-      const vals = ["H", "D", "A"].map(o => res[o].key);
-      const best = ["H", "D", "A"][vals.indexOf(Math.max(...vals))];
-      const firstVals = ["H", "D", "A"].map(o => res[o].first);
-      const swing = Math.max(...vals) - Math.min(...vals) + 0.5 * (Math.max(...firstVals) - Math.min(...firstVals));
-      lev.push({g, res, best, swing, P});
-    }
-    lev.sort((a, b) => b.swing - a.swing);
-  }
-  const levOf = id => lev.find(x => x.g.id === id);
-  const rootLine = g => {
-    const L = levOf(g.id); if (!L || !focus || L.swing < 0.03) return "";
-    const race = keyLabel === "1st" ? "finishing 1st" : `finishing ${keyLabel.toLowerCase()}`;
-    if (g.home_id === focus.id || g.away_id === focus.id) {
-      const usHome = g.home_id === focus.id;
-      const W = L.res[usHome ? "H" : "A"].key, Dr = L.res.D.key, Lo = L.res[usHome ? "A" : "H"].key;
-      return `<div class="root">Chance of ${race}: <b>win → ${pct(W)}</b> · draw → ${pct(Dr)} · loss → ${pct(Lo)}</div>`;
-    }
-    const who = L.best === "H" ? teamName(D, g.home_id) : L.best === "A" ? teamName(D, g.away_id) : "a draw";
-    const k = L.res[L.best].key, lo = Math.min(L.res.H.key, L.res.D.key, L.res.A.key);
-    return `<div class="root">Root for <b>${esc(who)}</b>: ${esc(focus.short)}'s chance of ${race} goes ${pct(lo)} → ${pct(k)}</div>`;
-  };
-
-  // official vs computed check
-  let mismatch = [];
-  for (const o of D.official) {
-    const c = D.computed.find(x => x.id === o.id); if (!c) continue;
-    if (o.gp !== c.gp || o.pts !== c.pts) mismatch.push(`${teamName(D, o.id)}: ECNL shows ${o.gp} GP / ${o.pts} pts, scores add up to ${c.gp} GP / ${c.pts} pts`);
-  }
-
-  const now = rank(table([], played, ids), played);
-  const fS = focus ? cur.get(focus.id) : null, fB = focus ? base.get(focus.id) : null;
-  const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? `<span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
-  const nForced = Object.keys(forced).length;
-  const fPos = focus ? now.findIndex(r => r.id === focus.id) + 1 : null;
-
-  const projected = [...ids].sort((a, b) => cur.get(b).ppg - cur.get(a).ppg);
-  const rangeOf = id => { const p = cur.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
+  // Which race is still open for us? If the playoff spot is all but settled, 1st place is the race.
+  let keyIdx = 0, keyLabel = "finishing 1st";
+  if (spots && focus) { const p = atOrAbove(base, focus.id, spots - 1); if (p > 0.03 && p < 0.97) { keyIdx = spots - 1; keyLabel = `making the top ${spots}`; } }
+  const keyNow = focus ? atOrAbove(base, focus.id, keyIdx) : 0;
 
   const isMe = g => focus && (g.home_id === focus.id || g.away_id === focus.id);
-  const ours = future.filter(isMe);
-  const pendingOurs = remaining.filter(g => g.pending && isMe(g));
-  const nextOurs = pendingOurs.concat(ours).slice(0, 3);
-  const weekendOthers = weekend.filter(g => !isMe(g));
-  const pendingOthers = remaining.filter(g => g.pending && !isMe(g));
-  const shown = new Set([...nextOurs, ...weekendOthers, ...pendingOthers].map(g => g.id));
-  const otherImportant = lev.filter(x => !isMe(x.g) && !shown.has(x.g.id) && x.swing >= 0.03).slice(0, 4);
-  const restSchedule = remaining.filter(g => !shown.has(g.id)).sort((a, b) => a.date.localeCompare(b.date));
+  const upcoming = remaining.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const nextOurs = upcoming.filter(g => isMe(g) && (g.pending || g.date >= today)).slice(0, 3);
+  const week = upcoming.filter(g => !isMe(g) && ((g.date >= today && g.date <= addDays(today, 7)) || g.pending));
   const ourResults = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date));
   const divResults = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
+  const now = rank(table([], played, ids), played);
+  const fPos = focus ? now.findIndex(r => r.id === focus.id) + 1 : null;
   const me = focus ? esc(focus.short) : "Your team";
-  const raceText = keyLabel === "1st" && spots
-    ? `The top-${spots} playoff spot is ${pct(atOrAbove(base, focus.id, spots - 1))} likely already, so what matters now is finishing 1st.`
-    : `Ranked by how much each result changes ${me}'s chance of finishing ${keyLabel === "1st" ? "1st" : keyLabel.toLowerCase()}.`;
+  const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
+  let mismatch = [];
+  for (const o of D.official) { const c = D.computed.find(x => x.id === o.id); if (c && (o.gp !== c.gp || o.pts !== c.pts)) mismatch.push(`${teamName(D, o.id)}: ECNL shows ${o.gp} GP / ${o.pts} pts, scores add up to ${c.gp} GP / ${c.pts} pts`); }
+  const BAD = "Calculating…";
 
   $("#app").innerHTML = `
   <div class="ctx"><div class="ctx-team">${me}</div>
     <div class="ctx-sub">${esc(D.comp.age_label || "")} · ${esc(D.comp.context || "")} · ${ids.length} teams${spots ? ` · ${esc(D.comp.playoff_label)}` : ""}</div></div>
-  ${nForced ? `<div class="warn"><b>What-if mode:</b> you've set ${nForced} result${nForced>1?"s":""}. Everything below includes them; green/red numbers show the change. <button class="reset" id="reset">Clear what-ifs</button></div>` : ""}
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores: ${mismatch.map(esc).join("; ")}. Our table uses the scores.</div>` : ""}
 
-  ${sec("us", me, "1 · Where we stand", "Current standings, ranked by points per game.", `
+  ${sec("us", me, "1 · Where we stand", "Official results only. This section never changes when you make predictions.", `
     ${focus ? `<div class="focus" style="margin-bottom:12px">
-      <div class="stat"><div class="v">${fPos}${["st","nd","rd"][fPos-1]||"th"}</div><div class="k">Place now</div></div>
-      <div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, 0))} ${nForced ? delta(atOrAbove(cur, focus.id, 0), atOrAbove(base, focus.id, 0)) : ""}</div><div class="k">Chance to finish 1st</div></div>
-      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(cur, focus.id, spots - 1))} ${nForced ? delta(atOrAbove(cur, focus.id, spots - 1), atOrAbove(base, focus.id, spots - 1)) : ""}</div><div class="k">Chance of top ${spots} (playoffs)</div></div>` : ""}
-      <div class="stat"><div class="v">${rangeOf(focus.id)}</div><div class="k">Most likely final place</div></div>
+      <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now</div></div>
+      <div class="stat"><div class="v">${pct(atOrAbove(base, focus.id, 0))}</div><div class="k">Chance to finish 1st</div></div>
+      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, focus.id, spots - 1))}</div><div class="k">Chance of top ${spots} (playoffs)</div></div>` : ""}
+      <div class="stat"><div class="v">${rangeOf(base, focus.id)}</div><div class="k">Most likely final place</div></div>
     </div>` : ""}
     <div class="scroll"><table>
     <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th></tr>
     ${now.map((r, i) => `<tr class="${focus && r.id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i+1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td></tr>`).join("")}
-    </table></div>${spots ? `<div class="mut" style="margin-top:6px">Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`)}
+    </table></div>${spots ? `<div class="mut" style="margin-top:6px">Ranked by points per game. Dashed line = playoff cut (${esc(D.comp.playoff_label)}).</div>` : ""}`, "s1")}
 
-  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, "Predicted odds for each game. Tap a result to see what it does to the table.",
-    nextOurs.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("") || "<div class='mut'>No more games scheduled.</div>")}
+  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, focus ? `Win/draw/loss odds for each game, and what each result does to ${me}'s chance of ${keyLabel} (now <b>${pct(keyNow)}</b>).` : "",
+    nextOurs.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No more games scheduled.</div>", "s2")}
 
-  ${sec("div", "Division", `3 · Rest of the division ${start ? "· " + fmtDate(start) + (endD && endD !== start ? " weekend" : "") : ""}`, "Everyone else playing the next game weekend, and who to root for.",
-    (weekendOthers.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("") || "<div class='mut'>No other division games that weekend.</div>") +
-    (pendingOthers.length ? `<h3 style="margin-top:12px">Earlier games still waiting for a score</h3>${pendingOthers.map(g => fixtureCard(D, M, g, {toggles: true, root: rootLine(g)})).join("")}` : ""))}
+  ${sec("div", "League", "3 · Rest of the league · next 7 days", `Every other league game from ${fmtDate(today)} to ${fmtDate(addDays(today, 7))}. Gray cards matter to ${me}.`,
+    week.map(g => fixtureCard(D, M, g, {root: BAD})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>", "s3")}
 
-  ${otherImportant.length ? sec("div", "Division", "4 · Other games that matter to us", raceText,
-    otherImportant.map(x => fixtureCard(D, M, x.g, {toggles: true, root: rootLine(x.g)})).join("")) : ""}
+  ${sec("div", "Predict", "4 · Rest-of-season predictor", `Every remaining game played out ${N.toLocaleString()} times. Pick results below to see how the final table changes. Only this section changes.`, `
+    <div class="picksbar" id="picksbar"></div>
+    <div class="scroll" id="predtable"></div>
+    <h3 style="margin-top:14px">Remaining games (${upcoming.length}) · tap to pick a result</h3>
+    <div id="predgames">${upcoming.map(g => fixtureCard(D, M, g, {picks: true})).join("")}</div>`, "s4")}
 
-  ${sec("div", "Division", `${otherImportant.length ? 5 : 4} · Rest-of-season prediction${nForced ? " (with your what-ifs)" : ""}`,
-    `Every remaining game simulated 3,000 times. Rating = expected goal difference against an average team, built from ${D.pool.games_rated} games across ${D.pool.teams_rated} teams.`, `
-    <div class="scroll"><table>
-    <tr><th class="t">Team</th><th>Rating</th><th>Proj PPG</th><th>Likely place</th><th>1st</th>${spots ? `<th>Top ${spots}</th>` : ""}</tr>
-    ${projected.map(id => { const t = D.teams.find(x => x.id === id); const S = cur.get(id), B = base.get(id);
-      return `<tr class="${focus && id === focus.id ? "me" : ""}"><td class="t">${esc(t.short)}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${S.ppg.toFixed(2)}</td><td>${rangeOf(id)}</td>
-      <td>${pct(S.pos[0])} ${nForced ? delta(S.pos[0], B.pos[0]) : ""}</td>${spots ? `<td>${pct(atOrAbove(cur, id, spots - 1))} ${nForced ? delta(atOrAbove(cur, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
-    </table></div>
-    <details><summary>Full remaining schedule (${restSchedule.length} more games)</summary>${restSchedule.map(g => fixtureCard(D, M, g, {toggles: true})).join("")}</details>`)}
-
-  ${sec("past", "Past", "Past games", "Final scores.", `
+  ${sec("past", "Past", "5 · Past games", "Final scores.", `
     <h3>${me}</h3>${ourResults.map(g => resultRow(D, g, focus)).join("") || "<div class='mut'>None yet.</div>"}
-    <details><summary>Rest of the division (${divResults.length} games)</summary>${divResults.map(g => resultRow(D, g, null)).join("")}</details>`)}
+    <details class="inner"><summary>Rest of the league (${divResults.length} games)</summary>${divResults.map(g => resultRow(D, g, null)).join("")}</details>`, "s5")}
   ${footer(D)}`;
-  bindToggles();
+
+  CTX = {D, M, played, remaining, base, focus, spots, N, keyIdx, ids};
+  drawPredictor();
+  $("#predgames").addEventListener("click", onPick);
+
+  // Fill in the "what each result does" lines after the page is visible.
+  if (focus) setTimeout(() => {
+    const need = [...nextOurs, ...week];
+    const nowK = atOrAbove(simulate(D, M, played, remaining, {}, 1500), focus.id, keyIdx);
+    for (const g of need) {
+      const res = {};
+      for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(D, M, played, remaining, {[g.id]: o}, 1500), focus.id, keyIdx);
+      const el = document.querySelector(`[data-root="${g.id}"]`); if (!el) continue;
+      const dl = o => Math.round((res[o] - nowK) * 100);
+      if (isMe(g)) {
+        const usH = g.home_id === focus.id, W = usH ? "H" : "A", L = usH ? "A" : "H";
+        el.innerHTML = `Chance of ${keyLabel} (now ${pct(keyNow)}): <b class="up">win ${signed(dl(W))}</b> · draw ${signed(dl("D"))} · <span class="dn">loss ${signed(dl(L))}</span>`;
+      } else {
+        const swing = Math.max(res.H, res.D, res.A) - Math.min(res.H, res.D, res.A);
+        const best = ["H", "D", "A"].reduce((a, b) => res[b] > res[a] ? b : a);
+        const who = best === "H" ? teamName(D, g.home_id) : best === "A" ? teamName(D, g.away_id) : "a draw";
+        if (swing >= 0.04) {
+          el.closest(".fx").classList.add("matters");
+          const head = el.closest(".fx").querySelector(".when span:last-child");
+          if (head && !head.querySelector(".tag")) head.insertAdjacentHTML("afterbegin", `<span class="pill tag">Matters to us</span> `);
+          const lab = o => o === "H" ? `${esc(teamName(D, g.home_id))} win` : o === "A" ? `${esc(teamName(D, g.away_id))} win` : "draw";
+          el.innerHTML = `Root for <b>${esc(who)}</b>. ${me}'s chance of ${keyLabel} (now ${pct(nowK)}): ` +
+            ["H", "D", "A"].map(o => o === best ? `<b class="up">${lab(o)} → ${pct(res[o])}</b>` : `${lab(o)} → ${pct(res[o])}`).join(" · ");
+        } else el.remove();
+      }
+    }
+  }, 30);
+}
+
+function drawPredictor() {
+  const {D, M, played, remaining, base, focus, spots, N, ids} = CTX;
+  const picks = PICKS[CUR], nP = Object.keys(picks).length;
+  const S = nP ? simulate(D, M, played, remaining, picks, N) : base;
+  const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? ` <span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
+  const order = [...ids].sort((a, b) => (S.get(b).ppg - S.get(a).ppg) || (S.get(b).gd - S.get(a).gd));
+  const rangeOf = id => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return lo === hi ? `${lo}` : `${lo}–${hi}`; };
+  const r1 = x => x.toFixed(1).replace(/\.0$/, "");
+  $("#picksbar").innerHTML = nP
+    ? `<b>Your picks: ${nP}</b> · table shows the season if these happen <button class="reset" id="clearpicks">Clear all</button>`
+    : `<span class="mut">No picks yet. Table shows the most likely outcome of the whole season.</span>`;
+  $("#predtable").innerHTML = `<table>
+    <tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>GD</th><th>PTS</th><th>PPG</th><th>Likely place</th><th>1st</th>${spots ? `<th>Top ${spots}</th>` : ""}</tr>
+    ${order.map((id, i) => { const s = S.get(id), b = base.get(id);
+      return `<tr class="${focus && id === focus.id ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, id))}</td><td>${Math.round(s.gp)}</td>
+      <td>${r1(s.w)}-${r1(s.d)}-${r1(s.l)}</td><td>${s.gd > 0 ? "+" : ""}${Math.round(s.gd)}</td><td>${r1(s.pts)}</td><td>${s.ppg.toFixed(2)}</td><td>${rangeOf(id)}</td>
+      <td>${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td>${pct(atOrAbove(S, id, spots - 1))}${nP ? delta(atOrAbove(S, id, spots - 1), atOrAbove(base, id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
+  </table><div class="mut" style="margin-top:6px">Final-season averages across all simulations (so W-D-L can show decimals). Green/red = change from your picks.</div>`;
+  const c = $("#clearpicks");
+  if (c) c.onclick = () => { PICKS[CUR] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
+}
+
+function onPick(e) {
+  const b = e.target.closest(".toggles button"); if (!b) return;
+  const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[CUR];
+  if (P[id] === f) { delete P[id]; b.classList.remove("on"); }
+  else { P[id] = f; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
+  $("#predtable").style.opacity = .55;
+  setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
 }
 
 function footer(D) {
   const bt = D.pool.backtest;
-  return `<footer>Updated ${new Date(D.updated).toLocaleString()} · Data: <a href="${esc(D.comp.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a>
-  ${bt ? `<br>Model check: replaying this season's ${bt.games} games using only earlier results, it picked the right outcome ${Math.round(bt.accuracy*100)}% of the time (score ${bt.logloss} vs ${bt.baseline_logloss} for a no-information guess; lower is better).` : ""}
-  <br>Unofficial. Predictions are estimates, not guarantees.</footer>`;
-}
-
-function bindToggles() {
-  document.querySelectorAll(".toggles").forEach(el => el.onclick = e => {
-    const b = e.target.closest("button"); if (!b) return;
-    const id = el.dataset.g, f = b.dataset.f, F = FORCED[CUR];
-    if (F[id] === f) delete F[id]; else F[id] = f;
-    const y = window.scrollY; show(CUR).then(() => window.scrollTo(0, y));
-  });
-  const r = $("#reset"); if (r) r.onclick = () => { FORCED[CUR] = {}; show(CUR); };
+  const B = bt && bt.buckets ? bt.buckets : {};
+  const row = (k, label) => B[k] ? `<tr><td class="t">${label}</td><td>${B[k].games}</td><td>${Math.round(B[k].won * 100)}%</td><td>${Math.round(B[k].not_lose * 100)}%</td></tr>` : "";
+  return `${bt ? sec("past", "Model", "How accurate is this?", `We replayed ${bt.games.toLocaleString()} real games, predicting each one using only results from before it was played.`, `
+    <div class="scroll"><table><tr><th class="t">When the favorite was given…</th><th>Games</th><th>Favorite won</th><th>Didn't lose</th></tr>
+    ${row("70+", "70% or more")}${row("60-69", "60–69%")}${row("50-59", "50–59%")}${row("<50", "under 50% (close games)")}</table></div>
+    <div class="mut" style="margin-top:6px">Overall it picks the exact result (win/draw/loss) ${Math.round(bt.accuracy * 100)}% of the time, and the favorite avoids losing ${Math.round((bt.fav_not_lose || 0) * 100)}% of the time. About 1 in 5 games end in a draw, which is why exact-result accuracy tops out around 60% even for professional models.</div>`, "acc") : ""}
+  <footer>Updated ${new Date(D.updated).toLocaleString()} · Data: <a href="${esc(D.comp.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a><br>Unofficial. Predictions are estimates, not guarantees.</footer>`;
 }
 
 // ---------- bracket ----------
