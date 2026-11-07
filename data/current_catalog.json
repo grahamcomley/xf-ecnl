@@ -1,0 +1,2381 @@
+{
+ "events": [
+  {
+   "event_id": 4240,
+   "name": "ECNL RL Boys Playoffs - South",
+   "org_id": 16,
+   "org_season_id": 72,
+   "gender": "m",
+   "start": "2026-06-12",
+   "end": "2026-06-16"
+  },
+  {
+   "event_id": 4241,
+   "name": "ECNL RL Girls Playoffs - Southeast",
+   "org_id": 13,
+   "org_season_id": 71,
+   "gender": "f",
+   "start": "2026-06-19",
+   "end": "2026-06-24"
+  },
+  {
+   "event_id": 4242,
+   "name": "ECNL RL Boys Playoffs - Southeast",
+   "org_id": 16,
+   "org_season_id": 72,
+   "gender": "m",
+   "start": "2026-06-19",
+   "end": "2026-06-24"
+  },
+  {
+   "event_id": 4243,
+   "name": "ECNL RL Girls Playoffs - Central",
+   "org_id": 13,
+   "org_season_id": 71,
+   "gender": "f",
+   "start": "2026-06-24",
+   "end": "2026-06-29"
+  },
+  {
+   "event_id": 4244,
+   "name": "ECNL RL Boys Playoffs - Central",
+   "org_id": 16,
+   "org_season_id": 72,
+   "gender": "m",
+   "start": "2026-06-27",
+   "end": "2026-07-02"
+  },
+  {
+   "event_id": 4245,
+   "name": "ECNL RL Girls Playoffs - East",
+   "org_id": 13,
+   "org_season_id": 71,
+   "gender": "f",
+   "start": "2026-06-26",
+   "end": "2026-07-01"
+  },
+  {
+   "event_id": 4246,
+   "name": "ECNL RL Boys Playoffs - East",
+   "org_id": 16,
+   "org_season_id": 72,
+   "gender": "m",
+   "start": "2026-06-26",
+   "end": "2026-07-01"
+  },
+  {
+   "event_id": 4247,
+   "name": "ECNL RL Boys Finals",
+   "org_id": 16,
+   "org_season_id": 72,
+   "gender": "m",
+   "start": "2026-07-15",
+   "end": "2026-07-18"
+  },
+  {
+   "event_id": 4248,
+   "name": "ECNL RL Girls Finals",
+   "org_id": 13,
+   "org_season_id": 71,
+   "gender": "f",
+   "start": "2026-07-15",
+   "end": "2026-07-18"
+  },
+  {
+   "event_id": 4249,
+   "name": "ECNL Boys National Finals",
+   "org_id": 12,
+   "org_season_id": 70,
+   "gender": "m",
+   "start": "2026-07-17",
+   "end": "2026-07-19"
+  },
+  {
+   "event_id": 4250,
+   "name": "ECNL Boys National Playoffs",
+   "org_id": 12,
+   "org_season_id": 70,
+   "gender": "m",
+   "start": "2026-06-25",
+   "end": "2026-07-02"
+  },
+  {
+   "event_id": 4251,
+   "name": "ECNL Girls National Playoffs and Finals",
+   "org_id": 9,
+   "org_season_id": 69,
+   "gender": "f",
+   "start": "2026-07-11",
+   "end": "2026-07-17"
+  },
+  {
+   "event_id": 4252,
+   "name": "15th Annual River Jam Challenge",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-14",
+   "end": "2026-08-17"
+  },
+  {
+   "event_id": 4253,
+   "name": "Pre-ECNL Girls Ohio Valley 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4254,
+   "name": "Pre-ECNL Boys Ohio Valley 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4255,
+   "name": "Aggieland Friendship Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-22",
+   "end": "2026-08-23"
+  },
+  {
+   "event_id": 4256,
+   "name": "33rd Annual Texas Warm-up Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-15",
+   "end": "2026-08-16"
+  },
+  {
+   "event_id": 4257,
+   "name": "NM Rapids Power Ford Open",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-29",
+   "end": "2026-08-30"
+  },
+  {
+   "event_id": 4258,
+   "name": "Athlete One Test",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-31",
+   "end": "2027-05-16"
+  },
+  {
+   "event_id": 4259,
+   "name": "Oxnard United Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-17",
+   "end": "2026-07-19"
+  },
+  {
+   "event_id": 4260,
+   "name": "ECNL RL Girls STXCL 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4261,
+   "name": "ECNL RL Boys STXCL 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4262,
+   "name": "NorCal Spring Showcase 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-05-16",
+   "end": "2026-05-17"
+  },
+  {
+   "event_id": 4263,
+   "name": "ECNL Girls Mid-Atlantic 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4264,
+   "name": "ECNL Girls Midwest 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4265,
+   "name": "ECNL Girls New England 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4266,
+   "name": "ECNL Girls North Atlantic 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4267,
+   "name": "ECNL Girls Northern Cal 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4268,
+   "name": "ECNL Girls Northwest 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4269,
+   "name": "ECNL Girls Ohio Valley 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4270,
+   "name": "ECNL Girls Southeast 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4271,
+   "name": "ECNL Girls Southwest 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4272,
+   "name": "ECNL Girls Texas 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4273,
+   "name": "ECNL Boys Far West 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4274,
+   "name": "ECNL Boys Florida 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4275,
+   "name": "ECNL Boys Heartland 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4276,
+   "name": "ECNL Boys Mid-America 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4277,
+   "name": "ECNL Boys Mid-Atlantic 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4278,
+   "name": "ECNL Boys Mid-Atlantic 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4279,
+   "name": "ECNL Boys Midwest 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4280,
+   "name": "ECNL Boys Mountain 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4281,
+   "name": "ECNL Boys New England 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4282,
+   "name": "ECNL Boys North Atlantic 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4283,
+   "name": "ECNL Boys Northern Cal 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4284,
+   "name": "ECNL Boys Northwest 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4285,
+   "name": "ECNL Boys Ohio Valley 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4286,
+   "name": "ECNL Boys Southeast 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4287,
+   "name": "ECNL Boys Southwest 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4288,
+   "name": "ECNL Boys Texas 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4289,
+   "name": "Silverlakes Summer Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-24",
+   "end": "2026-07-27"
+  },
+  {
+   "event_id": 4291,
+   "name": "2026 Eastside FC Cup - Youngers Weekend",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-21",
+   "end": "2026-08-24"
+  },
+  {
+   "event_id": 4292,
+   "name": "Northwest Showcase 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-16",
+   "end": "2026-07-19"
+  },
+  {
+   "event_id": 4293,
+   "name": "Juniors' Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-24",
+   "end": "2026-07-26"
+  },
+  {
+   "event_id": 4294,
+   "name": "VC Fusion Summer Copa Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-06",
+   "end": "2026-06-07"
+  },
+  {
+   "event_id": 4295,
+   "name": "2026 Eastside FC Cup - Olders Weekend",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-28",
+   "end": "2026-08-31"
+  },
+  {
+   "event_id": 4296,
+   "name": "ECNL RL Girls Carolinas 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4297,
+   "name": "ECNL RL Girls Florida 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4298,
+   "name": "ECNL RL Girls Far West 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4299,
+   "name": "ECNL RL Girls Frontier 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4300,
+   "name": "ECNL RL Girls Golden State 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4301,
+   "name": "ECNL RL Girls GLA 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4302,
+   "name": "ECNL RL Girls GMA 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4303,
+   "name": "ECNL RL Girls Gulf Coast 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4304,
+   "name": "ECNL RL Girls Heartland 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4305,
+   "name": "ECNL RL Girls Mid-America 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4306,
+   "name": "ECNL RL Girls Mountain 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4307,
+   "name": "ECNL RL Girls NorCal 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4308,
+   "name": "ECNL RL Girls New England 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4309,
+   "name": "ECNL RL Girls North Atlantic 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4310,
+   "name": "ECNL RL Girls Northeast 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4311,
+   "name": "ECNL RL Girls Northwest 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4312,
+   "name": "ECNL RL Girls North Texas 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-15",
+   "end": "2027-05-17"
+  },
+  {
+   "event_id": 4313,
+   "name": "ECNL RL Girls Ohio Valley 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4314,
+   "name": "ECNL RL Girls Southeast 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4315,
+   "name": "ECNL RL Girls Southern Cal 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4316,
+   "name": "ECNL RL Girls Southwest 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4317,
+   "name": "ECNL RL Girls Texas 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4318,
+   "name": "ECNL RL Girls Twin Cities 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4319,
+   "name": "ECNL RL Girls Virginia 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4320,
+   "name": "2026 GA Summer Playoffs & Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-18",
+   "end": "2026-06-23"
+  },
+  {
+   "event_id": 4321,
+   "name": "Aspire Playoffs & Finals",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-25",
+   "end": "2026-06-30"
+  },
+  {
+   "event_id": 4322,
+   "name": "2026 NW Summer Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-31",
+   "end": "2026-08-02"
+  },
+  {
+   "event_id": 4323,
+   "name": "3v3 Clash of the Giants",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-20",
+   "end": "2026-06-20"
+  },
+  {
+   "event_id": 4324,
+   "name": "ECNL RL Boys GLA 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4325,
+   "name": "Legends FC Holiday Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-12-05",
+   "end": "2026-12-06"
+  },
+  {
+   "event_id": 4326,
+   "name": "CyFair Dynamos Summer Sizzle 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-09",
+   "end": "2026-07-14"
+  },
+  {
+   "event_id": 4327,
+   "name": "Montgomery Dynamos Summer Sizzle 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-09",
+   "end": "2026-07-14"
+  },
+  {
+   "event_id": 4328,
+   "name": "66 Athlete One Test",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-08",
+   "end": "2027-07-02"
+  },
+  {
+   "event_id": 4329,
+   "name": "Cy-Fair Dynamos Future Stars Fall 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-09-19",
+   "end": "2026-11-21"
+  },
+  {
+   "event_id": 4330,
+   "name": "Montgomery Dynamos Future Stars Fall 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-09-19",
+   "end": "2026-11-21"
+  },
+  {
+   "event_id": 4331,
+   "name": "Pre-ECNL Boys STXCL 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4332,
+   "name": "DPC Summer Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-29",
+   "end": "2026-08-30"
+  },
+  {
+   "event_id": 4333,
+   "name": "Cache Valley Cup 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-08",
+   "end": "2026-07-11"
+  },
+  {
+   "event_id": 4334,
+   "name": "32nd Annual Northwest Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-07",
+   "end": "2026-08-09"
+  },
+  {
+   "event_id": 4335,
+   "name": "ECNL RL Boys Chicago Metro 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4336,
+   "name": "ECNL RL Boys Heartland 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4337,
+   "name": "ECNL RL Boys Midwest 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4338,
+   "name": "ECNL RL Boys GMA 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4339,
+   "name": "ECNL RL Boys Twin Cities 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4340,
+   "name": "ECNL RL Boys New England 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4341,
+   "name": "ECNL RL Boys Northeast 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4342,
+   "name": "ECNL RL Boys North Atlantic 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4343,
+   "name": "ECNL RL Boys Mountain 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4344,
+   "name": "ECNL RL Boys Far West League Cup 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4345,
+   "name": "ECNL RL Boys Carolinas 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4346,
+   "name": "ECNL RL Boys Florida 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4347,
+   "name": "ECNL RL Boys Frontier 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4348,
+   "name": "ECNL RL Boys Golden State 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4349,
+   "name": "ECNL RL Boys Gulf Coast 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4350,
+   "name": "ECNL RL Boys Mid-America 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4351,
+   "name": "ECNL RL Boys NorCal 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4352,
+   "name": "ECNL RL Boys North Texas 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4353,
+   "name": "ECNL RL Boys Northwest 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4354,
+   "name": "ECNL RL Boys Southern Cal 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4355,
+   "name": "ECNL RL Boys Southeast 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4356,
+   "name": "ECNL RL Boys Texas 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4357,
+   "name": "ECNL RL Boys Virginia 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4358,
+   "name": "ECNL RL Boys Southwest 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4359,
+   "name": "Pre-ECNL Boys GMA 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4360,
+   "name": "Pre-ECNL Boys Frontier 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4361,
+   "name": "Pre-ECNL Boys Heartland 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4362,
+   "name": "Pre-ECNL Boys Lake Michigan 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4363,
+   "name": "Pre-ECNL Boys Mountain 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4364,
+   "name": "Pre-ECNL Boys New England 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4365,
+   "name": "Pre-ECNL Boys Northeast - North 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4366,
+   "name": "Pre-ECNL Boys North Atlantic 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4367,
+   "name": "Pre-ECNL Boys North Texas 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-07-27",
+   "end": "2026-11-23"
+  },
+  {
+   "event_id": 4368,
+   "name": "Pre-ECNL Boys Northern Cal 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4369,
+   "name": "ECNL",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4370,
+   "name": "Pre-ECNL Boys Southern Cal 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-08-01"
+  },
+  {
+   "event_id": 4371,
+   "name": "Pre-ECNL Girls Frontier 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4372,
+   "name": "Pre-ECNL Girls GMA 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4373,
+   "name": "Pre-ECNL Girls Heartland 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4374,
+   "name": "Pre-ECNL Girls Lake Michigan 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4375,
+   "name": "Pre-ECNL Girls North Atlantic 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4376,
+   "name": "Pre-ECNL Girls New England 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4377,
+   "name": "Pre-ECNL Girls North Texas 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-07-24",
+   "end": "2026-11-23"
+  },
+  {
+   "event_id": 4378,
+   "name": "ECNL",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4379,
+   "name": "Pre-ECNL Girls Northeast 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4380,
+   "name": "Pre-ECNL Boys Florida 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4381,
+   "name": "Pre-ECNL Girls Florida 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4382,
+   "name": "Pre-ECNL Girls Far West 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4383,
+   "name": "Pre-ECNL Boys Far West 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4384,
+   "name": "Pre-ECNL Girls Northwest 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4385,
+   "name": "Pre-ECNL Boys Northwest 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4386,
+   "name": "Pre-ECNL Girls Colorado 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4387,
+   "name": "Pre-ECNL Boys Colorado 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4388,
+   "name": "Pre-ECNL Girls Utah 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4389,
+   "name": "Pre-ECNL Boys Northeast - South 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4390,
+   "name": "Pre-ECNL Girls Mountain 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4391,
+   "name": "Pre-ECNL Boys Utah 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4392,
+   "name": "ECNL Boys New York Alliance League",
+   "org_id": 12,
+   "org_season_id": 70,
+   "gender": "m",
+   "start": "2026-05-21",
+   "end": "2026-05-31"
+  },
+  {
+   "event_id": 4393,
+   "name": "ECNL RL Girls Northeast Championship",
+   "org_id": 13,
+   "org_season_id": 71,
+   "gender": "f",
+   "start": "2026-06-12",
+   "end": "2026-06-14"
+  },
+  {
+   "event_id": 4394,
+   "name": "Coastal Clash Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-21",
+   "end": "2026-08-23"
+  },
+  {
+   "event_id": 4395,
+   "name": "ECNL RL Girls Lake Michigan 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4396,
+   "name": "ECNL Girls National Finals (U18/19)",
+   "org_id": 9,
+   "org_season_id": 69,
+   "gender": "f",
+   "start": "2026-06-24",
+   "end": "2026-06-27"
+  },
+  {
+   "event_id": 4397,
+   "name": "GA Finals 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-09",
+   "end": "2026-07-12"
+  },
+  {
+   "event_id": 4398,
+   "name": "San Diego Surf Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-06-12",
+   "end": "2026-06-15"
+  },
+  {
+   "event_id": 4399,
+   "name": "The Open Cup 2026-27",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-10-10",
+   "end": "2026-10-12"
+  },
+  {
+   "event_id": 4400,
+   "name": "Pre-ECNL Boys Gulf Coast 2026-27",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4401,
+   "name": "Pre-ECNL Girls Gulf Coast 2026-27",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4402,
+   "name": "2026 Midwest Labor Day Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-09-04",
+   "end": "2026-09-06"
+  },
+  {
+   "event_id": 4403,
+   "name": "Frankenstein 4v4 Fall Festival 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-10-25",
+   "end": "2026-10-25"
+  },
+  {
+   "event_id": 4404,
+   "name": "ECNL Girls North Atlantic League Cup 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4405,
+   "name": "ECNL RL Girls North Atlantic League Cup 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4406,
+   "name": "ECNL Girls Mid-Atlantic League Cup 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-08-01"
+  },
+  {
+   "event_id": 4407,
+   "name": "ECNL Girls Texas League Cup 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4408,
+   "name": "ECNL RL Girls Texas League Cup 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4409,
+   "name": "ECNL Girls Northwest League Cup 2026-27",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4410,
+   "name": "VC Fusion Summer Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-29",
+   "end": "2026-08-30"
+  },
+  {
+   "event_id": 4411,
+   "name": "2026 Midwest Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-09-26",
+   "end": "2026-09-27"
+  },
+  {
+   "event_id": 4412,
+   "name": "PDA Girls Invitational 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-20",
+   "end": "2026-11-23"
+  },
+  {
+   "event_id": 4413,
+   "name": "Silverlakes Fall Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-27",
+   "end": "2026-11-29"
+  },
+  {
+   "event_id": 4414,
+   "name": "ECNL Boys New Jersey",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-21",
+   "end": "2026-08-23"
+  },
+  {
+   "event_id": 4415,
+   "name": "ECNL Girls New Jersey",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-08-21",
+   "end": "2026-08-23"
+  },
+  {
+   "event_id": 4416,
+   "name": "ECNL Atlanta",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-09-11",
+   "end": "2026-09-13"
+  },
+  {
+   "event_id": 4417,
+   "name": "ECNL Boys St. Louis",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-09-11",
+   "end": "2026-09-13"
+  },
+  {
+   "event_id": 4418,
+   "name": "ECNL Girls St. Louis",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-09-11",
+   "end": "2026-09-13"
+  },
+  {
+   "event_id": 4419,
+   "name": "Round Rock Friendlies October 4-5, 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-10-03",
+   "end": "2026-10-04"
+  },
+  {
+   "event_id": 4420,
+   "name": "Pre-ECNL Girls Midwest Cup",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-09-26",
+   "end": "2026-09-27"
+  },
+  {
+   "event_id": 4421,
+   "name": "Pre-ECNL Boys Midwest Cup",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-09-26",
+   "end": "2026-09-27"
+  },
+  {
+   "event_id": 4422,
+   "name": "QA Test",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-08-03",
+   "end": "2026-08-30"
+  },
+  {
+   "event_id": 4423,
+   "name": "QA ECNL 2026-27 League",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4424,
+   "name": "ECNL Boys N 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2026-08-31"
+  },
+  {
+   "event_id": 4425,
+   "name": "ECNL RL Girls Northwest League Cup 2026-27",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4426,
+   "name": "ECNL Boys Texas Champions Cup 2026-27",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4427,
+   "name": "ECNL RL Boys Far West 2026-27",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4428,
+   "name": "ECNL Phoenix - Fall",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-11-13",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4429,
+   "name": "ECNL Phoenix",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-11-20",
+   "end": "2026-11-22"
+  },
+  {
+   "event_id": 4430,
+   "name": "Pre-ECNL Girls Carolina Cup",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-10-03",
+   "end": "2026-10-04"
+  },
+  {
+   "event_id": 4431,
+   "name": "Pre-ECNL Girls Texas Cup",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-11-07",
+   "end": "2026-11-08"
+  },
+  {
+   "event_id": 4432,
+   "name": "Pre-ECNL Boys Carolina Cup",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-10-03",
+   "end": "2026-10-04"
+  },
+  {
+   "event_id": 4433,
+   "name": "ECNL Boys San Diego",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-10-10",
+   "end": "2026-10-12"
+  },
+  {
+   "event_id": 4434,
+   "name": "ECNL Girls San Diego",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-10-10",
+   "end": "2026-10-12"
+  },
+  {
+   "event_id": 4435,
+   "name": "ECNL Boys North Carolina - Fall",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-10-10",
+   "end": "2026-10-12"
+  },
+  {
+   "event_id": 4436,
+   "name": "ECNL Girls North Carolina - Fall",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-10-10",
+   "end": "2026-10-12"
+  },
+  {
+   "event_id": 4437,
+   "name": "Pre-ECNL Boys Texas Cup",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-11-07",
+   "end": "2026-11-08"
+  },
+  {
+   "event_id": 4438,
+   "name": "Pre-ECNL Girls | Event Registration",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4439,
+   "name": "REMOVE",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4440,
+   "name": "Pre-ECNL Boys | Event Registration",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4441,
+   "name": "1st CCU Winter Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-30",
+   "end": "2027-01-31"
+  },
+  {
+   "event_id": 4442,
+   "name": "Adidas Oklahoma Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-20",
+   "end": "2026-11-22"
+  },
+  {
+   "event_id": 4443,
+   "name": "NM Rapids Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-13",
+   "end": "2027-02-14"
+  },
+  {
+   "event_id": 4444,
+   "name": "Pre-ECNL Girls East Coast Cup",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2026-10-31",
+   "end": "2026-11-01"
+  },
+  {
+   "event_id": 4445,
+   "name": "Pre-ECNL Boys East Coast Cup",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2026-10-31",
+   "end": "2026-11-01"
+  },
+  {
+   "event_id": 4446,
+   "name": "ECNL RL Virginia",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-11-13",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4447,
+   "name": "ECNL RL Virginia",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-11-20",
+   "end": "2026-11-22"
+  },
+  {
+   "event_id": 4448,
+   "name": "ECNL South Carolina",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-12-04",
+   "end": "2026-12-06"
+  },
+  {
+   "event_id": 4449,
+   "name": "ECNL RL Arizona",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-11-13",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4450,
+   "name": "ECNL RL Arizona",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-11-20",
+   "end": "2026-11-22"
+  },
+  {
+   "event_id": 4451,
+   "name": "ECNL RL Florida - Fall",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-12-04",
+   "end": "2026-12-06"
+  },
+  {
+   "event_id": 4452,
+   "name": "ECNL Florida Fall",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2026-12-05",
+   "end": "2026-12-07"
+  },
+  {
+   "event_id": 4453,
+   "name": "2026 NorCal Fall Showcase - Boys Weekend",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-14",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4454,
+   "name": "2026 NorCal Fall Showcase - Girls Weekend",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-21",
+   "end": "2026-11-22"
+  },
+  {
+   "event_id": 4455,
+   "name": "Pacesetter Soccer Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-05-29",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4456,
+   "name": "Challenge SC Recreational League Fall 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-09-12",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4457,
+   "name": "NEXT GEN CUP",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-07",
+   "end": "2026-11-08"
+  },
+  {
+   "event_id": 4458,
+   "name": "2026 One Goal",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-07-05",
+   "end": "2026-07-05"
+  },
+  {
+   "event_id": 4459,
+   "name": "ECNL RL Florida",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2027-01-01",
+   "end": "2027-01-03"
+  },
+  {
+   "event_id": 4460,
+   "name": "ECNL Florida",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-01-02",
+   "end": "2027-01-04"
+  },
+  {
+   "event_id": 4461,
+   "name": "ECNL RL Florida - Winter",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2027-01-08",
+   "end": "2027-01-10"
+  },
+  {
+   "event_id": 4462,
+   "name": "ECNL Florida - Winter",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-01-09",
+   "end": "2027-01-11"
+  },
+  {
+   "event_id": 4463,
+   "name": "ECNL Las Vegas",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-01-22",
+   "end": "2027-01-24"
+  },
+  {
+   "event_id": 4464,
+   "name": "ECNL RL Texas",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2027-02-12",
+   "end": "2027-02-14"
+  },
+  {
+   "event_id": 4465,
+   "name": "ECNL Texas",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-02-13",
+   "end": "2027-02-15"
+  },
+  {
+   "event_id": 4466,
+   "name": "ECNL Florida - Spring",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-02-26",
+   "end": "2027-02-28"
+  },
+  {
+   "event_id": 4467,
+   "name": "ECNL West Coast Super Cup",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-11-27",
+   "end": "2026-11-29"
+  },
+  {
+   "event_id": 4468,
+   "name": "ECNL East Coast & Central Super Cup",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2026-12-11",
+   "end": "2026-12-13"
+  },
+  {
+   "event_id": 4469,
+   "name": "ECNL RL California",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2027-03-19",
+   "end": "2027-03-21"
+  },
+  {
+   "event_id": 4470,
+   "name": "Pre-ECNL Boys Northern Cal Cup",
+   "org_id": 22,
+   "org_season_id": 87,
+   "gender": "m",
+   "start": "2027-03-05",
+   "end": "2027-03-07"
+  },
+  {
+   "event_id": 4471,
+   "name": "Pre-ECNL Girls Northern Cal Cup",
+   "org_id": 21,
+   "org_season_id": 86,
+   "gender": "f",
+   "start": "2027-03-05",
+   "end": "2027-03-07"
+  },
+  {
+   "event_id": 4472,
+   "name": "GA Winter Showcase & Champions Cup",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-12-03",
+   "end": "2026-12-09"
+  },
+  {
+   "event_id": 4473,
+   "name": "Aspire West Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-12",
+   "end": "2026-11-15"
+  },
+  {
+   "event_id": 4474,
+   "name": "ECNL Phoenix - Spring",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-04-02",
+   "end": "2027-04-04"
+  },
+  {
+   "event_id": 4475,
+   "name": "ECNL Indianapolis",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-04-09",
+   "end": "2027-04-11"
+  },
+  {
+   "event_id": 4476,
+   "name": "ECNL Texas",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-04-23",
+   "end": "2027-04-25"
+  },
+  {
+   "event_id": 4477,
+   "name": "ECNL Texas",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-04-23",
+   "end": "2027-04-25"
+  },
+  {
+   "event_id": 4478,
+   "name": "ECNL North Carolina - Spring",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-05-07",
+   "end": "2027-05-09"
+  },
+  {
+   "event_id": 4479,
+   "name": "ECNL South Carolina",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-05-07",
+   "end": "2027-05-09"
+  },
+  {
+   "event_id": 4480,
+   "name": "ECNL Virginia",
+   "org_id": 12,
+   "org_season_id": 81,
+   "gender": "m",
+   "start": "2027-05-29",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4481,
+   "name": "ECNL RL North Carolina",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2027-05-28",
+   "end": "2027-05-30"
+  },
+  {
+   "event_id": 4482,
+   "name": "ECNL North Carolina - Spring",
+   "org_id": 9,
+   "org_season_id": 80,
+   "gender": "f",
+   "start": "2027-05-29",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4483,
+   "name": "PDA Girls College Showcase 2027",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-05-28",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4484,
+   "name": "PDA Spring Kick Off 2027",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-04-02",
+   "end": "2027-04-04"
+  },
+  {
+   "event_id": 4485,
+   "name": "Rangers Winter Cup 2026",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-12-12",
+   "end": "2026-12-13"
+  },
+  {
+   "event_id": 4486,
+   "name": "Girls Academy 2026/27",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-12",
+   "end": "2027-07-11"
+  },
+  {
+   "event_id": 4487,
+   "name": "ASPIRE 2026/27",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-11-12",
+   "end": "2027-06-30"
+  },
+  {
+   "event_id": 4488,
+   "name": "5th Annual Hot Cocoa Cup 5v5 Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-12-19",
+   "end": "2026-12-19"
+  },
+  {
+   "event_id": 4489,
+   "name": "ECNL RL Girls STXCL Championships",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-11-20",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4490,
+   "name": "ECNL RL Girls STXCL U19 Championships",
+   "org_id": 13,
+   "org_season_id": 82,
+   "gender": "f",
+   "start": "2026-08-01",
+   "end": "2027-07-31"
+  },
+  {
+   "event_id": 4491,
+   "name": "ECNL RL Boys STXCL Championships",
+   "org_id": 16,
+   "org_season_id": 83,
+   "gender": "m",
+   "start": "2026-11-20",
+   "end": "2027-05-31"
+  },
+  {
+   "event_id": 4492,
+   "name": "2027 WSA CUP TOURNAMENT",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-04-24",
+   "end": "2027-04-26"
+  },
+  {
+   "event_id": 4493,
+   "name": "2027 FUTURES CUP",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-26",
+   "end": "2027-02-28"
+  },
+  {
+   "event_id": 4494,
+   "name": "T.WO Touch Soccer-2nd Jan 2027 Futsal Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-02",
+   "end": "2027-01-02"
+  },
+  {
+   "event_id": 4495,
+   "name": "T.WO Touch Soccer-9th Jan 2027 Futsal Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-09",
+   "end": "2027-01-09"
+  },
+  {
+   "event_id": 4496,
+   "name": "T.WO Touch Soccer-16th Jan 2027 Futsal Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-16",
+   "end": "2027-01-16"
+  },
+  {
+   "event_id": 4497,
+   "name": "T.WO Touch Soccer-30th Jan 2027 Futsal Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-30",
+   "end": "2027-01-30"
+  },
+  {
+   "event_id": 4498,
+   "name": "T.WO Touch Soccer-6th Feb 2027 Futsal Tournament",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-06",
+   "end": "2027-02-06"
+  },
+  {
+   "event_id": 4499,
+   "name": "3v3 HOLIDAY CLASSIC",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2026-12-19",
+   "end": "2026-12-19"
+  },
+  {
+   "event_id": 4500,
+   "name": "26th Annual Presidents' Day Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-13",
+   "end": "2027-02-14"
+  },
+  {
+   "event_id": 4501,
+   "name": "Pre-ECNL Girls North Texas 2027 Spring",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-29",
+   "end": "2027-05-17"
+  },
+  {
+   "event_id": 4502,
+   "name": "Pre-ECNL Boys North Texas 2027 Spring",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-01-29",
+   "end": "2027-05-17"
+  },
+  {
+   "event_id": 4503,
+   "name": "Legends FC Invitational",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-03-06",
+   "end": "2027-03-07"
+  },
+  {
+   "event_id": 4504,
+   "name": "Aspire Winter Showcase 2027",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-12",
+   "end": "2027-02-15"
+  }
+ ],
+ "max_probed": 4584
+}
