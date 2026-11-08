@@ -1,0 +1,9 @@
+# Every 15 minutes, ask GitHub to run the site update (same setup as calendar-mesh).
+name               = "xf-ecnl-timer"
+main               = "worker.js"
+compatibility_date = "2024-09-23"
+account_id         = "f4844cb4fa247cf50ffc158d9ee9d27d"
+workers_dev        = true
+
+[triggers]
+crons = ["*/15 * * * *"]   # UTC; the update itself decides quick vs full
