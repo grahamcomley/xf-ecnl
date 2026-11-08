@@ -476,8 +476,14 @@ def playoff_for(cfg, league, conf_name, age, flight_count):
     if flight_count > 1:   # conference split into divisions: qualification isn't one table
         return None, None
     region = re.sub(r"^(ECNL|Pre-ECNL)\s+(RL\s+)?(Boys|Girls)\s+", "", conf_name).strip()
-    n = ((cfg.get("playoffs") or {}).get(league) or {}).get(region, {}).get(str(age))
-    return (n, f"Top {n} = ECNL Playoffs") if n else (None, None)
+    v = ((cfg.get("playoffs") or {}).get(league) or {}).get(region, {}).get(str(age))
+    if not v:
+        return None, None
+    n, cl = (v, 0) if isinstance(v, int) else (v[0], v[1])
+    label = f"Top {n} = {'RL' if ' RL ' in f' {league} ' else 'ECNL'} Playoffs"
+    if cl:
+        label += f" · {n + 1}th{'' if cl == 1 else f'–{n + cl}th'} = Conference League Playoffs"
+    return n, label
 
 
 def short_conf(name):
