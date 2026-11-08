@@ -18,3 +18,13 @@ jobs:
           secrets: DISPATCH_TOKEN
         env:
           DISPATCH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
+      - name: Check the timer can start an update (expect status 204)
+        run: |
+          sleep 20
+          for i in 1 2 3 4 5 6; do
+            out=$(curl -fsS "https://xf-ecnl-timer.grahamcomley.workers.dev/check" || true)
+            echo "attempt $i: $out"
+            echo "$out" | grep -q '"status":204' && exit 0
+            sleep 15
+          done
+          echo "::error title=Timer check failed::$out"; exit 1
