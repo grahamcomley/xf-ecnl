@@ -26,6 +26,11 @@ body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 a{color:var(--link)}
 header{background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 12px 8px;position:sticky;top:0;z-index:20}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.brand h1{margin:0;font-size:16px;font-weight:700}.brand h1 b{color:var(--accent)}
+.hbtns{display:flex;gap:6px;flex:none}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
+.sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
+.sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
+.checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
 .findbtn{flex:none;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .pills{display:flex;flex-wrap:wrap;gap:6px}.pills:empty{display:none}
@@ -118,15 +123,23 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 </head>
 <body>
 <header>
-  <div class="brand"><h1>ECNL <b>Standings</b> &amp; Predictions</h1><button class="findbtn" id="findtop" aria-label="Find a team">🔍 Find</button></div>
+  <div class="brand"><h1>ECNL <b>Standings</b> &amp; Predictions</h1><span class="hbtns"><button class="findbtn" id="infotop" aria-label="About this site">ⓘ</button><button class="findbtn" id="findtop" aria-label="Find a team">🔍 Find</button></span></div>
   <nav class="pills" id="pills"></nav>
   <div class="checked" id="checked"></div>
 </header>
 <main id="app"><div class="card ctx">Loading…</div></main>
 <div id="finder">
-  <div class="f-head"><input id="fq" type="search" placeholder="Search any team, club or conference" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
+  <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
 </div>
+<div id="info" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>About this site</b><button class="icon-btn" id="infoclose">Close</button></div>
+  <p><b>Unofficial.</b> Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them.</p>
+  <p><b>Predictions</b> rate every team from all of this season's games across the country (plus last season's, lightly), then play out the rest of the season thousands of times. They're estimates, not guarantees.</p>
+  <p><b>Find your team:</b> tap 🔍 Find, pick Boys or Girls, then age, league and conference, or search by club name. Tap ★ to keep a team at the top.</p>
+  <p><b>Put it on your phone:</b> iPhone: open in Safari, tap Share, then <i>Add to Home Screen</i>. Android: Chrome menu ⋮, then <i>Add to Home screen</i>.</p>
+  <p><b>Share a team:</b> open the team and tap Share. The link opens straight to that team.</p>
+</div></div>
 <div class="toast" id="toast"></div>
 <script>
 "use strict";
@@ -178,7 +191,7 @@ function makeModel(teams, model) {
     }
     return force === "H" ? [1, 0] : force === "D" ? [1, 1] : [0, 1];
   };
-  return {T, probs, sample};
+  return {T, probs, sample, lam};
 }
 function confidence(teams, a, b) {
   const A = teams.find(t => t.id === a), B = teams.find(t => t.id === b);
@@ -206,13 +219,59 @@ function rank(list, games, extra) {
   const cnt = {}; for (const r of list) cnt[r.pts] = (cnt[r.pts] || 0) + 1;
   return list.sort((a, b) => (b.ppg - a.ppg) || (b.pts - a.pts) || (cnt[a.pts] === 2 ? h2h(b.id, a.id) - h2h(a.id, b.id) : 0) || (b.gd - a.gd) || (b.gf - a.gf) || (a.ga - b.ga));
 }
-function simulate(ids, M, played, remaining, forced, N) {
-  const pos = new Map(ids.map(i => [i, new Array(ids.length).fill(0)]));
-  for (let n = 0; n < N; n++) {
-    const extra = remaining.map((g, gi) => { const [x, y] = M.sample(g.home_id, g.away_id, false, forced[g.id], rng(n * 7919 + gi * 104729 + 1)); return [g.home_id, g.away_id, x, y]; });
-    rank(table(extra, played, ids), played, extra).forEach((row, i) => pos.get(row.id)[i]++);
+// Fast season simulator: the played games are tallied once, then each simulated season only
+// adds the remaining games. Same ranking rules as rank(): PPG, points, head-to-head (2-way ties), GD, GF, GA.
+const SIMPREP = new WeakMap();
+function simPrep(ids, M, played, remaining) {
+  let c = SIMPREP.get(remaining); if (c && c.ids === ids && c.played === played) return c;
+  const n = ids.length, ix = new Map(ids.map((id, i) => [id, i]));
+  const gp = new Int32Array(n), pts = new Int32Array(n), gf = new Int32Array(n), ga = new Int32Array(n), h2h = new Int32Array(n * n);
+  for (const g of played) {
+    const h = ix.get(g.home_id), a = ix.get(g.away_id); if (h === undefined || a === undefined) continue;
+    gp[h]++; gp[a]++; gf[h] += g.hs; ga[h] += g.as; gf[a] += g.as; ga[a] += g.hs;
+    const ph = g.hs > g.as ? 3 : g.hs === g.as ? 1 : 0, pa = g.hs < g.as ? 3 : g.hs === g.as ? 1 : 0;
+    pts[h] += ph; pts[a] += pa; h2h[h * n + a] += ph; h2h[a * n + h] += pa;
   }
-  const out = new Map(); for (const i of ids) out.set(i, {pos: pos.get(i).map(c => c / N)}); return out;
+  const G = remaining.map(g => { const [lh, la] = M.lam(g.home_id, g.away_id, false); return {id: g.id, h: ix.get(g.home_id), a: ix.get(g.away_id), eh: Math.exp(-lh), ea: Math.exp(-la)}; })
+    .filter(x => x.h !== undefined && x.a !== undefined);
+  c = {ids, played, n, gp, pts, gf, ga, h2h, G}; SIMPREP.set(remaining, c); return c;
+}
+function simulate(ids, M, played, remaining, forced, N) {
+  const P = simPrep(ids, M, played, remaining), n = P.n, G = P.G;
+  const gp = new Int32Array(n), pts = new Int32Array(n), gf = new Int32Array(n), ga = new Int32Array(n);
+  const counts = new Float64Array(n * n), order = new Int32Array(n), ppg = new Float64Array(n);
+  const xs = new Int32Array(G.length), ys = new Int32Array(G.length), cnt = new Map();
+  const pois = (e, R) => { let k = 0, p = R(); while (p > e && k < 15) { k++; p *= R(); } return k; };
+  for (let s = 0; s < N; s++) {
+    gp.set(P.gp); pts.set(P.pts); gf.set(P.gf); ga.set(P.ga);
+    for (let gi = 0; gi < G.length; gi++) {
+      const g = G[gi], R = rng(s * 7919 + gi * 104729 + 1), f = forced[g.id];
+      let x = 0, y = 0;
+      for (let k = 0; k < 60; k++) {
+        x = pois(g.eh, R); y = pois(g.ea, R);
+        if (!f || (f === "H" && x > y) || (f === "D" && x === y) || (f === "A" && x < y)) break;
+        if (k === 59) { if (f === "H") { x = 1; y = 0; } else if (f === "D") { x = 1; y = 1; } else { x = 0; y = 1; } }
+      }
+      xs[gi] = x; ys[gi] = y;
+      gp[g.h]++; gp[g.a]++; gf[g.h] += x; ga[g.h] += y; gf[g.a] += y; ga[g.a] += x;
+      pts[g.h] += x > y ? 3 : x === y ? 1 : 0; pts[g.a] += x < y ? 3 : x === y ? 1 : 0;
+    }
+    cnt.clear();
+    for (let i = 0; i < n; i++) { order[i] = i; ppg[i] = gp[i] ? pts[i] / gp[i] : 0; cnt.set(pts[i], (cnt.get(pts[i]) || 0) + 1); }
+    const h2h = (i, j) => { // points i took off j, including this simulated season
+      let v = P.h2h[i * n + j];
+      for (let gi = 0; gi < G.length; gi++) { const g = G[gi];
+        if (g.h === i && g.a === j) v += xs[gi] > ys[gi] ? 3 : xs[gi] === ys[gi] ? 1 : 0;
+        else if (g.h === j && g.a === i) v += ys[gi] > xs[gi] ? 3 : xs[gi] === ys[gi] ? 1 : 0; }
+      return v; };
+    const arr = Array.from(order).sort((a, b) => (ppg[b] - ppg[a]) || (pts[b] - pts[a])
+      || (cnt.get(pts[a]) === 2 ? h2h(b, a) - h2h(a, b) : 0)
+      || ((gf[b] - ga[b]) - (gf[a] - ga[a])) || (gf[b] - gf[a]) || (ga[a] - ga[b]));
+    for (let r = 0; r < n; r++) counts[arr[r] * n + r]++;
+  }
+  const out = new Map();
+  ids.forEach((id, i) => out.set(id, {pos: Array.from(counts.subarray(i * n, i * n + n), c => c / N)}));
+  return out;
 }
 const atOrAbove = (S, id, k) => S.get(id).pos.slice(0, k + 1).reduce((a, b) => a + b, 0);
 const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi = null; p.forEach((x, i) => { c += x; if (lo === null && c >= 0.1) lo = i + 1; if (hi === null && c >= 0.9) hi = i + 1; }); return [lo, hi]; };
@@ -235,6 +294,9 @@ async function boot() {
   window.addEventListener("hashchange", route);
   $("#fclose").onclick = closeFinder;
   $("#findtop").onclick = openFinder;
+  $("#infotop").onclick = () => { $("#info").hidden = false; };
+  $("#infoclose").onclick = () => { $("#info").hidden = true; };
+  $("#info").onclick = e => { if (e.target.id === "info") $("#info").hidden = true; };
   $("#fq").addEventListener("input", drawFinder);
   route();
 }
@@ -278,8 +340,14 @@ function drawFinder() {
   const gOf = t => (/Girls/.test(t.a) ? "Girls" : "Boys");
   if (q.length >= 2) {
     const toks = q.split(/\s+/);
-    const hits = TEAMS.filter(t => { const s = `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase(); return toks.every(x => s.includes(x)); }).slice(0, 80);
-    body.innerHTML = `<div class="mut" style="margin-bottom:6px">${hits.length === 80 ? "First 80 matches" : hits.length + " matches"}</div>` + hits.map(teamRow).join("");
+    const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
+    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0) + (/Girls/.test(x) ? 100 : 0);
+    const all = TEAMS.filter(t => toks.every(x => words(t).some(w => w.startsWith(x))))
+      .sort((x, y) => ageNum(x.a) - ageNum(y.a) || x.l.localeCompare(y.l) || x.n.localeCompare(y.n));
+    const hits = all.slice(0, 150);
+    let html = `<div class="mut" style="margin-bottom:6px">${all.length > hits.length ? `First ${hits.length} of ${all.length} matches. Add a word to narrow it` : all.length + " matches"}</div>`, last = "";
+    for (const t of hits) { if (t.a !== last) { html += `<h3>${esc(t.a)}</h3>`; last = t.a; } html += teamRow(t); }
+    body.innerHTML = html;
   } else {
     const {g, a, l, c} = FSTATE;
     const uniq = arr => [...new Set(arr)];
@@ -408,8 +476,10 @@ function waitRow(D, g, f) {
 }
 function checkedTxt() {
   if (!STATUS) return "";
-  const t = new Date(STATUS.checked).toLocaleString(undefined, {weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
-  return `Updated ${t} · refreshes every 15 min`;
+  const at = new Date(STATUS.checked), t = at.toLocaleString(undefined, {weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
+  const stale = Date.now() - at.getTime() > 2 * 3600e3;
+  $("#checked").classList.toggle("stale", stale);
+  return stale ? `⚠ Updates paused. Scores last checked ${t}; they may be out of date.` : `Updated ${t} · refreshes every 15 min`;
 }
 
 function renderTeam(D, fid, key) {
@@ -436,6 +506,10 @@ function renderTeam(D, fid, key) {
     <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts)).join("")}</details>` : "";
   const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
+  // When ECNL's own table agrees with the scores, show teams in ECNL's exact order (their tiebreakers).
+  const off = new Map((D.official || []).map(o => [o.id, o]));
+  if (off.size === ids.length && now.every(r => { const o = off.get(r.id); return o && o.rank && o.gp === r.gp && o.pts === r.pts; }))
+    now.sort((a, b) => off.get(a.id).rank - off.get(b.id).rank);
   const fPos = now.findIndex(r => r.id === fid) + 1;
   const mismatch = D.official.filter(o => { const c = D.computed.find(x => x.id === o.id); return c && (o.gp !== c.gp || o.pts !== c.pts); });
   const starred = (favs() || []).includes(key);
@@ -555,10 +629,9 @@ function renderTeam(D, fid, key) {
       e.target.textContent = l.hidden ? `＋ Show rest of season (${laterOurs.length})` : "－ Hide rest of season";
     }
   };
-  setTimeout(() => {
-    const vis = [...document.querySelectorAll("[data-root]")].filter(e => !e.closest("#later")).map(e => e.dataset.root);
-    for (const gid of new Set(vis)) impact(gid);
-  }, 30);
+  const queue = [...new Set([...document.querySelectorAll("[data-root]")].filter(e => !e.closest("#later")).map(e => e.dataset.root))];
+  const step = () => { const gid = queue.shift(); if (gid === undefined || CTX.D !== D) return; impact(gid); setTimeout(step, 0); };
+  setTimeout(step, 30);
 }
 
 function drawPredictor() {

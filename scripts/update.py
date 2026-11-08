@@ -523,6 +523,7 @@ def main():
         if c["id"] in log and newk not in log:
             log[newk] = log.pop(c["id"])
     teams_index, legacy, written = {}, {}, set()
+    order_diffs = []
 
     for pname, pc in cfg["pools"].items():
         pkey = pc["key"]
@@ -609,10 +610,19 @@ def main():
             comp = featured.get((eid, fid), {})
             cname = short_conf(gs[0].get("event_name"))
             official = []
-            if comp:
-                for r in api.flight_standings(eid, comp["division_id"], fid):
+            # ECNL's own table (with its tiebreak order) for featured and all Northwest conferences
+            if comp or "Northwest" in cname:
+                div_id = comp.get("division_id") or gs[0].get("division_id")
+                st = api.get(f"Event/get-standings-by-div-and-flight/{div_id}/{fid}/{eid}", max_age_hours=0 if comp else 1)
+                rows = [r for b in (st or []) if isinstance(b, dict) for r in (b.get("teamStandings") or [])]
+                for r in rows:
                     official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
-                                     "pts": to_int(r.get("standingpoints"))})
+                                     "pts": to_int(r.get("standingpoints")), "rank": to_int(r.get("rank"))})
+                ours = standings_from_games(gs, tids)
+                ours_order = [t["id"] for t in sorted(ours, key=lambda t: (-t["ppg"], -t["pts"], -t["gd"], -t["gf"]))]
+                off_order = [o["id"] for o in sorted(official, key=lambda o: o["rank"] or 99)]
+                if official and ours_order != off_order:
+                    order_diffs.append({"conf": fkey, "name": cname, "ours": ours_order, "ecnl": off_order})
             # each event stored once; teams point to it by index
             ev_list, ev_index, evs = [], {}, {}
             for t in tids:
@@ -657,6 +667,12 @@ def main():
     for fn in os.listdir(os.path.join(OUT, "conf")):
         if fn not in written:
             os.remove(os.path.join(OUT, "conf", fn))
+    with open(os.path.join(ROOT, "data", "order_check.json"), "w") as f:
+        json.dump(order_diffs, f, indent=1)
+    tot = api.stats["live"] + api.stats["failed"]
+    if tot > 50 and api.stats["failed"] > 0.3 * tot:
+        print(f"::error::Too many failed ECNL requests ({api.stats['failed']} of {tot}); not publishing this run")
+        sys.exit(1)
     teams_index = sorted((e for _, e in teams_index.values()), key=lambda x: (x["a"], x["l"], x["c"], x["s"] or ""))
     with open(os.path.join(OUT, "teams.json"), "w") as f:
         json.dump(teams_index, f, separators=(",", ":"))
