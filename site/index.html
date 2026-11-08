@@ -39,6 +39,15 @@ header{flex:none;background:#07090c;border-bottom:1px solid var(--line);padding:
 details.evrow{border:1px solid var(--line2);border-radius:10px;margin-bottom:10px;background:var(--card2)}
 details.evrow>summary{list-style:none;cursor:pointer;padding:10px 34px 10px 12px;position:relative}details.evrow>summary::-webkit-details-marker{display:none}
 details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-size:15px}.evbody{padding:0 10px 12px}
+.grow{display:grid;grid-template-columns:46px 1fr auto 1fr 18px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.grow.tap{cursor:pointer}.grow.ours{box-shadow:inset 3px 0 0 var(--red);padding-left:8px}
+.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;color:var(--accent);font-size:12px}
+.gm .res{width:18px;height:18px;font-size:10px}
+.gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
+.gs.res{font-weight:800;color:var(--ink)}.gs.pred{color:var(--mut)}.gs.vs{color:var(--mut);font-size:12px}
+.gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 52px}.gdet .root{margin-top:4px;padding-top:4px}
+.blk{margin-bottom:6px}.score.pred{color:var(--mut);font-size:18px;font-weight:600}.score.res{font-size:20px;font-weight:800}
+.venue{font-size:12px;color:var(--mut);margin-top:2px}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
@@ -114,7 +123,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .imp{border:0;background:none;color:var(--link);font:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:2px 0;white-space:nowrap}
 .imp.open .ar{transform:rotate(90deg)}
 .more{display:block;width:100%;border:1px dashed var(--line2);background:transparent;color:var(--link);font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:10px;cursor:pointer;margin:4px 0 8px}.root[hidden]{display:none}
-.sb{font-size:16px;margin:6px 0 2px}.sc{font-size:inherit;color:var(--ink)}.win{font-weight:800}.me-n{color:var(--ink)}
+.sb{font-size:16px;margin:6px 0 2px}.sc{font-size:inherit;color:var(--ink)}.win{font-weight:800}.me-n{color:var(--ink);font-weight:700}
 .rt .sc{font-weight:800}
 .ar{display:inline-block;transition:transform .15s}
 .day{font-size:12px;font-weight:800;color:var(--ink);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding-bottom:4px}
@@ -409,41 +418,67 @@ function sec(kind, chip, title, sub, body, key, defOpen = true) {
 function teamName(D, id, fb) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fb || "TBD"); }
 
 // Game card. If the team we're following plays, it's on the left: "XF 1 vs Eastside" (home) or "XF 1 @ PacNW" (away).
+// Roomy card for our next games: team · likely score · team, odds as text underneath. No bars.
 function fixtureCard(D, M, g, o = {}) {
   const f = o.focus, us = f && (g.home_id === f || g.away_id === f), flip = us && g.away_id === f;
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
   const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
-  const sep = us ? (flip ? "@" : "vs") : "vs";
-  const cls = "fx" + (o.matters ? " matters" : "") + (o.ours && us ? " ours" : "");
-  const nameL = us ? `<b>${esc(LN)}</b>` : esc(LN);
+  const cls = "fx" + (o.ours && us ? " ours" : "");
   if (g.hs != null && g.as != null) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
-    return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · Final</span><span>${esc(g.venue || "")}</span></div>
-      <div class="sb">${scoreLine(LN, ls, sep, rs, RN, us)}</div></div>`;
+    return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · Final</span></div>
+      <div class="teams"><div>${nm(LN, us, ls > rs)}</div><div class="score res">${ls} – ${rs}</div><div class="a">${nm(RN, false, rs > ls)}</div></div></div>`;
   }
   const P = M.probs(g.home_id, g.away_id, o.neutral);
-  const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l;
-  const sL = flip ? [P.score[1], P.score[0]] : P.score;
+  const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
-  let toggles = "";
-  if (o.picks) {
-    const picked = PICKS[D.__fk][g.id] || "";
-    const keyL = flip ? "A" : "H", keyR = flip ? "H" : "A";
-    const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${picked === k ? "on" : ""}">${label}</button>`;
-    toggles = `<div class="toggles" data-g="${g.id}">${btn(keyL, esc(LN) + " win")}${btn("D", "Draw")}${btn(keyR, esc(RN) + " win")}</div>`;
-  }
-  return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}</span><span>${o.matters ? `<span class="pill tag">Matters to us</span> ` : ""}${esc(g.venue || "")}</span></div>
-    <div class="teams"><div>${nameL}</div><div class="score vs">${sep}</div><div class="a">${esc(RN)}</div></div>
-    <div class="bar">${seg("bh", pl)}${seg("bd", P.d)}${seg("ba", pr)}</div>
-    <div class="likely"><span>Likely: <b>${esc(code(D, L, o.teams))} ${sL[0]}–${sL[1]} ${esc(code(D, R, o.teams))}</b>${conf ? ` <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]}</span>` : ""}</span>${o.stake ? `<button class="imp" data-imp="${g.id}">Impact <span class="ar">›</span></button>` : ""}</div>
-    ${o.stake ? `<div class="root" data-root="${g.id}" hidden></div>` : ""}${toggles}
+  const odds = us ? `Win ${num(pl)} · Draw ${num(P.d)} · Loss ${num(pr)}`
+                  : `${esc(code(D, L, o.teams))} ${num(pl)} · Draw ${num(P.d)} · ${esc(code(D, R, o.teams))} ${num(pr)}`;
+  return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+    <div class="teams"><div>${nm(LN, us)}</div><div class="score pred">${sL[0]} – ${sL[1]}</div><div class="a">${nm(RN)}</div></div>
+    <div class="likely"><span>${odds}${conf ? ` <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]}</span>` : ""}</span>${o.stake ? `<button class="imp" data-imp="${g.id}">Impact <span class="ar">›</span></button>` : ""}</div>
+    ${g.venue ? `<div class="venue">${esc(g.venue)}</div>` : ""}
+    ${o.stake ? `<div class="root" data-root="${g.id}" hidden></div>` : ""}
     ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}</div>`;
 }
+const num = p => Math.round(p * 100);
+const nm = (n, me, win) => `<span class="${me ? "me-n" : ""}${win ? " win" : ""}">${esc(n)}</span>`;
+const shortTime = t => (!t || t === "00:00") ? "TBD" : fmtTime(t).replace(":00 ", " ").replace(" AM", "a").replace(" PM", "p");
+const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
+// Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
+// "vs"/"@" when there's no score. Tap a row for odds, venue and impact.
+function gameRow(D, M, g, o = {}) {
+  const f = o.focus, us = f && (g.home_id === f || g.away_id === f), flip = us && g.away_id === f;
+  const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
+  const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
+  const done = g.hs != null && g.as != null;
+  const left = o.left !== undefined ? o.left : (o.showDate ? shortDate(g.date) : shortTime(g.time));
+  let mid, mcls, ln, rn, det = "", mark = "";
+  if (done) {
+    const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
+    mid = `${ls} – ${rs}`; mcls = "res"; ln = nm(LN, us, ls > rs); rn = nm(RN, false, rs > ls);
+    if (us) mark = `<span class="res res-${ls > rs ? "w" : ls === rs ? "d" : "l"}">${ls > rs ? "W" : ls === rs ? "D" : "L"}</span>`;
+  } else if (o.wait) {
+    mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
+  } else {
+    const P = M.probs(g.home_id, g.away_id, o.neutral);
+    const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
+    mid = `${sL[0]} – ${sL[1]}`; mcls = "pred"; ln = nm(LN, us); rn = nm(RN);
+    const odds = us ? `Win ${num(pl)} · Draw ${num(P.d)} · Loss ${num(pr)}`
+                    : `${esc(code(D, L, o.teams))} ${num(pl)} · Draw ${num(P.d)} · ${esc(code(D, R, o.teams))} ${num(pr)}`;
+    det = `<div class="gdet" hidden><div>${odds}${o.showDate ? ` · ${fmtTime(g.time)}` : ` · ${fmtDate(g.date)}`}${g.venue ? ` · ${esc(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}">Working out the impact…</div>` : ""}</div>`;
+  }
+  let toggles = "";
+  if (o.picks && !done) {
+    const P = M.probs(g.home_id, g.away_id, o.neutral), picked = PICKS[D.__fk][g.id] || "";
+    const keyL = flip ? "A" : "H", keyR = flip ? "H" : "A";
+    const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${picked === k ? "on" : ""}">${label}</button>`;
+    toggles = `<div class="toggles" data-g="${g.id}">${btn(keyL, esc(code(D, L, o.teams)) + " win")}${btn("D", "Draw")}${btn(keyR, esc(code(D, R, o.teams)) + " win")}</div>`;
+  }
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}"><span class="gt">${left}</span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark}</span>${det}${toggles}</div>`;
+}
 function resultRow(D, g, f, showDate = true) {
-  const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
-  const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id, ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
-  const tag = us ? `<span class="res res-${ls > rs ? "w" : ls === rs ? "d" : "l"}">${ls > rs ? "W" : ls === rs ? "D" : "L"}</span>` : "";
-  return `<div class="rrow">${tag}${showDate ? `<span class="rd">${fmtDate(g.date)}</span>` : ""}<span class="rt">${scoreLine(teamName(D, L), ls, us && flip ? "@" : "vs", rs, teamName(D, R), us)}</span></div>`;
+  return gameRow(D, null, g, {focus: f, left: showDate ? shortDate(g.date) : ""});
 }
 // Scoreboard style: "XF 4 @ 0 Eastside FC", winner in bold.
 function scoreLine(LN, ls, sep, rs, RN, us) {
@@ -519,7 +554,7 @@ function renderTeam(D, fid, key) {
   const allOurs = scheduled.filter(g => isMe(g) && g.date >= today), nextOurs = allOurs.slice(0, 3), laterOurs = allOurs.slice(3);
   const week = scheduled.filter(g => !isMe(g) && g.date >= today && g.date <= addDays(today, 7));
   const missedBox = (list, opts) => list.length ? `<details class="inner missed"><summary>Missed games waiting for a new date (${list.length})</summary>
-    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts)).join("")}</details>` : "";
+    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => opts.card ? fixtureCard(D, M, g, opts) : gameRow(D, M, g, {...opts, showDate: true})).join("")}</details>` : "";
   const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
   const left = id => remaining.filter(g => g.home_id === id || g.away_id === id).length;
@@ -537,15 +572,17 @@ function renderTeam(D, fid, key) {
   const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > new Date(`${g.date}T${g.time}:00`).getTime() + 2 * 3600e3);
   const inWin = valid.filter(g => g.date >= yest && g.date <= wEnd);
   const dayLabel = d => (d === yest ? "Yesterday · " : d === today ? "Today · " : "") + fmtDate(d);
-  const sec4 = [...new Set(inWin.map(g => g.date))].sort().map(d => {
-    const dg = inWin.filter(g => g.date === d).sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-    const fin = dg.filter(g => g.hs != null && g.as != null), open = dg.filter(g => g.hs == null || g.as == null);
-    const wait = open.filter(kickPassed), up = open.filter(g => !kickPassed(g));
-    return `<div class="day">${dayLabel(d)}</div>`
-      + (fin.length ? `<details class="inner"><summary>Results (${fin.length})</summary>${fin.map(g => resultRow(D, g, fid, false)).join("")}</details>` : "")
-      + wait.map(g => waitRow(D, g, fid)).join("")
-      + up.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("");
-  }).join("");
+  const byTime = (a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || ""));
+  const isDone = g => g.hs != null && g.as != null;
+  const finW = inWin.filter(isDone).sort((a, b) => byTime(b, a));
+  const waitW = inWin.filter(g => !isDone(g) && kickPassed(g)).sort(byTime);
+  const upW = inWin.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime);
+  const dayShort = d => d === yest ? "Yest" : d === today ? "Today" : shortDate(d);
+  const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
+  const sec4 = (finW.length ? blk("Results", finW.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: dayShort(g.date)})).join("")) : "")
+    + (waitW.length ? blk("Waiting for score", waitW.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : dayShort(g.date)})).join("")) : "")
+    + [...new Set(upW.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
+        upW.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
   const older = played.filter(g => !isMe(g) && g.date < yest).sort((a, b) => b.date.localeCompare(a.date));
 
   $("#app").innerHTML = `
@@ -570,7 +607,7 @@ function renderTeam(D, fid, key) {
   ${sec("us", me, "2 · Our next games", `Odds for each game. Tap "Impact" to see how each result changes ${me}'s chance of ${keyLabel}.`,
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
-    + missedBox(missed.filter(isMe), {focus: fid, stake: true}), "s2")}
+    + missedBox(missed.filter(isMe), {focus: fid, stake: true, card: true}), "s2")}
 
   ${events.length ? sec("ev", "Events", "Showcases & tournaments", "Separate from the league season: these games don't count toward conference standings.",
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
@@ -578,7 +615,7 @@ function renderTeam(D, fid, key) {
   ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
-  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Ours have a red edge; gray cards matter to ${me}.`,
+  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Gray scores are likely scores; ● = matters to ${me}. Tap a game for odds and impact.`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
@@ -587,7 +624,7 @@ function renderTeam(D, fid, key) {
     <div class="picksbar" id="picksbar"></div>
     <div id="predtable"></div>
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
-      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => fixtureCard(D, M, g, {focus: fid, picks: true})).join("")}</div></details>`, "s5", false)}
+      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => gameRow(D, M, g, {focus: fid, picks: true, showDate: true})).join("")}</div></details>`, "s5", false)}
 
 `;
 
@@ -631,11 +668,16 @@ function renderTeam(D, fid, key) {
     document.querySelectorAll(`[data-root="${gid}"]`).forEach(el => {
       el.innerHTML = html;
       if (!matters) return;
-      const card = el.closest(".fx"); card.classList.add("matters");
-      const head = card.querySelector(".when span:last-child"); if (head && !head.querySelector(".tag")) head.insertAdjacentHTML("afterbegin", `<span class="pill tag">Matters to us</span> `);
+      const row = el.closest(".grow"); if (row) { row.classList.add("matters"); const m = row.querySelector(".gm"); if (m && !m.textContent) m.textContent = "●"; }
     });
   };
   $("#app").onclick = e => {
+    const row = e.target.closest(".grow.tap");
+    if (row && !e.target.closest(".toggles")) {
+      const d = row.querySelector(".gdet"); d.hidden = !d.hidden; row.classList.toggle("open", !d.hidden);
+      const r = d.querySelector("[data-root]"); if (r && !d.hidden) setTimeout(() => impact(r.dataset.root), 0);
+      return;
+    }
     const b = e.target.closest(".imp");
     if (b) {
       impact(b.dataset.imp);
@@ -745,7 +787,7 @@ function eventBody(D, ev, fid) {
   return (first.map(g => fixtureCard(Dl, M, g, {focus: fid, neutral: true, teams: ev.teams})).join(""))
     + (ev.bracket ? `<div style="margin:6px 0">Chance to win the group: <b>${WIN}</b></div>` : "") + path
     + (done.length ? `<h3>Results</h3>` + done.map(g => resultRow(Dl, g, fid)).join("") : "")
-    + (others.length ? `<details class="inner"><summary>Other games in the group (${others.length})</summary>${others.map(g => fixtureCard(Dl, M, g, {neutral: true, teams: ev.teams})).join("")}</details>` : "")
+    + (others.length ? `<details class="inner"><summary>Other games in the group (${others.length})</summary>${others.map(g => gameRow(Dl, M, g, {neutral: true, teams: ev.teams, showDate: true})).join("")}</details>` : "")
     + teamsTbl;
 }
 
