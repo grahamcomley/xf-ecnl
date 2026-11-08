@@ -398,7 +398,7 @@ async function openTeam(k) {
   $("#scroller").scrollTop = 0;
 }
 function sec(kind, chip, title, sub, body, key, defOpen = true) {
-  const sk = `open:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
+  const sk = `open2:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
   return `<details class="card sec sec-${kind}" data-key="${sk}" ${open ? "open" : ""}><summary><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2><span class="caret">▾</span></summary>
     <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></details>`;
 }
@@ -571,18 +571,18 @@ function renderTeam(D, fid, key) {
   ${events.map((ev, i) => sec("us", me, `${ev.name}${ev.flight ? ` · ${esc(ev.flight)}` : ""}`, `Event games don't count toward conference standings. <a href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a>`, eventBody(D, ev, fid), "ev" + i)).join("")}
 
   ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
-    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3")}
+    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
   ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Ours have a red edge; gray cards matter to ${me}.`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
-    + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4")}
+    + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
 
   ${sec("div", "Predict", "5 · Rest-of-season predictor", `Gray = our pick for each game. Tap a different result to override it (white). The table updates instantly.`, `
     <div class="picksbar" id="picksbar"></div>
     <div id="predtable"></div>
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
-      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => fixtureCard(D, M, g, {focus: fid, picks: true})).join("")}</div></details>`, "s5")}
+      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => fixtureCard(D, M, g, {focus: fid, picks: true})).join("")}</div></details>`, "s5", false)}
 
 `;
 
