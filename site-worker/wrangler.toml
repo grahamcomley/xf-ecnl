@@ -1,9 +1,9 @@
-# Serves the site from Cloudflare (static files only, no code). Deployed by the update job;
-# only files that changed are uploaded. The custom domain gets added here on domain day.
+# LIVE site (sidelinestandings.com, www): the last promoted page + fresh data, built into site-live/
+# by the update job. Static files only; only changed files upload. Domains are attached in the dashboard.
 name               = "xf-ecnl-site"
 compatibility_date = "2026-06-01"
 account_id         = "f4844cb4fa247cf50ffc158d9ee9d27d"
 workers_dev        = true
 
 [assets]
-directory = "../site"
+directory = "../site-live"

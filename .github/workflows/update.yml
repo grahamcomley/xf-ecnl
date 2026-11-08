@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "auto (default), quick, or full"
+        description: "auto (default), quick, full, or publish (pages only)"
         required: false
         default: auto
   push:
     branches: [main]
-    paths: ["site/**", "site-worker/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
+    paths: ["site/**", "site-worker/**", "site-worker-uat/**", "forwarder/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
   schedule:
     # Backup timer (GitHub's timer can be late). The outside timer triggers every 15 minutes.
     - cron: "23 */3 * * *"
@@ -56,6 +56,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           MODE="${{ github.event.inputs.mode || 'auto' }}"
+          if [ "$MODE" = publish ] && [ ! -f site/data/teams.json ]; then MODE=quick; fi
           if [ "${{ github.event_name }}" = "push" ]; then
             MODE=full
             # A push that only changes the page (site/, not site/data) just republishes the last data.
@@ -70,8 +71,17 @@ jobs:
         if: steps.plan.outputs.mode != 'publish'
         run: python scripts/update.py --${{ steps.plan.outputs.mode }}
 
-      - name: Stamp the page version (the app reloads itself when this changes)
-        run: cat site/index.html site/sw.js site/manifest.webmanifest | sha1sum | cut -c1-12 > site/version.txt
+      # Two copies of the page: UAT = the latest page (main branch); live = the page last promoted
+      # (live branch). Both get the same fresh data.
+      - name: Build the live copy and stamp both page versions
+        run: |
+          git fetch -q origin live:live
+          rm -rf /tmp/livesrc site-live && mkdir -p /tmp/livesrc site-live
+          git archive live site | tar -x -C /tmp/livesrc
+          cp -r /tmp/livesrc/site/. site-live/
+          rm -rf site-live/data && cp -r site/data site-live/data
+          for d in site site-live; do cat $d/index.html $d/sw.js $d/manifest.webmanifest | sha1sum | cut -c1-12 > $d/version.txt; done
+          echo "UAT page $(cat site/version.txt) · live page $(cat site-live/version.txt)"
 
       - name: Save raw data back to the repo (only when it changed)
         if: steps.plan.outputs.mode != 'publish'
@@ -88,20 +98,28 @@ jobs:
             git push
           fi
 
-      # Cloudflare copy of the site (becomes the main address on domain day). Only changed files upload.
-      - name: Publish to Cloudflare
+      # Only changed files upload to Cloudflare.
+      - name: Publish UAT (uat.sidelinestandings.com)
         continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: site-worker-uat
+          command: deploy
+
+      - name: Publish live (sidelinestandings.com)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: site-worker
           command: deploy
 
+      # The old github.io address only forwards to the new one (team links keep working).
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: forwarder
 
       - id: deploy
         uses: actions/deploy-pages@v4

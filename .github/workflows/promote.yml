@@ -1,0 +1,19 @@
+name: Promote UAT to live
+# Copies the page you checked on uat.sidelinestandings.com to sidelinestandings.com.
+on: workflow_dispatch
+permissions:
+  contents: write
+  actions: write
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Move the live page to what's on UAT
+        run: |
+          SHA=$(gh api "repos/${{ github.repository }}/git/ref/heads/main" --jq .object.sha)
+          gh api -X PATCH "repos/${{ github.repository }}/git/refs/heads/live" -f sha="$SHA" -F force=true
+          echo "live is now $SHA"
+      - name: Publish now
+        run: gh api -X POST "repos/${{ github.repository }}/actions/workflows/update.yml/dispatches" -f ref=main -f "inputs[mode]=publish"
