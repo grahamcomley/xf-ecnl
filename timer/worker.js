@@ -1,9 +1,9 @@
 // Starts the xf-ecnl "Update data and publish site" GitHub Action.
 // DISPATCH_TOKEN is a Worker secret (fine-grained GitHub token, Actions read/write on this one repo).
-const URL = "https://api.github.com/repos/grahamcomley/xf-ecnl/actions/workflows/update.yml/dispatches";
+const DISPATCH_URL = "https://api.github.com/repos/grahamcomley/xf-ecnl/actions/workflows/update.yml/dispatches";
 
 async function kick(env) {
-  const r = await fetch(URL, {
+  const r = await fetch(DISPATCH_URL, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${(env.DISPATCH_TOKEN || "").trim()}`,
