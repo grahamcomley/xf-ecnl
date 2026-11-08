@@ -31,7 +31,10 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
+      # Queued runs must start from the latest commit, not the one they were triggered on.
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -51,6 +54,7 @@ jobs:
           python scripts/update.py --$MODE
 
       - name: Save raw data back to the repo (only when it changed)
+        continue-on-error: true   # never block publishing the site
         run: |
           git config user.name "xf-ecnl-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -59,7 +63,7 @@ jobs:
             echo "No data changes"
           else
             git commit -m "Data update $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git pull --rebase --autostash || true
+            git pull --rebase -X theirs --autostash || { git rebase --abort; git pull --no-rebase -X ours --no-edit; }
             git push
           fi
 
