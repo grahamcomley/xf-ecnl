@@ -1,6 +1,6 @@
 {
-  "name": "ECNL Standings & Predictions",
-  "short_name": "Standings",
+  "name": "Sideline Standings",
+  "short_name": "Sideline",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0d1015",
