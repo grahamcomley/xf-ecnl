@@ -479,6 +479,8 @@ def playoff_for(cfg, league, conf_name, age, flight_count):
     v = ((cfg.get("playoffs") or {}).get(league) or {}).get(region, {}).get(str(age))
     if not v:
         return None, None
+    if isinstance(v, dict):   # rule with a wildcard / cup: custom wording
+        return v["n"], v["label"]
     n, cl = (v, 0) if isinstance(v, int) else (v[0], v[1])
     label = f"Top {n} = {'RL' if ' RL ' in f' {league} ' else 'ECNL'} Playoffs"
     if cl:

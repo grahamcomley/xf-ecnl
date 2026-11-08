@@ -739,7 +739,8 @@
     "_sources": [
       "2026-27 ECNL Boys Postseason Structure (Aug 2026)",
       "2026-27 ECNL Girls Postseason Structure (Sep 2026)",
-      "2026-27 ECNL Regional League Boys Postseason Structure (Oct 2026)"
+      "2026-27 ECNL Regional League Boys Postseason Structure (Oct 2026)",
+      "2026-27 ECNL Regional League Girls Postseason Structure (Oct 2026)"
     ],
     "ECNL Boys": {
       "North Atlantic": {
@@ -1369,6 +1370,426 @@
         "19": [
           4,
           0
+        ]
+      }
+    },
+    "ECNL RL Girls": {
+      "New England": {
+        "13": [
+          3,
+          0
+        ],
+        "14": [
+          3,
+          0
+        ],
+        "15": [
+          3,
+          0
+        ],
+        "16": [
+          3,
+          0
+        ],
+        "17": [
+          3,
+          0
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "North Atlantic": {
+        "13": {
+          "n": 2,
+          "label": "Top 2 + League Cup winner (or 3rd) = RL Playoffs"
+        },
+        "14": {
+          "n": 2,
+          "label": "Top 2 + League Cup winner (or 3rd) = RL Playoffs"
+        },
+        "15": {
+          "n": 2,
+          "label": "Top 2 + League Cup winner (or 3rd) = RL Playoffs"
+        },
+        "16": {
+          "n": 2,
+          "label": "Top 2 + League Cup winner (or 3rd) = RL Playoffs"
+        },
+        "17": {
+          "n": 2,
+          "label": "Top 2 + League Cup winner (or 3rd) = RL Playoffs"
+        },
+        "19": {
+          "n": 1,
+          "label": "Top 1 + League Cup winner (or 2nd) = RL Playoffs"
+        }
+      },
+      "Carolinas": {
+        "13": [
+          4,
+          1
+        ],
+        "14": [
+          4,
+          1
+        ],
+        "15": [
+          4,
+          1
+        ],
+        "16": [
+          4,
+          1
+        ],
+        "17": [
+          4,
+          1
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Gulf Coast": {
+        "13": [
+          3,
+          0
+        ],
+        "14": [
+          3,
+          0
+        ],
+        "15": [
+          3,
+          0
+        ],
+        "16": [
+          3,
+          0
+        ],
+        "17": [
+          3,
+          0
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Southeast": {
+        "13": [
+          5,
+          0
+        ],
+        "14": [
+          5,
+          0
+        ],
+        "15": [
+          5,
+          0
+        ],
+        "16": [
+          5,
+          0
+        ],
+        "17": [
+          5,
+          0
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "GMA": {
+        "13": [
+          3,
+          1
+        ],
+        "14": [
+          3,
+          1
+        ],
+        "15": [
+          3,
+          1
+        ],
+        "16": [
+          3,
+          1
+        ],
+        "17": [
+          3,
+          1
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Mid-America": {
+        "13": [
+          3,
+          0
+        ],
+        "14": [
+          3,
+          0
+        ],
+        "15": [
+          3,
+          0
+        ],
+        "16": [
+          3,
+          0
+        ],
+        "17": [
+          3,
+          0
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Twin Cities": {
+        "14": [
+          2,
+          1
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Far West": {
+        "13": [
+          2,
+          2
+        ],
+        "14": [
+          2,
+          2
+        ],
+        "15": [
+          2,
+          2
+        ],
+        "16": [
+          2,
+          2
+        ],
+        "17": [
+          2,
+          2
+        ],
+        "19": [
+          1,
+          0
+        ]
+      },
+      "Golden State": {
+        "13": [
+          3,
+          0
+        ],
+        "14": [
+          3,
+          0
+        ],
+        "15": [
+          3,
+          0
+        ],
+        "16": [
+          3,
+          0
+        ],
+        "17": [
+          3,
+          0
+        ],
+        "19": [
+          1,
+          0
+        ]
+      },
+      "NorCal": {
+        "13": [
+          4,
+          2
+        ],
+        "14": [
+          4,
+          2
+        ],
+        "15": [
+          4,
+          2
+        ],
+        "16": [
+          4,
+          2
+        ],
+        "17": [
+          4,
+          2
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Northwest": {
+        "13": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Southern Cal's 4th, or Conference League Playoffs"
+        },
+        "14": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Southern Cal's 4th, or Conference League Playoffs"
+        },
+        "15": {
+          "n": 1,
+          "label": "Top 1 + divisional League Cup winners = RL Playoffs"
+        },
+        "16": {
+          "n": 1,
+          "label": "Top 1 + divisional League Cup winners = RL Playoffs"
+        },
+        "17": {
+          "n": 1,
+          "label": "Top 1 + divisional League Cup winners = RL Playoffs"
+        },
+        "19": [
+          1,
+          0
+        ]
+      },
+      "Southern Cal": {
+        "13": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Northwest's 4th \u00b7 5th = Conference League Playoffs"
+        },
+        "14": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Northwest's 4th \u00b7 5th = Conference League Playoffs"
+        },
+        "15": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Northwest's 4th \u00b7 5th = Conference League Playoffs"
+        },
+        "16": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Northwest's 4th \u00b7 5th = Conference League Playoffs"
+        },
+        "17": {
+          "n": 3,
+          "label": "Top 3 = RL Playoffs \u00b7 4th: wildcard vs Northwest's 4th \u00b7 5th = Conference League Playoffs"
+        },
+        "19": [
+          1,
+          0
+        ]
+      },
+      "Southwest": {
+        "13": [
+          8,
+          0
+        ],
+        "14": [
+          8,
+          0
+        ],
+        "15": [
+          8,
+          0
+        ],
+        "16": [
+          8,
+          0
+        ],
+        "17": [
+          8,
+          0
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "North Texas": {
+        "13": [
+          3,
+          2
+        ],
+        "14": [
+          3,
+          2
+        ],
+        "15": [
+          3,
+          2
+        ],
+        "16": [
+          3,
+          2
+        ],
+        "17": [
+          3,
+          2
+        ],
+        "19": [
+          2,
+          0
+        ]
+      },
+      "Texas": {
+        "13": {
+          "n": 5,
+          "label": "Top 5 + League Cup winner (or 6th) = RL Playoffs \u00b7 7th = Conference League Playoffs"
+        },
+        "14": {
+          "n": 5,
+          "label": "Top 5 + League Cup winner (or 6th) = RL Playoffs \u00b7 7th = Conference League Playoffs"
+        },
+        "15": {
+          "n": 5,
+          "label": "Top 5 + League Cup winner (or 6th) = RL Playoffs \u00b7 7th = Conference League Playoffs"
+        },
+        "16": {
+          "n": 5,
+          "label": "Top 5 + League Cup winner (or 6th) = RL Playoffs \u00b7 7th = Conference League Playoffs"
+        },
+        "17": {
+          "n": 5,
+          "label": "Top 5 + League Cup winner (or 6th) = RL Playoffs \u00b7 7th = Conference League Playoffs"
+        },
+        "19": [
+          3,
+          0
+        ]
+      },
+      "STXCL": {
+        "14": [
+          3,
+          1
+        ],
+        "15": [
+          3,
+          1
+        ],
+        "16": [
+          3,
+          1
+        ],
+        "17": [
+          3,
+          1
         ]
       }
     }
