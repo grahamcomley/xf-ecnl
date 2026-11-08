@@ -26,6 +26,7 @@ body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 a{color:var(--link)}
 header{background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 12px 8px;position:sticky;top:0;z-index:20}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.brand h1{margin:0;font-size:16px;font-weight:700}.brand h1 b{color:var(--accent)}
+.checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
 .findbtn{flex:none;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .pills{display:flex;flex-wrap:wrap;gap:6px}.pills:empty{display:none}
 .pill-btn{flex:none;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
@@ -119,6 +120,7 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 <header>
   <div class="brand"><h1>ECNL <b>Standings</b> &amp; Predictions</h1><button class="findbtn" id="findtop" aria-label="Find a team">🔍 Find</button></div>
   <nav class="pills" id="pills"></nav>
+  <div class="checked" id="checked"></div>
 </header>
 <main id="app"><div class="card ctx">Loading…</div></main>
 <div id="finder">
@@ -401,7 +403,8 @@ function waitRow(D, g, f) {
 }
 function checkedTxt() {
   if (!STATUS) return "";
-  return `Scores last checked ${new Date(STATUS.checked).toLocaleString(undefined, {weekday: "short", hour: "numeric", minute: "2-digit"})}. ECNL posts scores when clubs enter them, usually within a few hours of the game.`;
+  const t = new Date(STATUS.checked).toLocaleString(undefined, {weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
+  return `Updated ${t} · refreshes every 15 min`;
 }
 
 function renderTeam(D, fid, key) {
@@ -488,8 +491,7 @@ function renderTeam(D, fid, key) {
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
       <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => fixtureCard(D, M, g, {focus: fid, picks: true})).join("")}</div></details>`, "s5")}
 
-  ${accuracy(D)}
-  <footer><div id="checked">${checkedTxt()}</div><div style="margin-top:4px">Data: <a href="${esc(D.ecnl_link)}" target="_blank" rel="noopener">official ECNL schedule</a> · Unofficial. Predictions are estimates, not guarantees.</div></footer>`;
+`;
 
   document.querySelectorAll("details.sec").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   $("#gamelist").addEventListener("toggle", e => store.set("open:gamelist", e.target.open ? "1" : "0"));
