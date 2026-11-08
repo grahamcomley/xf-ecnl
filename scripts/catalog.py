@@ -104,5 +104,7 @@ def division_matches(div_name, event, rules):
         return True
     if start >= rules["new_age_from"]:
         age = rules["age"]
-        return bool(re.search(rf"(?<!\d)U-?{age}(?!\d)", n))
+        if age == 19:  # ECNL's oldest group is "U18/19"
+            return bool(re.search(r"(?<!\d)U-?(18/)?19(?!\d)", n))
+        return bool(re.search(rf"(?<!\d)U-?{age}(?![\d/])", n))
     return False

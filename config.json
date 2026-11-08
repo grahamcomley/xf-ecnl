@@ -11,8 +11,6 @@
       "division_id": 22392,
       "flight_id": 40524,
       "focus_team": "XF ECNL B2010/11 1",
-      "playoff_spots": 4,
-      "playoff_label": "Top 4 = ECNL Playoffs",
       "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings",
       "age_label": "U16 Boys (2010/11)",
       "context": "ECNL Boys Northwest conference"
@@ -40,8 +38,6 @@
       "division_id": 22256,
       "flight_id": 41483,
       "focus_team": "XF ECNL RL G2013/14",
-      "playoff_spots": null,
-      "playoff_label": null,
       "ecnl_link": "https://app.athleteone.com/public/event/4311/schedules-standings",
       "age_label": "U13 Girls (2013/14)",
       "context": "ECNL Regional League Girls Northwest"
@@ -55,14 +51,192 @@
       "division_id": 22393,
       "flight_id": 40525,
       "focus_team": "XF ECNL B2009/10 1",
-      "playoff_spots": 4,
-      "playoff_label": "Top 4 = ECNL Playoffs",
       "ecnl_link": "https://app.athleteone.com/public/event/4284/schedules-standings",
       "age_label": "U17 Boys (2009/10)",
       "context": "ECNL Boys Northwest conference"
     }
   ],
   "pools": {
+    "boys-u11": {
+      "key": "u11b",
+      "label": "U11 Boys (2015/16)",
+      "age_rules": {
+        "gender": "B",
+        "age": 11,
+        "explicit": [
+          "2015/16",
+          "15/16",
+          "2015-16",
+          "2015/2016"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2016"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U11 Boys (2015/16): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2016 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "boys-u12": {
+      "key": "u12b",
+      "label": "U12 Boys (2014/15)",
+      "age_rules": {
+        "gender": "B",
+        "age": 12,
+        "explicit": [
+          "2014/15",
+          "14/15",
+          "2014-15",
+          "2014/2015"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2015"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U12 Boys (2014/15): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2015 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "boys-u13": {
+      "key": "u13b",
+      "label": "U13 Boys (2013/14)",
+      "age_rules": {
+        "gender": "B",
+        "age": 13,
+        "explicit": [
+          "2013/14",
+          "13/14",
+          "2013-14",
+          "2013/2014"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2014"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U13 Boys (2013/14): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2014 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "boys-u14": {
+      "key": "u14b",
+      "label": "U14 Boys (2012/13)",
+      "age_rules": {
+        "gender": "B",
+        "age": 14,
+        "explicit": [
+          "2012/13",
+          "12/13",
+          "2012-13",
+          "2012/2013"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2013"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U14 Boys (2012/13): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2013 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "boys-u15": {
+      "key": "u15b",
+      "label": "U15 Boys (2011/12)",
+      "age_rules": {
+        "gender": "B",
+        "age": 15,
+        "explicit": [
+          "2011/12",
+          "11/12",
+          "2011-12",
+          "2011/2012"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2012"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U15 Boys (2011/12): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2012 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
     "boys-u16": {
       "_help": "Every game used to rate U16 boys: every league and event on AthleteOne this season (ECNL, ECNL RL, outside tournaments) whose division matches the age rules, plus last season's B2011 ECNL games (history).",
       "history_events": [
@@ -113,9 +287,8 @@
         "96": 3360
       },
       "discover_history": {
-        "_help": "One-time scan for last season's ECNL Boys events (orgSeasonID 70). Results saved in data/history_catalog.json; delete that file to rescan.",
         "org_id": 12,
-        "org_season_id": 70,
+        "season_lt": 81,
         "id_range": [
           3550,
           4272
@@ -144,29 +317,6 @@
       },
       "key": "u16b",
       "label": "U16 Boys (2010/11)"
-    },
-    "girls-rl-u13": {
-      "history_events": [],
-      "_help": "Every game used to rate U13 girls: every ECNL Girls / ECNL RL Girls league and event this season plus outside tournaments, by the age rules.",
-      "age_rules": {
-        "gender": "G",
-        "age": 13,
-        "explicit": [
-          "2013/14",
-          "13/14",
-          "2013-14",
-          "2013/2014"
-        ],
-        "since": "2026-06-01",
-        "new_age_from": "2026-08-01"
-      },
-      "surf_off": {
-        "division": "Girls-U13",
-        "team_aliases": {},
-        "weight": 0.0
-      },
-      "key": "u13g",
-      "label": "U13 Girls (2013/14)"
     },
     "boys-u17": {
       "_help": "Every game used to rate U17 boys: every league and event on AthleteOne this season by the age rules, plus last season's B2010 ECNL games (the same players, then U16) at low weight.",
@@ -218,9 +368,8 @@
         "96": 3360
       },
       "discover_history": {
-        "_help": "One-time scan for last season's ECNL Boys events (orgSeasonID 70). Results saved in data/history_catalog.json; delete that file to rescan.",
         "org_id": 12,
-        "org_season_id": 70,
+        "season_lt": 81,
         "id_range": [
           3550,
           4272
@@ -243,6 +392,333 @@
       ],
       "key": "u17b",
       "label": "U17 Boys (2009/10)"
+    },
+    "boys-u19": {
+      "key": "u19b",
+      "label": "U19 Boys (2007/08)",
+      "age_rules": {
+        "gender": "B",
+        "age": 19,
+        "explicit": [
+          "2007/08",
+          "07/08",
+          "2007-08",
+          "2007/2008"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "B2008/2007",
+        "B2007/2008",
+        "B2008"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 12,
+        "season_lt": 81,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U19 Boys (2007/08): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's B2008 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u11": {
+      "key": "u11g",
+      "label": "U11 Girls (2015/16)",
+      "age_rules": {
+        "gender": "G",
+        "age": 11,
+        "explicit": [
+          "2015/16",
+          "15/16",
+          "2015-16",
+          "2015/2016"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2016"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U11 Girls (2015/16): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2016 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u12": {
+      "key": "u12g",
+      "label": "U12 Girls (2014/15)",
+      "age_rules": {
+        "gender": "G",
+        "age": 12,
+        "explicit": [
+          "2014/15",
+          "14/15",
+          "2014-15",
+          "2014/2015"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2015"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U12 Girls (2014/15): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2015 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-rl-u13": {
+      "history_events": [],
+      "_help": "Every game used to rate U13 girls: every ECNL Girls / ECNL RL Girls league and event this season plus outside tournaments, by the age rules.",
+      "age_rules": {
+        "gender": "G",
+        "age": 13,
+        "explicit": [
+          "2013/14",
+          "13/14",
+          "2013-14",
+          "2013/2014"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "surf_off": {
+        "division": "Girls-U13",
+        "team_aliases": {},
+        "weight": 0.0
+      },
+      "key": "u13g",
+      "label": "U13 Girls (2013/14)",
+      "history_division_names": [
+        "G2014"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      }
+    },
+    "girls-u14": {
+      "key": "u14g",
+      "label": "U14 Girls (2012/13)",
+      "age_rules": {
+        "gender": "G",
+        "age": 14,
+        "explicit": [
+          "2012/13",
+          "12/13",
+          "2012-13",
+          "2012/2013"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2013"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U14 Girls (2012/13): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2013 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u15": {
+      "key": "u15g",
+      "label": "U15 Girls (2011/12)",
+      "age_rules": {
+        "gender": "G",
+        "age": 15,
+        "explicit": [
+          "2011/12",
+          "11/12",
+          "2011-12",
+          "2011/2012"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2012"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U15 Girls (2011/12): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2012 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u16": {
+      "key": "u16g",
+      "label": "U16 Girls (2010/11)",
+      "age_rules": {
+        "gender": "G",
+        "age": 16,
+        "explicit": [
+          "2010/11",
+          "10/11",
+          "2010-11",
+          "2010/2011"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2011"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U16 Girls (2010/11): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2011 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u17": {
+      "key": "u17g",
+      "label": "U17 Girls (2009/10)",
+      "age_rules": {
+        "gender": "G",
+        "age": 17,
+        "explicit": [
+          "2009/10",
+          "09/10",
+          "2009-10",
+          "2009/2010"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2010"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U17 Girls (2009/10): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2010 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
+    },
+    "girls-u19": {
+      "key": "u19g",
+      "label": "U19 Girls (2007/08)",
+      "age_rules": {
+        "gender": "G",
+        "age": 19,
+        "explicit": [
+          "2007/08",
+          "07/08",
+          "2007-08",
+          "2007/2008"
+        ],
+        "since": "2026-06-01",
+        "new_age_from": "2026-08-01"
+      },
+      "history_division_names": [
+        "G2008/2007",
+        "G2007/2008",
+        "G2008"
+      ],
+      "history_division_weight": 1.0,
+      "discover_history": {
+        "org_id": 9,
+        "season_lt": 80,
+        "id_range": [
+          3550,
+          4272
+        ]
+      },
+      "_help": "Every game used to rate U19 Girls (2007/08): every ECNL / ECNL RL / Pre-ECNL league and event this season by the age rules, plus last season's G2008 ECNL games at low weight.",
+      "team_aliases": {
+        "_help": "Last season's exact team name -> this season's name."
+      },
+      "club_aliases": {
+        "_help": "Old club ID -> this season's club ID.",
+        "96": 3360
+      }
     }
   },
   "model": {
@@ -257,5 +733,183 @@
   "catalog": {
     "_help": "Every AthleteOne event from this ID up is scanned once; later runs only check new IDs.",
     "start_id": 4240
+  },
+  "playoffs": {
+    "_help": "Automatic ECNL National Playoffs spots per conference table (2026-27 published postseason structures). Keys: league -> conference -> age -> spots. Missing = no playoff line shown.",
+    "_sources": [
+      "2026-27 ECNL Boys Postseason Structure (Aug 2026)",
+      "2026-27 ECNL Girls Postseason Structure (Sep 2026)"
+    ],
+    "ECNL Boys": {
+      "North Atlantic": {
+        "13": 2,
+        "14": 4,
+        "15": 4,
+        "16": 4,
+        "17": 4,
+        "19": 1
+      },
+      "Mid-Atlantic": {
+        "13": 4,
+        "14": 6,
+        "15": 6,
+        "16": 6,
+        "17": 6,
+        "19": 3
+      },
+      "Southeast": {
+        "13": 4,
+        "14": 5,
+        "15": 5,
+        "16": 5,
+        "17": 5,
+        "19": 3
+      },
+      "Mid-America": {
+        "13": 2,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3,
+        "19": 1
+      },
+      "Florida": {
+        "13": 3,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3,
+        "19": 2
+      },
+      "Ohio Valley": {
+        "13": 2,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3,
+        "19": 1
+      },
+      "Midwest": {
+        "13": 2,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3,
+        "19": 1
+      },
+      "Texas": {
+        "13": 7,
+        "14": 9,
+        "15": 9,
+        "16": 9,
+        "17": 9,
+        "19": 4
+      },
+      "Southwest": {
+        "13": 6,
+        "14": 7,
+        "15": 7,
+        "16": 7,
+        "17": 7,
+        "19": 4
+      },
+      "Heartland": {
+        "13": 2,
+        "14": 4
+      },
+      "New England": {
+        "13": 2,
+        "14": 4,
+        "19": 1
+      },
+      "Northern Cal": {
+        "13": 4,
+        "14": 5,
+        "15": 5,
+        "16": 5,
+        "17": 5,
+        "19": 2
+      },
+      "Northwest": {
+        "13": 3,
+        "14": 4,
+        "15": 4,
+        "16": 4,
+        "17": 4,
+        "19": 2
+      },
+      "Far West": {
+        "13": 1,
+        "14": 2,
+        "15": 2,
+        "16": 2,
+        "17": 2,
+        "19": 1
+      }
+    },
+    "ECNL Girls": {
+      "Mid-Atlantic": {
+        "13": 4,
+        "14": 4,
+        "15": 3,
+        "16": 3,
+        "17": 3
+      },
+      "Midwest": {
+        "15": 6,
+        "16": 6,
+        "17": 6
+      },
+      "North Atlantic": {
+        "13": 3,
+        "14": 3
+      },
+      "New England": {
+        "13": 3,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3
+      },
+      "Northern Cal": {
+        "13": 4,
+        "14": 4,
+        "15": 4,
+        "16": 4,
+        "17": 4
+      },
+      "Northwest": {
+        "13": 3,
+        "14": 3,
+        "15": 3,
+        "16": 3,
+        "17": 3
+      },
+      "Ohio Valley": {
+        "13": 4,
+        "14": 4
+      },
+      "Southeast": {
+        "13": 5,
+        "14": 5,
+        "15": 5,
+        "16": 5,
+        "17": 5
+      },
+      "Southwest": {
+        "13": 8,
+        "14": 8,
+        "15": 8,
+        "16": 8,
+        "17": 8
+      },
+      "Texas": {
+        "13": 6,
+        "14": 6,
+        "15": 6,
+        "16": 6,
+        "17": 6
+      }
+    }
   }
 }

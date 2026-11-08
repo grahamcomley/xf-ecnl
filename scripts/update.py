@@ -96,31 +96,41 @@ def event_name(event_id, permanent=False):
 
 
 def discover_history(name, dh):
-    """Find last season's events once (by org + season id); cached in data/history_catalog.json."""
+    """Last season's events for one ECNL org. The event-ID range is scanned once (all
+    orgs) and saved in data/history_catalog.json; delete the file to rescan."""
     path = os.path.join(ROOT, "data", "history_catalog.json")
     cat = {}
     if os.path.exists(path):
         with open(path) as f:
             cat = json.load(f)
-    key = f"{dh['org_id']}-{dh['org_season_id']}"
-    if key in cat:
-        return cat[key]
-    if "--offline" in sys.argv:
-        return []
-    found = []
     lo, hi = dh["id_range"]
-    print(f"  scanning events {lo}-{hi} for org {dh['org_id']} season {dh['org_season_id']} (one time)")
-    for ev in range(lo, hi + 1):
-        d = api.get(f"team/get-event-details-by-eventid/{ev}", cache=False)
-        if isinstance(d, list) and d:
-            d = d[0]
-        if isinstance(d, dict) and d.get("orgID") == dh["org_id"] and d.get("orgSeasonID") == dh["org_season_id"]:
-            found.append({"event_id": ev, "label": d.get("name") or f"Event {ev}"})
-            print(f"    {ev}: {d.get('name')}")
-    cat[key] = found
-    with open(path, "w") as f:
-        json.dump(cat, f, indent=1)
-    return found
+    rkey = f"range-{lo}-{hi}"
+    if rkey not in cat:
+        old = cat.get(f"{dh['org_id']}-{dh.get('org_season_id', 70)}")
+        if "--offline" in sys.argv or "--quick" in sys.argv or QUICK:
+            return old or []
+        print(f"  scanning events {lo}-{hi} for last season's events (one time)")
+        found = []
+        for ev in range(lo, hi + 1):
+            d = api.get(f"team/get-event-details-by-eventid/{ev}", cache=False)
+            if isinstance(d, list) and d:
+                d = d[0]
+            if isinstance(d, dict) and d.get("name"):
+                found.append({"event_id": ev, "label": d.get("name"), "org_id": d.get("orgID"),
+                              "org_season_id": d.get("orgSeasonID")})
+        cat[rkey] = found
+        with open(path, "w") as f:
+            json.dump(cat, f, indent=1)
+        seasons = sorted({(e["org_id"], e["org_season_id"]) for e in found if e["org_id"]}, key=str)
+        print(f"    found {len(found)} events; org/season pairs: {seasons}")
+    evs = [e for e in cat[rkey] if e.get("org_id") == dh["org_id"]]
+    if "org_season_id" in dh:
+        return [e for e in evs if e.get("org_season_id") == dh["org_season_id"]]
+    prior = [e["org_season_id"] for e in evs if e.get("org_season_id") and e["org_season_id"] < dh["season_lt"]]
+    if not prior:
+        return []
+    last = max(prior)
+    return [e for e in evs if e.get("org_season_id") == last]
 
 
 def _decide_mode():
@@ -454,9 +464,20 @@ def league_type(name):
     n = (name or "").lower()
     rl = "rl" in n.split() or "regional league" in n
     girls = "girls" in n
+    if "pre-ecnl" in n or "pre ecnl" in n:
+        return f"Pre-ECNL {'Girls' if girls else 'Boys'}"
     if "ecnl" in n:
         return f"ECNL {'RL ' if rl else ''}{'Girls' if girls else 'Boys'}"
     return "Other leagues"
+
+
+def playoff_for(cfg, league, conf_name, age, flight_count):
+    """Automatic ECNL playoff spots for one conference table, or (None, None)."""
+    if flight_count > 1:   # conference split into divisions: qualification isn't one table
+        return None, None
+    region = re.sub(r"^(ECNL|Pre-ECNL)\s+(RL\s+)?(Boys|Girls)\s+", "", conf_name).strip()
+    n = ((cfg.get("playoffs") or {}).get(league) or {}).get(region, {}).get(str(age))
+    return (n, f"Top {n} = ECNL Playoffs") if n else (None, None)
 
 
 def short_conf(name):
@@ -568,6 +589,10 @@ def main():
         for g in games:
             if re.match(r"ev\d+$", g["conf"]) and g["source"] == "current" and g.get("flight_id"):
                 flights.setdefault((g["event_id"], g["flight_id"]), []).append(g)
+        div_flights = {}
+        for (eid, fid), gs in flights.items():
+            if len({t for g in gs for t in (g["home_id"], g["away_id"]) if t}) >= 3:
+                div_flights.setdefault((eid, gs[0].get("division_id")), set()).add(fid)
         for (eid, fid), gs in flights.items():
             tids = sorted({t for g in gs for t in (g["home_id"], g["away_id"]) if t}, key=str)
             if len(tids) < 3:
@@ -589,12 +614,14 @@ def main():
                         ev_index[k] = len(ev_list)
                         ev_list.append(b)
                     evs.setdefault(str(t), []).append(ev_index[k])
+            spots, spots_label = playoff_for(cfg, league_type(gs[0].get("event_name")), cname,
+                                             pc["age_rules"]["age"], len(div_flights.get((eid, gs[0].get("division_id")), ())))
             pseudo = {"id": fkey, "kind": "conference"}
             out = {
                 "key": fkey, "pool": pname, "pool_key": pkey, "updated": now,
                 "conf_name": cname, "league": league_type(gs[0].get("event_name")),
                 "age_label": pc.get("label", ""), "flight": gs[0].get("flight_name"),
-                "playoff_spots": comp.get("playoff_spots"), "playoff_label": comp.get("playoff_label"),
+                "playoff_spots": spots, "playoff_label": spots_label,
                 "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
                 "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
                 "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt},
