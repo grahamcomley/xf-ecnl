@@ -731,11 +731,10 @@ function accuracy(D) {
 }
 
 ["gesturestart", "gesturechange"].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), {passive: false}));
-// Keep the address in sync with the open team + favorites, so "Add to Home Screen" starts the app with them.
+// The address shows only the open team (used by Share and the back button).
 function syncHash() {
   if (!CUR) return;
-  const keys = [CUR, ...(favs() || []).filter(k => k !== CUR)];
-  const h = "#t=" + keys.join(",");
+  const h = "#t=" + CUR;
   if (location.hash !== h) history.replaceState(null, "", h);
 }
 // Auto-update: when the app comes back on screen (and every 30 min), pick up new scores, and if the page
