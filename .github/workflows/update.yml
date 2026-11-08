@@ -9,7 +9,7 @@ on:
         default: auto
   push:
     branches: [main]
-    paths: ["site/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
+    paths: ["site/**", "site-worker/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
   schedule:
     # Backup timer (GitHub's timer can be late). The outside timer triggers every 15 minutes.
     - cron: "23 */3 * * *"
@@ -40,20 +40,41 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Raw API responses live in the Actions cache (not the repo): restored each run, saved after.
+      # Raw API responses and the last built site data live in the Actions cache (not the repo):
+      # restored each run, saved after. Age groups with no new games reuse their built pages.
       - uses: actions/cache@v4
         with:
-          path: data/cache
+          path: |
+            data/cache
+            site/data
           key: apicache-${{ github.run_id }}
           restore-keys: apicache-
 
-      - name: Fetch ECNL data, rate teams, build site data
+      - name: Decide what to do
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           MODE="${{ github.event.inputs.mode || 'auto' }}"
-          if [ "${{ github.event_name }}" = "push" ]; then MODE=full; fi
-          python scripts/update.py --$MODE
+          if [ "${{ github.event_name }}" = "push" ]; then
+            MODE=full
+            # A push that only changes the page (site/, not site/data) just republishes the last data.
+            FILES=$(gh api "repos/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}" --jq '.files[].filename' 2>/dev/null || echo "?")
+            echo "changed: $FILES"
+            if [ -n "$FILES" ] && ! echo "$FILES" | grep -qvE '^site/' && [ -f site/data/teams.json ]; then MODE=publish; fi
+          fi
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "Mode: $MODE"
+
+      - name: Fetch ECNL data, rate teams, build site data
+        if: steps.plan.outputs.mode != 'publish'
+        run: python scripts/update.py --${{ steps.plan.outputs.mode }}
+
+      - name: Stamp the page version (the app reloads itself when this changes)
+        run: cat site/index.html site/sw.js site/manifest.webmanifest | sha1sum | cut -c1-12 > site/version.txt
 
       - name: Save raw data back to the repo (only when it changed)
+        if: steps.plan.outputs.mode != 'publish'
         continue-on-error: true   # never block publishing the site
         run: |
           git config user.name "xf-ecnl-bot"
@@ -66,6 +87,15 @@ jobs:
             git pull --rebase -X theirs --autostash || { git rebase --abort; git pull --no-rebase -X ours --no-edit; }
             git push
           fi
+
+      # Cloudflare copy of the site (becomes the main address on domain day). Only changed files upload.
+      - name: Publish to Cloudflare
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: site-worker
+          command: deploy
 
       - uses: actions/configure-pages@v5
 

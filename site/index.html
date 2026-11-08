@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0d1015">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -23,8 +23,16 @@
 }
 *{box-sizing:border-box}html{background:var(--bg)}
 body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+/* Native-app feel (same rules as Follow the Trips): fixed top bar, only the content scrolls, nothing
+   bounces or zooms, no sideways scroll, 16px inputs so iOS never zooms on focus, instant tap feedback. */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{display:flex;flex-direction:column;touch-action:manipulation;overflow-x:clip;max-width:100%}
+#scroller{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+input,select,textarea{font-size:16px!important}
+button,summary,.f-row,.pill-btn,.findbtn,.imp,.more,.toggles button{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:transform .08s ease,opacity .08s ease}
+button:active,summary:active,.f-row:active,.pill-btn:active{transform:scale(.96);opacity:.8}
 a{color:var(--link)}
-header{background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 12px 8px;position:sticky;top:0;z-index:20}
+header{flex:none;background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) calc(12px + env(safe-area-inset-right,0px)) 8px calc(12px + env(safe-area-inset-left,0px));position:relative;z-index:20}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.brand h1{margin:0;font-size:16px;font-weight:700}.brand h1 b{color:var(--accent)}
 .maxc{color:var(--mut);font-size:12px;background:var(--chance)}table.grid tr:nth-child(even) td.maxc{background:var(--chance2)}table.grid tr.me td.maxc{background:var(--me)}
 .hbtns{display:flex;gap:6px;flex:none}
@@ -38,7 +46,7 @@ header{background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px 
 .pill-btn{flex:none;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .pill-btn.on{background:var(--red);border-color:var(--red);color:#fff}
 .pill-btn.find{background:transparent;border-style:dashed;color:var(--ink)}
-main{max-width:980px;margin:0 auto;padding:12px 10px 60px}
+main{max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-right,0px)) calc(60px + env(safe-area-inset-bottom,0px)) calc(10px + env(safe-area-inset-left,0px))}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
 .ctx{padding:12px 14px;border-left:5px solid var(--red)}
 .ctx-top{display:flex;align-items:center;gap:8px}.ctx-team{font-size:22px;font-weight:800;flex:1}
@@ -110,16 +118,16 @@ h3{font-size:14px;margin:10px 0 6px}
 footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 .scroll{overflow-x:auto}
 /* finder */
-#finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto}
+#finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
 #finder.open{display:block}
-.f-head{position:sticky;top:0;background:#07090c;border-bottom:1px solid var(--line);padding:10px 12px;display:flex;gap:8px;align-items:center}
+.f-head{position:sticky;top:0;background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;display:flex;gap:8px;align-items:center}
 .f-head input{flex:1;background:var(--card2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:9px 10px;font:inherit;font-size:16px}
 .f-body{max-width:760px;margin:0 auto;padding:12px}
 .f-row{display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid var(--line);cursor:pointer}
 .f-row:hover{background:var(--card)}.f-row .nm{flex:1}.f-row .nm div{font-size:12px;color:var(--mut)}
 .star{background:none;border:0;font-size:20px;cursor:pointer;color:#6b7280;padding:2px 6px}.star.on{color:#fde047}
 .crumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#f3f4f6;color:#111827;padding:8px 14px;border-radius:8px;font-weight:700;font-size:14px;z-index:60;display:none}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#f3f4f6;color:#111827;padding:8px 14px;border-radius:8px;font-weight:700;font-size:14px;z-index:60;display:none}
 </style>
 </head>
 <body>
@@ -128,7 +136,7 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
   <nav class="pills" id="pills"></nav>
   <div class="checked" id="checked"></div>
 </header>
-<main id="app"><div class="card ctx">Loading…</div></main>
+<div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
@@ -282,7 +290,7 @@ const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
 const CONF_CACHE = {}, PICKS = {};
 const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
-const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); };
+const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash(); };
 const teamByKey = k => TEAMS.find(t => t.k === k);
 const shortLabel = t => `${t.s} · ${t.a.split(" ")[0]}${t.a.includes("Girls") ? "G" : "B"}${/RL/.test(t.l) ? " RL" : /^Pre/.test(t.l) ? " Pre" : ""}`;
 
@@ -386,7 +394,8 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   PICKS[t.f] = PICKS[t.f] || {};
   renderTeam(D, fid, k);
-  window.scrollTo(0, 0);
+  syncHash();
+  $("#scroller").scrollTop = 0;
 }
 function sec(kind, chip, title, sub, body, key, defOpen = true) {
   const sk = `open:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
@@ -721,6 +730,39 @@ function accuracy(D) {
     <div class="mut" style="margin-top:6px">Exact result right ${Math.round(bt.accuracy * 100)}% of the time; favorite didn't lose ${Math.round((bt.fav_not_lose || 0) * 100)}%. About 1 in 5 games is a draw, so ~60% is near the ceiling even for professional models.</div>${live}`, "acc", false);
 }
 
+["gesturestart", "gesturechange"].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), {passive: false}));
+// Keep the address in sync with the open team + favorites, so "Add to Home Screen" starts the app with them.
+function syncHash() {
+  if (!CUR) return;
+  const keys = [CUR, ...(favs() || []).filter(k => k !== CUR)];
+  const h = "#t=" + keys.join(",");
+  if (location.hash !== h) history.replaceState(null, "", h);
+}
+// Auto-update: when the app comes back on screen (and every 30 min), pick up new scores, and if the page
+// itself changed, reload once (at most once per 10 minutes, so a stale copy can never loop).
+let LOADED_VER = null, LAST_DATA = Date.now();
+async function checkForUpdate() {
+  try {
+    const v = (await fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.text() : "")).trim();
+    if (v && LOADED_VER === null) LOADED_VER = v;
+    else if (v && v !== LOADED_VER) {
+      const k = "reloaded:" + v, last = +(sessionStorage.getItem(k) || 0);
+      if (Date.now() - last > 600000) { sessionStorage.setItem(k, String(Date.now())); location.reload(); return; }
+    }
+  } catch (e) {}
+  if (Date.now() - LAST_DATA > 5 * 60000 && CUR && !Object.keys(PICKS[(teamByKey(CUR) || {}).f] || {}).length) {
+    LAST_DATA = Date.now();
+    try {
+      STATUS = await fetch("data/status.json", {cache: "no-store"}).then(r => r.json());
+      const t = teamByKey(CUR); delete CONF_CACHE[t.f];
+      const y = $("#scroller").scrollTop; await openTeam(CUR); $("#scroller").scrollTop = y;
+      $("#checked").innerHTML = checkedTxt();
+    } catch (e) {}
+  }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkForUpdate(); });
+setInterval(checkForUpdate, 30 * 60000);
+checkForUpdate();
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 boot().catch(e => { $("#app").innerHTML = `<div class="card ctx">Couldn't load data: ${esc(e.message)}</div>`; });
 </script>

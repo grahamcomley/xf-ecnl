@@ -1,5 +1,5 @@
 // Network first (scores change often), falling back to the last copy when offline.
-const CACHE = "standings-v1";
+const CACHE = "standings-v2";
 self.addEventListener("install", e => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
 self.addEventListener("fetch", e => {

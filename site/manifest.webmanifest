@@ -1,7 +1,6 @@
 {
   "name": "ECNL Standings & Predictions",
   "short_name": "Standings",
-  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0d1015",

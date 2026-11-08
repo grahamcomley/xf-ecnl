@@ -170,28 +170,49 @@ HOT = {"refetched": 0}
 
 
 def flight_raw(event_id, flight_id, done):
-    """Schedule for one flight. Finished events: cached forever. A flight with a game in the
-    last two days still missing its score is re-fetched every run (so new scores show fast);
-    otherwise reuse a copy younger than 2 hours (full run) or 24 hours (quick run)."""
+    """Schedule for one flight. Finished events: cached forever. A flight with a game that kicked
+    off in the last ~12 hours and has no score yet is re-fetched every run (new scores show within
+    15 minutes); one from 12-48 hours ago, or with no kickoff time, at most hourly. Otherwise reuse
+    a copy younger than 2 hours (full run) or 24 hours (quick run)."""
     path = f"Event/get-schedules-by-flight/{event_id}/{flight_id}/0"
     if done:
         return api.get(path, permanent=True) or []
     cp = api._cache_path(path)
-    hot = False
+    tier = None
     if os.path.exists(cp):
         try:
             with open(cp) as f:
                 cached = json.load(f) or []
-            today = datetime.now(timezone.utc).date()
-            lo = (today - timedelta(days=2)).isoformat()
-            hi = (today + timedelta(days=1)).isoformat()
-            hot = any(lo <= (g.get("gameDate") or "")[:10] <= hi and g.get("hometeamscore") is None
-                      and g.get("hometeamID") for g in cached if isinstance(g, dict))
+            # kickoff times are local to the venue; US clock ~5-8 h behind UTC, so use UTC-7 and allow slack
+            now_local = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(hours=7)
+            for g in cached:
+                if not isinstance(g, dict) or g.get("hometeamscore") is not None or not g.get("hometeamID"):
+                    continue
+                d = (g.get("gameDate") or "")[:10]
+                t = (g.get("gameTime") or "00:00:00")[:8]
+                if not d:
+                    continue
+                if t == "00:00:00":   # no kickoff time: date only
+                    if (now_local.date() - timedelta(days=1)).isoformat() <= d <= now_local.date().isoformat():
+                        tier = tier or "hourly"
+                    continue
+                try:
+                    ko = datetime.fromisoformat(f"{d}T{t}")
+                except ValueError:
+                    continue
+                age_h = (now_local - ko).total_seconds() / 3600
+                if -2 <= age_h <= 12:
+                    tier = "now"
+                    break
+                if 12 < age_h <= 48:
+                    tier = "hourly"
         except (ValueError, OSError):
-            hot = True
-    if hot:
+            tier = "now"
+    if tier == "now":
         HOT["refetched"] += 1
         return api.get(path, max_age_hours=0) or []
+    if tier == "hourly":
+        return api.get(path, max_age_hours=1) or []
     return api.get(path, max_age_hours=24 if QUICK else 2) or []
 
 
@@ -537,11 +558,56 @@ def main():
             log[newk] = log.pop(c["id"])
     teams_index, legacy, written = {}, {}, set()
     order_diffs = []
+    # Age groups whose games haven't changed since the last run are not re-rated: their pages
+    # (kept from the last run) are reused. Everything is rebuilt once a day and after code changes.
+    import hashlib
+    fp_path = os.path.join(OUT, "_fingerprints.json")
+    old_fp = {}
+    try:
+        with open(fp_path) as f:
+            old_fp = json.load(f)
+    except (OSError, ValueError):
+        pass
+    old_teams, old_legacy, old_diffs = [], {}, []
+    for pth, tgt in ((os.path.join(OUT, "teams.json"), "t"), (os.path.join(OUT, "index.json"), "i"),
+                     (os.path.join(ROOT, "data", "order_check.json"), "o")):
+        try:
+            with open(pth) as f:
+                v = json.load(f)
+            if tgt == "t": old_teams = v
+            elif tgt == "i": old_legacy = v.get("legacy", {})
+            else: old_diffs = v
+        except (OSError, ValueError):
+            pass
+    code_hash = hashlib.sha1()
+    for fn in ("scripts/update.py", "scripts/model.py", "scripts/catalog.py", "config.json"):
+        with open(os.path.join(ROOT, fn), "rb") as f:
+            code_hash.update(f.read())
+    day = (datetime.now(timezone.utc) - timedelta(hours=8)).date().isoformat()
+    new_fp = {}
+    skipped = []
 
     for pname, pc in cfg["pools"].items():
         pkey = pc["key"]
         print(f"pool {pname}")
         games, team_conf, names, conf_names = build_pool(pname, pc, cfg)
+        h = hashlib.sha1(code_hash.digest() + day.encode())
+        h.update(json.dumps(sorted([[str(g.get(k)) for k in GAME_KEYS] + [str(g.get("event_id")), str(g.get("flight_id"))]
+                                    for g in games]), separators=(",", ":")).encode())
+        new_fp[pkey] = h.hexdigest()
+        prev = [fn for fn in os.listdir(os.path.join(OUT, "conf")) if fn.startswith(pkey + "-")] if os.path.isdir(os.path.join(OUT, "conf")) else []
+        if old_fp.get(pkey) == new_fp[pkey] and prev:
+            written.update(prev)
+            for e in old_teams:
+                if e["k"].startswith(pkey + "-"):
+                    teams_index[e["k"]] = ((0, True), e)
+            for cid, tk in old_legacy.items():
+                if tk.startswith(pkey + "-"):
+                    legacy[cid] = tk
+            order_diffs += [d for d in old_diffs if d.get("conf", "").startswith(pkey + "-")]
+            skipped.append(pkey)
+            print(f"  no changes: kept {len(prev)} conference files")
+            continue
         rg = rating_games(games)
         m = model.fit(rg, team_conf, cfg["model"])
         if QUICK and pname in saved_bt:
@@ -687,6 +753,8 @@ def main():
     if tot > 50 and api.stats["failed"] > 0.3 * tot:
         print(f"::error::Too many failed ECNL requests ({api.stats['failed']} of {tot}); not publishing this run")
         sys.exit(1)
+    with open(fp_path, "w") as f:
+        json.dump(new_fp, f)
     teams_index = sorted((e for _, e in teams_index.values()), key=lambda x: (x["a"], x["l"], x["c"], x["s"] or ""))
     with open(os.path.join(OUT, "teams.json"), "w") as f:
         json.dump(teams_index, f, separators=(",", ":"))
@@ -694,7 +762,8 @@ def main():
     with open(os.path.join(OUT, "index.json"), "w") as f:
         json.dump({"updated": now, "legacy": legacy, "pools": [p.get("label") for p in cfg["pools"].values()]}, f)
     with open(os.path.join(OUT, "status.json"), "w") as f:
-        json.dump({"checked": now, "mode": "quick" if QUICK else "full", "refetched_flights": HOT["refetched"]}, f)
+        json.dump({"checked": now, "mode": "quick" if QUICK else "full", "refetched_flights": HOT["refetched"],
+                   "rebuilt": [p["key"] for p in cfg["pools"].values() if p["key"] not in skipped]}, f)
     with open(LOG_PATH, "w") as f:
         json.dump(log, f, indent=1)
     with open(bt_path, "w") as f:
@@ -702,7 +771,8 @@ def main():
     if not QUICK and not offline:
         with open(os.path.join(ROOT, "data", "last_full.txt"), "w") as f:
             f.write(datetime.now(timezone.utc).isoformat())
-    print("mode", "quick" if QUICK else "full", "api", api.stats, "hot flights refetched", HOT["refetched"])
+    print("mode", "quick" if QUICK else "full", "api", api.stats, "hot flights refetched", HOT["refetched"],
+          "skipped", len(skipped), "of", len(cfg["pools"]))
 
 
 if __name__ == "__main__":
