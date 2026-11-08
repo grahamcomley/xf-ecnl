@@ -275,29 +275,34 @@ function teamRow(t) {
 }
 function drawFinder() {
   const q = $("#fq").value.trim().toLowerCase(), body = $("#fbody");
+  const gOf = t => (/Girls/.test(t.a) ? "Girls" : "Boys");
   if (q.length >= 2) {
     const toks = q.split(/\s+/);
-    const hits = TEAMS.filter(t => { const s = `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase(); return toks.every(x => s.includes(x)); })
-      .sort((x, y) => (/Northwest/.test(y.c) - /Northwest/.test(x.c))).slice(0, 80);
+    const hits = TEAMS.filter(t => { const s = `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase(); return toks.every(x => s.includes(x)); }).slice(0, 80);
     body.innerHTML = `<div class="mut" style="margin-bottom:6px">${hits.length === 80 ? "First 80 matches" : hits.length + " matches"}</div>` + hits.map(teamRow).join("");
   } else {
-    const {a, l, c} = FSTATE;
+    const {g, a, l, c} = FSTATE;
     const uniq = arr => [...new Set(arr)];
-    const ageKey = x => { const m = /U(\d+)\s+(\w+)/.exec(x) || []; return (m[2] === "Girls" ? 100 : 0) + (+m[1] || 0); };
+    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
     const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : 3);
-    const cfKey = x => (/Northwest/.test(x) ? "0" : "1") + x;
-    let html = `<div class="crumbs">${[a, l, c].filter(Boolean).map((x, i) => `<button class="pill-btn" data-up="${i}">${esc(x)} ✕</button>`).join("")}</div>`;
-    if (!a) html += `<h3>Age group</h3>` + uniq(TEAMS.map(t => t.a)).sort((x, y) => ageKey(x) - ageKey(y)).map(x => `<div class="f-row" data-a="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
-    else if (!l) html += `<h3>League</h3>` + uniq(TEAMS.filter(t => t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y)).map(x => `<div class="f-row" data-l="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
-    else if (!c) html += `<h3>Conference</h3>` + uniq(TEAMS.filter(t => t.a === a && t.l === l).map(t => t.c)).sort((x, y) => cfKey(x).localeCompare(cfKey(y))).map(x => `<div class="f-row" data-c="${esc(x)}"><div class="nm">${esc(x)}</div>›</div>`).join("");
+    const ageShort = x => x.replace(/\s+(Boys|Girls)/, "");
+    const crumbs = [g, a && ageShort(a), l, c].filter(Boolean);
+    let html = `<div class="crumbs">${crumbs.map((x, i) => `<button class="pill-btn" data-up="${i}">${esc(x)} ✕</button>`).join("")}</div>`;
+    const row = (k, v, label) => `<div class="f-row" data-${k}="${esc(v)}"><div class="nm">${esc(label || v)}</div>›</div>`;
+    if (!g) html += `<h3>Boys or girls</h3>` + ["Boys", "Girls"].map(x => row("g", x)).join("");
+    else if (!a) html += `<h3>Age group</h3>` + uniq(TEAMS.filter(t => gOf(t) === g).map(t => t.a)).sort((x, y) => ageNum(x) - ageNum(y)).map(x => row("a", x, ageShort(x))).join("");
+    else if (!l) html += `<h3>League</h3>` + uniq(TEAMS.filter(t => t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y)).map(x => row("l", x)).join("");
+    else if (!c) html += `<h3>Conference</h3>` + uniq(TEAMS.filter(t => t.a === a && t.l === l).map(t => t.c)).sort().map(x => row("c", x)).join("");
     else html += `<h3>Team</h3>` + TEAMS.filter(t => t.a === a && t.l === l && t.c === c).map(teamRow).join("");
     body.innerHTML = html;
   }
   body.onclick = e => {
     const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); st.classList.toggle("on"); return; }
-    const up = e.target.closest("[data-up]"); if (up) { const i = +up.dataset.up; if (i <= 0) FSTATE = {}; else if (i === 1) FSTATE = {a: FSTATE.a}; else FSTATE = {a: FSTATE.a, l: FSTATE.l}; return drawFinder(); }
+    const up = e.target.closest("[data-up]");
+    if (up) { const keep = ["g", "a", "l", "c"].slice(0, +up.dataset.up); FSTATE = Object.fromEntries(keep.map(k => [k, FSTATE[k]])); return drawFinder(); }
     const r = e.target.closest(".f-row"); if (!r) return;
-    if (r.dataset.a) { FSTATE = {a: r.dataset.a}; return drawFinder(); }
+    if (r.dataset.g) { FSTATE = {g: r.dataset.g}; return drawFinder(); }
+    if (r.dataset.a) { FSTATE.a = r.dataset.a; return drawFinder(); }
     if (r.dataset.l) { FSTATE.l = r.dataset.l; return drawFinder(); }
     if (r.dataset.c) { FSTATE.c = r.dataset.c; return drawFinder(); }
     if (r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
