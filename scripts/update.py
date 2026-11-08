@@ -442,6 +442,7 @@ def update_prediction_log(comp, games, m, log):
     fav_ok = sum(1 for e in done if e["result"] == e["pick"] or (e["pick"] != "D" and e["result"] == "D"))
     return {"games": len(done), "correct": sum(1 for e in done if e["result"] == e["pick"]),
             "not_lost": fav_ok,
+            "picks": {k: e["pick"] for k, e in entries.items()},
             "recent": sorted(done, key=lambda e: e["date"], reverse=True)[:10]}
 
 

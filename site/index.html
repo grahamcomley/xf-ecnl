@@ -62,7 +62,7 @@ td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .mut{color:var(--mut);font-size:12px}
 .pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;font-weight:700}
 .pill.g{background:#14361f;color:#86efac}.pill.a{background:#3a2a07;color:#fcd34d}.pill.r{background:#3d1218;color:#fda4af}.pill.tag{background:#e5e7eb;color:#111827}
-.root{font-size:13px;margin-top:6px}.root b{color:var(--up)}
+.root{font-size:13px;margin-top:6px}.root b{color:var(--ink)}.root b.up{color:var(--up)}
 .up{color:var(--up)}.dn{color:var(--dn)}.delta{font-size:12px;font-weight:700}
 .toggles{display:flex;gap:6px;margin-top:8px}
 .toggles button{flex:1;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:8px;padding:7px 4px;font:inherit;font-size:12px;cursor:pointer}
@@ -82,6 +82,11 @@ details.missed>summary{color:var(--warnink);font-weight:700}
 .res-w{background:#15803d}.res-d{background:#4b5563}.res-l{background:#b91c1c}
 .path{display:grid;gap:8px}.node{border-left:3px solid var(--red);padding:4px 10px}
 h3{font-size:14px;margin:10px 0 6px}
+.fx.ours{border-left:4px solid var(--red)}
+details.stake{margin-top:6px}details.stake>summary{list-style:none;cursor:pointer;color:var(--link);font-size:13px;font-weight:600;display:inline-block;padding:2px 0}
+details.stake>summary::-webkit-details-marker{display:none}.ar{display:inline-block;transition:transform .15s}details.stake[open] .ar{transform:rotate(90deg)}
+.day{font-size:12px;font-weight:800;color:var(--ink);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding-bottom:4px}
+.day:first-child{margin-top:0}.mk{font-weight:800;margin-left:4px}.mk.ok{color:var(--up)}.mk.no{color:var(--dn)}
 footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 .scroll{overflow-x:auto}
 /* finder */
@@ -302,7 +307,7 @@ function fixtureCard(D, M, g, o = {}) {
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
   const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
   const sep = us ? (flip ? "@" : "vs") : "vs";
-  const cls = "fx" + (o.matters ? " matters" : "");
+  const cls = "fx" + (o.matters ? " matters" : "") + (o.ours && us ? " ours" : "");
   const nameL = us ? `<b>${esc(LN)}</b>` : esc(LN);
   if (g.hs != null && g.as != null) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -324,14 +329,23 @@ function fixtureCard(D, M, g, o = {}) {
     <div class="teams"><div>${nameL}</div><div class="score vs">${sep}</div><div class="a">${esc(RN)}</div></div>
     <div class="bar"><div class="bh" style="width:${pl*100}%">${pct(pl)}</div><div class="bd" style="width:${P.d*100}%">${pct(P.d)}</div><div class="ba" style="width:${pr*100}%">${pct(pr)}</div></div>
     <div class="mut" style="margin-top:4px">Most likely: <b>${esc(LN)} ${sL[0]}–${sL[1]} ${esc(RN)}</b>${conf ? ` · <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</div>
-    ${toggles}${o.root ? `<div class="root" data-root="${g.id}">${o.root}</div>` : ""}
+    ${toggles}${o.stake ? `<details class="stake"><summary>What's at stake <span class="ar">›</span></summary><div class="root" data-root="${g.id}">Calculating…</div></details>` : ""}
     ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}</div>`;
 }
-function resultRow(D, g, f) {
+function resultRow(D, g, f, pick) {
   const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id, ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
   const tag = us ? `<span class="res res-${ls > rs ? "w" : ls === rs ? "d" : "l"}">${ls > rs ? "W" : ls === rs ? "D" : "L"}</span>` : "";
-  return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us ? (flip ? "@" : "vs") : "vs"}</span> ${esc(teamName(D, R))} · <b>${ls}–${rs}</b></span></div>`;
+  return `<div class="rrow">${tag}<span class="rd">${fmtDate(g.date)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us ? (flip ? "@" : "vs") : "vs"}</span> ${esc(teamName(D, R))} · <b>${ls}–${rs}</b>${pick ? markPick(g, pick) : ""}</span></div>`;
+}
+function markPick(g, pick) {
+  const r = g.hs > g.as ? "H" : g.hs === g.as ? "D" : "A", ok = r === pick;
+  return `<span class="mk ${ok ? "ok" : "no"}" title="Our pick was ${ok ? "right" : "wrong"}">${ok ? "✓" : "✗"}</span>`;
+}
+function waitRow(D, g, f) {
+  const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
+  const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
+  return `<div class="rrow"><span class="rd">${fmtTime(g.time)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us && flip ? "@" : "vs"}</span> ${esc(teamName(D, R))} <span class="pill a">Waiting for score</span></span></div>`;
 }
 function checkedTxt() {
   if (!STATUS) return "";
@@ -367,7 +381,21 @@ function renderTeam(D, fid, key) {
   const starred = (favs() || []).includes(key);
   const evIdx = (D.team_events || {})[String(fid)] || [];
   const events = evIdx.map(i => D.events[i]);
-  const CALC = "Calculating…";
+  const yest = addDays(today, -1), wEnd = addDays(today, 7), nowMs = Date.now();
+  const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > new Date(`${g.date}T${g.time}:00`).getTime() + 2 * 3600e3);
+  const inWin = valid.filter(g => g.date >= yest && g.date <= wEnd);
+  const picksLog = (D.live_record && D.live_record.picks) || {};
+  const dayLabel = d => (d === yest ? "Yesterday · " : d === today ? "Today · " : "") + fmtDate(d);
+  const sec4 = [...new Set(inWin.map(g => g.date))].sort().map(d => {
+    const dg = inWin.filter(g => g.date === d).sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+    const fin = dg.filter(g => g.hs != null && g.as != null), open = dg.filter(g => g.hs == null || g.as == null);
+    const wait = open.filter(kickPassed), up = open.filter(g => !kickPassed(g));
+    return `<div class="day">${dayLabel(d)}</div>`
+      + (fin.length ? `<details class="inner"><summary>Results (${fin.length})</summary>${fin.map(g => resultRow(D, g, fid, picksLog[g.id])).join("")}</details>` : "")
+      + wait.map(g => waitRow(D, g, fid)).join("")
+      + up.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("");
+  }).join("");
+  const older = played.filter(g => !isMe(g) && g.date < yest).sort((a, b) => b.date.localeCompare(a.date));
 
   $("#app").innerHTML = `
   <div class="card ctx"><div class="ctx-top"><div class="ctx-team">${me}</div>
@@ -388,18 +416,18 @@ function renderTeam(D, fid, key) {
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">Ranked by points per game${spots ? `; dashed line = playoff cut` : ""}. Shaded = chances from playing out the rest of the season ${N.toLocaleString()} times.</div>`, "s1")}
 
-  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, `Odds for each game, and what each result does to ${me}'s chance of ${keyLabel} (now <b>${pct(keyNow)}</b>).`,
-    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, root: CALC})).join("") || "<div class='mut'>No more league games scheduled.</div>") + missedBox(missed.filter(isMe), {focus: fid, root: CALC}), "s2")}
+  ${sec("us", me, `2 · Our next ${nextOurs.length || ""} games`, `Odds for each game. Tap "What's at stake" to see how each result changes ${me}'s chance of ${keyLabel}.`,
+    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>") + missedBox(missed.filter(isMe), {focus: fid, stake: true}), "s2")}
 
   ${events.map((ev, i) => sec("us", me, `${ev.name}${ev.flight ? ` · ${esc(ev.flight)}` : ""}`, `Event games don't count toward conference standings. <a href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a>`, eventBody(D, ev, fid), "ev" + i)).join("")}
 
   ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3")}
 
-  ${sec("div", "League", "4 · Rest of the league · next 7 days", `Every other ${esc(D.conf_name)} game, ${fmtDate(today)} – ${fmtDate(addDays(today, 7))}. Gray cards matter to ${me}.`,
-    (week.map(g => fixtureCard(D, M, g, {root: CALC})).join("") || "<div class='mut'>No other league games in the next 7 days.</div>")
-    + missedBox(missed.filter(g => !isMe(g)), {root: CALC})
-    + (others.length ? `<details class="inner"><summary>League results (${others.length})</summary>${others.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4")}
+  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Ours have a red edge; gray cards matter to ${me}.`,
+    (sec4 || "<div class='mut'>No league games in this window.</div>")
+    + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
+    + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null, picksLog[g.id])).join("")}</details>` : ""), "s4")}
 
   ${sec("div", "Predict", "5 · Rest-of-season predictor", `Gray = our pick for each game. Tap a different result to override it (white). The table updates instantly.`, `
     <div class="picksbar" id="picksbar"></div>
@@ -422,25 +450,35 @@ function renderTeam(D, fid, key) {
   drawPredictor();
   $("#predgames").addEventListener("click", onPick);
 
-  // "What each result does" lines, filled in after the page shows.
+  // "What's at stake" lines, filled in after the page shows.
   setTimeout(() => {
-    const need = [...nextOurs, ...week, ...missed];
+    const gids = [...new Set([...document.querySelectorAll("[data-root]")].map(e => e.dataset.root))];
     const nowK = atOrAbove(simulate(ids, M, played, remaining, {}, 1500), fid, keyIdx);
-    for (const g of need) {
-      const el = document.querySelector(`[data-root="${g.id}"]`); if (!el) continue;
+    for (const gid of gids) {
+      const g = remaining.find(x => String(x.id) === gid); if (!g) continue;
       const res = {}; for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(ids, M, played, remaining, {[g.id]: o}, 1500), fid, keyIdx);
+      let html, matters = false;
       if (isMe(g)) {
         const W = g.home_id === fid ? "H" : "A", L = W === "H" ? "A" : "H", dl = o => Math.round((res[o] - nowK) * 100);
-        el.innerHTML = `Chance of ${keyLabel} (now ${pct(keyNow)}): <b>win ${signed(dl(W))}</b> · draw ${signed(dl("D"))} · <span class="dn">loss ${signed(dl(L))}</span>`;
+        html = Math.max(...["H", "D", "A"].map(o => Math.abs(dl(o)))) <= 1
+          ? `Barely changes ${me}'s chance of ${keyLabel} (now ${pct(nowK)}), whatever the result.`
+          : `${me}'s chance of ${keyLabel} (now ${pct(nowK)}): <b class="up">win ${signed(dl(W))}</b> · draw ${signed(dl("D"))} · <span class="dn">loss ${signed(dl(L))}</span>`;
       } else {
         const swing = Math.max(res.H, res.D, res.A) - Math.min(res.H, res.D, res.A);
-        if (swing < 0.04) { el.remove(); continue; }
-        const best = ["H", "D", "A"].reduce((a, b) => res[b] > res[a] ? b : a);
         const lab = o => o === "H" ? `${esc(teamName(D, g.home_id))} win` : o === "A" ? `${esc(teamName(D, g.away_id))} win` : "draw";
+        if (swing < 0.02) html = `Barely affects ${me}: chance of ${keyLabel} stays about ${pct(nowK)}.`;
+        else {
+          const best = ["H", "D", "A"].reduce((a, b) => res[b] > res[a] ? b : a);
+          matters = swing >= 0.04;
+          html = `Root for <b class="up">${best === "D" ? "a draw" : esc(teamName(D, best === "H" ? g.home_id : g.away_id))}</b>. ${me}'s chance of ${keyLabel} (now ${pct(nowK)}): ` + ["H", "D", "A"].map(o => o === best ? `<b>${lab(o)} → ${pct(res[o])}</b>` : `${lab(o)} → ${pct(res[o])}`).join(" · ");
+        }
+      }
+      document.querySelectorAll(`[data-root="${gid}"]`).forEach(el => {
+        el.innerHTML = html;
+        if (!matters) return;
         const card = el.closest(".fx"); card.classList.add("matters");
         const head = card.querySelector(".when span:last-child"); if (head && !head.querySelector(".tag")) head.insertAdjacentHTML("afterbegin", `<span class="pill tag">Matters to us</span> `);
-        el.innerHTML = `Root for <b>${best === "D" ? "a draw" : esc(teamName(D, best === "H" ? g.home_id : g.away_id))}</b>. ${me}'s chance of ${keyLabel} (now ${pct(nowK)}): ` + ["H", "D", "A"].map(o => o === best ? `<b>${lab(o)} → ${pct(res[o])}</b>` : `${lab(o)} → ${pct(res[o])}`).join(" · ");
-      }
+      });
     }
   }, 30);
 }
