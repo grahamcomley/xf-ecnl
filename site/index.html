@@ -48,6 +48,19 @@ details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-siz
 .gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 52px}.gdet .root{margin-top:4px;padding-top:4px}
 .blk{margin-bottom:6px}.score.pred{color:var(--mut);font-size:18px;font-weight:600}.score.res{font-size:20px;font-weight:800}
 .venue{font-size:12px;color:var(--mut);margin-top:2px}
+.ic{width:20px;height:20px;display:block}
+.topline{display:flex;align-items:center;gap:8px}.appname{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent)}
+.topline .checked{flex:1;margin:0;font-size:11px}
+.ibtn{flex:none;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:10px;cursor:pointer;padding:0}
+.ibtn.starred{color:#fde047;border-color:#a16207}
+.th{display:flex;gap:10px;align-items:flex-start;margin-top:8px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:column;gap:6px}
+.teamdd{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--ink);font:inherit;font-size:24px;font-weight:800;padding:0;cursor:pointer;text-align:left}
+.teamdd .ic{width:20px;height:20px;color:var(--mut)}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
+header{position:relative}.ddmenu{position:absolute;left:10px;right:10px;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
+.ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
+.ddi{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;text-align:left}
+.ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-top:1px solid var(--line);border-radius:0 0 8px 8px;color:var(--link)}
+.glk{color:var(--ink);font-weight:600;margin-bottom:2px}.cdet{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:13px}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
@@ -145,9 +158,10 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 </head>
 <body>
 <header>
-  <div class="brand"><h1>Sideline <b>Standings</b></h1><span class="hbtns"><button class="findbtn" id="infotop" aria-label="About this site">ⓘ</button><button class="findbtn" id="findtop" aria-label="Find a team">🔍 Find</button></span></div>
-  <nav class="pills" id="pills"></nav>
-  <div class="checked" id="checked"></div>
+  <div class="topline"><span class="appname">Sideline Standings</span><span class="checked" id="checked"></span>
+    <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
+  <div id="teamhead"></div>
+  <div id="ddmenu" class="ddmenu" hidden></div>
 </header>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <div id="finder">
@@ -158,14 +172,23 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
   <div class="sheet-head"><b>About this site</b><button class="icon-btn" id="infoclose">Close</button></div>
   <p><b>Unofficial.</b> Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them.</p>
   <p><b>Predictions</b> rate every team from all of this season's games across the country (plus last season's, lightly), then play out the rest of the season thousands of times. They're estimates, not guarantees.</p>
-  <p><b>Find your team:</b> tap 🔍 Find, pick Boys or Girls, then age, league and conference, or search by club name. Tap ★ to keep a team at the top.</p>
+  <p><b>Find your team:</b> tap the search icon, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team to your list.</p>
   <p><b>Put it on your phone:</b> iPhone: open in Safari, tap Share, then <i>Add to Home Screen</i>. Android: Chrome menu ⋮, then <i>Add to Home screen</i>.</p>
-  <p><b>Share a team:</b> open the team and tap Share. The link opens straight to that team.</p>
+  <p><b>Share a team:</b> open the team and tap the share icon. The link opens straight to that team.</p>
 </div></div>
 <div class="toast" id="toast"></div>
 <script>
 "use strict";
 const $ = (s, e = document) => e.querySelector(s);
+// Line icons (outline, 1.75 stroke), drawn inline so they stay crisp and match the text color.
+const ICON = {
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+  star: '<path d="M12 3.6l2.55 5.17 5.7.83-4.13 4.02.98 5.68L12 16.6l-5.1 2.7.98-5.68L3.75 9.6l5.7-.83z"/>',
+  share: '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
+  info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
+  chev: '<path d="m6 9 6 6 6-6"/>',
+};
+const icon = (n, fill) => `<svg class="ic" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
 const fmtDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday:"short", month:"short", day:"numeric"});
@@ -315,7 +338,9 @@ async function boot() {
   fetch("data/status.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(s => { STATUS = s; const el = $("#checked"); if (el && s) el.innerHTML = checkedTxt(); }).catch(() => {});
   window.addEventListener("hashchange", route);
   $("#fclose").onclick = closeFinder;
+  $("#findtop").innerHTML = icon("search"); $("#infotop").innerHTML = icon("info");
   $("#findtop").onclick = openFinder;
+  document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) m.hidden = true; });
   $("#infotop").onclick = () => { $("#info").hidden = false; };
   $("#infoclose").onclick = () => { $("#info").hidden = true; };
   $("#info").onclick = e => { if (e.target.id === "info") $("#info").hidden = true; };
@@ -334,14 +359,18 @@ function route() {
     openTeam(f[0]);
   } else {
     drawPills(); openFinder();
-    $("#app").innerHTML = `<div class="card ctx"><div class="ctx-team">Find your team</div><div class="ctx-sub">Search or browse every ECNL and ECNL RL team we rate, then tap ★ to keep it at the top.</div></div>`;
+    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">Choose a team ${icon("chev")}</button><div class="thsub">Search or browse every ECNL, ECNL RL and Pre-ECNL team, then tap the star to save it.</div></div></div>`;
+    $("#teamdd").onclick = openFinder;
+    $("#app").innerHTML = "";
   }
 }
+// Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
-  const f = favs() || [];
-  $("#pills").innerHTML = f.filter(teamByKey).map(k => `<button class="pill-btn ${k === CUR ? "on" : ""}" data-k="${k}">${esc(shortLabel(teamByKey(k)))}</button>`).join("")
-    ;
-  $("#pills").onclick = e => { const b = e.target.closest("button"); if (b) location.hash = "t=" + b.dataset.k; };
+  const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
+  m.innerHTML = (f.length ? `<div class="ddh">Favorites</div>` : "")
+    + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.s)}</span><span class="ddsub">${esc(t.a.split(" (")[0])} · ${esc(t.l)}</span></button>`; }).join("")
+    + `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find another team</span></button>`;
+  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
   let f = favs() || [];
@@ -355,7 +384,7 @@ function openFinder() { FSTATE = {}; $("#fq").value = ""; $("#finder").classList
 function closeFinder() { $("#finder").classList.remove("open"); }
 function teamRow(t) {
   const on = (favs() || []).includes(t.k);
-  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.n)}<div>${esc(t.a)} · ${esc(t.c)}</div></div><button class="star ${on ? "on" : ""}" data-star="${t.k}" title="Favorite">★</button></div>`;
+  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.n)}<div>${esc(t.a)} · ${esc(t.c)}</div></div><button class="star ${on ? "on" : ""}" data-star="${t.k}" aria-label="Favorite">${icon("star", on)}</button></div>`;
 }
 function drawFinder() {
   const q = $("#fq").value.trim().toLowerCase(), body = $("#fbody");
@@ -387,7 +416,7 @@ function drawFinder() {
     body.innerHTML = html;
   }
   body.onclick = e => {
-    const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); st.classList.toggle("on"); return; }
+    const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); const on = st.classList.toggle("on"); st.innerHTML = icon("star", on); return; }
     const up = e.target.closest("[data-up]");
     if (up) { const keep = ["g", "a", "l", "c"].slice(0, +up.dataset.up); FSTATE = Object.fromEntries(keep.map(k => [k, FSTATE[k]])); return drawFinder(); }
     const r = e.target.closest(".f-row"); if (!r) return;
@@ -432,16 +461,15 @@ function fixtureCard(D, M, g, o = {}) {
   const P = M.probs(g.home_id, g.away_id, o.neutral);
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
-  const odds = us ? `Win ${num(pl)} · Draw ${num(P.d)} · Loss ${num(pr)}`
-                  : `${esc(code(D, L, o.teams))} ${num(pl)} · Draw ${num(P.d)} · ${esc(code(D, R, o.teams))} ${num(pr)}`;
   return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
-    <div class="teams"><div>${nm(LN, us)}</div><div class="score pred">${sL[0]} – ${sL[1]}</div><div class="a">${nm(RN)}</div></div>
-    <div class="likely"><span>${odds}${conf ? ` <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]}</span>` : ""}</span>${o.stake ? `<button class="imp" data-imp="${g.id}">Impact <span class="ar">›</span></button>` : ""}</div>
-    ${g.venue ? `<div class="venue">${esc(g.venue)}</div>` : ""}
-    ${o.stake ? `<div class="root" data-root="${g.id}" hidden></div>` : ""}
+    <div class="teams"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div></div>
+    <div class="likely"><span>${g.venue ? esc(g.venue) : ""}${conf ? ` <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</span><button class="imp" data-imp="${g.id}">Details <span class="ar">›</span></button></div>
+    <div class="cdet" hidden><div class="glk">${likelyLine(D, L, R, sL, pl, P.d, pr, us, o.teams)}</div>${o.stake ? `<div class="root" data-root="${g.id}">Working out the impact…</div>` : ""}</div>
     ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}</div>`;
 }
 const num = p => Math.round(p * 100);
+const likelyLine = (D, L, R, sL, pl, pd, pr, us, teams) => `Likely ${esc(code(D, L, teams))} ${sL[0]}–${sL[1]} ${esc(code(D, R, teams))} · `
+  + (us ? `Win ${num(pl)} · Draw ${num(pd)} · Loss ${num(pr)}` : `${esc(code(D, L, teams))} ${num(pl)} · Draw ${num(pd)} · ${esc(code(D, R, teams))} ${num(pr)}`);
 const nm = (n, me, win) => `<span class="${me ? "me-n" : ""}${win ? " win" : ""}">${esc(n)}</span>`;
 const shortTime = t => (!t || t === "00:00") ? "TBD" : fmtTime(t).replace(":00 ", " ").replace(" AM", "a").replace(" PM", "p");
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
@@ -461,12 +489,12 @@ function gameRow(D, M, g, o = {}) {
   } else if (o.wait) {
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
   } else {
+    // Future game: only "vs"/"@" here, so a score between two teams always means a final.
     const P = M.probs(g.home_id, g.away_id, o.neutral);
     const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
-    mid = `${sL[0]} – ${sL[1]}`; mcls = "pred"; ln = nm(LN, us); rn = nm(RN);
-    const odds = us ? `Win ${num(pl)} · Draw ${num(P.d)} · Loss ${num(pr)}`
-                    : `${esc(code(D, L, o.teams))} ${num(pl)} · Draw ${num(P.d)} · ${esc(code(D, R, o.teams))} ${num(pr)}`;
-    det = `<div class="gdet" hidden><div>${odds}${o.showDate ? ` · ${fmtTime(g.time)}` : ` · ${fmtDate(g.date)}`}${g.venue ? ` · ${esc(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}">Working out the impact…</div>` : ""}</div>`;
+    mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
+    det = `<div class="gdet" hidden><div class="glk">${likelyLine(D, L, R, sL, pl, P.d, pr, us, o.teams)}</div>
+      <div>${o.showDate ? fmtTime(g.time) : fmtDate(g.date)}${g.venue ? ` · ${esc(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}">Working out the impact…</div>` : ""}</div>`;
   }
   let toggles = "";
   if (o.picks && !done) {
@@ -527,10 +555,10 @@ function waitRow(D, g, f) {
 }
 function checkedTxt() {
   if (!STATUS) return "";
-  const at = new Date(STATUS.checked), t = at.toLocaleString(undefined, {weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
+  const at = new Date(STATUS.checked), t = at.toLocaleString(undefined, {weekday: "short", hour: "numeric", minute: "2-digit"});
   const stale = Date.now() - at.getTime() > 2 * 3600e3;
   $("#checked").classList.toggle("stale", stale);
-  return stale ? `⚠ Updates paused. Scores last checked ${t}; they may be out of date.` : `Updated ${t} · refreshes every 15 min`;
+  return stale ? `Updates paused · last ${t}` : `Updated ${t}`;
 }
 
 function renderTeam(D, fid, key) {
@@ -586,11 +614,6 @@ function renderTeam(D, fid, key) {
   const older = played.filter(g => !isMe(g) && g.date < yest).sort((a, b) => b.date.localeCompare(a.date));
 
   $("#app").innerHTML = `
-  <div class="card ctx"><div class="ctx-top"><div class="ctx-team">${me}</div>
-      <button class="icon-btn ${starred ? "starred" : ""}" id="starbtn">${starred ? "★ Favorite" : "☆ Add to favorites"}</button>
-      <button class="icon-btn" id="sharebtn">Share</button></div>
-    <div class="ctx-sub">${esc(D.age_label)} · ${esc(D.conf_name)}</div>
-    <div class="ctx-sub">${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
   ${sec("us", me, "1 · Where we stand", "Official results. This section never changes when you make predictions.", `
@@ -604,7 +627,7 @@ function renderTeam(D, fid, key) {
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">Ranked by points per game${spots ? `; dashed line = playoff cut` : ""}. Shaded = chances from playing out the rest of the season ${N.toLocaleString()} times. Max = most points still possible.</div>`, "s1")}
 
-  ${sec("us", me, "2 · Our next games", `Odds for each game. Tap "Impact" to see how each result changes ${me}'s chance of ${keyLabel}.`,
+  ${sec("us", me, "2 · Our next games", `Tap Details for the likely score, odds, and how each result changes ${me}'s chance of ${keyLabel}.`,
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
     + missedBox(missed.filter(isMe), {focus: fid, stake: true, card: true}), "s2")}
@@ -615,7 +638,7 @@ function renderTeam(D, fid, key) {
   ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
-  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Gray scores are likely scores; ● = matters to ${me}. Tap a game for odds and impact.`,
+  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Scores are final scores; tap an upcoming game for the likely score and odds. ● = matters to ${me}.`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
@@ -630,7 +653,13 @@ function renderTeam(D, fid, key) {
 
   document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   $("#gamelist").addEventListener("toggle", e => store.set("open:gamelist", e.target.open ? "1" : "0"));
-  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").className = "icon-btn" + (on ? " starred" : ""); $("#starbtn").textContent = on ? "★ Favorite" : "☆ Add to favorites"; };
+  $("#teamhead").innerHTML = `<div class="th"><div class="thl">
+      <button class="teamdd" id="teamdd" aria-haspopup="true">${me} ${icon("chev")}</button>
+      <div class="thsub">${esc(D.age_label)} · ${esc(D.conf_name)}</div>
+      <div class="thsub">${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
+    <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
+  $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; };
+  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites"); };
   $("#sharebtn").onclick = async () => {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
@@ -681,7 +710,7 @@ function renderTeam(D, fid, key) {
     const b = e.target.closest(".imp");
     if (b) {
       impact(b.dataset.imp);
-      const r = b.closest(".fx").querySelector(`[data-root="${b.dataset.imp}"]`);
+      const r = b.closest(".fx").querySelector(".cdet");
       r.hidden = !r.hidden; b.classList.toggle("open", !r.hidden);
       return;
     }
