@@ -61,7 +61,7 @@ details.sec h2{margin:0;font-size:17px;flex:1}
 .chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .chip-us{background:var(--red);color:#fff}.chip-div{background:#2f3743;color:#e5e7eb}.chip-past{background:#252b35;color:#d1d5db}
 .sec-us{border-left:5px solid var(--red)}
-.focus{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
+.focus{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin-bottom:12px}
 .stat{background:var(--card2);border-radius:10px;padding:10px}.stat .v{font-size:22px;font-weight:800}.stat .k{font-size:12px;color:var(--mut)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{font-size:11px;color:var(--mut);text-align:right;font-weight:700;padding:6px 3px;border-bottom:1px solid var(--line)}
@@ -548,15 +548,15 @@ function renderTeam(D, fid, key) {
   <div class="card ctx"><div class="ctx-top"><div class="ctx-team">${me}</div>
       <button class="icon-btn ${starred ? "starred" : ""}" id="starbtn">${starred ? "★ Favorite" : "☆ Add to favorites"}</button>
       <button class="icon-btn" id="sharebtn">Share</button></div>
-    <div class="ctx-sub">${esc(D.age_label)} · ${esc(D.conf_name)} · ${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
+    <div class="ctx-sub">${esc(D.age_label)} · ${esc(D.conf_name)}</div>
+    <div class="ctx-sub">${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
   ${sec("us", me, "1 · Where we stand", "Official results. This section never changes when you make predictions.", `
     <div class="focus">
-      <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now</div></div>
+      <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
       <div class="stat"><div class="v">${pct(atOrAbove(base, fid, 0))}</div><div class="k">Chance to finish 1st</div></div>
       ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, fid, spots - 1))}</div><div class="k">Chance of top ${spots}</div></div>` : ""}
-      <div class="stat"><div class="v">${placeTxt(rangeOf(base, fid))}</div><div class="k">Most likely finish</div></div>
     </div>
     <table class="grid"><tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>PTS</th><th>PPG</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}<th class="maxc" title="Most points still possible">Max</th></tr>
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
