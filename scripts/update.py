@@ -656,8 +656,8 @@ def main():
         for g in games:
             if g["conf"] == "event" and g["source"] == "current" and g.get("flight_id"):
                 ev_groups.setdefault((g["event_id"], g["flight_id"]), []).append(g)
-        soon = (datetime.now(timezone.utc).date() + timedelta(days=30)).isoformat()
-        recent = (datetime.now(timezone.utc).date() - timedelta(days=3)).isoformat()
+        soon = (datetime.now(timezone.utc).date() + timedelta(days=90)).isoformat()   # events up to 90 days ahead
+        recent = (datetime.now(timezone.utc).date() - timedelta(days=15)).isoformat()   # and 15 days back
         events_by_team = {}
         for (eid, fid), gs in ev_groups.items():
             dates = [g["date"] for g in gs]
