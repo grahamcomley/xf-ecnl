@@ -27,11 +27,23 @@ def load_config():
         return json.load(f)
 
 
+LOCAL = {}   # filled from config["local_clubs"] in main()
+
+
+def _base_short(name):
+    s = re.sub(r"\s+ECNL(\s+RL)?\s+[BG]\d{2,4}(/\d{2,4})?", "", name)
+    return s.strip()
+
+
 def short_name(name):
     if not name:
         return name
-    s = re.sub(r"\s+ECNL(\s+RL)?\s+[BG]\d{2,4}(/\d{2,4})?", "", name)
-    return s.strip()
+    b = _base_short(name)
+    return (LOCAL.get(b) or {}).get("short", b)
+
+
+def club_code(name):
+    return (LOCAL.get(_base_short(name)) or {}).get("code") if name else None
 
 
 def norm_key(club_id, name):
@@ -504,6 +516,7 @@ def main():
             return orig(path, permanent=True)
         api.get = cached_only
     cfg = load_config()
+    LOCAL.update({k: v for k, v in (cfg.get("local_clubs") or {}).items() if not k.startswith("_")})
     os.makedirs(os.path.join(OUT, "conf"), exist_ok=True)
     now = datetime.now(timezone.utc).isoformat(timespec="minutes")
     today = datetime.now(timezone.utc).date().isoformat()
@@ -562,6 +575,7 @@ def main():
         def team_obj(tid, with_record=False):
             c = team_conf.get(tid, "other")
             o = {"id": tid, "name": names.get(tid), "short": short_name(names.get(tid)),
+                 "code": club_code(names.get(tid)),
                  "p": team_params(m, tid) if m else [0, 0],
                  "strength": round(model.strength(m, tid), 2) if m else 0,
                  "pool_rank": rank_of.get(tid), "conf": c, "conf_name": short_conf(conf_names.get(c, "Other")),

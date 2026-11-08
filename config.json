@@ -1793,5 +1793,56 @@
         ]
       }
     }
+  },
+  "local_clubs": {
+    "_help": "Northwest clubs: display name and short code (from Graham). Keys are the team's short name after removing 'ECNL ... B2010/11'.",
+    "XF 1": {
+      "code": "XF 1"
+    },
+    "XF 2": {
+      "code": "XF 2"
+    },
+    "XF": {
+      "code": "XF"
+    },
+    "Seattle United": {
+      "code": "SU"
+    },
+    "Eastside FC": {
+      "code": "EFC"
+    },
+    "3RSC": {
+      "code": "3RSC"
+    },
+    "Washington Premier": {
+      "short": "WA Premier",
+      "code": "WA"
+    },
+    "Snohomish United": {
+      "code": "SNO"
+    },
+    "PacNW SC": {
+      "short": "PacNW",
+      "code": "PAC"
+    },
+    "Columbia Premier SC": {
+      "short": "Columbia Premier",
+      "code": "COL"
+    },
+    "Oregon Surf": {
+      "code": "ORS"
+    },
+    "Central Washington Sounders": {
+      "code": "CWS"
+    },
+    "Whatcom FC Rangers": {
+      "code": "WHA"
+    },
+    "Northwest United": {
+      "code": "NWU"
+    },
+    "Valor Soccer": {
+      "code": "VAL"
+    }
   }
 }

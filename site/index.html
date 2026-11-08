@@ -26,6 +26,7 @@ body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 a{color:var(--link)}
 header{background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 12px 8px;position:sticky;top:0;z-index:20}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.brand h1{margin:0;font-size:16px;font-weight:700}.brand h1 b{color:var(--accent)}
+.maxc{color:var(--mut);font-size:12px;background:var(--chance)}table.grid tr:nth-child(even) td.maxc{background:var(--chance2)}table.grid tr.me td.maxc{background:var(--me)}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
@@ -467,6 +468,8 @@ function makeCodes(teams) {
 function code(D, id, teams) {
   const list = teams || D.teams;
   if (!list.__codes) list.__codes = makeCodes(list);
+  const t = list.find(x => x.id === id);
+  if (t && t.code) return t.code;   // local clubs: Graham's codes
   return list.__codes.get(id) || teamName(D, id).slice(0, 3).toUpperCase();
 }
 function waitRow(D, g, f) {
@@ -506,10 +509,12 @@ function renderTeam(D, fid, key) {
     <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => fixtureCard(D, M, g, opts)).join("")}</details>` : "";
   const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
+  const left = id => remaining.filter(g => g.home_id === id || g.away_id === id).length;
   // When ECNL's own table agrees with the scores, show teams in ECNL's exact order (their tiebreakers).
   const off = new Map((D.official || []).map(o => [o.id, o]));
+  // ECNL's rank number is only trusted to break exact ties (same PPG and points), never to override the table.
   if (off.size === ids.length && now.every(r => { const o = off.get(r.id); return o && o.rank && o.gp === r.gp && o.pts === r.pts; }))
-    now.sort((a, b) => off.get(a.id).rank - off.get(b.id).rank);
+    now.sort((a, b) => (b.ppg - a.ppg) || (b.pts - a.pts) || (off.get(a.id).rank - off.get(b.id).rank));
   const fPos = now.findIndex(r => r.id === fid) + 1;
   const mismatch = D.official.filter(o => { const c = D.computed.find(x => x.id === o.id); return c && (o.gp !== c.gp || o.pts !== c.pts); });
   const starred = (favs() || []).includes(key);
@@ -544,10 +549,10 @@ function renderTeam(D, fid, key) {
       ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, fid, spots - 1))}</div><div class="k">Chance of top ${spots}</div></div>` : ""}
       <div class="stat"><div class="v">${placeTxt(rangeOf(base, fid))}</div><div class="k">Most likely finish</div></div>
     </div>
-    <table class="grid"><tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>PTS</th><th>PPG</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+    <table class="grid"><tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>PTS</th><th>PPG</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}<th class="maxc" title="Most points still possible">Max</th></tr>
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
-      <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`).join("")}
-    </table><div class="mut" style="margin-top:6px">Ranked by points per game${spots ? `; dashed line = playoff cut` : ""}. Shaded = chances from playing out the rest of the season ${N.toLocaleString()} times.</div>`, "s1")}
+      <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
+    </table><div class="mut" style="margin-top:6px">Ranked by points per game${spots ? `; dashed line = playoff cut` : ""}. Shaded = chances from playing out the rest of the season ${N.toLocaleString()} times. Max = most points still possible.</div>`, "s1")}
 
   ${sec("us", me, "2 · Our next games", `Odds for each game. Tap "Impact" to see how each result changes ${me}'s chance of ${keyLabel}.`,
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
