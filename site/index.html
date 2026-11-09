@@ -45,7 +45,7 @@ details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-siz
 .gm .res{width:18px;height:18px;font-size:10px}
 .gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
 .gs.res{font-weight:800;color:var(--ink)}.gs.pred{color:var(--mut)}.gs.vs{color:var(--mut);font-size:12px}
-.gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 52px}.gdet .root{margin-top:4px;padding-top:4px}
+.gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 52px}.gdet .root{margin-top:2px}
 .blk{margin-bottom:6px}.score.pred{color:var(--mut);font-size:18px;font-weight:600}.score.res{font-size:20px;font-weight:800}
 .venue{font-size:12px;color:var(--mut);margin-top:2px}
 .ic{width:20px;height:20px;display:block}
@@ -55,7 +55,7 @@ details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-siz
 .ibtn.starred{color:#fde047;border-color:#a16207}
 #teamwrap{position:relative;max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-right,0px)) 0 calc(10px + env(safe-area-inset-left,0px))}
 #teamhead:empty{display:none}
-.th{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 12px 12px 14px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:column;gap:6px}
+.th{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 12px 12px 14px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:row;gap:6px}
 .teamdd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);background:var(--card2);color:var(--ink);font:inherit;font-size:20px;font-weight:800;padding:6px 12px 6px 14px;border-radius:99px;cursor:pointer;text-align:left;max-width:100%}
 .teamdd .ic{width:18px;height:18px;color:var(--ink);flex:none}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
 .th .thsub:first-of-type{margin-top:8px}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
@@ -63,7 +63,7 @@ details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-siz
 .ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
 .ddi{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;text-align:left}
 .ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-top:1px solid var(--line);border-radius:0 0 8px 8px;color:var(--link)}
-.glk{color:var(--ink);font-weight:600;margin-bottom:2px}.cdet{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:13px}
+.glk{color:var(--ink);font-weight:600;margin-bottom:2px}.cdet{margin-top:6px;font-size:12px;color:var(--mut)}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
@@ -113,7 +113,7 @@ td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .mut{color:var(--mut);font-size:12px}
 .pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;font-weight:700}
 .pill.g{background:#14361f;color:#86efac}.pill.a{background:#3a2a07;color:#fcd34d}.pill.r{background:#3d1218;color:#fda4af}.pill.tag{background:#e5e7eb;color:#111827}
-.root{font-size:13px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line2)}.root b{color:var(--ink)}.root b.up{color:var(--up)}
+.root{font-size:12px;color:var(--mut);margin-top:2px}.root b{color:var(--ink)}.root b.up{color:var(--up)}
 .up{color:var(--up)}.dn{color:var(--dn)}.delta{font-size:12px;font-weight:700}
 .toggles{display:flex;gap:6px;margin-top:8px}
 .toggles button{flex:1;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:8px;padding:7px 4px;font:inherit;font-size:12px;cursor:pointer}
@@ -620,7 +620,7 @@ function renderTeam(D, fid, key) {
   $("#app").innerHTML = `
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
-  ${sec("us", me, "1 · Where we stand", "", `
+  ${sec("us", me, "Where we stand", "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
       <div class="stat"><div class="v">${pct(atOrAbove(base, fid, 0))}</div><div class="k">Chance to finish 1st</div></div>
@@ -631,7 +631,7 @@ function renderTeam(D, fid, key) {
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? "Dashed line = playoff cut. " : ""}Max = most points still possible.</div>`, "s1")}
 
-  ${sec("us", me, "2 · Our next games", "",
+  ${sec("us", me, "Our next games", "",
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
     + missedBox(missed.filter(isMe), {focus: fid, stake: true, card: true}), "s2")}
@@ -639,15 +639,15 @@ function renderTeam(D, fid, key) {
   ${events.length ? sec("ev", "Events", "Showcases & tournaments", "Don't count toward league standings.",
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 
-  ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
+  ${sec("us", me, "Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
-  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}`,
+  ${sec("div", "League", "League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
 
-  ${sec("div", "Predict", "5 · Rest-of-season predictor", `Gray = our pick. Tap a result to change it.`, `
+  ${sec("div", "Predict", "Rest-of-season predictor", `Gray = our pick. Tap a result to change it.`, `
     <div class="picksbar" id="picksbar"></div>
     <div id="predtable"></div>
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
