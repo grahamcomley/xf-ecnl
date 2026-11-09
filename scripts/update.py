@@ -423,6 +423,7 @@ def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
     n = correct = notlose = 0
     ll = ll_base = 0.0
     buckets = {}
+    preds = {}  # game id -> [likely home goals, likely away goals] predicted from earlier games only
     while cur <= end:
         nxt = cur + timedelta(days=step_days)
         a, b = cur.isoformat(), nxt.isoformat()
@@ -439,6 +440,7 @@ def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
                     lh, la = model.expected_goals(m, g["home_id"], g["away_id"], g["neutral"])
                     w, d, l, _ = model.outcome_probs(lh, la)
                     p = [w, d, l]
+                    preds[str(g["id"])] = likely_score(lh, la)
                     res = 0 if g["hs"] > g["as"] else 1 if g["hs"] == g["as"] else 2
                     pick = p.index(max(p))
                     n += 1
@@ -453,10 +455,25 @@ def backtest(games, team_conf, mcfg, start="2025-11-01", step_days=14):
         cur = nxt
     if not n:
         return None
-    return {"games": n, "accuracy": round(correct / n, 3), "fav_not_lose": round(notlose / n, 3),
+    return {"preds": preds, "games": n, "accuracy": round(correct / n, 3), "fav_not_lose": round(notlose / n, 3),
             "logloss": round(ll / n, 3), "baseline_logloss": round(ll_base / n, 3),
             "buckets": {k: {"games": v[0], "won": round(v[1] / v[0], 3), "not_lose": round(v[2] / v[0], 3)}
                         for k, v in buckets.items()}}
+
+
+def likely_score(lh, la):
+    """Same as the page: the single most likely score within the most likely result (win / draw / loss)."""
+    ph = [math.exp(-lh) * lh ** k / math.factorial(k) for k in range(11)]
+    pa = [math.exp(-la) * la ** k / math.factorial(k) for k in range(11)]
+    tot, best = [0.0, 0.0, 0.0], [[1, 0, -1], [0, 0, -1], [0, 1, -1]]
+    for i, x in enumerate(ph):
+        for j, y in enumerate(pa):
+            q = x * y
+            o = 0 if i > j else 1 if i == j else 2
+            tot[o] += q
+            if q > best[o][2]:
+                best[o] = [i, j, q]
+    return best[tot.index(max(tot))][:2]
 
 
 LOG_PATH = os.path.join(ROOT, "data", "prediction_log.json")
@@ -477,7 +494,7 @@ def update_prediction_log(comp, games, m, log):
             w, d, l, _ = model.outcome_probs(lh, la)
             pick = "D" if abs(w - l) < DRAW_GAP else ("H" if w > l else "A")
             entries[key] = {"date": g["date"], "home": g["home"], "away": g["away"],
-                            "p": [round(w, 3), round(d, 3), round(l, 3)], "pick": pick}
+                            "p": [round(w, 3), round(d, 3), round(l, 3)], "pick": pick, "s": likely_score(lh, la)}
         if key in entries and played and "result" not in entries[key]:
             entries[key]["result"] = "H" if g["hs"] > g["as"] else "D" if g["hs"] == g["as"] else "A"
             entries[key]["score"] = f"{g['hs']}-{g['as']}"
@@ -722,12 +739,19 @@ def main():
                 "playoff_spots": spots, "playoff_label": spots_label,
                 "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
                 "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
-                "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt},
+                "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt and {k: v for k, v in bt.items() if k != "preds"}},
                 "teams": [team_obj(t) for t in tids],
                 "games": [{k: g[k] for k in GAME_KEYS} for g in gs],
                 "official": official, "computed": standings_from_games(gs, tids),
                 "events": ev_list, "team_events": evs,
                 "live_record": update_prediction_log(pseudo, gs, m, log),
+                # "How we did": our pre-game likely score for each finished game (saved before kickoff
+                # when we have it, otherwise replayed from results before that game).
+                "pregame": {str(g["id"]): (log.get(pseudo["id"], {}).get(str(g["id"]), {}).get("s")
+                                           or (bt or {}).get("preds", {}).get(str(g["id"])))
+                            for g in gs if g["hs"] is not None and g["as"] is not None
+                            and ((log.get(pseudo["id"], {}).get(str(g["id"]), {}).get("s"))
+                                 or str(g["id"]) in (bt or {}).get("preds", {}))},
             }
             with open(os.path.join(OUT, "conf", fkey + ".json"), "w") as f:
                 json.dump(out, f, separators=(",", ":"))
