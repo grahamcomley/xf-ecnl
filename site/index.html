@@ -12,6 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
+<meta name="app-version" content="v0.50">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -147,6 +148,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .day{font-size:12px;font-weight:800;color:var(--ink);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding-bottom:4px}
 .day:first-child{margin-top:0}.mk{font-weight:800;margin-left:4px}.mk.ok{color:var(--up)}.mk.no{color:var(--dn)}
 footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
+#ver{margin:8px 0 calc(16px + env(safe-area-inset-bottom));font-size:11px;opacity:.7}
 .scroll{overflow-x:auto}
 /* finder */
 #finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -166,7 +168,7 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
   <div class="topline"><span class="appname">Sideline Standings</span><span class="checked" id="checked"></span>
     <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
 </header>
-<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main></div>
+<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main><footer id="ver"></footer></div>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
@@ -844,6 +846,7 @@ function syncHash() {
 // Auto-update: when the app comes back on screen (and every 30 min), pick up new scores, and if the page
 // itself changed, reload once (at most once per 10 minutes, so a stale copy can never loop).
 let LOADED_VER = null, LAST_DATA = Date.now();
+$("#ver").textContent = document.querySelector('meta[name="app-version"]').content;
 async function checkForUpdate() {
   try {
     const v = (await fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.text() : "")).trim();

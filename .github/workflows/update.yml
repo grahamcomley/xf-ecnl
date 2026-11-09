@@ -123,3 +123,21 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@v4
+
+      # Confirm both sites are really serving the page just built (version.txt + the v-number in the page).
+      - name: Verify UAT and live are serving the new version
+        run: |
+          check() {  # $1 = site url, $2 = local folder
+            want=$(cat $2/version.txt); num=$(grep -o 'name="app-version" content="[^"]*"' $2/index.html | cut -d'"' -f4)
+            for i in $(seq 1 18); do
+              got=$(curl -fsS "$1/version.txt?t=$(date +%s%N)" -H 'Cache-Control: no-cache' || true)
+              page=$(curl -fsS "$1/?t=$(date +%s%N)" -H 'Cache-Control: no-cache' | grep -o 'name="app-version" content="[^"]*"' | cut -d'"' -f4 || true)
+              if [ "$got" = "$want" ] && [ "$page" = "$num" ]; then echo "OK $1 is serving $num ($want)"; echo "$1 $num" >> $GITHUB_STEP_SUMMARY; return 0; fi
+              sleep 5
+            done
+            echo "::error::$1 is serving '$page' ($got), expected $num ($want)"; return 1
+          }
+          ok=0
+          check https://uat.sidelinestandings.com site || ok=1
+          check https://sidelinestandings.com site-live || ok=1
+          exit $ok
