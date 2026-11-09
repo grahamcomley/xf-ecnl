@@ -39,9 +39,9 @@ header{flex:none;background:#07090c;border-bottom:1px solid var(--line);padding:
 details.evrow{border:1px solid var(--line2);border-radius:10px;margin-bottom:10px;background:var(--card2)}
 details.evrow>summary{list-style:none;cursor:pointer;padding:10px 34px 10px 12px;position:relative}details.evrow>summary::-webkit-details-marker{display:none}
 details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-size:15px}.evbody{padding:0 10px 12px}
-.grow{display:grid;grid-template-columns:46px 1fr auto 1fr 18px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.grow{display:grid;grid-template-columns:46px 1fr auto 1fr 30px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
 .grow.tap{cursor:pointer}.grow.ours{box-shadow:inset 3px 0 0 var(--red);padding-left:8px}
-.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;color:var(--accent);font-size:12px}
+.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;font-size:12px}.keytag{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--mut);border:1px solid var(--line2);border-radius:5px;padding:1px 4px}
 .gm .res{width:18px;height:18px;font-size:10px}
 .gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
 .gs.res{font-weight:800;color:var(--ink)}.gs.pred{color:var(--mut)}.gs.vs{color:var(--mut);font-size:12px}
@@ -53,10 +53,13 @@ details.evrow>summary .caret{position:absolute;right:12px;top:12px}.evt{font-siz
 .topline .checked{flex:1;margin:0;font-size:11px}
 .ibtn{flex:none;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:10px;cursor:pointer;padding:0}
 .ibtn.starred{color:#fde047;border-color:#a16207}
-.th{display:flex;gap:10px;align-items:flex-start;margin-top:8px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:column;gap:6px}
-.teamdd{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--ink);font:inherit;font-size:24px;font-weight:800;padding:0;cursor:pointer;text-align:left}
-.teamdd .ic{width:20px;height:20px;color:var(--mut)}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
-header{position:relative}.ddmenu{position:absolute;left:10px;right:10px;top:100%;margin-top:4px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
+#teamwrap{position:relative;max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-right,0px)) 0 calc(10px + env(safe-area-inset-left,0px))}
+#teamhead:empty{display:none}
+.th{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 12px 12px 14px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:column;gap:6px}
+.teamdd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);background:var(--card2);color:var(--ink);font:inherit;font-size:20px;font-weight:800;padding:6px 12px 6px 14px;border-radius:99px;cursor:pointer;text-align:left;max-width:100%}
+.teamdd .ic{width:18px;height:18px;color:var(--ink);flex:none}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
+.th .thsub:first-of-type{margin-top:8px}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
+.ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
 .ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
 .ddi{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;text-align:left}
 .ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-top:1px solid var(--line);border-radius:0 0 8px 8px;color:var(--link)}
@@ -160,10 +163,8 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 <header>
   <div class="topline"><span class="appname">Sideline Standings</span><span class="checked" id="checked"></span>
     <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
-  <div id="teamhead"></div>
-  <div id="ddmenu" class="ddmenu" hidden></div>
 </header>
-<div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
+<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main></div>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
@@ -340,7 +341,7 @@ async function boot() {
   $("#fclose").onclick = closeFinder;
   $("#findtop").innerHTML = icon("search"); $("#infotop").innerHTML = icon("info");
   $("#findtop").onclick = openFinder;
-  document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) m.hidden = true; });
+  document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) { m.hidden = true; const t = $("#teamdd"); if (t) t.setAttribute("aria-expanded", "false"); } });
   $("#infotop").onclick = () => { $("#info").hidden = false; };
   $("#infoclose").onclick = () => { $("#info").hidden = true; };
   $("#info").onclick = e => { if (e.target.id === "info") $("#info").hidden = true; };
@@ -638,7 +639,7 @@ function renderTeam(D, fid, key) {
   ${sec("us", me, "3 · Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
-  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Scores are final scores; tap an upcoming game for the likely score and odds. ● = matters to ${me}.`,
+  ${sec("div", "League", "4 · League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}, every ${esc(D.conf_name)} game. Scores are final scores; tap an upcoming game for the likely score and odds. KEY = a result that changes ${me}'s chances.`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
@@ -658,7 +659,7 @@ function renderTeam(D, fid, key) {
       <div class="thsub">${esc(D.age_label)} · ${esc(D.conf_name)}</div>
       <div class="thsub">${ids.length} teams${spots ? ` · ${esc(D.playoff_label)}` : ""}</div></div>
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
-  $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; };
+  $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
   $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites"); };
   $("#sharebtn").onclick = async () => {
     const url = location.origin + location.pathname + "#t=" + key;
@@ -697,7 +698,7 @@ function renderTeam(D, fid, key) {
     document.querySelectorAll(`[data-root="${gid}"]`).forEach(el => {
       el.innerHTML = html;
       if (!matters) return;
-      const row = el.closest(".grow"); if (row) { row.classList.add("matters"); const m = row.querySelector(".gm"); if (m && !m.textContent) m.textContent = "●"; }
+      const row = el.closest(".grow"); if (row) { row.classList.add("matters"); const m = row.querySelector(".gm"); if (m && !m.textContent) m.innerHTML = '<span class="keytag">KEY</span>'; }
     });
   };
   $("#app").onclick = e => {
