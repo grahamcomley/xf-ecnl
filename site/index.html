@@ -99,7 +99,7 @@ td.t,th.t{text-align:left;white-space:normal}
 table.grid th,table.grid td{border-left:1px dashed var(--line2)}table.grid th:first-child,table.grid td:first-child{border-left:0}
 table.grid tr:nth-child(even) td{background:#12161c}
 table.grid td.chance,table.grid th.chance{background:var(--chance)}table.grid tr:nth-child(even) td.chance{background:var(--chance2)}
-table.grid tr.me td{background:var(--me)}
+table.grid tr.me td,table.grid tr.me td.chance,table.grid tr.me td.maxc{background:var(--me)!important}
 tr.cut td{border-bottom:2px dashed var(--accent)}
 td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .fx{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:var(--card)}
@@ -464,11 +464,11 @@ function fixtureCard(D, M, g, o = {}) {
   const P = M.probs(g.home_id, g.away_id, o.neutral);
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
-  return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · ${fmtTime(g.time)}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
     <div class="teams"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div></div>
     <div class="likely"><span>${g.venue ? esc(g.venue) : ""}${conf ? ` <span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span>` : ""}</span><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
     <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
-    ${g.pending ? `<div class="mut" style="margin-top:4px">Missed · originally ${fmtDate(g.date)}. Waiting for a new date.</div>` : ""}</div>`;
+    </div>`;
 }
 const num = p => Math.round(p * 100);
 // "Likely 2–1 for XF 1" / "Likely 1–1 draw" (scores in the same left-right order as the teams).
@@ -498,7 +498,7 @@ function gameRow(D, M, g, o = {}) {
     const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
     det = `<div class="gdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>
-      <div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${esc(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
+      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${g.venue ? ` · ${esc(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
   let toggles = "";
   if (o.picks && !done) {
@@ -572,7 +572,9 @@ function renderTeam(D, fid, key) {
   const valid = D.games.filter(g => g.home_id && g.away_id && !g.bad);
   const played = valid.filter(g => g.hs != null && g.as != null);
   const remaining = valid.filter(g => g.hs == null || g.as == null);
-  remaining.forEach(g => g.pending = g.date < today);
+  // No score 72 hours after kickoff = treated as missed, waiting for a new date.
+  const kickMs = g => new Date(`${g.date}T${g.time && g.time !== "00:00" ? g.time : "12:00"}:00`).getTime();
+  remaining.forEach(g => g.pending = Date.now() > kickMs(g) + 72 * 3600e3);
   const picks = PICKS[D.__fk];
   for (const k of Object.keys(picks)) if (!remaining.some(g => String(g.id) === k)) delete picks[k];
   const spots = D.playoff_spots, N = 4000;
@@ -583,10 +585,8 @@ function renderTeam(D, fid, key) {
   const isMe = g => g.home_id === fid || g.away_id === fid;
   const upcoming = remaining.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const missed = upcoming.filter(g => g.pending), scheduled = upcoming.filter(g => !g.pending);
-  const allOurs = scheduled.filter(g => isMe(g) && g.date >= today), nextOurs = allOurs.slice(0, 3), laterOurs = allOurs.slice(3);
+  const allOurs = scheduled.filter(g => isMe(g) && g.date >= today), nextOurs = allOurs.slice(0, 3), laterOurs = allOurs.slice(3).concat(missed.filter(isMe));
   const week = scheduled.filter(g => !isMe(g) && g.date >= today && g.date <= addDays(today, 7));
-  const missedBox = (list, opts) => list.length ? `<details class="inner missed"><summary>Missed games waiting for a new date (${list.length})</summary>
-    <div class="mut" style="margin:4px 0 8px">No score was posted and no new date yet. Still counted in the predictions.</div>${list.map(g => opts.card ? fixtureCard(D, M, g, opts) : gameRow(D, M, g, {...opts, showDate: true})).join("")}</details>` : "";
   const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
   const left = id => remaining.filter(g => g.home_id === id || g.away_id === id).length;
@@ -600,9 +600,9 @@ function renderTeam(D, fid, key) {
   const starred = (favs() || []).includes(key);
   const evIdx = (D.team_events || {})[String(fid)] || [];
   const events = evIdx.map(i => D.events[i]);
-  const yest = addDays(today, -1), wEnd = addDays(today, 7), nowMs = Date.now();
+  const yest = addDays(today, -1), wStart = addDays(today, -3), wEnd = addDays(today, 7), nowMs = Date.now();
   const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > new Date(`${g.date}T${g.time}:00`).getTime() + 2 * 3600e3);
-  const inWin = valid.filter(g => g.date >= yest && g.date <= wEnd);
+  const inWin = valid.filter(g => g.date >= wStart && g.date <= wEnd && !g.pending);
   const dayLabel = d => (d === yest ? "Yesterday · " : d === today ? "Today · " : "") + fmtDate(d);
   const byTime = (a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || ""));
   const isDone = g => g.hs != null && g.as != null;
@@ -615,7 +615,7 @@ function renderTeam(D, fid, key) {
     + (waitW.length ? blk("Waiting for score", waitW.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : dayShort(g.date)})).join("")) : "")
     + [...new Set(upW.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
         upW.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
-  const older = played.filter(g => !isMe(g) && g.date < yest).sort((a, b) => b.date.localeCompare(a.date));
+  const older = played.filter(g => !isMe(g) && g.date < wStart).sort((a, b) => b.date.localeCompare(a.date));
 
   $("#app").innerHTML = `
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
@@ -634,24 +634,23 @@ function renderTeam(D, fid, key) {
   ${sec("us", me, "Our next games", "",
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
-    + missedBox(missed.filter(isMe), {focus: fid, stake: true, card: true}), "s2")}
+    , "s2")}
 
-  ${events.length ? sec("ev", "Events", "Showcases & tournaments", "Don't count toward league standings.",
-      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
+  ${events.length ? sec("div", "Events", "Showcases & tournaments", "Don't count toward league standings.",
+      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs", false) : ""}
 
   ${sec("us", me, "Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
 
-  ${sec("div", "League", "League this week", `${fmtDate(yest)} – ${fmtDate(wEnd)}`,
+  ${sec("div", "League", "League this week", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
-    + missedBox(missed.filter(g => g.date < yest), {focus: fid, stake: true})
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
 
   ${sec("div", "Predict", "Rest-of-season predictor", `Gray = our pick. Tap a result to change it.`, `
     <div class="picksbar" id="picksbar"></div>
     <div id="predtable"></div>
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
-      <div id="predgames">${missedBox(missed, {focus: fid, picks: true})}${scheduled.map(g => gameRow(D, M, g, {focus: fid, picks: true, showDate: true})).join("")}</div></details>`, "s5", false)}
+      <div id="predgames">${scheduled.map(g => gameRow(D, M, g, {focus: fid, picks: true, showDate: true})).join("")}${missed.map(g => gameRow(D, M, g, {focus: fid, picks: true, left: "TBD"})).join("")}</div></details>`, "s5", false)}
 
 `;
 
