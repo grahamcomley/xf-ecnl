@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.50">
+<meta name="app-version" content="v0.60">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -85,7 +85,14 @@ main{max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-
 .icon-btn.starred{color:#fde047;border-color:#a16207}
 details.sec>summary{list-style:none;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
 details.sec>summary::-webkit-details-marker{display:none}
-details.sec h2{margin:0;font-size:17px;flex:1}
+details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}
+.sechead{padding:12px 14px;display:flex;align-items:center;gap:8px}
+.pane[hidden]{display:none}
+#tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+#tabbar[hidden]{display:none}
+#tabbar button{background:none;border:0;color:var(--mut);font:inherit;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#tabbar button .ic{width:24px;height:24px}
+#tabbar button.on{color:var(--accent)}
 .caret{color:var(--mut);transition:transform .15s}details:not([open])>summary .caret{transform:rotate(-90deg)}
 .sec-body{padding:0 12px 14px}.sec-sub{color:var(--mut);font-size:13px;margin:0 0 10px}
 .chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
@@ -169,6 +176,7 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
     <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
 </header>
 <div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main><footer id="ver"></footer></div>
+<nav id="tabbar" hidden aria-label="Sections"></nav>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
@@ -192,7 +200,20 @@ const ICON = {
   share: '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
   chev: '<path d="m6 9 6 6 6-6"/>',
+  trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
+  grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
+  sliders: '<path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>',
 };
+// Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
+const TABS = [["team", "trophy", "Team"], ["games", "calendar", "Games"], ["league", "grid", "League"], ["predict", "sliders", "Predict"]];
+let TAB = (() => { try { return localStorage.getItem("tab") || "team"; } catch (e) { return "team"; } })();
+function showTab(t, scroll = true) {
+  TAB = t; try { localStorage.setItem("tab", t); } catch (e) {}
+  document.querySelectorAll("#app .pane").forEach(p => p.hidden = p.dataset.tab !== t);
+  document.querySelectorAll("#tabbar button").forEach(b => { b.classList.toggle("on", b.dataset.tab === t); b.setAttribute("aria-current", b.dataset.tab === t ? "page" : "false"); });
+  if (scroll) $("#scroller").scrollTop = 0;
+}
 const icon = (n, fill) => `<svg class="ic" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
@@ -352,12 +373,15 @@ async function boot() {
   $("#fq").addEventListener("input", drawFinder);
   route();
 }
+$("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span></button>`).join("");
+$("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
 function route() {
   let h = location.hash.slice(1);
   if (INDEX.legacy && INDEX.legacy[h]) { h = "t=" + INDEX.legacy[h]; history.replaceState(null, "", "#" + h); }
   const keys = (new URLSearchParams(h).get("t") || "").split(",").filter(k => teamByKey(k));
   let f = favs();
   if (keys.length) {
+    if (keys[0] !== store.get("lastTeam")) TAB = "team";   // a link to a different team opens on Team
     if (f === null) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite
     openTeam(keys[0]);
   } else if (f && f.length) {
@@ -366,7 +390,7 @@ function route() {
     drawPills(); openFinder();
     $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">Choose a team ${icon("chev")}</button><div class="thsub">Search or browse every ECNL, ECNL RL and Pre-ECNL team, then tap the star to save it.</div></div></div>`;
     $("#teamdd").onclick = openFinder;
-    $("#app").innerHTML = "";
+    $("#app").innerHTML = ""; $("#tabbar").hidden = true;
   }
 }
 // Team dropdown (replaces the pills): favorites, then "Find another team".
@@ -441,13 +465,14 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   PICKS[t.f] = PICKS[t.f] || {};
   renderTeam(D, fid, k);
+  store.set("lastTeam", k);
   syncHash();
   $("#scroller").scrollTop = 0;
 }
 function sec(kind, chip, title, sub, body, key, defOpen = true) {
   const sk = `open2:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
-  return `<details class="card sec sec-${kind}" data-key="${sk}" ${open ? "open" : ""}><summary><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2><span class="caret">▾</span></summary>
-    <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></details>`;
+  return `<section class="card sec sec-${kind}"><div class="sechead"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2></div>
+    <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></section>`;
 }
 function teamName(D, id, fb) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fb || "TBD"); }
 
@@ -622,6 +647,7 @@ function renderTeam(D, fid, key) {
   $("#app").innerHTML = `
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
+<div class="pane" data-tab="team">
   ${sec("us", me, "Where we stand", "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
@@ -632,31 +658,31 @@ function renderTeam(D, fid, key) {
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? "Dashed line = playoff cut. " : ""}Max = most points still possible.</div>`, "s1")}
-
-  ${sec("us", me, "Our next games", "",
+  ${sec("us", me, "Next game", "", nextOurs.length ? fixtureCard(D, M, nextOurs[0], {focus: fid, stake: true}) : "<div class='mut'>No more league games scheduled.</div>", "t2")}
+</div><div class="pane" data-tab="games">
+  ${sec("us", me, "Upcoming", "",
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
     , "s2")}
-
+  ${sec("us", me, "Results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
+    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
   ${events.length ? sec("div", "Events", "Showcases & tournaments", "Don't count toward league standings.",
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs", false) : ""}
-
-  ${sec("us", me, "Our results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
-    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
-
+</div><div class="pane" data-tab="league">
   ${sec("div", "League", "League this week", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`,
     (sec4 || "<div class='mut'>No league games in this window.</div>")
     + (older.length ? `<details class="inner"><summary>Older league results (${older.length})</summary>${older.map(g => resultRow(D, g, null)).join("")}</details>` : ""), "s4", false)}
-
+</div><div class="pane" data-tab="predict">
   ${sec("div", "Predict", "Rest-of-season predictor", `Gray = our pick. Tap a result to change it.`, `
     <div class="picksbar" id="picksbar"></div>
     <div id="predtable"></div>
     <details class="list" id="gamelist" ${store.get("open:gamelist") === "1" ? "open" : ""}><summary>▾ List of remaining games (${upcoming.length})</summary>
       <div id="predgames">${scheduled.map(g => gameRow(D, M, g, {focus: fid, picks: true, showDate: true})).join("")}${missed.map(g => gameRow(D, M, g, {focus: fid, picks: true, left: "TBD"})).join("")}</div></details>`, "s5", false)}
-
+</div>
 `;
 
-  document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
+  showTab(TAB, false); $("#tabbar").hidden = false;
+  document.querySelectorAll("details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   $("#gamelist").addEventListener("toggle", e => store.set("open:gamelist", e.target.open ? "1" : "0"));
   $("#teamhead").innerHTML = `<div class="th"><div class="thl">
       <button class="teamdd" id="teamdd" aria-haspopup="true">${esc(D.age_label.split(" (")[0])} · ${me} ${icon("chev")}</button>
