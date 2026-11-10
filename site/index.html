@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.75">
+<meta name="app-version" content="v0.76">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -28,6 +28,8 @@ body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
    bounces or zooms, no sideways scroll, 16px inputs so iOS never zooms on focus, instant tap feedback. */
 html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{display:flex;flex-direction:column;touch-action:manipulation;overflow-x:clip;max-width:100%}
+/* Home-screen app: iOS measures 100% short when the status bar is drawn over the page, so pin the frame to the screen edges. */
+body{position:fixed;top:0;right:0;bottom:0;left:0;height:auto}
 #scroller{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 input,select,textarea{font-size:16px!important}
 button,summary,.f-row,.pill-btn,.findbtn,.imp,.more,.toggles button{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:transform .08s ease,opacity .08s ease}
