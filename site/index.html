@@ -9,10 +9,10 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.79">
+<meta name="app-version" content="v0.80">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -945,7 +945,7 @@ let LOADED_VER = null, LAST_DATA = Date.now();
 function fitStandalone() {
   const sa = navigator.standalone || matchMedia("(display-mode: standalone)").matches;
   const tall = Math.max(screen.height, screen.width), short = innerHeight >= innerWidth && innerHeight < tall - 20;
-  document.body.classList.toggle("short", !!(sa && short));
+  document.body.classList.toggle("short", false);
 }
 // UAT-only layout test: pink behind the page, green outline on the app frame, and iOS's numbers.
 if (location.hostname.startsWith("uat.")) {
