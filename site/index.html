@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.78">
+<meta name="app-version" content="v0.79">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -946,6 +946,20 @@ function fitStandalone() {
   const sa = navigator.standalone || matchMedia("(display-mode: standalone)").matches;
   const tall = Math.max(screen.height, screen.width), short = innerHeight >= innerWidth && innerHeight < tall - 20;
   document.body.classList.toggle("short", !!(sa && short));
+}
+// UAT-only layout test: pink behind the page, green outline on the app frame, and iOS's numbers.
+if (location.hostname.startsWith("uat.")) {
+  const st = document.createElement("style");
+  st.textContent = "html{background:#ff00c8!important}body{outline:3px solid #22c55e;outline-offset:-3px}#dbg{position:fixed;left:6px;right:6px;top:calc(env(safe-area-inset-top,0px) + 52px);z-index:99;background:rgba(0,0,0,.85);color:#a7f3d0;font:11px/1.35 ui-monospace,Menlo,monospace;padding:6px 8px;border-radius:8px;pointer-events:none}#sap{position:fixed;visibility:hidden;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}";
+  document.head.appendChild(st);
+  const probe = document.createElement("div"); probe.id = "sap"; document.documentElement.appendChild(probe);
+  const box = document.createElement("div"); box.id = "dbg"; document.documentElement.appendChild(box);
+  const show = () => { const cs = getComputedStyle(probe), tb = $("#tabbar").getBoundingClientRect(), vv = window.visualViewport;
+    box.textContent = `standalone ${!!(navigator.standalone || matchMedia("(display-mode: standalone)").matches)} · short ${document.body.classList.contains("short")}\n`
+      + `screen ${screen.width}x${screen.height} · inner ${innerWidth}x${innerHeight} · visual ${vv ? Math.round(vv.height) : "-"}\n`
+      + `html ${document.documentElement.clientHeight} · body ${Math.round(document.body.getBoundingClientRect().height)} · tabbar ${Math.round(tb.top)}-${Math.round(tb.bottom)}\n`
+      + `safe top ${cs.paddingTop} bottom ${cs.paddingBottom}`; };
+  box.style.whiteSpace = "pre"; show(); addEventListener("resize", show); setTimeout(show, 800);
 }
 fitStandalone(); addEventListener("resize", fitStandalone); addEventListener("orientationchange", () => setTimeout(fitStandalone, 300));
 $("#ver").textContent = document.querySelector('meta[name="app-version"]').content;
