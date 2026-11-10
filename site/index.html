@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.71">
+<meta name="app-version" content="v0.72">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -41,7 +41,7 @@ details.evrow{border:1px solid var(--line);border-radius:10px;margin-bottom:10px
 details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relative}details.evrow>summary::-webkit-details-marker{display:none}
 .evhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 2px}.evt{font-size:15px;font-weight:700}details.evrow[open]>summary .chev{transform:rotate(180deg)}.evbody{padding:0 10px 12px}
 .grow{display:grid;grid-template-columns:46px 1fr auto 1fr 30px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
-.grow.tap{cursor:pointer}.grow.ours{box-shadow:inset 3px 0 0 var(--red);padding-left:8px}
+.grow.tap{cursor:pointer}.grow.ours{background:var(--me);border-radius:8px;border-bottom-color:transparent}
 .gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called,.gtag.bigger{color:var(--up);border-color:#1f5f3a}.gtag.missed{color:var(--dn);border-color:#7f1d1d}
 .keytag{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--mut);border:1px solid var(--line2);border-radius:5px;padding:1px 4px}
 .gm .res{width:18px;height:18px;font-size:10px}
@@ -52,7 +52,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .venue{font-size:12px;color:var(--mut);margin-top:2px}
 .ic{width:20px;height:20px;display:block}
 .topline{display:flex;align-items:center;gap:8px}.appname{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent)}
-.topline .checked{flex:1;margin:0;font-size:11px}
+.topline .checked{margin:0;font-size:11px}
 .ibtn{flex:none;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:10px;cursor:pointer;padding:0}
 .ibtn.starred{color:#fde047;border-color:#a16207}
 #teamwrap{position:relative;max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-right,0px)) 0 calc(10px + env(safe-area-inset-left,0px))}
@@ -65,7 +65,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
 .ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
 .ddi{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;text-align:left}
-.ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-top:1px solid var(--line);border-radius:0 0 8px 8px;color:var(--link)}
+.ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-bottom:1px solid var(--line);color:var(--link);color:var(--link)}
 .glk{color:var(--ink);font-weight:600;margin-bottom:2px}.cdet{margin-top:6px;font-size:12px;color:var(--mut)}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
@@ -115,7 +115,7 @@ tr.cut td{border-bottom:2px dashed var(--accent)}
 td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .fx{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:var(--card)}
 .fx.matters{background:#1f2530;border-color:var(--line2)}
-.when{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:8px}
+.when{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:8px}.when .lk{white-space:nowrap;text-align:right}
 .teams.t4{grid-template-columns:1fr auto 1fr auto;gap:10px}.vlink{color:var(--link);text-decoration:none}
 .teams{display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin:6px 0}.teams .a{text-align:right}
 .score{text-align:center;min-width:40px}.score.final{font-size:20px;font-weight:800}.score.vs{color:var(--mut);font-size:13px;font-weight:600}
@@ -159,7 +159,11 @@ h3{font-size:14px;margin:10px 0 6px}
 .day{font-size:12px;font-weight:800;color:var(--ink);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding-bottom:4px}
 .day:first-child{margin-top:0}.mk{font-weight:800;margin-left:4px}.mk.ok{color:var(--up)}.mk.no{color:var(--dn)}
 footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
-.brand{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}#ver{font-size:10px;color:var(--mut);font-weight:600}
+.brand{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25;flex:1;min-width:0}
+.topline .appname{font-size:17px;font-weight:800;letter-spacing:0;text-transform:none;color:var(--ink)}
+.subline{display:flex;gap:0;font-size:11px;color:var(--mut)}#ver{font-size:11px;color:var(--mut)}#ver::before{content:"\00a0·\00a0"}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--red);display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 7px;flex:none;box-sizing:border-box}
+.logo i{display:block;height:3px;background:#fff;border-radius:2px}.logo i:nth-child(2){width:75%}.logo i:nth-child(3){width:50%}
 .scroll{overflow-x:auto}
 /* finder */
 #finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -176,8 +180,8 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 </head>
 <body>
 <header>
-  <div class="topline"><span class="brand"><span class="appname">Sideline Standings</span><span id="ver"></span></span><span class="checked" id="checked"></span>
-    <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span></span>
+    <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button></span></div>
 </header>
 <div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
@@ -368,8 +372,7 @@ async function boot() {
   fetch("data/status.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(s => { STATUS = s; const el = $("#checked"); if (el && s) el.innerHTML = checkedTxt(); }).catch(() => {});
   window.addEventListener("hashchange", route);
   $("#fclose").onclick = closeFinder;
-  $("#findtop").innerHTML = icon("search"); $("#infotop").innerHTML = icon("info");
-  $("#findtop").onclick = openFinder;
+  $("#infotop").innerHTML = icon("info");
   document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) { m.hidden = true; const t = $("#teamdd"); if (t) t.setAttribute("aria-expanded", "false"); } });
   $("#infotop").onclick = () => { $("#info").hidden = false; };
   $("#infoclose").onclick = () => { $("#info").hidden = true; };
@@ -392,7 +395,7 @@ function route() {
     openTeam(f[0]);
   } else {
     drawPills(); openFinder();
-    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">Choose a team ${icon("chev")}</button><div class="thsub">Search or browse every ECNL, ECNL RL and Pre-ECNL team, then tap the star to save it.</div></div></div>`;
+    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">${icon("search")} Find a team</button><div class="thsub">Search or browse every ECNL, ECNL RL and Pre-ECNL team, then tap the star to save it.</div></div></div>`;
     $("#teamdd").onclick = openFinder;
     $("#app").innerHTML = ""; $("#tabbar").hidden = true;
   }
@@ -400,9 +403,10 @@ function route() {
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
   const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
-  m.innerHTML = (f.length ? `<div class="ddh">Favorites</div>` : "")
+  m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
+    + (f.length ? `<div class="ddh">Favorites</div>` : "")
     + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}</span><span class="ddsub">${esc(t.c)}</span></button>`; }).join("")
-    + `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find another team</span></button>`;
+    ;
   m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
@@ -495,9 +499,10 @@ function fixtureCard(D, M, g, o = {}) {
   const P = M.probs(g.home_id, g.away_id, o.neutral);
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
-  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+  const likelyTop = us ? `Likely ${sL[0] > sL[1] ? "win" : sL[0] < sL[1] ? "loss" : "draw"} ${sL[0]}–${sL[1]}` : likelyLine(LN, RN, sL);
+  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span><span class="lk">${likelyTop}</span></div>
     <div class="teams t4"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
-    <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
+    <div class="cdet" hidden>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
     </div>`;
 }
 const num = p => Math.round(p * 100);
@@ -555,7 +560,7 @@ function grade(p, h, a) {
   return d >= 2 ? "bigger" : d <= -2 ? "closer" : "called";
 }
 function resultRow(D, g, f, showDate = true) {
-  return gameRow(D, null, g, {focus: f, ours: true, left: showDate ? shortDate(g.date) : ""});
+  return gameRow(D, null, g, {focus: f, left: showDate ? shortDate(g.date) : ""});
 }
 // Scoreboard style: "XF 4 @ 0 Eastside FC", winner in bold.
 function scoreLine(LN, ls, sep, rs, RN, us) {
@@ -684,7 +689,7 @@ function renderTeam(D, fid, key) {
       det: `<div class="glk">We predicted ${likelyLine(hn, an, p).replace("Likely ", "")}. Final ${g.hs}–${g.as}.</div><div>${verdict}.</div>`});
   };
   const howHtml = graded.length
-    ? `<div class="howsum">Called it in <b>${cnt("called") + cnt("exact")} of ${graded.length}</b> games${cnt("exact") ? ` (${cnt("exact")} exact)` : ""}.</div>
+    ? `<div class="howsum">Right result in <b>${graded.length - cnt("missed")} of ${graded.length}</b> games${cnt("exact") ? ` (${cnt("exact")} exact)` : ""}.</div>
        <div class="mut" style="margin-bottom:8px">Bigger win than expected ${cnt("bigger")} · Closer than expected ${cnt("closer")} · Missed ${cnt("missed")}</div>`
       + byDay(graded.map(x => x.g), g => howRow(graded.find(x => x.g === g)), d => fmtDate(d))
     : "<div class='mut'>Fills in after the next full data update.</div>";
@@ -705,8 +710,8 @@ function renderTeam(D, fid, key) {
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1")}
 </div><div class="pane" data-tab="games">
   ${sec("us", chipMe, "Upcoming", "",
-    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
-    + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
+    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
+    + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
     , "s2")}
   ${sec("us", chipMe, "Results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
