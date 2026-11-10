@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.70">
+<meta name="app-version" content="v0.71">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -42,7 +42,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .evhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 2px}.evt{font-size:15px;font-weight:700}details.evrow[open]>summary .chev{transform:rotate(180deg)}.evbody{padding:0 10px 12px}
 .grow{display:grid;grid-template-columns:46px 1fr auto 1fr 30px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
 .grow.tap{cursor:pointer}.grow.ours{box-shadow:inset 3px 0 0 var(--red);padding-left:8px}
-.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called{color:var(--up);border-color:#1f5f3a}
+.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called,.gtag.bigger{color:var(--up);border-color:#1f5f3a}.gtag.missed{color:var(--dn);border-color:#7f1d1d}
 .keytag{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--mut);border:1px solid var(--line2);border-radius:5px;padding:1px 4px}
 .gm .res{width:18px;height:18px;font-size:10px}
 .gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
@@ -87,7 +87,7 @@ main{max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-
 .icon-btn.starred{color:#fde047;border-color:#a16207}
 details.sec>summary{list-style:none;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:8px}
 details.sec>summary::-webkit-details-marker{display:none}
-details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}
+details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}details.sec>summary .chev{width:18px;height:18px}details.sec:not([open])>summary .chev{transform:rotate(-90deg)}
 .sechead{padding:12px 14px;display:flex;align-items:center;gap:8px}
 .pane[hidden]{display:none}
 #tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
@@ -99,7 +99,7 @@ details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}
 .sec-body{padding:0 12px 14px}.sec-sub{color:var(--mut);font-size:13px;margin:0 0 10px}
 .chip{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
 .chip-us{background:var(--red);color:#fff}.chip-div{background:#2f3743;color:#e5e7eb}.chip-past{background:#252b35;color:#d1d5db}
-.sec-us{border-left:5px solid var(--red)}
+
 .focus{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin-bottom:12px}
 .stat{background:var(--card2);border-radius:10px;padding:10px}.stat .v{font-size:22px;font-weight:800}.stat .k{font-size:12px;color:var(--mut)}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -110,6 +110,7 @@ table.grid th,table.grid td{border-left:1px dashed var(--line2)}table.grid th:fi
 table.grid tr:nth-child(even) td{background:#12161c}
 table.grid td.chance,table.grid th.chance{background:var(--chance)}table.grid tr:nth-child(even) td.chance{background:var(--chance2)}
 table.grid tr.me td,table.grid tr.me td.chance,table.grid tr.me td.maxc{background:var(--me)!important}
+@media (max-width:440px){table.grid{font-size:13px}table.grid th,table.grid td{padding:6px 2px}table.grid th{font-size:10px}}
 tr.cut td{border-bottom:2px dashed var(--accent)}
 td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .fx{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:var(--card)}
@@ -158,7 +159,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .day{font-size:12px;font-weight:800;color:var(--ink);margin:16px 0 6px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line2);padding-bottom:4px}
 .day:first-child{margin-top:0}.mk{font-weight:800;margin-left:4px}.mk.ok{color:var(--up)}.mk.no{color:var(--dn)}
 footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
-#ver{margin:8px 0 calc(16px + env(safe-area-inset-bottom));font-size:11px;opacity:.7}
+.brand{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}#ver{font-size:10px;color:var(--mut);font-weight:600}
 .scroll{overflow-x:auto}
 /* finder */
 #finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -175,10 +176,10 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 </head>
 <body>
 <header>
-  <div class="topline"><span class="appname">Sideline Standings</span><span class="checked" id="checked"></span>
+  <div class="topline"><span class="brand"><span class="appname">Sideline Standings</span><span id="ver"></span></span><span class="checked" id="checked"></span>
     <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button><button class="ibtn" id="findtop" aria-label="Find a team"></button></span></div>
 </header>
-<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main><footer id="ver"></footer></div>
+<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
@@ -473,9 +474,9 @@ async function openTeam(k) {
   $("#scroller").scrollTop = 0;
 }
 function sec(kind, chip, title, sub, body, key, defOpen = true) {
-  const sk = `open2:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
-  return `<section class="card sec sec-${kind}"><div class="sechead"><span class="chip chip-${kind}">${chip}</span><h2>${title}</h2></div>
-    <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></section>`;
+  const sk = `open3:${key}`, saved = store.get(sk), open = saved === null ? defOpen : saved === "1";
+  return `<details class="card sec" data-key="${sk}" ${open ? "open" : ""}><summary><h2>${title}</h2>${CHEV}</summary>
+    <div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></details>`;
 }
 function teamName(D, id, fb) { const t = D.teams.find(x => x.id === id); return t ? t.short : (fb || "TBD"); }
 
@@ -554,7 +555,7 @@ function grade(p, h, a) {
   return d >= 2 ? "bigger" : d <= -2 ? "closer" : "called";
 }
 function resultRow(D, g, f, showDate = true) {
-  return gameRow(D, null, g, {focus: f, left: showDate ? shortDate(g.date) : ""});
+  return gameRow(D, null, g, {focus: f, ours: true, left: showDate ? shortDate(g.date) : ""});
 }
 // Scoreboard style: "XF 4 @ 0 Eastside FC", winner in bold.
 function scoreLine(LN, ls, sep, rs, RN, us) {
@@ -655,8 +656,8 @@ function renderTeam(D, fid, key) {
   const upW = inWin.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime);
   const dayShort = d => d === yest ? "Yest" : d === today ? "Today" : shortDate(d);
   const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
-  const sec4 = (finW.length ? blk("Results", finW.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: dayShort(g.date)})).join("")) : "")
-    + (waitW.length ? blk("Waiting for score", waitW.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : dayShort(g.date)})).join("")) : "")
+  const sec4 = (finW.length ? blk("Completed", finW.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: shortDate(g.date)})).join("")) : "")
+    + (waitW.length ? blk("Waiting for score", waitW.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : shortDate(g.date)})).join("")) : "")
     + [...new Set(upW.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
         upW.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
@@ -704,15 +705,15 @@ function renderTeam(D, fid, key) {
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1")}
 </div><div class="pane" data-tab="games">
   ${sec("us", chipMe, "Upcoming", "",
-    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
-    + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
+    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
+    + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true, ours: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
     , "s2")}
   ${sec("us", chipMe, "Results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
   ${events.length ? sec("div", "Events", "Showcases & tournaments", "Don't count toward league standings.",
-      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs", false) : ""}
+      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="league">
-  ${sec("div", "League", "This week", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
+  ${sec("div", "League", "This week's results", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b")}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c")}
 </div><div class="pane" data-tab="predict">
@@ -723,9 +724,9 @@ function renderTeam(D, fid, key) {
 `;
 
   showTab(TAB, false); $("#tabbar").hidden = false;
-  document.querySelectorAll("details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
+  document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   $("#teamhead").innerHTML = `<div class="th"><div class="thl">
-      <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)} · ${ids.length} teams</span></span>${icon("chev")}</button></div>
+      <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)}</span></span>${icon("chev")}</button></div>
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
   $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
   $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites"); };
