@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.95">
+<meta name="app-version" content="v0.96">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -502,13 +502,13 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) rech
 function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = icon("star", on); }
 async function onAuth() {
   const u = window.Clerk && window.Clerk.user;
-  if (!u) { if (ME) { ME = null; drawPills(); } $("#admintop").hidden = true; applyGate(); return; }
-  if (ME && ME.id === u.id) return;
+  if (!u) { ME = null; applyGate(); return; }
+  if (ME && ME.id === u.id) { drawPills(); return; }
   ME = {id: u.id, email: (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || "", admin: false};
   store.set("signedInOnce", "1"); applyGate();
   if (GATE_MOUNTED) { try { window.Clerk.unmountSignIn($("#gatesignin")); } catch (e) {} GATE_MOUNTED = false; }
   try {
-    const r = await api("GET", "/api/me"); ME.admin = !!r.admin; $("#admintop").hidden = !ME.admin;
+    const r = await api("GET", "/api/me"); ME.admin = !!r.admin; drawPills();
     const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id), dirty = !!store.get("favsDirty");
     const next = dirty && !first ? local : first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
     store.set("favsDirty", ""); store.set("askedResign", "");
@@ -546,6 +546,7 @@ async function openAcct() {
 }
 // Admin page: header icon, shown only to the owner (the server checks; the icon is just a shortcut).
 async function openAdmin() {
+  if (!(ME && ME.admin)) { drawPills(); return; }
   const b = $("#adminbody"); $("#admin").hidden = false; b.innerHTML = "<p class='mut'>Loading…</p>";
   try {
     const d = await api("GET", "/api/admin"), week = Date.now() - 7 * 864e5;
@@ -597,6 +598,7 @@ function route() {
 }
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
+  const ab = document.getElementById("admintop"); if (ab) ab.hidden = !(ME && ME.admin && window.Clerk && window.Clerk.user && window.Clerk.user.id === ME.id);
   const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
   m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
