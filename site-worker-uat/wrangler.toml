@@ -4,6 +4,29 @@ name               = "xf-ecnl-site-uat"
 compatibility_date = "2026-06-01"
 account_id         = "f4844cb4fa247cf50ffc158d9ee9d27d"
 workers_dev        = true
+# The API (/api/*: optional accounts, saved teams). Everything else is the static site.
+main               = "../api/worker.js"
 
 [assets]
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
 directory = "../site"
+
+[vars]
+# Clerk's public key for clerk.sidelinestandings.com (public, safe to publish): checks sign-in tokens.
+CLERK_JWT_KEY = """-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzrVpB/rcBqiXD8akue+f
+u1xrClh2kdESbX9SNR9KBhAGuRNjvdiScYjwIUdvj94V+G+eCfOiSTFymIzyP0Tx
+vU6OjXwaAIGQFQV/xLSASCEw4mHLV1QHdi+by3u0+9T8W3WmNqcxvDnV3PMr4ghe
+YzEVPQ3lP1Itj30nFiU0yIxcH8hBOo2xtterqji55bR0VltqzqHG2BgqdDGGCklL
+Gc1AtlXitscVMvCYD+cbE91EBCem47xeZBHpBw7dFIEepLg/SdJ0hh/Io8F02ODU
+KTGDO1d/PlPu5887uQfO8MWJpGst2SVOOiEKMe0mxFwzf4f1EGWlxh3C8ljporOv
+WQIDAQAB
+-----END PUBLIC KEY-----"""
+OWNER_IDS = ""
+
+# KV-BEGIN (the update job fills in the id, or drops this block if the store can't be made)
+[[kv_namespaces]]
+binding = "USERS"
+id = "KV_ID_PLACEHOLDER"
+# KV-END

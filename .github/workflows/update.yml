@@ -62,7 +62,7 @@ jobs:
             # A push that only changes the page (site/, not site/data) just republishes the last data.
             FILES=$(gh api "repos/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.sha }}" --jq '.files[].filename' 2>/dev/null || echo "?")
             echo "changed: $FILES"
-            if [ -n "$FILES" ] && ! echo "$FILES" | grep -qvE '^site/' && [ -f site/data/teams.json ]; then MODE=publish; fi
+            if [ -n "$FILES" ] && ! echo "$FILES" | grep -qvE '^(site/|api/|site-worker/|site-worker-uat/|uat-overrides/)' && [ -f site/data/teams.json ]; then MODE=publish; fi
           fi
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
           echo "Mode: $MODE"
@@ -86,6 +86,29 @@ jobs:
           sed -i 's/apple-mobile-web-app-title" content="Sideline"/apple-mobile-web-app-title" content="Sideline UAT"/; s#<title>Sideline Standings</title>#<title>Sideline UAT</title>#' site/index.html
           for d in site site-live; do cat $d/index.html $d/sw.js $d/manifest.webmanifest | sha1sum | cut -c1-12 > $d/version.txt; done
           echo "UAT page $(cat site/version.txt) · live page $(cat site-live/version.txt)"
+          # Live runs the server settings + API from the live branch too, so nothing new reaches the live
+          # site until it's promoted. (Older live branches have no API yet: then live stays static-only.)
+          rm -rf livecfg && mkdir -p livecfg
+          git archive live site-worker | tar -x -C livecfg
+          git archive live api 2>/dev/null | tar -x -C livecfg || true
+          ln -s "$PWD/site-live" livecfg/site-live
+
+      # Accounts store (Cloudflare KV, shared by UAT and live). Made once; its id is filled into both
+      # server settings. If the token can't make it, the sites still publish, just without accounts.
+      - name: Accounts store
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          A=f4844cb4fa247cf50ffc158d9ee9d27d; API=https://api.cloudflare.com/client/v4/accounts/$A/storage/kv/namespaces
+          ID=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" "$API?per_page=100" | jq -r '.result[]? | select(.title=="sideline-users") | .id' || true)
+          if [ -z "$ID" ]; then
+            ID=$(curl -fsS -X POST -H "Authorization: Bearer $CF_TOKEN" -H "content-type: application/json" -d '{"title":"sideline-users"}' "$API" | jq -r '.result.id // empty' || true)
+          fi
+          for f in site-worker-uat/wrangler.toml livecfg/site-worker/wrangler.toml; do
+            [ -f "$f" ] || continue
+            if [ -n "$ID" ]; then sed -i "s/KV_ID_PLACEHOLDER/$ID/" "$f"; else sed -i '/# KV-BEGIN/,/# KV-END/d' "$f"; fi
+          done
+          if [ -n "$ID" ]; then echo "Accounts store: $ID"; else echo "::warning::Couldn't find or make the accounts store (token needs Workers KV Storage: Edit). Sites publish without accounts."; fi
 
       - name: Save raw data back to the repo (only when it changed)
         if: steps.plan.outputs.mode != 'publish'
@@ -108,6 +131,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4"
           workingDirectory: site-worker-uat
           command: deploy
 
@@ -115,7 +139,8 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: site-worker
+          wranglerVersion: "4"
+          workingDirectory: livecfg/site-worker
           command: deploy
 
       # The old github.io address only forwards to the new one (team links keep working).

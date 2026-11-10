@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.81">
+<meta name="app-version" content="v0.90">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -68,11 +68,13 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
 .ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
 .ddi{display:flex;flex-direction:column;align-items:flex-start;width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:16px;font-weight:700;padding:10px;border-radius:8px;cursor:pointer;text-align:left}
-.ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddfind{flex-direction:row;gap:8px;align-items:center;border-bottom:1px solid var(--line);color:var(--link);color:var(--link)}
+.ddi.on{background:var(--me)}.ddsub{font-size:12px;color:var(--mut);font-weight:400}.ddacct{border-bottom:0;border-top:1px solid var(--line)}
+.ddfind{flex-direction:row;gap:8px;align-items:center;border-bottom:1px solid var(--line);color:var(--link);color:var(--link)}
 .glk{color:var(--ink);font-weight:600;margin-bottom:2px}.cdet{margin-top:6px;font-size:12px;color:var(--mut)}
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
+.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{font-size:12px}.adm td{padding:4px 6px 4px 0;border-bottom:1px solid var(--line)}.adm td.n{text-align:right;color:var(--mut)}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -215,6 +217,16 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <p><b>Find your team:</b> tap the search icon, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team to your list.</p>
   <p><b>Put it on your phone:</b> iPhone: open in Safari, tap Share, then <i>Add to Home Screen</i>. Android: Chrome menu ⋮, then <i>Add to Home screen</i>.</p>
   <p><b>Share a team:</b> open the team and tap the share icon. The link opens straight to that team.</p>
+  <p><b>Accounts are optional.</b> Signing in only keeps your starred teams on all your devices. <a class="vlink" href="privacy.html">Privacy</a></p>
+</div></div>
+<div id="acct" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Your account</b><button class="icon-btn" id="acctclose">Close</button></div>
+  <div id="acctbody"></div>
+</div></div>
+<div id="nudge" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Keep your teams everywhere</b><button class="icon-btn" id="nudgeclose">Not now</button></div>
+  <p>Sign in to keep your starred teams on all your devices, including the home-screen app. It's optional: everything works without an account.</p>
+  <button class="btn-main" id="nudgego">Sign in</button>
 </div></div>
 <div class="toast" id="toast"></div>
 <script>
@@ -227,6 +239,7 @@ const ICON = {
   share: '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
   chev: '<path d="m6 9 6 6 6-6"/>',
+  user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
   grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
@@ -379,7 +392,7 @@ const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
 const CONF_CACHE = {}, PICKS = {};
 const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
-const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash(); };
+const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash(); if (ME && !SYNCING) pushFavs(); };
 const teamByKey = k => TEAMS.find(t => t.k === k);
 const shortLabel = t => `${t.s} · ${t.a.split(" ")[0]}${t.a.includes("Girls") ? "G" : "B"}${/RL/.test(t.l) ? " RL" : /^Pre/.test(t.l) ? " Pre" : ""}`;
 
@@ -399,6 +412,93 @@ async function boot() {
   $("#fq").addEventListener("input", drawFinder);
   route();
 }
+// ---------- optional accounts (Clerk) ----------
+// Signing in only keeps starred teams on every device. The first sign-in on a device adds that device's
+// stars to the account; after that the account's list is the one every device shows.
+const CLERK_PK = "pk_live_Y2xlcmsuc2lkZWxpbmVzdGFuZGluZ3MuY29tJA";
+let ME = null, SYNCING = false, CLERK_READY = false, PUSH_T = null;
+function loadClerk() {
+  const sc = document.createElement("script");
+  sc.src = "https://clerk.sidelinestandings.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js";
+  sc.async = true; sc.crossOrigin = "anonymous"; sc.setAttribute("data-clerk-publishable-key", CLERK_PK);
+  sc.onload = async () => {
+    try {
+      await window.Clerk.load({appearance: {variables: {colorPrimary: "#c8102e", colorBackground: "#151a21", colorText: "#e8eaed", colorTextSecondary: "#a3acb9", colorInputBackground: "#1b2129", colorInputText: "#e8eaed", colorNeutral: "#e8eaed", borderRadius: "10px"}}});
+      CLERK_READY = true; drawPills();
+      window.Clerk.addListener(() => onAuth());
+      onAuth();
+    } catch (e) { console.warn("sign-in service didn't load", e); }
+  };
+  document.head.appendChild(sc);
+}
+async function token() {
+  try { return await Promise.race([window.Clerk.session.getToken(), new Promise(r => setTimeout(() => r(null), 5000))]); } catch (e) { return null; }
+}
+async function api(method, path, body) {
+  const t = await token(); if (!t) throw new Error("no session");
+  const r = await fetch(path, {method, headers: Object.assign({authorization: "Bearer " + t}, body ? {"content-type": "application/json"} : {}), body: body ? JSON.stringify(body) : undefined, cache: "no-store"});
+  if (!r.ok) throw new Error("server " + r.status);
+  return r.json();
+}
+function signIn() { if (window.Clerk) window.Clerk.openSignIn({}); }
+function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = icon("star", on); }
+async function onAuth() {
+  const u = window.Clerk && window.Clerk.user;
+  if (!u) { if (ME) { ME = null; drawPills(); } return; }
+  if (ME && ME.id === u.id) return;
+  ME = {id: u.id, email: (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || "", admin: false};
+  drawPills();
+  try {
+    const r = await api("GET", "/api/me"); ME.admin = !!r.admin;
+    const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id);
+    const next = first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
+    store.set("merged:" + u.id, "1");
+    SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
+    if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
+    if (first && local.length) toast("Your teams are saved to your account");
+  } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
+}
+function pushFavs(now) {
+  clearTimeout(PUSH_T);
+  const go = () => api("PUT", "/api/me", {favs: favs() || [], email: ME ? ME.email : ""}).catch(e => console.warn("save failed", e));
+  if (now) return go();
+  PUSH_T = setTimeout(go, 600);
+}
+const ago = ms => { if (!ms) return "-"; const m = Math.round((Date.now() - ms) / 60000); return m < 60 ? `${m}m ago` : m < 2880 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
+async function openAcct() {
+  if (!ME) return signIn();
+  const n = (favs() || []).length, b = $("#acctbody");
+  b.innerHTML = `<p>Signed in as <b>${esc(ME.email || "your account")}</b>. ${n} saved team${n === 1 ? "" : "s"}, kept on all your devices.</p>
+    <button class="btn-sec" id="acctout">Sign out</button>
+    <button class="btn-sec danger" id="acctdel">Delete account</button>
+    <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>
+    <div id="acctadmin"></div>`;
+  $("#acct").hidden = false;
+  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; $("#acct").hidden = true; drawPills(); toast("Signed out. Your teams stay on this device."); };
+  $("#acctdel").onclick = async e => {
+    const btn = e.currentTarget;
+    if (!btn.dataset.sure) { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete your account"; return; }
+    btn.textContent = "Deleting…";
+    try { await api("DELETE", "/api/me"); } catch (x) {}
+    try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
+    try { await window.Clerk.signOut(); } catch (x) {}
+    ME = null; $("#acct").hidden = true; drawPills(); toast("Account deleted");
+  };
+  if (ME.admin) {
+    const a = $("#acctadmin"); a.innerHTML = "<p class='mut'>Loading admin…</p>";
+    try {
+      const d = await api("GET", "/api/admin");
+      a.innerHTML = `<h3 style="margin:16px 0 4px">Admin · ${d.total} signed up</h3>
+        <table class="adm">${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams} team${u.teams === 1 ? "" : "s"}</td><td class="n">${ago(u.seen)}</td></tr>`).join("")}</table>
+        ${d.top.length ? `<h3 style="margin:14px 0 4px">Most followed</h3><table class="adm">${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}`;
+    } catch (x) { a.innerHTML = "<p class='mut'>Couldn't load the admin list.</p>"; }
+  }
+}
+$("#acctclose").onclick = () => $("#acct").hidden = true;
+$("#nudgeclose").onclick = () => $("#nudge").hidden = true;
+$("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
+loadClerk();
+
 $("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
 function route() {
@@ -425,8 +525,9 @@ function drawPills() {
   m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
     + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}</span><span class="ddsub">${esc(t.c)}</span></button>`; }).join("")
-    ;
-  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); location.hash = "t=" + b.dataset.k; };
+    + (ME ? `<button class="ddi ddfind ddacct" data-acct="1">${icon("user")}<span>Your account<span class="ddsub"> · ${esc(ME.email || "signed in")}</span></span></button>`
+       : CLERK_READY ? `<button class="ddi ddfind ddacct" data-signin="1">${icon("user")}<span>Sign in to save your teams</span></button>` : "");
+  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
   let f = favs() || [];
@@ -754,7 +855,8 @@ function renderTeam(D, fid, key) {
       <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)}</span></span>${icon("chev")}</button></div>
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
   $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
-  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites"); };
+  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites");
+    if (on && CLERK_READY && !ME && !store.get("nudged")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); } };
   $("#sharebtn").onclick = async () => {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
