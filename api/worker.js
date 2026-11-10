@@ -64,6 +64,11 @@ export default {
     OWNER_IDS = (env.OWNER_IDS || "").split(",").map(s => s.trim()).filter(Boolean);
     if (!env.USERS) return json({error: "storage not set up"}, 503);
 
+    // Public: does the site require sign-in? (Owner switch on the Admin page; on unless turned off.)
+    if (p === "/api/config" && req.method === "GET") {
+      const g = await env.USERS.get("cfg:gate");
+      return json({gate: g !== "off"});
+    }
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
     const key = "u:" + c.sub, now = Date.now();
@@ -107,6 +112,13 @@ export default {
       users.sort((a, b) => b.seen - a.seen);
       const top = Object.entries(count).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([k, n]) => ({k, n}));
       return json({total: users.length, users, top});
+    }
+    // PUT /api/admin/config: owner turns "Require sign-in" on or off.
+    if (p === "/api/admin/config" && req.method === "PUT") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      let body = {}; try { body = await req.json(); } catch (e) {}
+      await env.USERS.put("cfg:gate", body.gate ? "on" : "off");
+      return json({ok: true, gate: !!body.gate});
     }
     return json({error: "not found"}, 404);
   }

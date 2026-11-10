@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.91">
+<meta name="app-version" content="v0.95">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -74,7 +74,13 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
-.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#gate{position:fixed;inset:0;z-index:90;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}#gate[hidden]{display:none}
+.gate-in{max-width:420px;margin:0 auto;padding:calc(36px + env(safe-area-inset-top,0px)) 20px calc(30px + env(safe-area-inset-bottom,0px));text-align:center}
+.gate-logo{width:56px!important;height:56px!important;border-radius:14px!important;gap:5px!important;padding:0 13px!important;margin:0 auto 14px}.gate-logo i{height:5px!important}
+.gate-in h1{font-size:24px;margin:0 0 4px}.gate-sub{color:var(--mut);margin:0 0 14px}.gate-why{font-size:14px;margin:0 0 16px}
+#gatesignin{display:flex;justify-content:center;min-height:120px}.gate-foot{font-size:12px;color:var(--mut);margin-top:18px}
+.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
+.admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -217,12 +223,22 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <p><b>Find your team:</b> tap the search icon, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team to your list.</p>
   <p><b>Put it on your phone:</b> iPhone: open in Safari, tap Share, then <i>Add to Home Screen</i>. Android: Chrome menu ⋮, then <i>Add to Home screen</i>.</p>
   <p><b>Share a team:</b> open the team and tap the share icon. The link opens straight to that team.</p>
-  <p><b>Accounts are optional.</b> Signing in only keeps your starred teams on all your devices. <a class="vlink" href="privacy.html">Privacy</a></p>
+  <p><b>Your account</b> is free and keeps your starred teams on all your devices. Google or Apple sign-in takes one tap. <a class="vlink" href="privacy.html">Privacy</a></p>
 </div></div>
 <div id="acct" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Your account</b><button class="icon-btn" id="acctclose">Close</button></div>
   <div id="acctbody"></div>
 </div></div>
+<div id="gate" hidden>
+  <div class="gate-in">
+    <span class="logo gate-logo" aria-hidden="true"><i></i><i></i><i></i></span>
+    <h1>Sideline Standings</h1>
+    <p class="gate-sub">ECNL standings, games and predictions for your team.</p>
+    <p class="gate-why"><b>Free account.</b> Keeps your teams on all your devices. Google or Apple takes one tap.</p>
+    <div id="gatesignin"><p class="mut">Loading sign-in…</p></div>
+    <p class="gate-foot"><a class="vlink" href="privacy.html">Privacy</a> · Not affiliated with the ECNL</p>
+  </div>
+</div>
 <div id="admin" class="sheet" hidden><div class="sheet-card admcard">
   <div class="sheet-head"><b>Admin</b><button class="icon-btn" id="adminclose">Close</button></div>
   <div id="adminbody"></div>
@@ -397,7 +413,9 @@ const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
 const CONF_CACHE = {}, PICKS = {};
 const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
-const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash(); if (ME && !SYNCING) pushFavs(); };
+const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash();
+  if (ME && !SYNCING) pushFavs();
+  else if (!ME && !SYNCING && store.get("signedInOnce")) { store.set("favsDirty", "1"); if (CLERK_READY && !store.get("askedResign")) { store.set("askedResign", "1"); setTimeout(signIn, 600); } } };
 const teamByKey = k => TEAMS.find(t => t.k === k);
 const shortLabel = t => `${t.s} · ${t.a.split(" ")[0]}${t.a.includes("Girls") ? "G" : "B"}${/RL/.test(t.l) ? " RL" : /^Pre/.test(t.l) ? " Pre" : ""}`;
 
@@ -421,7 +439,33 @@ async function boot() {
 // Signing in only keeps starred teams on every device. The first sign-in on a device adds that device's
 // stars to the account; after that the account's list is the one every device shows.
 const CLERK_PK = "pk_live_Y2xlcmsuc2lkZWxpbmVzdGFuZGluZ3MuY29tJA";
-let ME = null, SYNCING = false, CLERK_READY = false, PUSH_T = null;
+let ME = null, SYNCING = false, CLERK_READY = false, PUSH_T = null, GATE = null;
+// "Require sign-in" (owner switch on the Admin page). A device that has signed in before is never
+// locked out, even after Clerk's 7-day session ends: it keeps working from saved teams.
+const knownDevice = () => !!store.get("signedInOnce");
+async function loadGate() {
+  try {
+    const r = await Promise.race([fetch("/api/config", {cache: "no-store"}).then(x => x.json()), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 4000))]);
+    GATE = r.gate !== false;
+  } catch (e) { GATE = true; }
+  store.set("gateCache", GATE ? "on" : "off");
+  applyGate();
+}
+function applyGate() {
+  const g = GATE === null ? store.get("gateCache") !== "off" : GATE;
+  const show = g && !knownDevice() && !(window.Clerk && window.Clerk.user);
+  $("#gate").hidden = !show;
+  if (show && CLERK_READY) mountGate();
+  drawPills();
+}
+const SIGNIN_OPTS = () => ({withSignUp: true, fallbackRedirectUrl: location.href, signUpFallbackRedirectUrl: location.href});
+let GATE_MOUNTED = false;
+function mountGate() {
+  if (GATE_MOUNTED) return;
+  const el = $("#gatesignin"); el.innerHTML = "";
+  try { window.Clerk.mountSignIn(el, SIGNIN_OPTS()); GATE_MOUNTED = true; }
+  catch (e) { try { window.Clerk.mountSignIn(el); GATE_MOUNTED = true; } catch (e2) { el.innerHTML = "<button class='btn-main' id='gatebtn'>Sign in</button>"; $("#gatebtn").onclick = signIn; } }
+}
 function loadClerk() {
   const sc = document.createElement("script");
   sc.src = "https://clerk.sidelinestandings.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js";
@@ -429,7 +473,7 @@ function loadClerk() {
   sc.onload = async () => {
     try {
       await window.Clerk.load({appearance: {variables: {colorPrimary: "#c8102e", colorBackground: "#151a21", colorText: "#e8eaed", colorTextSecondary: "#a3acb9", colorInputBackground: "#1b2129", colorInputText: "#e8eaed", colorNeutral: "#e8eaed", borderRadius: "10px"}}});
-      CLERK_READY = true; drawPills();
+      CLERK_READY = true; applyGate();
       window.Clerk.addListener(() => onAuth());
       onAuth();
     } catch (e) { console.warn("sign-in service didn't load", e); }
@@ -449,7 +493,7 @@ async function api(method, path, body) {
 let SIGNIN_T = null;
 function signIn() {
   if (!window.Clerk) return;
-  window.Clerk.openSignIn({});
+  try { window.Clerk.openSignIn(SIGNIN_OPTS()); } catch (e) { window.Clerk.openSignIn({}); }
   clearInterval(SIGNIN_T); let n = 0;
   SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
 }
@@ -458,14 +502,16 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) rech
 function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = icon("star", on); }
 async function onAuth() {
   const u = window.Clerk && window.Clerk.user;
-  if (!u) { if (ME) { ME = null; drawPills(); } $("#admintop").hidden = true; return; }
+  if (!u) { if (ME) { ME = null; drawPills(); } $("#admintop").hidden = true; applyGate(); return; }
   if (ME && ME.id === u.id) return;
   ME = {id: u.id, email: (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || "", admin: false};
-  drawPills();
+  store.set("signedInOnce", "1"); applyGate();
+  if (GATE_MOUNTED) { try { window.Clerk.unmountSignIn($("#gatesignin")); } catch (e) {} GATE_MOUNTED = false; }
   try {
     const r = await api("GET", "/api/me"); ME.admin = !!r.admin; $("#admintop").hidden = !ME.admin;
-    const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id);
-    const next = first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
+    const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id), dirty = !!store.get("favsDirty");
+    const next = dirty && !first ? local : first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
+    store.set("favsDirty", ""); store.set("askedResign", "");
     store.set("merged:" + u.id, "1");
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
@@ -487,7 +533,7 @@ async function openAcct() {
     <button class="btn-sec danger" id="acctdel">Delete account</button>
     <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>`;
   $("#acct").hidden = false;
-  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; $("#acct").hidden = true; drawPills(); toast("Signed out. Your teams stay on this device."); };
+  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#admintop").hidden = true; applyGate(); toast("Signed out"); };
   $("#acctdel").onclick = async e => {
     const btn = e.currentTarget;
     if (!btn.dataset.sure) { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete your account"; return; }
@@ -495,7 +541,7 @@ async function openAcct() {
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
-    ME = null; $("#acct").hidden = true; drawPills(); toast("Account deleted");
+    ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#admintop").hidden = true; applyGate(); toast("Account deleted");
   };
 }
 // Admin page: header icon, shown only to the owner (the server checks; the icon is just a shortcut).
@@ -505,7 +551,9 @@ async function openAdmin() {
     const d = await api("GET", "/api/admin"), week = Date.now() - 7 * 864e5;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
     const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
-    b.innerHTML = `<div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
+    const gateOn = GATE !== false;
+    b.innerHTML = `<div class="admswitch"><div><b>Require sign-in</b><div class="mut" style="font-size:12px">${gateOn ? "On: new visitors see the welcome screen." : "Off: the site is open; sign-in is optional."} Takes about a minute to reach everyone.</div></div><button class="btn-sec admtoggle" id="gatetoggle">${gateOn ? "Turn off" : "Turn on"}</button></div>
+      <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
         <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
         <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
       <h3 class="admh">People</h3>
@@ -513,6 +561,10 @@ async function openAdmin() {
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>
       ${d.top.length ? `<h3 class="admh">Most followed</h3><table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}
       <p class="mut" style="font-size:12px;margin-top:14px">Last data check: ${esc(checkedTxt())} · page ${esc(document.querySelector('meta[name="app-version"]').content)}</p>`;
+    $("#gatetoggle").onclick = async () => {
+      try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); openAdmin(); }
+      catch (x) { toast("Couldn't change it. Try again."); }
+    };
   } catch (x) { b.innerHTML = "<p class='mut'>Couldn't load the admin data.</p>"; }
 }
 $("#admintop").innerHTML = icon("chart");
@@ -521,7 +573,7 @@ $("#adminclose").onclick = () => $("#admin").hidden = true;
 $("#acctclose").onclick = () => $("#acct").hidden = true;
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
-loadClerk();
+loadClerk(); applyGate(); loadGate();
 
 $("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
@@ -550,7 +602,7 @@ function drawPills() {
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
     + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}</span><span class="ddsub">${esc(t.c)}</span></button>`; }).join("")
     + (ME ? `<button class="ddi ddfind ddacct" data-acct="1">${icon("user")}<span>Your account<span class="ddsub"> · ${esc(ME.email || "signed in")}</span></span></button>`
-       : CLERK_READY ? `<button class="ddi ddfind ddacct" data-signin="1">${icon("user")}<span>Sign in to save your teams</span></button>` : "");
+       : CLERK_READY ? `<button class="ddi ddfind ddacct" data-signin="1">${icon("user")}<span>${store.get("signedInOnce") ? "Sign in again to keep your teams in sync" : "Sign in to save your teams"}</span></button>` : "");
   m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
@@ -880,7 +932,7 @@ function renderTeam(D, fid, key) {
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
   $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
   $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites");
-    if (on && CLERK_READY && !ME && !store.get("nudged")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); } };
+    if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); } };
   $("#sharebtn").onclick = async () => {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
