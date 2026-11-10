@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.90">
+<meta name="app-version" content="v0.91">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -74,7 +74,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .hbtns{display:flex;gap:6px;flex:none}
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:flex;align-items:flex-end;justify-content:center}.sheet[hidden]{display:none}
 .sheet-card{background:var(--card);border:1px solid var(--line2);border-radius:14px 14px 0 0;max-width:640px;width:100%;padding:14px 16px calc(18px + env(safe-area-inset-bottom));font-size:14px;max-height:85vh;overflow-y:auto}
-.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{font-size:12px}.adm td{padding:4px 6px 4px 0;border-bottom:1px solid var(--line)}.adm td.n{text-align:right;color:var(--mut)}
+.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -201,7 +201,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <body>
 <header>
   <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
-    <button class="ibtn plain" id="infotop" aria-label="About this site"></button></div>
+    <button class="ibtn plain" id="admintop" aria-label="Admin" hidden></button><button class="ibtn plain" id="infotop" aria-label="About this site"></button></div>
 </header>
 <div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
@@ -223,6 +223,10 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <div class="sheet-head"><b>Your account</b><button class="icon-btn" id="acctclose">Close</button></div>
   <div id="acctbody"></div>
 </div></div>
+<div id="admin" class="sheet" hidden><div class="sheet-card admcard">
+  <div class="sheet-head"><b>Admin</b><button class="icon-btn" id="adminclose">Close</button></div>
+  <div id="adminbody"></div>
+</div></div>
 <div id="nudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Keep your teams everywhere</b><button class="icon-btn" id="nudgeclose">Not now</button></div>
   <p>Sign in to keep your starred teams on all your devices, including the home-screen app. It's optional: everything works without an account.</p>
@@ -239,6 +243,7 @@ const ICON = {
   share: '<path d="M12 3.5v11"/><path d="m7.5 8 4.5-4.5L16.5 8"/><path d="M5 12.5v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
   chev: '<path d="m6 9 6 6 6-6"/>',
+  chart: '<path d="M4 20h16"/><rect x="6" y="11" width="3" height="6" rx=".6"/><rect x="10.5" y="7" width="3" height="10" rx=".6"/><rect x="15" y="4" width="3" height="13" rx=".6"/>',
   user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
@@ -440,16 +445,25 @@ async function api(method, path, body) {
   if (!r.ok) throw new Error("server " + r.status);
   return r.json();
 }
-function signIn() { if (window.Clerk) window.Clerk.openSignIn({}); }
+// After the sign-in window opens, keep checking until it finishes (Clerk doesn't always announce it).
+let SIGNIN_T = null;
+function signIn() {
+  if (!window.Clerk) return;
+  window.Clerk.openSignIn({});
+  clearInterval(SIGNIN_T); let n = 0;
+  SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
+}
+const recheck = () => { if (CLERK_READY) onAuth(); };
+document.addEventListener("visibilitychange", () => { if (!document.hidden) recheck(); });
 function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = icon("star", on); }
 async function onAuth() {
   const u = window.Clerk && window.Clerk.user;
-  if (!u) { if (ME) { ME = null; drawPills(); } return; }
+  if (!u) { if (ME) { ME = null; drawPills(); } $("#admintop").hidden = true; return; }
   if (ME && ME.id === u.id) return;
   ME = {id: u.id, email: (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || "", admin: false};
   drawPills();
   try {
-    const r = await api("GET", "/api/me"); ME.admin = !!r.admin;
+    const r = await api("GET", "/api/me"); ME.admin = !!r.admin; $("#admintop").hidden = !ME.admin;
     const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id);
     const next = first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
     store.set("merged:" + u.id, "1");
@@ -471,8 +485,7 @@ async function openAcct() {
   b.innerHTML = `<p>Signed in as <b>${esc(ME.email || "your account")}</b>. ${n} saved team${n === 1 ? "" : "s"}, kept on all your devices.</p>
     <button class="btn-sec" id="acctout">Sign out</button>
     <button class="btn-sec danger" id="acctdel">Delete account</button>
-    <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>
-    <div id="acctadmin"></div>`;
+    <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>`;
   $("#acct").hidden = false;
   $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; $("#acct").hidden = true; drawPills(); toast("Signed out. Your teams stay on this device."); };
   $("#acctdel").onclick = async e => {
@@ -484,16 +497,27 @@ async function openAcct() {
     try { await window.Clerk.signOut(); } catch (x) {}
     ME = null; $("#acct").hidden = true; drawPills(); toast("Account deleted");
   };
-  if (ME.admin) {
-    const a = $("#acctadmin"); a.innerHTML = "<p class='mut'>Loading admin…</p>";
-    try {
-      const d = await api("GET", "/api/admin");
-      a.innerHTML = `<h3 style="margin:16px 0 4px">Admin · ${d.total} signed up</h3>
-        <table class="adm">${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams} team${u.teams === 1 ? "" : "s"}</td><td class="n">${ago(u.seen)}</td></tr>`).join("")}</table>
-        ${d.top.length ? `<h3 style="margin:14px 0 4px">Most followed</h3><table class="adm">${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}`;
-    } catch (x) { a.innerHTML = "<p class='mut'>Couldn't load the admin list.</p>"; }
-  }
 }
+// Admin page: header icon, shown only to the owner (the server checks; the icon is just a shortcut).
+async function openAdmin() {
+  const b = $("#adminbody"); $("#admin").hidden = false; b.innerHTML = "<p class='mut'>Loading…</p>";
+  try {
+    const d = await api("GET", "/api/admin"), week = Date.now() - 7 * 864e5;
+    const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
+    const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
+    b.innerHTML = `<div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
+        <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
+        <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
+      <h3 class="admh">People</h3>
+      <table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
+        ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>
+      ${d.top.length ? `<h3 class="admh">Most followed</h3><table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}
+      <p class="mut" style="font-size:12px;margin-top:14px">Last data check: ${esc(checkedTxt())} · page ${esc(document.querySelector('meta[name="app-version"]').content)}</p>`;
+  } catch (x) { b.innerHTML = "<p class='mut'>Couldn't load the admin data.</p>"; }
+}
+$("#admintop").innerHTML = icon("chart");
+$("#admintop").onclick = openAdmin;
+$("#adminclose").onclick = () => $("#admin").hidden = true;
 $("#acctclose").onclick = () => $("#acct").hidden = true;
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
@@ -854,7 +878,7 @@ function renderTeam(D, fid, key) {
   $("#teamhead").innerHTML = `<div class="th"><div class="thl">
       <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)}</span></span>${icon("chev")}</button></div>
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
-  $("#teamdd").onclick = () => { const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
+  $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
   $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites");
     if (on && CLERK_READY && !ME && !store.get("nudged")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); } };
   $("#sharebtn").onclick = async () => {
