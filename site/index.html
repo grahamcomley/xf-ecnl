@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.74">
+<meta name="app-version" content="v0.75">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -516,9 +516,9 @@ function fixtureCard(D, M, g, o = {}) {
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
   const likelyTop = us ? `Likely ${sL[0] > sL[1] ? "win" : sL[0] < sL[1] ? "loss" : "draw"} ${sL[0]}–${sL[1]}` : likelyLine(LN, RN, sL);
-  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span><span class="lk">${likelyTop}</span></div>
+  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
     <div class="teams t4"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
-    <div class="cdet" hidden>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
+    <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
     </div>`;
 }
 const num = p => Math.round(p * 100);
