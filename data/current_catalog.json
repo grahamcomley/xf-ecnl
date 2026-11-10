@@ -2384,6 +2384,15 @@
    "gender": null,
    "start": "2028-08-01",
    "end": "2029-07-31"
+  },
+  {
+   "event_id": 4506,
+   "name": "40th Annual Texas Shootout Showcase",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-06-04",
+   "end": "2027-06-06"
   }
  ]
 }
