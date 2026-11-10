@@ -56524,6 +56524,666 @@
     0.141
    ],
    "pick": "H"
+  },
+  "1150138": {
+   "date": "2026-11-20",
+   "home": "Manitou FC ECNL RL G2013/14",
+   "away": "Lakeville Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.588,
+    0.232,
+    0.18
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150139": {
+   "date": "2026-11-20",
+   "home": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "away": "DASC ECNL RL G2013/14",
+   "p": [
+    0.265,
+    0.221,
+    0.514
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150141": {
+   "date": "2026-11-21",
+   "home": "Shakopee SA ECNL RL G2013/14",
+   "away": "Fusion Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.503,
+    0.225,
+    0.272
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150143": {
+   "date": "2026-11-21",
+   "home": "DASC ECNL RL G2013/14",
+   "away": "MN Thunder Academy ECNL RL G2013/14",
+   "p": [
+    0.846,
+    0.111,
+    0.043
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150146": {
+   "date": "2026-11-22",
+   "home": "St Croix ECNL RL G2013/14",
+   "away": "North Surf ECNL RL G2013/14",
+   "p": [
+    0.902,
+    0.069,
+    0.029
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150147": {
+   "date": "2026-11-22",
+   "home": "Tonka United SA ECNL RL G2013/14",
+   "away": "MapleBrook SC ECNL RL G2013/14",
+   "p": [
+    0.324,
+    0.271,
+    0.405
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150148": {
+   "date": "2026-11-22",
+   "home": "DASC ECNL RL G2013/14",
+   "away": "Wave SC ECNL RL G2013/14",
+   "p": [
+    0.717,
+    0.182,
+    0.1
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150154": {
+   "date": "2026-12-05",
+   "home": "Shakopee SA ECNL RL G2013/14",
+   "away": "St Croix ECNL RL G2013/14",
+   "p": [
+    0.012,
+    0.028,
+    0.959
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    5
+   ]
+  },
+  "1150156": {
+   "date": "2026-12-05",
+   "home": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "away": "Boreal FC ECNL RL G2013/14",
+   "p": [
+    0.294,
+    0.259,
+    0.446
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150164": {
+   "date": "2026-12-06",
+   "home": "Lakeville Soccer Club ECNL RL G2013/14",
+   "away": "Fusion Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.753,
+    0.161,
+    0.086
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150166": {
+   "date": "2026-12-06",
+   "home": "Wave SC ECNL RL G2013/14",
+   "away": "Minnesota Rush ECNL RL G2013/14",
+   "p": [
+    0.044,
+    0.09,
+    0.866
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1150169": {
+   "date": "2026-12-12",
+   "home": "Tonka United SA ECNL RL G2013/14",
+   "away": "Shakopee SA ECNL RL G2013/14",
+   "p": [
+    0.476,
+    0.22,
+    0.305
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150170": {
+   "date": "2026-12-12",
+   "home": "North Surf ECNL RL G2013/14",
+   "away": "Wave SC ECNL RL G2013/14",
+   "p": [
+    0.47,
+    0.281,
+    0.249
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150173": {
+   "date": "2026-12-12",
+   "home": "MapleBrook SC ECNL RL G2013/14",
+   "away": "DASC ECNL RL G2013/14",
+   "p": [
+    0.19,
+    0.235,
+    0.575
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150177": {
+   "date": "2026-12-13",
+   "home": "Lakeville Soccer Club ECNL RL G2013/14",
+   "away": "DASC ECNL RL G2013/14",
+   "p": [
+    0.334,
+    0.255,
+    0.411
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150178": {
+   "date": "2026-12-13",
+   "home": "Minnesota Rush ECNL RL G2013/14",
+   "away": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.844,
+    0.091,
+    0.065
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1150184": {
+   "date": "2026-12-19",
+   "home": "Fusion Soccer Club ECNL RL G2013/14",
+   "away": "Manitou FC ECNL RL G2013/14",
+   "p": [
+    0.051,
+    0.124,
+    0.825
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150188": {
+   "date": "2026-12-19",
+   "home": "St Croix ECNL RL G2013/14",
+   "away": "Tonka United SA ECNL RL G2013/14",
+   "p": [
+    0.948,
+    0.038,
+    0.014
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    0
+   ]
+  },
+  "1150205": {
+   "date": "2027-01-08",
+   "home": "Fusion Soccer Club ECNL RL G2013/14",
+   "away": "MapleBrook SC ECNL RL G2013/14",
+   "p": [
+    0.231,
+    0.267,
+    0.502
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150210": {
+   "date": "2027-01-09",
+   "home": "Shakopee SA ECNL RL G2013/14",
+   "away": "North Surf ECNL RL G2013/14",
+   "p": [
+    0.295,
+    0.228,
+    0.477
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150219": {
+   "date": "2027-01-10",
+   "home": "MN Thunder Academy ECNL RL G2013/14",
+   "away": "St Croix ECNL RL G2013/14",
+   "p": [
+    0.009,
+    0.032,
+    0.96
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    4
+   ]
+  },
+  "1150231": {
+   "date": "2027-01-16",
+   "home": "DASC ECNL RL G2013/14",
+   "away": "Manitou FC ECNL RL G2013/14",
+   "p": [
+    0.297,
+    0.262,
+    0.442
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150235": {
+   "date": "2027-01-17",
+   "home": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "away": "Lakeville Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.338,
+    0.237,
+    0.425
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150237": {
+   "date": "2027-01-17",
+   "home": "DASC ECNL RL G2013/14",
+   "away": "Boreal FC ECNL RL G2013/14",
+   "p": [
+    0.426,
+    0.281,
+    0.294
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150241": {
+   "date": "2027-01-23",
+   "home": "Wave SC ECNL RL G2013/14",
+   "away": "MN Thunder Academy ECNL RL G2013/14",
+   "p": [
+    0.526,
+    0.283,
+    0.191
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150246": {
+   "date": "2027-01-23",
+   "home": "MapleBrook SC ECNL RL G2013/14",
+   "away": "Minnesota Rush ECNL RL G2013/14",
+   "p": [
+    0.071,
+    0.117,
+    0.812
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1150260": {
+   "date": "2027-01-30",
+   "home": "Boreal FC ECNL RL G2013/14",
+   "away": "Minnesota Rush ECNL RL G2013/14",
+   "p": [
+    0.2,
+    0.213,
+    0.587
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150264": {
+   "date": "2027-01-31",
+   "home": "Manitou FC ECNL RL G2013/14",
+   "away": "Tonka United SA ECNL RL G2013/14",
+   "p": [
+    0.818,
+    0.125,
+    0.058
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150268": {
+   "date": "2027-02-05",
+   "home": "North Surf ECNL RL G2013/14",
+   "away": "Manitou FC ECNL RL G2013/14",
+   "p": [
+    0.126,
+    0.205,
+    0.669
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150273": {
+   "date": "2027-02-06",
+   "home": "St Croix ECNL RL G2013/14",
+   "away": "Fusion Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.971,
+    0.023,
+    0.007
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    0
+   ]
+  },
+  "1150283": {
+   "date": "2027-02-07",
+   "home": "MN Thunder Academy ECNL RL G2013/14",
+   "away": "Shakopee SA ECNL RL G2013/14",
+   "p": [
+    0.274,
+    0.241,
+    0.485
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150285": {
+   "date": "2027-02-12",
+   "home": "Tonka United SA ECNL RL G2013/14",
+   "away": "Wave SC ECNL RL G2013/14",
+   "p": [
+    0.401,
+    0.28,
+    0.319
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150286": {
+   "date": "2027-02-13",
+   "home": "Boreal FC ECNL RL G2013/14",
+   "away": "St Croix ECNL RL G2013/14",
+   "p": [
+    0.145,
+    0.204,
+    0.652
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150287": {
+   "date": "2027-02-13",
+   "home": "North Surf ECNL RL G2013/14",
+   "away": "DASC ECNL RL G2013/14",
+   "p": [
+    0.192,
+    0.228,
+    0.58
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150290": {
+   "date": "2027-02-14",
+   "home": "Minnesota Rush ECNL RL G2013/14",
+   "away": "DASC ECNL RL G2013/14",
+   "p": [
+    0.668,
+    0.169,
+    0.163
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150292": {
+   "date": "2027-02-19",
+   "home": "MN Thunder Academy ECNL RL G2013/14",
+   "away": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.122,
+    0.186,
+    0.692
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150310": {
+   "date": "2027-02-26",
+   "home": "Wave SC ECNL RL G2013/14",
+   "away": "Boreal FC ECNL RL G2013/14",
+   "p": [
+    0.162,
+    0.269,
+    0.569
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150315": {
+   "date": "2027-02-27",
+   "home": "Lakeville Soccer Club ECNL RL G2013/14",
+   "away": "Tonka United SA ECNL RL G2013/14",
+   "p": [
+    0.67,
+    0.193,
+    0.137
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150317": {
+   "date": "2027-02-27",
+   "home": "MapleBrook SC ECNL RL G2013/14",
+   "away": "North Surf ECNL RL G2013/14",
+   "p": [
+    0.389,
+    0.283,
+    0.327
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150324": {
+   "date": "2027-03-06",
+   "home": "Boreal FC ECNL RL G2013/14",
+   "away": "MapleBrook SC ECNL RL G2013/14",
+   "p": [
+    0.569,
+    0.263,
+    0.169
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150340": {
+   "date": "2027-03-13",
+   "home": "Fusion Soccer Club ECNL RL G2013/14",
+   "away": "Keliix-Intra Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.16,
+    0.196,
+    0.644
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150344": {
+   "date": "2027-03-14",
+   "home": "Minnesota Rush ECNL RL G2013/14",
+   "away": "Shakopee SA ECNL RL G2013/14",
+   "p": [
+    0.967,
+    0.023,
+    0.01
+   ],
+   "pick": "H",
+   "s": [
+    5,
+    0
+   ]
+  },
+  "1150348": {
+   "date": "2027-03-19",
+   "home": "North Surf ECNL RL G2013/14",
+   "away": "Lakeville Soccer Club ECNL RL G2013/14",
+   "p": [
+    0.249,
+    0.255,
+    0.497
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150355": {
+   "date": "2027-03-21",
+   "home": "Manitou FC ECNL RL G2013/14",
+   "away": "MN Thunder Academy ECNL RL G2013/14",
+   "p": [
+    0.89,
+    0.085,
+    0.025
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
   }
  },
  "u13g-4319-41702": {
@@ -134261,7 +134921,743 @@
    "pick": "H"
   }
  },
- "u13b-4339-40737": {},
+ "u13b-4339-40737": {
+  "1149908": {
+   "date": "2026-11-21",
+   "home": "Tonka United SA ECNL RL B2013/14",
+   "away": "MN Thunder Academy ECNL RL B2013/14",
+   "p": [
+    0.83,
+    0.088,
+    0.082
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    1
+   ]
+  },
+  "1149909": {
+   "date": "2026-11-21",
+   "home": "DASC ECNL RL B2013/14",
+   "away": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "p": [
+    0.658,
+    0.194,
+    0.148
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1149910": {
+   "date": "2026-11-21",
+   "home": "EPSC ECNL RL B2013/14",
+   "away": "Boreal FC ECNL RL B2013/14",
+   "p": [
+    0.102,
+    0.143,
+    0.755
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1149912": {
+   "date": "2026-11-21",
+   "home": "Keliix-Intra SC ECNL RL B2013/14",
+   "away": "Salvo SC ECNL RL B2013/14",
+   "p": [
+    0.156,
+    0.254,
+    0.59
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1149916": {
+   "date": "2026-11-21",
+   "home": "Wave SC ECNL RL B2013/14",
+   "away": "Minnesota Rush ECNL RL B2013/14",
+   "p": [
+    0.173,
+    0.246,
+    0.582
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1149914": {
+   "date": "2026-11-21",
+   "home": "North Surf ECNL RL B2013/14",
+   "away": "Park Valley United FC ECNL RL B2013/14",
+   "p": [
+    0.307,
+    0.199,
+    0.494
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149917": {
+   "date": "2026-11-22",
+   "home": "DASC ECNL RL B2013/14",
+   "away": "Centennial SC ECNL RL B2013/14",
+   "p": [
+    0.24,
+    0.252,
+    0.508
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1149924": {
+   "date": "2026-12-05",
+   "home": "North Surf ECNL RL B2013/14",
+   "away": "MN Thunder Academy ECNL RL B2013/14",
+   "p": [
+    0.48,
+    0.194,
+    0.325
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149929": {
+   "date": "2026-12-06",
+   "home": "Fusion Soccer Club ECNL RL B2013/14",
+   "away": "Keliix-Intra SC ECNL RL B2013/14",
+   "p": [
+    0.716,
+    0.191,
+    0.093
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1149942": {
+   "date": "2026-12-12",
+   "home": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "away": "Wave SC ECNL RL B2013/14",
+   "p": [
+    0.342,
+    0.252,
+    0.406
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1149950": {
+   "date": "2026-12-12",
+   "home": "MapleBrook SC ECNL RL B2013/14",
+   "away": "DASC ECNL RL B2013/14",
+   "p": [
+    0.049,
+    0.088,
+    0.863
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1149953": {
+   "date": "2026-12-13",
+   "home": "Keliix-Intra SC ECNL RL B2013/14",
+   "away": "DASC ECNL RL B2013/14",
+   "p": [
+    0.163,
+    0.203,
+    0.634
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1149960": {
+   "date": "2026-12-19",
+   "home": "Park Valley United FC ECNL RL B2013/14",
+   "away": "Wave SC ECNL RL B2013/14",
+   "p": [
+    0.773,
+    0.124,
+    0.103
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1149961": {
+   "date": "2026-12-19",
+   "home": "Centennial SC ECNL RL B2013/14",
+   "away": "Salvo SC ECNL RL B2013/14",
+   "p": [
+    0.514,
+    0.297,
+    0.189
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1149965": {
+   "date": "2026-12-19",
+   "home": "Tonka United SA ECNL RL B2013/14",
+   "away": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "p": [
+    0.911,
+    0.06,
+    0.03
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    0
+   ]
+  },
+  "1149973": {
+   "date": "2026-12-20",
+   "home": "Minnesota Rush ECNL RL B2013/14",
+   "away": "EPSC ECNL RL B2013/14",
+   "p": [
+    0.864,
+    0.098,
+    0.038
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1149975": {
+   "date": "2027-01-08",
+   "home": "Salvo SC ECNL RL B2013/14",
+   "away": "Minneapolis United ECNL RL B2013/14",
+   "p": [
+    0.777,
+    0.157,
+    0.066
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1149979": {
+   "date": "2027-01-09",
+   "home": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "away": "EPSC ECNL RL B2013/14",
+   "p": [
+    0.592,
+    0.208,
+    0.201
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149983": {
+   "date": "2027-01-09",
+   "home": "MN Thunder Academy ECNL RL B2013/14",
+   "away": "Fusion Soccer Club ECNL RL B2013/14",
+   "p": [
+    0.357,
+    0.233,
+    0.41
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149990": {
+   "date": "2027-01-10",
+   "home": "Keliix-Intra SC ECNL RL B2013/14",
+   "away": "North Surf ECNL RL B2013/14",
+   "p": [
+    0.164,
+    0.201,
+    0.635
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1149991": {
+   "date": "2027-01-10",
+   "home": "Wave SC ECNL RL B2013/14",
+   "away": "Centennial SC ECNL RL B2013/14",
+   "p": [
+    0.143,
+    0.208,
+    0.649
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1149998": {
+   "date": "2027-01-16",
+   "home": "Centennial SC ECNL RL B2013/14",
+   "away": "Fusion Soccer Club ECNL RL B2013/14",
+   "p": [
+    0.496,
+    0.295,
+    0.209
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150003": {
+   "date": "2027-01-16",
+   "home": "EPSC ECNL RL B2013/14",
+   "away": "MN Thunder Academy ECNL RL B2013/14",
+   "p": [
+    0.099,
+    0.11,
+    0.792
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    3
+   ]
+  },
+  "1150004": {
+   "date": "2027-01-16",
+   "home": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "away": "MapleBrook SC ECNL RL B2013/14",
+   "p": [
+    0.738,
+    0.154,
+    0.108
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150005": {
+   "date": "2027-01-16",
+   "home": "DASC ECNL RL B2013/14",
+   "away": "Tonka United SA ECNL RL B2013/14",
+   "p": [
+    0.181,
+    0.169,
+    0.65
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150008": {
+   "date": "2027-01-17",
+   "home": "Park Valley United FC ECNL RL B2013/14",
+   "away": "Salvo SC ECNL RL B2013/14",
+   "p": [
+    0.53,
+    0.23,
+    0.239
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150011": {
+   "date": "2027-01-17",
+   "home": "DASC ECNL RL B2013/14",
+   "away": "Minnesota Rush ECNL RL B2013/14",
+   "p": [
+    0.273,
+    0.281,
+    0.446
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150019": {
+   "date": "2027-01-23",
+   "home": "Boreal FC ECNL RL B2013/14",
+   "away": "Minneapolis United ECNL RL B2013/14",
+   "p": [
+    0.838,
+    0.108,
+    0.054
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150031": {
+   "date": "2027-01-30",
+   "home": "Centennial SC ECNL RL B2013/14",
+   "away": "Tonka United SA ECNL RL B2013/14",
+   "p": [
+    0.369,
+    0.234,
+    0.397
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150032": {
+   "date": "2027-01-30",
+   "home": "Salvo SC ECNL RL B2013/14",
+   "away": "Boreal FC ECNL RL B2013/14",
+   "p": [
+    0.401,
+    0.293,
+    0.306
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150044": {
+   "date": "2027-01-31",
+   "home": "Fusion Soccer Club ECNL RL B2013/14",
+   "away": "Park Valley United FC ECNL RL B2013/14",
+   "p": [
+    0.362,
+    0.241,
+    0.398
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150050": {
+   "date": "2027-02-06",
+   "home": "Park Valley United FC ECNL RL B2013/14",
+   "away": "DASC ECNL RL B2013/14",
+   "p": [
+    0.613,
+    0.178,
+    0.21
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150058": {
+   "date": "2027-02-07",
+   "home": "MN Thunder Academy ECNL RL B2013/14",
+   "away": "DASC ECNL RL B2013/14",
+   "p": [
+    0.443,
+    0.199,
+    0.358
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150059": {
+   "date": "2027-02-07",
+   "home": "Minneapolis United ECNL RL B2013/14",
+   "away": "EPSC ECNL RL B2013/14",
+   "p": [
+    0.394,
+    0.232,
+    0.374
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150060": {
+   "date": "2027-02-07",
+   "home": "Minnesota Rush ECNL RL B2013/14",
+   "away": "North Surf ECNL RL B2013/14",
+   "p": [
+    0.541,
+    0.257,
+    0.202
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150064": {
+   "date": "2027-02-13",
+   "home": "Boreal FC ECNL RL B2013/14",
+   "away": "MapleBrook SC ECNL RL B2013/14",
+   "p": [
+    0.923,
+    0.053,
+    0.023
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    0
+   ]
+  },
+  "1150065": {
+   "date": "2027-02-13",
+   "home": "Tonka United SA ECNL RL B2013/14",
+   "away": "Wave SC ECNL RL B2013/14",
+   "p": [
+    0.878,
+    0.076,
+    0.046
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150068": {
+   "date": "2027-02-14",
+   "home": "Minnesota Rush ECNL RL B2013/14",
+   "away": "Keliix-Intra SC ECNL RL B2013/14",
+   "p": [
+    0.774,
+    0.162,
+    0.064
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150071": {
+   "date": "2027-02-19",
+   "home": "North Surf ECNL RL B2013/14",
+   "away": "Centennial SC ECNL RL B2013/14",
+   "p": [
+    0.239,
+    0.25,
+    0.51
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150073": {
+   "date": "2027-02-19",
+   "home": "MapleBrook SC ECNL RL B2013/14",
+   "away": "Park Valley United FC ECNL RL B2013/14",
+   "p": [
+    0.012,
+    0.027,
+    0.961
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    5
+   ]
+  },
+  "1150087": {
+   "date": "2027-02-21",
+   "home": "Fusion Soccer Club ECNL RL B2013/14",
+   "away": "Western Wisconsin Soccer ECNL RL B2013/14",
+   "p": [
+    0.653,
+    0.222,
+    0.125
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150094": {
+   "date": "2027-02-27",
+   "home": "MN Thunder Academy ECNL RL B2013/14",
+   "away": "Minneapolis United ECNL RL B2013/14",
+   "p": [
+    0.88,
+    0.074,
+    0.046
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    1
+   ]
+  },
+  "1150099": {
+   "date": "2027-02-28",
+   "home": "Boreal FC ECNL RL B2013/14",
+   "away": "Tonka United SA ECNL RL B2013/14",
+   "p": [
+    0.199,
+    0.179,
+    0.623
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150102": {
+   "date": "2027-03-05",
+   "home": "EPSC ECNL RL B2013/14",
+   "away": "Keliix-Intra SC ECNL RL B2013/14",
+   "p": [
+    0.356,
+    0.239,
+    0.405
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150103": {
+   "date": "2027-03-05",
+   "home": "Salvo SC ECNL RL B2013/14",
+   "away": "Fusion Soccer Club ECNL RL B2013/14",
+   "p": [
+    0.34,
+    0.344,
+    0.316
+   ],
+   "pick": "D",
+   "s": [
+    0,
+    0
+   ]
+  },
+  "1150118": {
+   "date": "2027-03-07",
+   "home": "Minneapolis United ECNL RL B2013/14",
+   "away": "MapleBrook SC ECNL RL B2013/14",
+   "p": [
+    0.555,
+    0.211,
+    0.234
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150131": {
+   "date": "2027-03-20",
+   "home": "MapleBrook SC ECNL RL B2013/14",
+   "away": "Minnesota Rush ECNL RL B2013/14",
+   "p": [
+    0.029,
+    0.081,
+    0.891
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1150136": {
+   "date": "2027-03-21",
+   "home": "Wave SC ECNL RL B2013/14",
+   "away": "Boreal FC ECNL RL B2013/14",
+   "p": [
+    0.267,
+    0.232,
+    0.501
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150137": {
+   "date": "2027-03-21",
+   "home": "Minneapolis United ECNL RL B2013/14",
+   "away": "North Surf ECNL RL B2013/14",
+   "p": [
+    0.098,
+    0.149,
+    0.753
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  }
+ },
  "u13b-4340-41829": {
   "1123544": {
    "date": "2026-10-03",
@@ -165622,7 +167018,668 @@
    "pick": "H"
   }
  },
- "u14b-4339-40738": {},
+ "u14b-4339-40738": {
+  "1149907": {
+   "date": "2026-11-20",
+   "home": "MapleBrook SC ECNL RL B2012/13",
+   "away": "Kickers FC ECNL RL B2012/13",
+   "p": [
+    0.088,
+    0.083,
+    0.829
+   ],
+   "pick": "A",
+   "s": [
+    2,
+    5
+   ]
+  },
+  "1149906": {
+   "date": "2026-11-20",
+   "home": "Wave SC ECNL RL B2012/13",
+   "away": "Minnesota Rush ECNL RL B2012/13",
+   "p": [
+    0.397,
+    0.226,
+    0.377
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149911": {
+   "date": "2026-11-21",
+   "home": "DASC ECNL RL B2012/13",
+   "away": "Fusion Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.611,
+    0.166,
+    0.223
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149913": {
+   "date": "2026-11-21",
+   "home": "North Surf ECNL RL B2012/13",
+   "away": "EPSC ECNL RL B2012/13",
+   "p": [
+    0.67,
+    0.132,
+    0.198
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    2
+   ]
+  },
+  "1149915": {
+   "date": "2026-11-22",
+   "home": "Keliix-Intra SC ECNL RL B2012/13",
+   "away": "Salvo SC ECNL RL B2012/13",
+   "p": [
+    0.718,
+    0.157,
+    0.124
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149918": {
+   "date": "2026-11-22",
+   "home": "DASC ECNL RL B2012/13",
+   "away": "Edina Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.464,
+    0.19,
+    0.346
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149919": {
+   "date": "2026-11-22",
+   "home": "Shakopee Soccer Association ECNL RL B2012/13",
+   "away": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "p": [
+    0.159,
+    0.163,
+    0.678
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149927": {
+   "date": "2026-12-05",
+   "home": "Tri-City United ECNL RL B2012/13",
+   "away": "MapleBrook SC ECNL RL B2012/13",
+   "p": [
+    0.861,
+    0.071,
+    0.068
+   ],
+   "pick": "H",
+   "s": [
+    5,
+    1
+   ]
+  },
+  "1149932": {
+   "date": "2026-12-06",
+   "home": "Fusion Soccer Club ECNL RL B2012/13",
+   "away": "North Surf ECNL RL B2012/13",
+   "p": [
+    0.356,
+    0.167,
+    0.477
+   ],
+   "pick": "A",
+   "s": [
+    2,
+    3
+   ]
+  },
+  "1149933": {
+   "date": "2026-12-06",
+   "home": "Salvo SC ECNL RL B2012/13",
+   "away": "Tri-City United ECNL RL B2012/13",
+   "p": [
+    0.197,
+    0.183,
+    0.62
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149941": {
+   "date": "2026-12-12",
+   "home": "Kickers FC ECNL RL B2012/13",
+   "away": "EPSC ECNL RL B2012/13",
+   "p": [
+    0.374,
+    0.19,
+    0.436
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149943": {
+   "date": "2026-12-12",
+   "home": "Edina Soccer Club ECNL RL B2012/13",
+   "away": "Salvo SC ECNL RL B2012/13",
+   "p": [
+    0.925,
+    0.05,
+    0.025
+   ],
+   "pick": "H",
+   "s": [
+    4,
+    0
+   ]
+  },
+  "1149945": {
+   "date": "2026-12-12",
+   "home": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "away": "Keliix-Intra SC ECNL RL B2012/13",
+   "p": [
+    0.601,
+    0.192,
+    0.207
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149949": {
+   "date": "2026-12-12",
+   "home": "Minnesota Rush ECNL RL B2012/13",
+   "away": "DASC ECNL RL B2012/13",
+   "p": [
+    0.472,
+    0.199,
+    0.329
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149952": {
+   "date": "2026-12-12",
+   "home": "Tri-City United ECNL RL B2012/13",
+   "away": "Shakopee Soccer Association ECNL RL B2012/13",
+   "p": [
+    0.596,
+    0.185,
+    0.22
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149957": {
+   "date": "2026-12-13",
+   "home": "Tri-City United ECNL RL B2012/13",
+   "away": "DASC ECNL RL B2012/13",
+   "p": [
+    0.166,
+    0.152,
+    0.683
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    3
+   ]
+  },
+  "1149966": {
+   "date": "2026-12-19",
+   "home": "EPSC ECNL RL B2012/13",
+   "away": "Tri-City United ECNL RL B2012/13",
+   "p": [
+    0.615,
+    0.167,
+    0.218
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149967": {
+   "date": "2026-12-19",
+   "home": "Shakopee Soccer Association ECNL RL B2012/13",
+   "away": "Fusion Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.16,
+    0.154,
+    0.685
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149969": {
+   "date": "2026-12-20",
+   "home": "Tri-City United ECNL RL B2012/13",
+   "away": "Minnesota Rush ECNL RL B2012/13",
+   "p": [
+    0.162,
+    0.166,
+    0.672
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149970": {
+   "date": "2026-12-20",
+   "home": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "away": "Wave SC ECNL RL B2012/13",
+   "p": [
+    0.344,
+    0.22,
+    0.436
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1149981": {
+   "date": "2027-01-09",
+   "home": "North Surf ECNL RL B2012/13",
+   "away": "Edina Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.444,
+    0.171,
+    0.386
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    2
+   ]
+  },
+  "1149988": {
+   "date": "2027-01-09",
+   "home": "MapleBrook SC ECNL RL B2012/13",
+   "away": "Minnesota Rush ECNL RL B2012/13",
+   "p": [
+    0.013,
+    0.023,
+    0.964
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    6
+   ]
+  },
+  "1149997": {
+   "date": "2027-01-15",
+   "home": "Salvo SC ECNL RL B2012/13",
+   "away": "Shakopee Soccer Association ECNL RL B2012/13",
+   "p": [
+    0.312,
+    0.214,
+    0.474
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150013": {
+   "date": "2027-01-17",
+   "home": "Keliix-Intra SC ECNL RL B2012/13",
+   "away": "North Surf ECNL RL B2012/13",
+   "p": [
+    0.201,
+    0.154,
+    0.645
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    3
+   ]
+  },
+  "1150016": {
+   "date": "2027-01-22",
+   "home": "Minnesota Rush ECNL RL B2012/13",
+   "away": "EPSC ECNL RL B2012/13",
+   "p": [
+    0.663,
+    0.158,
+    0.179
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150017": {
+   "date": "2027-01-22",
+   "home": "Fusion Soccer Club ECNL RL B2012/13",
+   "away": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "p": [
+    0.444,
+    0.201,
+    0.355
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150021": {
+   "date": "2027-01-23",
+   "home": "DASC ECNL RL B2012/13",
+   "away": "Wave SC ECNL RL B2012/13",
+   "p": [
+    0.472,
+    0.204,
+    0.323
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150026": {
+   "date": "2027-01-24",
+   "home": "DASC ECNL RL B2012/13",
+   "away": "Kickers FC ECNL RL B2012/13",
+   "p": [
+    0.729,
+    0.135,
+    0.136
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1150034": {
+   "date": "2027-01-30",
+   "home": "Edina Soccer Club ECNL RL B2012/13",
+   "away": "Tri-City United ECNL RL B2012/13",
+   "p": [
+    0.764,
+    0.127,
+    0.109
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1150037": {
+   "date": "2027-01-30",
+   "home": "MapleBrook SC ECNL RL B2012/13",
+   "away": "DASC ECNL RL B2012/13",
+   "p": [
+    0.012,
+    0.019,
+    0.97
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    7
+   ]
+  },
+  "1150039": {
+   "date": "2027-01-31",
+   "home": "Keliix-Intra SC ECNL RL B2012/13",
+   "away": "DASC ECNL RL B2012/13",
+   "p": [
+    0.188,
+    0.171,
+    0.641
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150043": {
+   "date": "2027-01-31",
+   "home": "Wave SC ECNL RL B2012/13",
+   "away": "Tri-City United ECNL RL B2012/13",
+   "p": [
+    0.72,
+    0.152,
+    0.128
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150053": {
+   "date": "2027-02-06",
+   "home": "EPSC ECNL RL B2012/13",
+   "away": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "p": [
+    0.403,
+    0.194,
+    0.403
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150075": {
+   "date": "2027-02-19",
+   "home": "North Surf ECNL RL B2012/13",
+   "away": "Wave SC ECNL RL B2012/13",
+   "p": [
+    0.458,
+    0.183,
+    0.359
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    2
+   ]
+  },
+  "1150078": {
+   "date": "2027-02-20",
+   "home": "Minnesota Rush ECNL RL B2012/13",
+   "away": "Keliix-Intra SC ECNL RL B2012/13",
+   "p": [
+    0.723,
+    0.154,
+    0.123
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150079": {
+   "date": "2027-02-20",
+   "home": "Salvo SC ECNL RL B2012/13",
+   "away": "Fusion Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.089,
+    0.116,
+    0.795
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    3
+   ]
+  },
+  "1150085": {
+   "date": "2027-02-21",
+   "home": "Kickers FC ECNL RL B2012/13",
+   "away": "Edina Soccer Club ECNL RL B2012/13",
+   "p": [
+    0.214,
+    0.174,
+    0.612
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150090": {
+   "date": "2027-02-26",
+   "home": "EPSC ECNL RL B2012/13",
+   "away": "Keliix-Intra SC ECNL RL B2012/13",
+   "p": [
+    0.574,
+    0.184,
+    0.242
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150096": {
+   "date": "2027-02-27",
+   "home": "Western Wisconsin Soccer ECNL RL B2012/13",
+   "away": "MapleBrook SC ECNL RL B2012/13",
+   "p": [
+    0.956,
+    0.027,
+    0.017
+   ],
+   "pick": "H",
+   "s": [
+    6,
+    1
+   ]
+  },
+  "1150104": {
+   "date": "2027-03-06",
+   "home": "Edina Soccer Club ECNL RL B2012/13",
+   "away": "MapleBrook SC ECNL RL B2012/13",
+   "p": [
+    0.984,
+    0.01,
+    0.005
+   ],
+   "pick": "H",
+   "s": [
+    8,
+    1
+   ]
+  },
+  "1150111": {
+   "date": "2027-03-07",
+   "home": "Kickers FC ECNL RL B2012/13",
+   "away": "Shakopee Soccer Association ECNL RL B2012/13",
+   "p": [
+    0.658,
+    0.166,
+    0.176
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150114": {
+   "date": "2027-03-07",
+   "home": "Wave SC ECNL RL B2012/13",
+   "away": "Salvo SC ECNL RL B2012/13",
+   "p": [
+    0.895,
+    0.071,
+    0.034
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150120": {
+   "date": "2027-03-13",
+   "home": "Fusion Soccer Club ECNL RL B2012/13",
+   "away": "Kickers FC ECNL RL B2012/13",
+   "p": [
+    0.589,
+    0.177,
+    0.234
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150134": {
+   "date": "2027-03-21",
+   "home": "Shakopee Soccer Association ECNL RL B2012/13",
+   "away": "North Surf ECNL RL B2012/13",
+   "p": [
+    0.085,
+    0.092,
+    0.823
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    4
+   ]
+  }
+ },
  "u14b-4340-41828": {
   "1123676": {
    "date": "2026-10-03",
@@ -284585,6 +286642,576 @@
     0.257
    ],
    "pick": "H"
+  },
+  "1150140": {
+   "date": "2026-11-20",
+   "home": "North Surf ECNL RL G2012/13",
+   "away": "DASC ECNL RL G2012/13",
+   "p": [
+    0.306,
+    0.334,
+    0.36
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150142": {
+   "date": "2026-11-21",
+   "home": "Manitou FC ECNL RL G2012/13",
+   "away": "Lakeville Soccer Club ECNL RL G2012/13",
+   "p": [
+    0.657,
+    0.183,
+    0.161
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150144": {
+   "date": "2026-11-21",
+   "home": "DASC ECNL RL G2012/13",
+   "away": "BOREAL FC ECNL RL G2012/13",
+   "p": [
+    0.783,
+    0.149,
+    0.069
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150145": {
+   "date": "2026-11-22",
+   "home": "Tonka United SA ECNL RL G2012/13",
+   "away": "Wave SC ECNL RL G2012/13",
+   "p": [
+    0.873,
+    0.08,
+    0.047
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150149": {
+   "date": "2026-11-22",
+   "home": "DASC ECNL RL G2012/13",
+   "away": "North Star FC ECNL RL G2012/13",
+   "p": [
+    0.664,
+    0.197,
+    0.138
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150150": {
+   "date": "2026-11-22",
+   "home": "Shakopee Soccer Association ECNL RL G2012/13",
+   "away": "St Croix ECNL RL G2012/13",
+   "p": [
+    0.184,
+    0.174,
+    0.642
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150151": {
+   "date": "2026-12-04",
+   "home": "Prior Lake SC ECNL RL G2012/13",
+   "away": "Minnesota Rush ECNL RL G2012/13",
+   "p": [
+    0.336,
+    0.266,
+    0.398
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150155": {
+   "date": "2026-12-05",
+   "home": "Shakopee Soccer Association ECNL RL G2012/13",
+   "away": "North Surf ECNL RL G2012/13",
+   "p": [
+    0.25,
+    0.269,
+    0.481
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150181": {
+   "date": "2026-12-13",
+   "home": "North Star FC ECNL RL G2012/13",
+   "away": "Shakopee Soccer Association ECNL RL G2012/13",
+   "p": [
+    0.394,
+    0.223,
+    0.383
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150183": {
+   "date": "2026-12-19",
+   "home": "Wave SC ECNL RL G2012/13",
+   "away": "Prior Lake SC ECNL RL G2012/13",
+   "p": [
+    0.091,
+    0.16,
+    0.749
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150192": {
+   "date": "2026-12-19",
+   "home": "Minnesota Rush ECNL RL G2012/13",
+   "away": "DASC ECNL RL G2012/13",
+   "p": [
+    0.379,
+    0.272,
+    0.35
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150201": {
+   "date": "2026-12-20",
+   "home": "Lakeville Soccer Club ECNL RL G2012/13",
+   "away": "DASC ECNL RL G2012/13",
+   "p": [
+    0.281,
+    0.273,
+    0.447
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150202": {
+   "date": "2026-12-20",
+   "home": "Tonka United SA ECNL RL G2012/13",
+   "away": "Manitou FC ECNL RL G2012/13",
+   "p": [
+    0.244,
+    0.198,
+    0.558
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150203": {
+   "date": "2026-12-20",
+   "home": "BOREAL FC ECNL RL G2012/13",
+   "away": "St Croix ECNL RL G2012/13",
+   "p": [
+    0.067,
+    0.102,
+    0.831
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1150213": {
+   "date": "2027-01-09",
+   "home": "Minnesota Rush ECNL RL G2012/13",
+   "away": "Wave SC ECNL RL G2012/13",
+   "p": [
+    0.9,
+    0.067,
+    0.033
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150214": {
+   "date": "2027-01-09",
+   "home": "St Croix ECNL RL G2012/13",
+   "away": "Tonka United SA ECNL RL G2012/13",
+   "p": [
+    0.559,
+    0.185,
+    0.256
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150216": {
+   "date": "2027-01-10",
+   "home": "Manitou FC ECNL RL G2012/13",
+   "away": "North Star FC ECNL RL G2012/13",
+   "p": [
+    0.81,
+    0.113,
+    0.077
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    0
+   ]
+  },
+  "1150230": {
+   "date": "2027-01-16",
+   "home": "Shakopee Soccer Association ECNL RL G2012/13",
+   "away": "BOREAL FC ECNL RL G2012/13",
+   "p": [
+    0.632,
+    0.195,
+    0.173
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150242": {
+   "date": "2027-01-23",
+   "home": "DASC ECNL RL G2012/13",
+   "away": "Prior Lake SC ECNL RL G2012/13",
+   "p": [
+    0.437,
+    0.31,
+    0.253
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150247": {
+   "date": "2027-01-23",
+   "home": "North Surf ECNL RL G2012/13",
+   "away": "North Star FC ECNL RL G2012/13",
+   "p": [
+    0.588,
+    0.229,
+    0.183
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150249": {
+   "date": "2027-01-24",
+   "home": "DASC ECNL RL G2012/13",
+   "away": "Tonka United SA ECNL RL G2012/13",
+   "p": [
+    0.49,
+    0.247,
+    0.263
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150251": {
+   "date": "2027-01-24",
+   "home": "Lakeville Soccer Club ECNL RL G2012/13",
+   "away": "Minnesota Rush ECNL RL G2012/13",
+   "p": [
+    0.306,
+    0.229,
+    0.466
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150258": {
+   "date": "2027-01-29",
+   "home": "Prior Lake SC ECNL RL G2012/13",
+   "away": "St Croix ECNL RL G2012/13",
+   "p": [
+    0.321,
+    0.242,
+    0.437
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150259": {
+   "date": "2027-01-29",
+   "home": "North Surf ECNL RL G2012/13",
+   "away": "Manitou FC ECNL RL G2012/13",
+   "p": [
+    0.257,
+    0.265,
+    0.479
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    1
+   ]
+  },
+  "1150266": {
+   "date": "2027-01-31",
+   "home": "BOREAL FC ECNL RL G2012/13",
+   "away": "Lakeville Soccer Club ECNL RL G2012/13",
+   "p": [
+    0.147,
+    0.183,
+    0.67
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150274": {
+   "date": "2027-02-06",
+   "home": "St Croix ECNL RL G2012/13",
+   "away": "North Surf ECNL RL G2012/13",
+   "p": [
+    0.483,
+    0.246,
+    0.271
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150284": {
+   "date": "2027-02-12",
+   "home": "Tonka United SA ECNL RL G2012/13",
+   "away": "Shakopee Soccer Association ECNL RL G2012/13",
+   "p": [
+    0.603,
+    0.19,
+    0.207
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150296": {
+   "date": "2027-02-20",
+   "home": "St Croix ECNL RL G2012/13",
+   "away": "DASC ECNL RL G2012/13",
+   "p": [
+    0.415,
+    0.249,
+    0.336
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150301": {
+   "date": "2027-02-20",
+   "home": "Prior Lake SC ECNL RL G2012/13",
+   "away": "North Surf ECNL RL G2012/13",
+   "p": [
+    0.35,
+    0.328,
+    0.322
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150302": {
+   "date": "2027-02-21",
+   "home": "North Star FC ECNL RL G2012/13",
+   "away": "Minnesota Rush ECNL RL G2012/13",
+   "p": [
+    0.183,
+    0.181,
+    0.636
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150305": {
+   "date": "2027-02-21",
+   "home": "Wave SC ECNL RL G2012/13",
+   "away": "DASC ECNL RL G2012/13",
+   "p": [
+    0.061,
+    0.13,
+    0.809
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    2
+   ]
+  },
+  "1150308": {
+   "date": "2027-02-21",
+   "home": "BOREAL FC ECNL RL G2012/13",
+   "away": "Manitou FC ECNL RL G2012/13",
+   "p": [
+    0.047,
+    0.09,
+    0.864
+   ],
+   "pick": "A",
+   "s": [
+    0,
+    3
+   ]
+  },
+  "1150320": {
+   "date": "2027-02-28",
+   "home": "Lakeville Soccer Club ECNL RL G2012/13",
+   "away": "Tonka United SA ECNL RL G2012/13",
+   "p": [
+    0.38,
+    0.223,
+    0.397
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150326": {
+   "date": "2027-03-06",
+   "home": "North Star FC ECNL RL G2012/13",
+   "away": "Wave SC ECNL RL G2012/13",
+   "p": [
+    0.715,
+    0.153,
+    0.132
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150343": {
+   "date": "2027-03-14",
+   "home": "Minnesota Rush ECNL RL G2012/13",
+   "away": "Shakopee Soccer Association ECNL RL G2012/13",
+   "p": [
+    0.663,
+    0.179,
+    0.158
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150349": {
+   "date": "2027-03-19",
+   "home": "Wave SC ECNL RL G2012/13",
+   "away": "BOREAL FC ECNL RL G2012/13",
+   "p": [
+    0.338,
+    0.231,
+    0.431
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150351": {
+   "date": "2027-03-19",
+   "home": "North Surf ECNL RL G2012/13",
+   "away": "Lakeville Soccer Club ECNL RL G2012/13",
+   "p": [
+    0.439,
+    0.28,
+    0.282
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
+  },
+  "1150356": {
+   "date": "2027-03-21",
+   "home": "Manitou FC ECNL RL G2012/13",
+   "away": "Prior Lake SC ECNL RL G2012/13",
+   "p": [
+    0.571,
+    0.232,
+    0.197
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
   }
  },
  "u14g-4319-41703": {
@@ -374800,6 +377427,4177 @@
     0.356
    ],
    "pick": "H"
+  }
+ },
+ "u15b-4339-40739": {
+  "1149925": {
+   "date": "2026-12-05",
+   "home": "Minnesota Rush ECNL RL B2011/12",
+   "away": "Edina Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149926": {
+   "date": "2026-12-05",
+   "home": "North Surf ECNL RL B2011/12",
+   "away": "Wave SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149930": {
+   "date": "2026-12-06",
+   "home": "Salvo SC ECNL RL B2011/12",
+   "away": "Fusion Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149940": {
+   "date": "2026-12-12",
+   "home": "Salvo SC ECNL RL B2011/12",
+   "away": "Minneapolis United ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149954": {
+   "date": "2026-12-13",
+   "home": "Edina Soccer Club ECNL RL B2011/12",
+   "away": "MapleBrook SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149958": {
+   "date": "2026-12-13",
+   "home": "Minnesota Rush ECNL RL B2011/12",
+   "away": "Wave SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149959": {
+   "date": "2026-12-18",
+   "home": "Prior Lake SC ECNL RL B2011/12",
+   "away": "Fusion Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149976": {
+   "date": "2027-01-08",
+   "home": "Wave SC ECNL RL B2011/12",
+   "away": "Salvo SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149977": {
+   "date": "2027-01-08",
+   "home": "MapleBrook SC ECNL RL B2011/12",
+   "away": "Minneapolis United ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149985": {
+   "date": "2027-01-09",
+   "home": "North Surf ECNL RL B2011/12",
+   "away": "Edina Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150001": {
+   "date": "2027-01-16",
+   "home": "DASC ECNL RL B2011/12",
+   "away": "Edina Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150010": {
+   "date": "2027-01-17",
+   "home": "DASC ECNL RL B2011/12",
+   "away": "Minnesota Rush ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150025": {
+   "date": "2027-01-24",
+   "home": "Wave SC ECNL RL B2011/12",
+   "away": "Prior Lake SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150027": {
+   "date": "2027-01-24",
+   "home": "Fusion Soccer Club ECNL RL B2011/12",
+   "away": "MapleBrook SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150028": {
+   "date": "2027-01-24",
+   "home": "Minneapolis United ECNL RL B2011/12",
+   "away": "North Surf ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150029": {
+   "date": "2027-01-29",
+   "home": "Salvo SC ECNL RL B2011/12",
+   "away": "Minnesota Rush ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150036": {
+   "date": "2027-01-30",
+   "home": "North Surf ECNL RL B2011/12",
+   "away": "DASC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150045": {
+   "date": "2027-01-31",
+   "home": "Minneapolis United ECNL RL B2011/12",
+   "away": "DASC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150052": {
+   "date": "2027-02-06",
+   "home": "DASC ECNL RL B2011/12",
+   "away": "Prior Lake SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150056": {
+   "date": "2027-02-07",
+   "home": "DASC ECNL RL B2011/12",
+   "away": "Fusion Soccer Club ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150070": {
+   "date": "2027-02-19",
+   "home": "Prior Lake SC ECNL RL B2011/12",
+   "away": "MapleBrook SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150077": {
+   "date": "2027-02-20",
+   "home": "Edina Soccer Club ECNL RL B2011/12",
+   "away": "Wave SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150082": {
+   "date": "2027-02-20",
+   "home": "Minnesota Rush ECNL RL B2011/12",
+   "away": "North Surf ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150095": {
+   "date": "2027-02-27",
+   "home": "Prior Lake SC ECNL RL B2011/12",
+   "away": "Salvo SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150097": {
+   "date": "2027-02-28",
+   "home": "Fusion Soccer Club ECNL RL B2011/12",
+   "away": "Minneapolis United ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150108": {
+   "date": "2027-03-06",
+   "home": "MapleBrook SC ECNL RL B2011/12",
+   "away": "DASC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150112": {
+   "date": "2027-03-07",
+   "home": "Wave SC ECNL RL B2011/12",
+   "away": "DASC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150121": {
+   "date": "2027-03-13",
+   "home": "Edina Soccer Club ECNL RL B2011/12",
+   "away": "Salvo SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150129": {
+   "date": "2027-03-14",
+   "home": "Minneapolis United ECNL RL B2011/12",
+   "away": "Prior Lake SC ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150132": {
+   "date": "2027-03-20",
+   "home": "MapleBrook SC ECNL RL B2011/12",
+   "away": "Minnesota Rush ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150135": {
+   "date": "2027-03-21",
+   "home": "Fusion Soccer Club ECNL RL B2011/12",
+   "away": "North Surf ECNL RL B2011/12",
+   "p": [
+    0.431,
+    0.226,
+    0.343
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u16b-4339-40740": {
+  "1149921": {
+   "date": "2026-12-04",
+   "home": "Keliix-Intra SC ECNL RL B2010/11",
+   "away": "Boreal FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149931": {
+   "date": "2026-12-06",
+   "home": "Edina Soccer Club ECNL RL B2010/11",
+   "away": "Fusion Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149939": {
+   "date": "2026-12-12",
+   "home": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "away": "Keliix-Intra SC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149948": {
+   "date": "2026-12-12",
+   "home": "Boreal FC ECNL RL B2010/11",
+   "away": "Minneapolis United ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149972": {
+   "date": "2026-12-20",
+   "home": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "away": "EPSC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149980": {
+   "date": "2027-01-09",
+   "home": "North Star FC ECNL RL B2010/11",
+   "away": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149996": {
+   "date": "2027-01-15",
+   "home": "EPSC ECNL RL B2010/11",
+   "away": "Edina Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149999": {
+   "date": "2027-01-16",
+   "home": "DASC ECNL RL B2010/11",
+   "away": "Fusion Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150002": {
+   "date": "2027-01-16",
+   "home": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "away": "Minneapolis United ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150007": {
+   "date": "2027-01-17",
+   "home": "DASC ECNL RL B2010/11",
+   "away": "Boreal FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150020": {
+   "date": "2027-01-23",
+   "home": "Keliix-Intra SC ECNL RL B2010/11",
+   "away": "North Star FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150035": {
+   "date": "2027-01-30",
+   "home": "Edina Soccer Club ECNL RL B2010/11",
+   "away": "DASC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150046": {
+   "date": "2027-01-31",
+   "home": "Minneapolis United ECNL RL B2010/11",
+   "away": "DASC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150047": {
+   "date": "2027-01-31",
+   "home": "Boreal FC ECNL RL B2010/11",
+   "away": "EPSC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150048": {
+   "date": "2027-02-05",
+   "home": "Fusion Soccer Club ECNL RL B2010/11",
+   "away": "Keliix-Intra SC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150051": {
+   "date": "2027-02-06",
+   "home": "DASC ECNL RL B2010/11",
+   "away": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150055": {
+   "date": "2027-02-07",
+   "home": "DASC ECNL RL B2010/11",
+   "away": "North Star FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150062": {
+   "date": "2027-02-07",
+   "home": "Minneapolis United ECNL RL B2010/11",
+   "away": "EPSC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150072": {
+   "date": "2027-02-19",
+   "home": "Fusion Soccer Club ECNL RL B2010/11",
+   "away": "Western Wisconsin Soccer ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150080": {
+   "date": "2027-02-20",
+   "home": "EPSC ECNL RL B2010/11",
+   "away": "Keliix-Intra SC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150083": {
+   "date": "2027-02-21",
+   "home": "North Star FC ECNL RL B2010/11",
+   "away": "Minneapolis United ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150088": {
+   "date": "2027-02-21",
+   "home": "Boreal FC ECNL RL B2010/11",
+   "away": "Edina Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150092": {
+   "date": "2027-02-27",
+   "home": "North Star FC ECNL RL B2010/11",
+   "away": "Fusion Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150107": {
+   "date": "2027-03-06",
+   "home": "EPSC ECNL RL B2010/11",
+   "away": "DASC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150109": {
+   "date": "2027-03-07",
+   "home": "Keliix-Intra SC ECNL RL B2010/11",
+   "away": "DASC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150117": {
+   "date": "2027-03-07",
+   "home": "Minneapolis United ECNL RL B2010/11",
+   "away": "Edina Soccer Club ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150119": {
+   "date": "2027-03-13",
+   "home": "Edina Soccer Club ECNL RL B2010/11",
+   "away": "North Star FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150124": {
+   "date": "2027-03-14",
+   "home": "Fusion Soccer Club ECNL RL B2010/11",
+   "away": "Boreal FC ECNL RL B2010/11",
+   "p": [
+    0.403,
+    0.238,
+    0.36
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u17b-4339-40741": {
+  "1149922": {
+   "date": "2026-12-05",
+   "home": "St. Paul Blackhawks ECNL RL B2009/10",
+   "away": "Keliix-Intra SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149928": {
+   "date": "2026-12-06",
+   "home": "CC United ECNL RL B2009/10",
+   "away": "North Surf ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149935": {
+   "date": "2026-12-06",
+   "home": "Shakopee Soccer Association ECNL RL B2009/10",
+   "away": "St Croix ECNL RL B2009/10 TC",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149936": {
+   "date": "2026-12-06",
+   "home": "North Star FC ECNL RL B2009/10",
+   "away": "MN Thunder Academy ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149938": {
+   "date": "2026-12-11",
+   "home": "Keliix-Intra SC ECNL RL B2009/10",
+   "away": "North Surf ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149944": {
+   "date": "2026-12-12",
+   "home": "Kickers FC ECNL RL B2009/10",
+   "away": "Park Valley United FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149947": {
+   "date": "2026-12-12",
+   "home": "North Star FC ECNL RL B2009/10",
+   "away": "St. Paul Blackhawks ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149951": {
+   "date": "2026-12-12",
+   "home": "Shakopee Soccer Association ECNL RL B2009/10",
+   "away": "Fusion Soccer Club ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149956": {
+   "date": "2026-12-13",
+   "home": "Wave SC ECNL RL B2009/10",
+   "away": "CC United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149963": {
+   "date": "2026-12-19",
+   "home": "DASC ECNL RL B2009/10",
+   "away": "St Croix ECNL RL B2009/10 TC",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149968": {
+   "date": "2026-12-19",
+   "home": "MN Thunder Academy ECNL RL B2009/10",
+   "away": "Minneapolis United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149974": {
+   "date": "2026-12-20",
+   "home": "DASC ECNL RL B2009/10",
+   "away": "Kickers FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149982": {
+   "date": "2027-01-09",
+   "home": "St Croix ECNL RL B2009/10 TC",
+   "away": "Wave SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149986": {
+   "date": "2027-01-09",
+   "home": "North Surf ECNL RL B2009/10",
+   "away": "North Star FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149987": {
+   "date": "2027-01-09",
+   "home": "Park Valley United FC ECNL RL B2009/10",
+   "away": "St. Paul Blackhawks ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149992": {
+   "date": "2027-01-10",
+   "home": "CC United ECNL RL B2009/10",
+   "away": "Keliix-Intra SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149993": {
+   "date": "2027-01-10",
+   "home": "Kickers FC ECNL RL B2009/10",
+   "away": "MN Thunder Academy ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149995": {
+   "date": "2027-01-10",
+   "home": "Minneapolis United ECNL RL B2009/10",
+   "away": "Shakopee Soccer Association ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150009": {
+   "date": "2027-01-17",
+   "home": "Wave SC ECNL RL B2009/10",
+   "away": "MN Thunder Academy ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150012": {
+   "date": "2027-01-17",
+   "home": "Minneapolis United ECNL RL B2009/10",
+   "away": "St Croix ECNL RL B2009/10 TC",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150018": {
+   "date": "2027-01-22",
+   "home": "North Surf ECNL RL B2009/10",
+   "away": "Park Valley United FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150023": {
+   "date": "2027-01-24",
+   "home": "St. Paul Blackhawks ECNL RL B2009/10",
+   "away": "Kickers FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150024": {
+   "date": "2027-01-24",
+   "home": "CC United ECNL RL B2009/10",
+   "away": "Fusion Soccer Club ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150033": {
+   "date": "2027-01-30",
+   "home": "MN Thunder Academy ECNL RL B2009/10",
+   "away": "DASC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150040": {
+   "date": "2027-01-31",
+   "home": "St Croix ECNL RL B2009/10 TC",
+   "away": "North Star FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150042": {
+   "date": "2027-01-31",
+   "home": "Keliix-Intra SC ECNL RL B2009/10",
+   "away": "DASC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150049": {
+   "date": "2027-02-05",
+   "home": "Fusion Soccer Club ECNL RL B2009/10",
+   "away": "Minneapolis United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150054": {
+   "date": "2027-02-06",
+   "home": "Shakopee Soccer Association ECNL RL B2009/10",
+   "away": "North Surf ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150057": {
+   "date": "2027-02-07",
+   "home": "Wave SC ECNL RL B2009/10",
+   "away": "St. Paul Blackhawks ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150066": {
+   "date": "2027-02-13",
+   "home": "St Croix ECNL RL B2009/10 TC",
+   "away": "Kickers FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150076": {
+   "date": "2027-02-20",
+   "home": "Park Valley United FC ECNL RL B2009/10",
+   "away": "CC United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150081": {
+   "date": "2027-02-20",
+   "home": "North Surf ECNL RL B2009/10",
+   "away": "Wave SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150086": {
+   "date": "2027-02-21",
+   "home": "North Star FC ECNL RL B2009/10",
+   "away": "Fusion Soccer Club ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150089": {
+   "date": "2027-02-26",
+   "home": "Fusion Soccer Club ECNL RL B2009/10",
+   "away": "Keliix-Intra SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150091": {
+   "date": "2027-02-26",
+   "home": "MN Thunder Academy ECNL RL B2009/10",
+   "away": "Shakopee Soccer Association ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150098": {
+   "date": "2027-02-28",
+   "home": "St. Paul Blackhawks ECNL RL B2009/10",
+   "away": "Minneapolis United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150105": {
+   "date": "2027-03-06",
+   "home": "DASC ECNL RL B2009/10",
+   "away": "CC United ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150110": {
+   "date": "2027-03-07",
+   "home": "DASC ECNL RL B2009/10",
+   "away": "Wave SC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150122": {
+   "date": "2027-03-13",
+   "home": "Park Valley United FC ECNL RL B2009/10",
+   "away": "DASC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150126": {
+   "date": "2027-03-14",
+   "home": "Kickers FC ECNL RL B2009/10",
+   "away": "Shakopee Soccer Association ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150127": {
+   "date": "2027-03-14",
+   "home": "Keliix-Intra SC ECNL RL B2009/10",
+   "away": "North Star FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150128": {
+   "date": "2027-03-14",
+   "home": "Minneapolis United ECNL RL B2009/10",
+   "away": "DASC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150133": {
+   "date": "2027-03-21",
+   "home": "Fusion Soccer Club ECNL RL B2009/10",
+   "away": "Park Valley United FC ECNL RL B2009/10",
+   "p": [
+    0.436,
+    0.221,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u19b-4339-40742": {
+  "1149920": {
+   "date": "2026-12-04",
+   "home": "North Surf ECNL RL B2008/09",
+   "away": "Fusion Soccer Club ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149923": {
+   "date": "2026-12-05",
+   "home": "St Croix ECNL RL B2008/09",
+   "away": "Tonka United SA ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149934": {
+   "date": "2026-12-06",
+   "home": "North Star FC ECNL RL B2008/09",
+   "away": "MN Thunder Academy ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149937": {
+   "date": "2026-12-11",
+   "home": "Tonka United SA ECNL RL B2008/09",
+   "away": "MN Thunder Academy ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149946": {
+   "date": "2026-12-12",
+   "home": "St Croix ECNL RL B2008/09",
+   "away": "DASC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149955": {
+   "date": "2026-12-13",
+   "home": "Keliix-Intra SC ECNL RL B2008/09",
+   "away": "DASC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149962": {
+   "date": "2026-12-19",
+   "home": "St. Paul Blackhawks ECNL RL B2008/09",
+   "away": "Minneapolis United ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149964": {
+   "date": "2026-12-19",
+   "home": "DASC ECNL RL B2008/09",
+   "away": "Fusion Soccer Club ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149971": {
+   "date": "2026-12-20",
+   "home": "DASC ECNL RL B2008/09",
+   "away": "BOREAL FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149978": {
+   "date": "2027-01-09",
+   "home": "North Star FC ECNL RL B2008/09",
+   "away": "Prior Lake SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149984": {
+   "date": "2027-01-09",
+   "home": "Fusion Soccer Club ECNL RL B2008/09",
+   "away": "St Croix ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149989": {
+   "date": "2027-01-10",
+   "home": "MN Thunder Academy ECNL RL B2008/09",
+   "away": "Keliix-Intra SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1149994": {
+   "date": "2027-01-10",
+   "home": "Minneapolis United ECNL RL B2008/09",
+   "away": "North Surf ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150000": {
+   "date": "2027-01-16",
+   "home": "Tonka United SA ECNL RL B2008/09",
+   "away": "Fusion Soccer Club ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150006": {
+   "date": "2027-01-16",
+   "home": "North Surf ECNL RL B2008/09",
+   "away": "MN Thunder Academy ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150014": {
+   "date": "2027-01-17",
+   "home": "Minneapolis United ECNL RL B2008/09",
+   "away": "Prior Lake SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150015": {
+   "date": "2027-01-17",
+   "home": "BOREAL FC ECNL RL B2008/09",
+   "away": "St. Paul Blackhawks ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150022": {
+   "date": "2027-01-23",
+   "home": "Tonka United SA ECNL RL B2008/09",
+   "away": "North Star FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150030": {
+   "date": "2027-01-29",
+   "home": "Prior Lake SC ECNL RL B2008/09",
+   "away": "St Croix ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150038": {
+   "date": "2027-01-30",
+   "home": "North Surf ECNL RL B2008/09",
+   "away": "DASC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150041": {
+   "date": "2027-01-31",
+   "home": "MN Thunder Academy ECNL RL B2008/09",
+   "away": "DASC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150061": {
+   "date": "2027-02-07",
+   "home": "BOREAL FC ECNL RL B2008/09",
+   "away": "Minneapolis United ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150063": {
+   "date": "2027-02-12",
+   "home": "Prior Lake SC ECNL RL B2008/09",
+   "away": "Keliix-Intra SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150067": {
+   "date": "2027-02-14",
+   "home": "St Croix ECNL RL B2008/09",
+   "away": "North Surf ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150069": {
+   "date": "2027-02-14",
+   "home": "North Star FC ECNL RL B2008/09",
+   "away": "St. Paul Blackhawks ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150074": {
+   "date": "2027-02-19",
+   "home": "MN Thunder Academy ECNL RL B2008/09",
+   "away": "St. Paul Blackhawks ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150084": {
+   "date": "2027-02-21",
+   "home": "Fusion Soccer Club ECNL RL B2008/09",
+   "away": "BOREAL FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150093": {
+   "date": "2027-02-27",
+   "home": "Keliix-Intra SC ECNL RL B2008/09",
+   "away": "North Star FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150100": {
+   "date": "2027-02-28",
+   "home": "Minneapolis United ECNL RL B2008/09",
+   "away": "St Croix ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150101": {
+   "date": "2027-02-28",
+   "home": "BOREAL FC ECNL RL B2008/09",
+   "away": "Tonka United SA ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150106": {
+   "date": "2027-03-06",
+   "home": "DASC ECNL RL B2008/09",
+   "away": "North Star FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150113": {
+   "date": "2027-03-07",
+   "home": "Keliix-Intra SC ECNL RL B2008/09",
+   "away": "BOREAL FC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150115": {
+   "date": "2027-03-07",
+   "home": "St. Paul Blackhawks ECNL RL B2008/09",
+   "away": "Prior Lake SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150116": {
+   "date": "2027-03-07",
+   "home": "DASC ECNL RL B2008/09",
+   "away": "Tonka United SA ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150123": {
+   "date": "2027-03-13",
+   "home": "Fusion Soccer Club ECNL RL B2008/09",
+   "away": "Minneapolis United ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150125": {
+   "date": "2027-03-14",
+   "home": "St. Paul Blackhawks ECNL RL B2008/09",
+   "away": "Keliix-Intra SC ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150130": {
+   "date": "2027-03-20",
+   "home": "Prior Lake SC ECNL RL B2008/09",
+   "away": "North Surf ECNL RL B2008/09",
+   "p": [
+    0.432,
+    0.213,
+    0.356
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u15g-4318-42309": {
+  "1150157": {
+   "date": "2026-12-05",
+   "home": "Minnesota Rush ECNL RL G2011/12",
+   "away": "Wave SC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150158": {
+   "date": "2026-12-05",
+   "home": "North Surf ECNL RL G2011/12",
+   "away": "MN Thunder Academy ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150161": {
+   "date": "2026-12-06",
+   "home": "Manitou FC ECNL RL G2011/12",
+   "away": "St Croix ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150167": {
+   "date": "2026-12-06",
+   "home": "Tonka United SA ECNL RL G2011/12",
+   "away": "Fusion Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150168": {
+   "date": "2026-12-12",
+   "home": "St Croix ECNL RL G2011/12",
+   "away": "North Surf ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150176": {
+   "date": "2026-12-13",
+   "home": "Manitou FC ECNL RL G2011/12",
+   "away": "Minneapolis United ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150180": {
+   "date": "2026-12-13",
+   "home": "Wave SC ECNL RL G2011/12",
+   "away": "Salvo SC - ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150182": {
+   "date": "2026-12-18",
+   "home": "MN Thunder Academy ECNL RL G2011/12",
+   "away": "Lakeville Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150211": {
+   "date": "2027-01-09",
+   "home": "Tonka United SA ECNL RL G2011/12",
+   "away": "Manitou FC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150217": {
+   "date": "2027-01-10",
+   "home": "Salvo SC - ECNL RL G2011/12",
+   "away": "MN Thunder Academy ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150220": {
+   "date": "2027-01-10",
+   "home": "Lakeville Soccer Club ECNL RL G2011/12",
+   "away": "Minnesota Rush ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150226": {
+   "date": "2027-01-15",
+   "home": "MN Thunder Academy ECNL RL G2011/12",
+   "away": "DASC ECNL RL G2012/11",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150228": {
+   "date": "2027-01-16",
+   "home": "DASC ECNL RL G2012/11",
+   "away": "St Croix ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150233": {
+   "date": "2027-01-17",
+   "home": "DASC ECNL RL G2012/11",
+   "away": "Fusion Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150234": {
+   "date": "2027-01-17",
+   "home": "Manitou FC ECNL RL G2011/12",
+   "away": "Salvo SC - ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150238": {
+   "date": "2027-01-17",
+   "home": "Minneapolis United ECNL RL G2011/12",
+   "away": "North Surf ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150248": {
+   "date": "2027-01-23",
+   "home": "Tonka United SA ECNL RL G2011/12",
+   "away": "Wave SC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150257": {
+   "date": "2027-01-29",
+   "home": "Salvo SC - ECNL RL G2011/12",
+   "away": "Minneapolis United ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150261": {
+   "date": "2027-01-30",
+   "home": "North Surf ECNL RL G2011/12",
+   "away": "Lakeville Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150267": {
+   "date": "2027-02-05",
+   "home": "Lakeville Soccer Club ECNL RL G2011/12",
+   "away": "DASC ECNL RL G2012/11",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150277": {
+   "date": "2027-02-06",
+   "home": "MN Thunder Academy ECNL RL G2011/12",
+   "away": "Minneapolis United ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150279": {
+   "date": "2027-02-06",
+   "home": "DASC ECNL RL G2012/11",
+   "away": "Tonka United SA ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150281": {
+   "date": "2027-02-07",
+   "home": "St Croix ECNL RL G2011/12",
+   "away": "Minnesota Rush ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150282": {
+   "date": "2027-02-07",
+   "home": "DASC ECNL RL G2012/11",
+   "away": "Manitou FC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150288": {
+   "date": "2027-02-13",
+   "home": "North Surf ECNL RL G2011/12",
+   "away": "Wave SC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150294": {
+   "date": "2027-02-20",
+   "home": "Minnesota Rush ECNL RL G2011/12",
+   "away": "Salvo SC - ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150297": {
+   "date": "2027-02-20",
+   "home": "Fusion Soccer Club ECNL RL G2011/12",
+   "away": "Manitou FC ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150304": {
+   "date": "2027-02-21",
+   "home": "St Croix ECNL RL G2011/12",
+   "away": "Tonka United SA ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150309": {
+   "date": "2027-02-21",
+   "home": "Minneapolis United ECNL RL G2011/12",
+   "away": "Lakeville Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150311": {
+   "date": "2027-02-26",
+   "home": "Fusion Soccer Club ECNL RL G2011/12",
+   "away": "St Croix ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150318": {
+   "date": "2027-02-28",
+   "home": "Wave SC ECNL RL G2011/12",
+   "away": "MN Thunder Academy ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150325": {
+   "date": "2027-03-06",
+   "home": "Salvo SC - ECNL RL G2011/12",
+   "away": "Fusion Soccer Club ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150331": {
+   "date": "2027-03-07",
+   "home": "Lakeville Soccer Club ECNL RL G2011/12",
+   "away": "Tonka United SA ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150332": {
+   "date": "2027-03-07",
+   "home": "Minneapolis United ECNL RL G2011/12",
+   "away": "Minnesota Rush ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150338": {
+   "date": "2027-03-13",
+   "home": "Minnesota Rush ECNL RL G2011/12",
+   "away": "DASC ECNL RL G2012/11",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150342": {
+   "date": "2027-03-14",
+   "home": "Wave SC ECNL RL G2011/12",
+   "away": "DASC ECNL RL G2012/11",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150347": {
+   "date": "2027-03-19",
+   "home": "Fusion Soccer Club ECNL RL G2011/12",
+   "away": "North Surf ECNL RL G2011/12",
+   "p": [
+    0.41,
+    0.237,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u16g-4318-42310": {
+  "1150163": {
+   "date": "2026-12-06",
+   "home": "Manitou FC ECNL RL G2010/11",
+   "away": "St Croix ECNL RL G2010/11",
+   "p": [
+    0.411,
+    0.24,
+    0.349
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150165": {
+   "date": "2026-12-06",
+   "home": "Lakeville Soccer Club ECNL RL G2010/11",
+   "away": "Tonka United SA ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150171": {
+   "date": "2026-12-12",
+   "home": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "away": "Minneapolis United ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150175": {
+   "date": "2026-12-13",
+   "home": "St Croix ECNL RL G2010/11",
+   "away": "Minnesota Rush ECNL RL G2010/11",
+   "p": [
+    0.451,
+    0.233,
+    0.317
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150187": {
+   "date": "2026-12-19",
+   "home": "DASC ECNL RL G2010/11",
+   "away": "Wave SC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150191": {
+   "date": "2026-12-19",
+   "home": "Tonka United SA ECNL RL G2010/11",
+   "away": "MN Thunder Academy ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150195": {
+   "date": "2026-12-20",
+   "home": "DASC ECNL RL G2010/11",
+   "away": "BOREAL FC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150196": {
+   "date": "2026-12-20",
+   "home": "Manitou FC ECNL RL G2010/11",
+   "away": "Minneapolis United ECNL RL G2010/11",
+   "p": [
+    0.44,
+    0.24,
+    0.321
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150200": {
+   "date": "2026-12-20",
+   "home": "Minnesota Rush ECNL RL G2010/11",
+   "away": "EPSC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150209": {
+   "date": "2027-01-09",
+   "home": "Tonka United SA ECNL RL G2010/11",
+   "away": "Wave SC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150215": {
+   "date": "2027-01-09",
+   "home": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "away": "DASC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150218": {
+   "date": "2027-01-10",
+   "home": "Manitou FC ECNL RL G2010/11",
+   "away": "Minnesota Rush ECNL RL G2010/11",
+   "p": [
+    0.44,
+    0.24,
+    0.321
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150222": {
+   "date": "2027-01-10",
+   "home": "Lakeville Soccer Club ECNL RL G2010/11",
+   "away": "DASC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150223": {
+   "date": "2027-01-10",
+   "home": "Minneapolis United ECNL RL G2010/11",
+   "away": "St Croix ECNL RL G2010/11",
+   "p": [
+    0.39,
+    0.236,
+    0.374
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150225": {
+   "date": "2027-01-15",
+   "home": "EPSC ECNL RL G2010/11",
+   "away": "BOREAL FC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150227": {
+   "date": "2027-01-16",
+   "home": "Tonka United SA ECNL RL G2010/11",
+   "away": "Manitou FC ECNL RL G2010/11",
+   "p": [
+    0.393,
+    0.242,
+    0.365
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150236": {
+   "date": "2027-01-17",
+   "home": "MN Thunder Academy ECNL RL G2010/11",
+   "away": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150243": {
+   "date": "2027-01-23",
+   "home": "DASC ECNL RL G2010/11",
+   "away": "MN Thunder Academy ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150250": {
+   "date": "2027-01-24",
+   "home": "DASC ECNL RL G2010/11",
+   "away": "St Croix ECNL RL G2010/11",
+   "p": [
+    0.39,
+    0.236,
+    0.374
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150252": {
+   "date": "2027-01-24",
+   "home": "Lakeville Soccer Club ECNL RL G2010/11",
+   "away": "EPSC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150254": {
+   "date": "2027-01-24",
+   "home": "BOREAL FC ECNL RL G2010/11",
+   "away": "Minneapolis United ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150265": {
+   "date": "2027-01-31",
+   "home": "Minnesota Rush ECNL RL G2010/11",
+   "away": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150270": {
+   "date": "2027-02-06",
+   "home": "MN Thunder Academy ECNL RL G2010/11",
+   "away": "Lakeville Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150275": {
+   "date": "2027-02-06",
+   "home": "St Croix ECNL RL G2010/11",
+   "away": "Tonka United SA ECNL RL G2010/11",
+   "p": [
+    0.451,
+    0.233,
+    0.317
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150289": {
+   "date": "2027-02-14",
+   "home": "Wave SC ECNL RL G2010/11",
+   "away": "Minnesota Rush ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150291": {
+   "date": "2027-02-19",
+   "home": "EPSC ECNL RL G2010/11",
+   "away": "Manitou FC ECNL RL G2010/11",
+   "p": [
+    0.393,
+    0.242,
+    0.365
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150300": {
+   "date": "2027-02-20",
+   "home": "St Croix ECNL RL G2010/11",
+   "away": "Wave SC ECNL RL G2010/11",
+   "p": [
+    0.451,
+    0.233,
+    0.317
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150313": {
+   "date": "2027-02-27",
+   "home": "BOREAL FC ECNL RL G2010/11",
+   "away": "Tonka United SA ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150314": {
+   "date": "2027-02-27",
+   "home": "EPSC ECNL RL G2010/11",
+   "away": "DASC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150321": {
+   "date": "2027-02-28",
+   "home": "Minnesota Rush ECNL RL G2010/11",
+   "away": "DASC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150322": {
+   "date": "2027-02-28",
+   "home": "Minneapolis United ECNL RL G2010/11",
+   "away": "Lakeville Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150330": {
+   "date": "2027-03-07",
+   "home": "Wave SC ECNL RL G2010/11",
+   "away": "MN Thunder Academy ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150333": {
+   "date": "2027-03-07",
+   "home": "BOREAL FC ECNL RL G2010/11",
+   "away": "Lakeville Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150337": {
+   "date": "2027-03-13",
+   "home": "Wave SC ECNL RL G2010/11",
+   "away": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150350": {
+   "date": "2027-03-19",
+   "home": "MN Thunder Academy ECNL RL G2010/11",
+   "away": "BOREAL FC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150354": {
+   "date": "2027-03-20",
+   "home": "Twin Cities Fire Soccer Club ECNL RL G2010/11",
+   "away": "Manitou FC ECNL RL G2010/11",
+   "p": [
+    0.393,
+    0.242,
+    0.365
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150357": {
+   "date": "2027-03-21",
+   "home": "Minneapolis United ECNL RL G2010/11",
+   "away": "EPSC ECNL RL G2010/11",
+   "p": [
+    0.419,
+    0.237,
+    0.344
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u17g-4318-42311": {
+  "1150153": {
+   "date": "2026-12-04",
+   "home": "Prior Lake SC ECNL RL G2009/10",
+   "away": "Keliix-Intra SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150159": {
+   "date": "2026-12-06",
+   "home": "St Croix ECNL RL G2009/10",
+   "away": "North Surf ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150172": {
+   "date": "2026-12-12",
+   "home": "North Surf ECNL RL G2009/10",
+   "away": "Park Valley United FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150174": {
+   "date": "2026-12-13",
+   "home": "Manitou FC ECNL RL G2009/10",
+   "away": "MN Thunder Academy ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150185": {
+   "date": "2026-12-19",
+   "home": "Park Valley United FC ECNL RL G2009/10",
+   "away": "Prior Lake SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150186": {
+   "date": "2026-12-19",
+   "home": "DASC ECNL RL G2009/10",
+   "away": "St Croix ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150193": {
+   "date": "2026-12-19",
+   "home": "BOREAL FC ECNL RL G2009/10",
+   "away": "Lakeville Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.385,
+    0.225,
+    0.39
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150194": {
+   "date": "2026-12-20",
+   "home": "Manitou FC ECNL RL G2009/10",
+   "away": "Minneapolis United ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150199": {
+   "date": "2026-12-20",
+   "home": "DASC ECNL RL G2009/10",
+   "away": "Fusion Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150206": {
+   "date": "2027-01-08",
+   "home": "Fusion Soccer Club ECNL RL G2009/10",
+   "away": "Park Valley United FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150207": {
+   "date": "2027-01-08",
+   "home": "North Surf ECNL RL G2009/10",
+   "away": "Manitou FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150208": {
+   "date": "2027-01-08",
+   "home": "Prior Lake SC ECNL RL G2009/10",
+   "away": "Lakeville Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.385,
+    0.225,
+    0.39
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150221": {
+   "date": "2027-01-10",
+   "home": "Keliix-Intra SC ECNL RL G2009/10",
+   "away": "BOREAL FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150224": {
+   "date": "2027-01-15",
+   "home": "MN Thunder Academy ECNL RL G2009/10",
+   "away": "Minneapolis United ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150244": {
+   "date": "2027-01-23",
+   "home": "Lakeville Soccer Club ECNL RL G2009/10",
+   "away": "DASC ECNL RL G2009/10",
+   "p": [
+    0.477,
+    0.22,
+    0.303
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150253": {
+   "date": "2027-01-24",
+   "home": "Park Valley United FC ECNL RL G2009/10",
+   "away": "DASC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150255": {
+   "date": "2027-01-24",
+   "home": "Minneapolis United ECNL RL G2009/10",
+   "away": "St Croix ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150256": {
+   "date": "2027-01-24",
+   "home": "BOREAL FC ECNL RL G2009/10",
+   "away": "Manitou FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150262": {
+   "date": "2027-01-30",
+   "home": "St Croix ECNL RL G2009/10",
+   "away": "Fusion Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150269": {
+   "date": "2027-02-05",
+   "home": "Lakeville Soccer Club ECNL RL G2009/10",
+   "away": "Fusion Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.477,
+    0.22,
+    0.303
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150271": {
+   "date": "2027-02-06",
+   "home": "BOREAL FC ECNL RL G2009/10",
+   "away": "Minneapolis United ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150278": {
+   "date": "2027-02-06",
+   "home": "Keliix-Intra SC ECNL RL G2009/10",
+   "away": "North Surf ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150280": {
+   "date": "2027-02-07",
+   "home": "Manitou FC ECNL RL G2009/10",
+   "away": "Prior Lake SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150293": {
+   "date": "2027-02-20",
+   "home": "Lakeville Soccer Club ECNL RL G2009/10",
+   "away": "Park Valley United FC ECNL RL G2009/10",
+   "p": [
+    0.477,
+    0.22,
+    0.303
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150295": {
+   "date": "2027-02-20",
+   "home": "MN Thunder Academy ECNL RL G2009/10",
+   "away": "Keliix-Intra SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150303": {
+   "date": "2027-02-21",
+   "home": "St Croix ECNL RL G2009/10",
+   "away": "BOREAL FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150307": {
+   "date": "2027-02-21",
+   "home": "Minneapolis United ECNL RL G2009/10",
+   "away": "North Surf ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150312": {
+   "date": "2027-02-26",
+   "home": "Prior Lake SC ECNL RL G2009/10",
+   "away": "St Croix ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150319": {
+   "date": "2027-02-28",
+   "home": "Fusion Soccer Club ECNL RL G2009/10",
+   "away": "MN Thunder Academy ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150323": {
+   "date": "2027-03-05",
+   "home": "Keliix-Intra SC ECNL RL G2009/10",
+   "away": "Lakeville Soccer Club ECNL RL G2009/10",
+   "p": [
+    0.385,
+    0.225,
+    0.39
+   ],
+   "pick": "D",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1150328": {
+   "date": "2027-03-06",
+   "home": "DASC ECNL RL G2009/10",
+   "away": "BOREAL FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150329": {
+   "date": "2027-03-07",
+   "home": "DASC ECNL RL G2009/10",
+   "away": "Prior Lake SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150336": {
+   "date": "2027-03-13",
+   "home": "MN Thunder Academy ECNL RL G2009/10",
+   "away": "DASC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150341": {
+   "date": "2027-03-14",
+   "home": "Fusion Soccer Club ECNL RL G2009/10",
+   "away": "Keliix-Intra SC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150345": {
+   "date": "2027-03-14",
+   "home": "Minneapolis United ECNL RL G2009/10",
+   "away": "DASC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150346": {
+   "date": "2027-03-14",
+   "home": "Park Valley United FC ECNL RL G2009/10",
+   "away": "Manitou FC ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150353": {
+   "date": "2027-03-20",
+   "home": "North Surf ECNL RL G2009/10",
+   "away": "MN Thunder Academy ECNL RL G2009/10",
+   "p": [
+    0.429,
+    0.225,
+    0.345
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  }
+ },
+ "u19g-4318-42312": {
+  "1150152": {
+   "date": "2026-12-04",
+   "home": "EPSC ECNL RL G2008/09",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150160": {
+   "date": "2026-12-06",
+   "home": "Manitou FC ECNL RL G2008/09",
+   "away": "St Croix ECNL RL G2008/09",
+   "p": [
+    0.423,
+    0.229,
+    0.349
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150162": {
+   "date": "2026-12-06",
+   "home": "North Star FC ECNL RL G2008/09",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150179": {
+   "date": "2026-12-13",
+   "home": "Lakeville Soccer Club ECNL RL G2008/09",
+   "away": "North Star FC ECNL RL G2008/09",
+   "p": [
+    0.45,
+    0.224,
+    0.326
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150189": {
+   "date": "2026-12-19",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "away": "Lakeville Soccer Club ECNL RL G2008/09",
+   "p": [
+    0.394,
+    0.227,
+    0.378
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150190": {
+   "date": "2026-12-19",
+   "home": "Minnesota Rush ECNL RL G2008/09",
+   "away": "EPSC ECNL RL G2008/09",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150197": {
+   "date": "2026-12-20",
+   "home": "St Croix ECNL RL G2008/09",
+   "away": "BOREAL FC ECNL RL G2008/09",
+   "p": [
+    0.43,
+    0.23,
+    0.34
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150198": {
+   "date": "2026-12-20",
+   "home": "Manitou FC ECNL RL G2008/09",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "p": [
+    0.435,
+    0.226,
+    0.338
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150204": {
+   "date": "2027-01-08",
+   "home": "North Star FC ECNL RL G2008/09",
+   "away": "Minnesota Rush ECNL RL G2008/09",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150212": {
+   "date": "2027-01-09",
+   "home": "BOREAL FC ECNL RL G2008/09",
+   "away": "Manitou FC ECNL RL G2008/09",
+   "p": [
+    0.407,
+    0.228,
+    0.365
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150229": {
+   "date": "2027-01-16",
+   "home": "EPSC ECNL RL G2008/09",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150232": {
+   "date": "2027-01-17",
+   "home": "Manitou FC ECNL RL G2008/09",
+   "away": "North Star FC ECNL RL G2008/09",
+   "p": [
+    0.435,
+    0.226,
+    0.338
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150239": {
+   "date": "2027-01-22",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "away": "BOREAL FC ECNL RL G2008/09",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150240": {
+   "date": "2027-01-22",
+   "home": "Lakeville Soccer Club ECNL RL G2008/09",
+   "away": "EPSC ECNL RL G2008/09",
+   "p": [
+    0.45,
+    0.224,
+    0.326
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150245": {
+   "date": "2027-01-23",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "away": "St Croix ECNL RL G2008/09",
+   "p": [
+    0.408,
+    0.231,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150263": {
+   "date": "2027-01-30",
+   "home": "St Croix ECNL RL G2008/09",
+   "away": "Minnesota Rush ECNL RL G2008/09",
+   "p": [
+    0.43,
+    0.23,
+    0.34
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150272": {
+   "date": "2027-02-06",
+   "home": "BOREAL FC ECNL RL G2008/09",
+   "away": "Lakeville Soccer Club ECNL RL G2008/09",
+   "p": [
+    0.394,
+    0.227,
+    0.378
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150276": {
+   "date": "2027-02-06",
+   "home": "St Croix ECNL RL G2008/09",
+   "away": "North Star FC ECNL RL G2008/09",
+   "p": [
+    0.43,
+    0.23,
+    0.34
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150298": {
+   "date": "2027-02-20",
+   "home": "EPSC ECNL RL G2008/09",
+   "away": "Manitou FC ECNL RL G2008/09",
+   "p": [
+    0.407,
+    0.228,
+    0.365
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150299": {
+   "date": "2027-02-20",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "away": "Lakeville Soccer Club ECNL RL G2008/09",
+   "p": [
+    0.394,
+    0.227,
+    0.378
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150306": {
+   "date": "2027-02-21",
+   "home": "Minnesota Rush ECNL RL G2008/09",
+   "away": "BOREAL FC ECNL RL G2008/09",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150316": {
+   "date": "2027-02-27",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "away": "St Croix ECNL RL G2008/09",
+   "p": [
+    0.408,
+    0.231,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150327": {
+   "date": "2027-03-06",
+   "home": "North Star FC ECNL RL G2008/09",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150334": {
+   "date": "2027-03-07",
+   "home": "BOREAL FC ECNL RL G2008/09",
+   "away": "EPSC ECNL RL G2008/09",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150335": {
+   "date": "2027-03-12",
+   "home": "Lakeville Soccer Club ECNL RL G2008/09",
+   "away": "Minnesota Rush ECNL RL G2008/09",
+   "p": [
+    0.45,
+    0.224,
+    0.326
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150339": {
+   "date": "2027-03-13",
+   "home": "MN Thunder Academy ECNL RL G2008/09 Swoosh",
+   "away": "MN Thunder Academy ECNL RL G2008/09 Nike",
+   "p": [
+    0.42,
+    0.229,
+    0.351
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150352": {
+   "date": "2027-03-20",
+   "home": "Minnesota Rush ECNL RL G2008/09",
+   "away": "Manitou FC ECNL RL G2008/09",
+   "p": [
+    0.407,
+    0.228,
+    0.365
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  }
 }
