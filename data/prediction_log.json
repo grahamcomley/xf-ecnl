@@ -30529,6 +30529,36 @@
    "pick": "A",
    "result": "H",
    "score": "2-1"
+  },
+  "1150554": {
+   "date": "2026-11-15",
+   "home": "Richmond United ECNL RL B2010/11 Blue",
+   "away": "LMVSC ECNL RL B2010/11",
+   "p": [
+    0.759,
+    0.145,
+    0.096
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1150555": {
+   "date": "2026-11-15",
+   "home": "Virginia United ECNL RL B2010/11",
+   "away": "Arlington Soccer Association ECNL RL B2010/11",
+   "p": [
+    0.279,
+    0.223,
+    0.497
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
   }
  },
  "u16b-4358-40734": {
@@ -86272,6 +86302,36 @@
    "pick": "H",
    "result": "H",
    "score": "4-0"
+  },
+  "1150556": {
+   "date": "2026-11-15",
+   "home": "Beach FC (VA) ECNL RL B2009/10",
+   "away": "Prince William Courage ECNL RL B2009/10",
+   "p": [
+    0.59,
+    0.216,
+    0.194
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1150557": {
+   "date": "2026-11-15",
+   "home": "Virginia United ECNL RL B2009/10",
+   "away": "Arlington Soccer Association ECNL RL B2009/10",
+   "p": [
+    0.4,
+    0.227,
+    0.374
+   ],
+   "pick": "D",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "u17b-4358-40735": {
@@ -169576,7 +169636,9 @@
     0.229,
     0.179
    ],
-   "pick": "H"
+   "pick": "H",
+   "result": "H",
+   "score": "4-0"
   },
   "1120957": {
    "date": "2026-11-07",
@@ -211680,6 +211742,36 @@
    "pick": "H",
    "result": "D",
    "score": "2-2"
+  },
+  "1150552": {
+   "date": "2026-11-15",
+   "home": "Richmond United ECNL RL B2011/12 Blue",
+   "away": "Vienna Youth Soccer ECNL RL B2011/12",
+   "p": [
+    0.817,
+    0.107,
+    0.076
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1150553": {
+   "date": "2026-11-15",
+   "home": "VSA ECNL RL B2011/12",
+   "away": "Arlington Soccer Association ECNL RL B2011/12",
+   "p": [
+    0.374,
+    0.209,
+    0.416
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
   }
  },
  "u15b-4358-40733": {

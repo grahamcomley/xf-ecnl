@@ -2393,6 +2393,15 @@
    "gender": null,
    "start": "2027-06-04",
    "end": "2027-06-06"
+  },
+  {
+   "event_id": 4507,
+   "name": "Dynamos Puma Cup 2027",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-06",
+   "end": "2027-02-07"
   }
  ]
 }
