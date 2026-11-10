@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.72">
+<meta name="app-version" content="v0.73">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -176,14 +176,30 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 .star{background:none;border:0;font-size:20px;cursor:pointer;color:#6b7280;padding:2px 6px}.star.on{color:#fde047}
 .crumbs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#f3f4f6;color:#111827;padding:8px 14px;border-radius:8px;font-weight:700;font-size:14px;z-index:60;display:none}
+
+/* v0.73 compact top: one-line header + flat team bar pinned under it */
+header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-area-inset-right,0px)) 6px calc(12px + env(safe-area-inset-left,0px))}
+.topline .appname{flex:1;min-width:0;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subline{flex:none;white-space:nowrap}
+.logo{width:22px;height:22px;border-radius:6px;gap:2px;padding:0 5px}.logo i{height:2px}
+.ibtn.plain{border:0;background:none;width:40px;height:40px;color:var(--mut)}.ibtn.plain .ic{width:20px;height:20px}
+#teamwrap{flex:none;padding:0;max-width:none;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
+#teamwrap .th{border:0;border-radius:0;background:none;box-shadow:inset 3px 0 0 var(--red);padding:6px calc(6px + env(safe-area-inset-right,0px)) 6px calc(12px + env(safe-area-inset-left,0px));align-items:center;gap:4px}
+#teamwrap .teamdd{border:0;background:none;padding:2px 0;font-size:17px;border-radius:0;max-width:100%}
+#teamwrap .teamdd .ic{width:15px;height:15px;color:var(--mut)}
+#teamwrap .ddl{font-size:11px;margin-top:0}#teamwrap .ddt>span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#teamwrap .thl{min-width:0;overflow:hidden}
+#teamwrap .thsub{font-size:11px;margin-top:0}
+#teamwrap .thr{gap:0}#teamwrap .thr .ibtn{border:0;background:none;width:40px;height:40px}#teamwrap .thr .ibtn.starred{color:#fde047}
+#scroller>main{padding-top:10px}
 </style>
 </head>
 <body>
 <header>
-  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="brand"><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span></span>
-    <span class="hbtns"><button class="ibtn" id="infotop" aria-label="About this site"></button></span></div>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
+    <button class="ibtn plain" id="infotop" aria-label="About this site"></button></div>
 </header>
-<div id="scroller"><div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div><main id="app"><div class="card ctx">Loading…</div></main></div>
+<div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
+<div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
 <div id="finder">
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
@@ -609,10 +625,11 @@ function waitRow(D, g, f) {
 }
 function checkedTxt() {
   if (!STATUS) return "";
-  const at = new Date(STATUS.checked), t = at.toLocaleString(undefined, {weekday: "short", hour: "numeric", minute: "2-digit"});
+  const at = new Date(STATUS.checked), sameDay = at.toDateString() === new Date().toDateString();
+  const t = at.toLocaleString(undefined, sameDay ? {hour: "numeric", minute: "2-digit"} : {weekday: "short", hour: "numeric", minute: "2-digit"});
   const stale = Date.now() - at.getTime() > 2 * 3600e3;
   $("#checked").classList.toggle("stale", stale);
-  return stale ? `Updates paused · last ${t}` : `Updated ${t}`;
+  return stale ? `Paused · ${t}` : t;
 }
 
 function renderTeam(D, fid, key) {
