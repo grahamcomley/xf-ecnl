@@ -1,0 +1,17 @@
+User-agent: *
+
+Allow: /
+
+Disallow: /js/
+Disallow: /css/
+Disallow: /_libraries/
+Disallow: /errors/
+Disallow: /_d3_qa_test/
+Disallow: /handlers/
+Disallow: /layouts/
+Disallow: /modules/
+Disallow: /services/
+Disallow: /storybook/
+Disallow: /templates/
+Disallow: /views/
+Disallow: /d3-test-not-remove
