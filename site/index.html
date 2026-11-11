@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.1">
+<meta name="app-version" content="v0.99.2">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -86,7 +86,17 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#info,#acct,#admin,#a2hs,#anudge{z-index:61}.setcard{max-height:92vh}.seth{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
+#a2hs,#anudge,#nudge{z-index:80}
+#pg{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column}#pg[hidden]{display:none}body.pgopen{overflow:hidden}
+.pg-head{flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:calc(6px + env(safe-area-inset-top)) 8px 6px;border-bottom:1px solid var(--line);background:var(--bg)}.pg-head b{font-size:16px;text-align:center}
+.pg-back{justify-self:start;display:inline-flex;align-items:center;gap:2px;background:none;border:0;color:var(--link);font:inherit;font-size:15px;padding:10px 8px;cursor:pointer;min-height:44px}.pg-back .ic{width:22px;height:22px}
+.pg-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}.pgin{max-width:640px;margin:0 auto;padding:4px 16px calc(28px + env(safe-area-inset-bottom));font-size:14px}.pgfoot{font-size:12px;margin-top:16px}
+.doc h2{font-size:16px;margin:20px 0 4px}.doc p,.doc li{color:#d6dae0;line-height:1.5}.doc ul{padding-left:20px;margin:6px 0}.doc .mut{font-size:13px}.doc a{color:var(--link)}
+.glist{background:var(--card2);border:1px solid var(--line2);border-radius:10px;overflow:hidden}.arow{border-top:1px solid var(--line)}.arow:first-child{border-top:0}
+.arow>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}.arow>summary::-webkit-details-marker{display:none}.arow>summary>span{flex:1;min-width:0;font-weight:600}.arow>summary .ddsub{display:block;font-weight:400}.arow>summary .ic{width:18px;height:18px;color:var(--mut);transition:transform .15s}.arow[open]>summary .ic{transform:rotate(180deg)}
+.arow .opt{padding:7px 12px;border-top:1px solid var(--line)}.arow.flat .opt{border-top:0;padding:9px 12px}.arow .qt{display:flex;align-items:center;gap:8px;padding:0 12px 10px}.arow .qt input{padding:3px 4px;font-size:13px}
+.abtns{display:flex;gap:8px;margin-top:12px}.abtns .btn-sec{margin:0;padding:9px}.abtns .danger{flex:0 0 34%}
+.fold{background:var(--card2);border:1px solid var(--line2);border-radius:10px;margin-top:10px}.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}.fold>summary::-webkit-details-marker{display:none}.fold>summary>span{flex:1;font-weight:700}.fold>summary .ddsub{display:block;font-weight:400}.fold>summary .ic{width:18px;height:18px;color:var(--mut)}.fold[open]>summary .ic{transform:rotate(180deg)}.foldin{padding:0 12px 12px}.foldin .admtiles{margin-top:0;grid-template-columns:repeat(4,1fr)}.foldin .stat{padding:8px}.foldin .stat .v{font-size:20px}.foldin .stat .k{font-size:11px}.setcard{max-height:92vh}.seth{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
@@ -229,26 +239,9 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
 </div>
-<div id="info" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>About</b><button class="icon-btn" id="infoclose">Back</button></div>
-  <p><b>Unofficial.</b> Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them.</p>
-  <p><b>Predictions</b> rate every team from all of this season's games across the country (plus last season's, lightly), then play out the rest of the season thousands of times. They're estimates, not guarantees.</p>
-  <p><b>Find your team:</b> tap the search icon, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team to your list.</p>
-  <p><b>Alerts:</b> turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts work from the Home Screen app.</p>
-  <p><b>Share a team:</b> open the team and tap the share icon. The link opens straight to that team.</p>
-  <p><b>Your account</b> is free and keeps your starred teams on all your devices. Google or Apple sign-in takes one tap. <a class="vlink" href="privacy.html">Privacy</a></p>
-</div></div>
-<div id="settings" class="sheet" hidden><div class="sheet-card setcard">
-  <div class="sheet-head"><b>Settings</b><button class="icon-btn" id="setclose">Close</button></div>
-  <div id="setbody"></div>
-</div></div>
 <div id="anudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
-</div></div>
-<div id="acct" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>Your account</b><button class="icon-btn" id="acctclose">Close</button></div>
-  <div id="acctbody"></div>
 </div></div>
 <div id="gate" hidden>
   <div class="gate-in">
@@ -261,10 +254,6 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
     <p class="gate-foot"><a class="vlink" href="privacy.html">Privacy</a> · Not affiliated with the ECNL</p>
   </div>
 </div>
-<div id="admin" class="sheet" hidden><div class="sheet-card admcard">
-  <div class="sheet-head"><b>Admin</b><button class="icon-btn" id="adminclose">Close</button></div>
-  <div id="adminbody"></div>
-</div></div>
 <div id="a2hs" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Add it to your Home Screen</b><button class="icon-btn" id="a2hsclose">Not now</button></div>
   <div id="a2hsbody"></div>
@@ -274,6 +263,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <p>Sign in to keep your starred teams on all your devices, including the home-screen app. It's optional: everything works without an account.</p>
   <button class="btn-main" id="nudgego">Sign in</button>
 </div></div>
+<div id="pg" hidden><div class="pg-head"><button class="pg-back" id="pgback"></button><b id="pgtitle"></b><span class="pg-sp"></span></div><div class="pg-body" id="pgbody"></div></div>
 <div class="toast" id="toast"></div>
 <script>
 "use strict";
@@ -296,6 +286,8 @@ const ICON = {
   gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
   bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
   right: '<path d="m9 6 6 6-6 6"/>',
+  left: '<path d="m15 6-6 6 6 6"/>',
+  lock: '<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>',
   sliders: '<path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>',
 };
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
@@ -463,8 +455,6 @@ async function boot() {
   $("#settop").innerHTML = icon("gear");
   document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) { m.hidden = true; const t = $("#teamdd"); if (t) t.setAttribute("aria-expanded", "false"); } });
   $("#settop").onclick = openSettings;
-  $("#infoclose").onclick = () => { $("#info").hidden = true; };
-  $("#info").onclick = e => { if (e.target.id === "info") $("#info").hidden = true; };
   $("#fq").addEventListener("input", drawFinder);
   route();
 }
@@ -560,57 +550,6 @@ function pushFavs(now) {
   PUSH_T = setTimeout(go, 600);
 }
 const ago = ms => { if (!ms) return "-"; const m = Math.round((Date.now() - ms) / 60000); return m < 60 ? `${m}m ago` : m < 2880 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
-async function openAcct() {
-  if (!ME) return signIn();
-  const n = (favs() || []).length, b = $("#acctbody");
-  b.innerHTML = `<p>Signed in as <b>${esc(ME.email || "your account")}</b>. ${n} saved team${n === 1 ? "" : "s"}, kept on all your devices.</p>
-    <button class="btn-sec" id="acctout">Sign out</button>
-    <button class="btn-sec danger" id="acctdel">Delete account</button>
-    <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>`;
-  $("#acct").hidden = false;
-  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#settings").hidden = true; applyGate(); toast("Signed out"); };
-  $("#acctdel").onclick = async e => {
-    const btn = e.currentTarget;
-    if (!btn.dataset.sure) { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete your account"; return; }
-    btn.textContent = "Deleting…";
-    try { await api("DELETE", "/api/me"); } catch (x) {}
-    try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
-    try { await window.Clerk.signOut(); } catch (x) {}
-    ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#settings").hidden = true; store.set("alertsOn", ""); applyGate(); toast("Account deleted");
-  };
-}
-// Admin page: header icon, shown only to the owner (the server checks; the icon is just a shortcut).
-async function openAdmin() {
-  if (!(ME && ME.admin)) { drawPills(); return; }
-  const b = $("#adminbody"); $("#admin").hidden = false; b.innerHTML = "<p class='mut'>Loading…</p>";
-  try {
-    const d = await api("GET", "/api/admin"), week = Date.now() - 7 * 864e5;
-    const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
-    const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
-    const gateOn = GATE !== false;
-    b.innerHTML = `<div class="admswitch"><div><b>Require sign-in</b><div class="mut" style="font-size:12px">${gateOn ? "On: new visitors see the welcome screen." : "Off: the site is open; sign-in is optional."} Takes about a minute to reach everyone.</div></div><button class="btn-sec admtoggle" id="gatetoggle">${gateOn ? "Turn off" : "Turn on"}</button></div>
-      <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
-        <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
-        <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
-      ${d.alerts ? `<h3 class="admh">Alerts</h3><div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
-        <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
-        <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
-        <div class="stat"><div class="v">${d.alerts.lastWeek}</div><div class="k">Sent last week</div></div></div>
-        <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
-        <p class="mut" style="font-size:12px;margin:4px 0 0">Alerts last sent: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>` : ""}
-      <h3 class="admh">People</h3>
-      <table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
-        ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>
-      ${d.top.length ? `<h3 class="admh">Most followed</h3><table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}
-      <p class="mut" style="font-size:12px;margin-top:14px">Last data check: ${esc(checkedTxt())} · page ${esc(document.querySelector('meta[name="app-version"]').content)}</p>`;
-    const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
-    $("#gatetoggle").onclick = async () => {
-      try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); openAdmin(); }
-      catch (x) { toast("Couldn't change it. Try again."); }
-    };
-  } catch (x) { b.innerHTML = "<p class='mut'>Couldn't load the admin data.</p>"; }
-}
-$("#adminclose").onclick = () => $("#admin").hidden = true;
 // ---------- getting it onto the home screen ----------
 // iPhone has no install button for websites (Apple doesn't allow one), so iPhone users get the three
 // steps. Android/Chrome does: we keep its install offer and show our own button. In-app browsers
@@ -650,30 +589,137 @@ function maybeOfferHome() {
   if (!(IS_IOS || INSTALL_EVT || INAPP)) return;
   store.set("a2hsOffered", "1"); setTimeout(openA2hs, 1500);
 }
-// ---------- settings (gear, top right) ----------
-// One page for everything that isn't a team: account, alerts, home screen, about, and (owner only) admin.
-function setRow(id, ic, label, sub) { return `<button class="setrow" id="${id}">${icon(ic)}<span>${label}${sub ? `<span class="ddsub">${sub}</span>` : ""}</span>${icon("right")}</button>`; }
-function openSettings() {
-  recheck();
-  const b = $("#setbody"), ver = document.querySelector('meta[name="app-version"]').content;
-  b.innerHTML = `<div class="seth">Account</div>
-      ${ME ? setRow("setacct", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("setsignin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
-    <div class="seth">Alerts</div><div id="alertsbox"></div>
-    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("seta2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}
-    <div class="seth">About</div>
-      ${setRow("setabout", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
-      <a class="setrow" href="privacy.html" style="text-decoration:none">${icon("user")}<span>Privacy</span>${icon("right")}</a>
-    ${ME && ME.admin ? `<div class="seth">Admin</div>${setRow("setadmin", "chart", "Admin", "Sign-ups, alerts, Require sign-in")}` : ""}
-    <p class="mut" style="font-size:12px;margin-top:16px">Version ${esc(ver)} · Last data check ${esc(checkedTxt().replace(/<[^>]+>/g, ""))}</p>`;
-  $("#settings").hidden = false;
-  const on = (id, fn) => { const e = $("#" + id); if (e) e.onclick = fn; };
-  on("setacct", openAcct); on("setsignin", () => { $("#settings").hidden = true; signIn(); });
-  on("seta2hs", openA2hs); on("setabout", () => { $("#info").hidden = false; }); on("setadmin", openAdmin);
-  drawAlerts();
+// ---------- settings pages (gear, top right) ----------
+// Full-screen pages opened one level at a time: Settings > Account / Alerts / About / Privacy / Admin.
+// Back always goes up one level; Close on Settings goes back to the app.
+let STACK = [];
+const PAGES = {
+  settings: {title: "Settings", draw: drawSettings},
+  account: {title: "Your account", draw: drawAccount},
+  alerts: {title: "Alerts", draw: drawAlertsPage},
+  about: {title: "About", draw: drawAbout},
+  privacy: {title: "Privacy", draw: drawPrivacy},
+  admin: {title: "Admin", draw: drawAdmin},
+};
+function openPage(name, fresh) {
+  if (fresh) STACK = [];
+  STACK.push(name); showPage(true);
 }
-$("#setclose").onclick = () => $("#settings").hidden = true;
-$("#settings").onclick = e => { if (e.target.id === "settings") $("#settings").hidden = true; };
-
+function backPage() { STACK.pop(); if (STACK.length) showPage(false); else closePages(); }
+function closePages() { STACK = []; $("#pg").hidden = true; document.body.classList.remove("pgopen"); }
+function showPage(scrollTop) {
+  const name = STACK[STACK.length - 1], P = PAGES[name]; if (!P) return closePages();
+  $("#pg").hidden = false; document.body.classList.add("pgopen");
+  $("#pgtitle").textContent = P.title;
+  $("#pgback").innerHTML = STACK.length > 1 ? `${icon("left")}<span>${esc(PAGES[STACK[STACK.length - 2]].title)}</span>` : `<span>Close</span>`;
+  const b = $("#pgbody"); b.onclick = null; P.draw(b);
+  if (scrollTop) b.scrollTop = 0;
+}
+const pageIs = n => !$("#pg").hidden && STACK[STACK.length - 1] === n;
+function refreshPage() { if (!$("#pg").hidden) { const y = $("#pgbody").scrollTop; showPage(false); $("#pgbody").scrollTop = y; } }
+const drawAlerts = refreshPage;   // alerts code calls this after a change
+$("#pgback").onclick = backPage;
+function openSettings() { recheck(); openPage("settings", true); }
+// Old entry points (team menu) open straight to a page; Back then returns to the app.
+function openAcct() { if (!ME) return signIn(); openPage("account", true); }
+function openAdmin() { if (ME && ME.admin) openPage("admin", true); }
+function setRow(id, ic, label, sub) { return `<button class="setrow" data-go="${id}">${icon(ic)}<span>${label}${sub ? `<span class="ddsub">${sub}</span>` : ""}</span>${icon("right")}</button>`; }
+function alertsSummary() {
+  if (alertsOn()) { const n = (favs() || []).filter(teamByKey).length; return `On · ${n} team${n === 1 ? "" : "s"}`; }
+  return alertsBlocker() && IS_IOS && !STANDALONE() ? "Off · works from the Home Screen app" : "Off";
+}
+function drawSettings(b) {
+  const ver = document.querySelector('meta[name="app-version"]').content;
+  b.innerHTML = `<div class="pgin"><div class="seth">Account</div>
+      ${ME ? setRow("account", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("signin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
+    <div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary())}
+    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}
+    <div class="seth">About</div>
+      ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
+      ${setRow("privacy", "lock", "Privacy", "What we store and how to delete it")}
+    ${ME && ME.admin ? `<div class="seth">Admin</div>${setRow("admin", "chart", "Admin", "Sign-ups, alerts, Require sign-in")}` : ""}
+    <p class="mut pgfoot">Version ${esc(ver)} · Last data check ${esc(checkedTxt().replace(/<[^>]+>/g, ""))}</p></div>`;
+  b.onclick = e => {
+    const r = e.target.closest("[data-go]"); if (!r) return;
+    const g = r.dataset.go;
+    if (g === "signin") { closePages(); signIn(); } else if (g === "a2hs") openA2hs(); else openPage(g);
+  };
+}
+function drawAccount(b) {
+  if (!ME) { b.innerHTML = `<div class="pgin"><p>You're signed out.</p></div>`; return; }
+  const n = (favs() || []).length;
+  b.innerHTML = `<div class="pgin"><div class="setbox"><p style="margin:2px 0">Signed in as <b>${esc(ME.email || "your account")}</b></p><p class="mut" style="margin:2px 0;font-size:13px">${n} saved team${n === 1 ? "" : "s"}, kept on all your devices.</p></div>
+    <button class="btn-sec" id="acctout">Sign out</button>
+    <button class="btn-sec danger" id="acctdel">Delete account</button>
+    <p class="mut" style="font-size:12px">Deleting removes your account, saved teams and alerts. The site keeps working without an account.</p></div>`;
+  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); closePages(); applyGate(); toast("Signed out"); };
+  $("#acctdel").onclick = async e => {
+    const btn = e.currentTarget;
+    if (!btn.dataset.sure) { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete your account"; return; }
+    btn.textContent = "Deleting…";
+    try { await api("DELETE", "/api/me"); } catch (x) {}
+    try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
+    try { await window.Clerk.signOut(); } catch (x) {}
+    ME = null; store.set("signedInOnce", ""); store.set("alertsOn", ""); closePages(); applyGate(); toast("Account deleted");
+  };
+}
+function drawAbout(b) {
+  b.innerHTML = `<div class="pgin doc">
+    <h2>Unofficial</h2><p>Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them.</p>
+    <h2>Predictions</h2><p>Every team is rated from all of this season's games across the country (plus last season's, lightly), then the rest of the season is played out thousands of times. They're estimates, not guarantees.</p>
+    <h2>Find your team</h2><p>Open the team menu at the top, tap <b>Find a team</b>, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team.</p>
+    <h2>Alerts</h2><p>Turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts work from the Home Screen app.</p>
+    <h2>Share a team</h2><p>Open the team and tap the share icon. The link opens straight to that team.</p>
+    <h2>Your account</h2><p>Free, and keeps your starred teams on all your devices. Google or Apple sign-in takes one tap.</p></div>`;
+}
+let PRIV = null;
+async function drawPrivacy(b) {
+  b.innerHTML = `<div class="pgin doc">${PRIV || "<p class='mut'>Loading…</p>"}</div>`;
+  if (PRIV) return;
+  try {
+    const h = await fetch("privacy.html", {cache: "no-store"}).then(r => r.text());
+    const m = new DOMParser().parseFromString(h, "text/html").querySelector("main");
+    m.querySelectorAll("p").forEach(p => { if (p.querySelector('a[href="/"]')) p.remove(); });
+    const h1 = m.querySelector("h1"); if (h1) h1.remove();
+    PRIV = m.innerHTML;
+  } catch (e) { PRIV = `<p>Couldn't load it. <a class="vlink" href="privacy.html">Open the privacy page</a></p>`; }
+  if (pageIs("privacy")) refreshPage();
+}
+// Admin: shown only to the owner (the server checks too).
+async function drawAdmin(b) {
+  if (!(ME && ME.admin)) { b.innerHTML = "<div class='pgin'><p class='mut'>Not available.</p></div>"; return; }
+  b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
+  try {
+    const d = await api("GET", "/api/admin"), week = Date.now() - 7 * 864e5;
+    if (!pageIs("admin")) return;
+    const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
+    const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
+    const gateOn = GATE !== false;
+    const fold = (id, title, sub, body, open) => `<details class="fold" data-fold="${id}" ${(ADM_OPEN[id] ?? open) ? "open" : ""}><summary><span>${title}<span class="ddsub">${sub}</span></span>${icon("chev")}</summary><div class="foldin">${body}</div></details>`;
+    b.innerHTML = `<div class="pgin">
+      <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
+        <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
+        <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
+      <div class="admswitch"><div><b>Require sign-in</b><div class="mut" style="font-size:12px">${gateOn ? "On: new visitors see the welcome screen." : "Off: the site is open; sign-in is optional."} Takes about a minute to reach everyone.</div></div><button class="btn-sec admtoggle" id="gatetoggle">${gateOn ? "Turn off" : "Turn on"}</button></div>
+      ${d.alerts ? fold("alerts", "Alerts", `${d.alerts.people} ${d.alerts.people === 1 ? "person" : "people"} · ${d.alerts.week} sent this week`, `<div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
+        <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
+        <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
+        <div class="stat"><div class="v">${d.alerts.lastWeek}</div><div class="k">Sent last week</div></div></div>
+        <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
+        <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
+      ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
+        ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
+      ${d.top.length ? fold("top", "Most followed", `${d.top.length} team${d.top.length === 1 ? "" : "s"}`, `<table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>`, false) : ""}
+      <p class="mut pgfoot">Last data check: ${esc(checkedTxt().replace(/<[^>]+>/g, ""))} · page ${esc(document.querySelector('meta[name="app-version"]').content)}</p></div>`;
+    b.querySelectorAll("details.fold").forEach(dt => dt.addEventListener("toggle", () => { ADM_OPEN[dt.dataset.fold] = dt.open; }));
+    const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
+    $("#gatetoggle").onclick = async () => {
+      try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); refreshPage(); }
+      catch (x) { toast("Couldn't change it. Try again."); }
+    };
+  } catch (x) { if (pageIs("admin")) b.innerHTML = "<div class='pgin'><p class='mut'>Couldn't load the admin data.</p></div>"; }
+}
+const ADM_OPEN = {};
 // ---------- alerts (push notifications) ----------
 // This device only: the phone/browser asks permission, then the site's server sends a notification when a
 // score is posted. Settings live on this device and are copied to the server whenever they change.
@@ -728,45 +774,51 @@ function alertsBlocker() {
   return null;
 }
 function aseg(name, opts, val) { return `<span class="seg" data-seg="${name}">${opts.map(([v, l]) => `<button data-v="${v}" class="${v === val ? "on" : ""}">${l}</button>`).join("")}</span>`; }
-async function drawAlerts() {
-  const box = $("#alertsbox"); if (!box) return;
+const AOPEN = new Set();
+async function drawAlertsPage(b) {
   const bl = alertsBlocker();
   if (bl) {
-    box.innerHTML = `<div class="setbox"><p>${bl.msg}</p>${bl.btn ? `<button class="btn-sec" id="ablk">${bl.btn[1]}</button>` : ""}</div>`;
-    const x = $("#ablk"); if (x) x.onclick = () => bl.btn[0] === "a2hs" ? openA2hs() : ($("#settings").hidden = true, signIn());
+    b.innerHTML = `<div class="pgin"><div class="setbox"><p>${bl.msg}</p>${bl.btn ? `<button class="btn-sec" id="ablk">${bl.btn[1]}</button>` : ""}</div></div>`;
+    const x = $("#ablk"); if (x) x.onclick = () => bl.btn[0] === "a2hs" ? openA2hs() : (closePages(), signIn());
     return;
   }
   if (alertsOn() && !(await pushSub())) store.set("alertsOn", "");
+  if (!pageIs("alerts")) return;
   if (!alertsOn()) {
-    box.innerHTML = `<div class="setbox"><p>Get your team's final score, and other results in your league, as soon as they're posted.</p><button class="btn-main" id="aon">${icon("bell")}Turn on alerts</button></div>`;
-    $("#aon").onclick = enableAlerts; $("#aon").style.cssText = "display:flex;align-items:center;justify-content:center;gap:8px";
+    b.innerHTML = `<div class="pgin"><div class="setbox"><p>Get your team's final score, and other results in your league, as soon as they're posted.</p><button class="btn-main" id="aon" style="display:flex;align-items:center;justify-content:center;gap:8px">${icon("bell")}Turn on alerts</button></div></div>`;
+    $("#aon").onclick = enableAlerts;
     return;
   }
   const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
-  box.innerHTML = list.map(t => { const tc = tcfg(c, t.k); return `<div class="setbox" data-team="${t.k}"><div class="tname">${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${esc(t.c)}</span></div>
+  const sum = tc => `Score ${tc.our ? "on" : "off"} · League ${tc.lg === "all" ? "all results" : "off"}`;
+  b.innerHTML = `<div class="pgin"><div class="seth">Teams</div><div class="glist">`
+    + list.map(t => { const tc = tcfg(c, t.k); return `<details class="arow" data-team="${t.k}" ${AOPEN.has(t.k) ? "open" : ""}><summary><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${sum(tc)}</span></span>${icon("chev")}</summary>
       <div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
-      <div class="opt"><span>Other games in our league</span>${aseg("lg", [["all", "All results"], ["off", "Off"]], tc.lg)}</div></div>`; }).join("")
-    + `<div class="setbox"><div class="opt"><span>Quiet hours<span class="ddsub">Held until morning, then sent as one summary</span></span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
-      ${c.q.on ? `<div class="qt" style="padding:0 0 8px">From <input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}
-      <div class="opt"><span>Red number on the app icon<span class="ddsub">Alerts you haven't opened yet</span></span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div>
-    <button class="btn-sec" id="atest">Send a test alert</button>
-    <button class="btn-sec danger" id="aoff">Turn off alerts on this device</button>
-    <p class="mut" style="font-size:12px;margin:6px 0 0">Scores arrive about 15 minutes after the ECNL posts them. Several at once are combined into one alert.</p>`;
-  box.onclick = e => {
+      <div class="opt"><span>Other games in ${esc(t.c)}</span>${aseg("lg", [["all", "All"], ["off", "Off"]], tc.lg)}</div></details>`; }).join("")
+    + `</div><div class="seth">Options</div><div class="glist">
+      <div class="arow flat"><div class="opt"><span>Quiet hours<span class="ddsub">${c.q.on ? "Alerts wait, then arrive as one summary" : "Off"}</span></span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
+        ${c.q.on ? `<div class="qt"><input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}</div>
+      <div class="arow flat"><div class="opt"><span>Red number on the app icon</span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div></div>
+    <div class="abtns"><button class="btn-sec" id="atest">Send a test alert</button><button class="btn-sec danger" id="aoff">Turn off</button></div>
+    <p class="mut pgfoot">Scores arrive about 15 minutes after the ECNL posts them. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
+  b.querySelectorAll("details.arow").forEach(dt => dt.addEventListener("toggle", () => { dt.open ? AOPEN.add(dt.dataset.team) : AOPEN.delete(dt.dataset.team); }));
+  b.onclick = e => {
     const btn = e.target.closest(".seg button"); if (!btn) return;
+    e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
     if (tk) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), s === "our" ? {our: v === "1"} : {lg: v}); }
     else if (s === "qon") cc.q.on = v === "1";
     else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
-    setAcfg(cc); drawAlerts();
+    setAcfg(cc); refreshPage();
   };
   ["qs", "qe"].forEach(id => { const el = $("#" + id); if (el) el.onchange = () => { const cc = acfg(); if (/^\d\d:\d\d$/.test(el.value)) { cc.q[id === "qs" ? "s" : "e"] = el.value; setAcfg(cc); } }; });
   $("#aoff").onclick = disableAlerts;
   $("#atest").onclick = async () => {
-    const b = $("#atest"); b.textContent = "Sending…";
+    const t = $("#atest"); t.textContent = "Sending…";
     const sub = await pushSub();
-    try { clearTimeout(ASYNC_T); await alertsSyncNow(); const r = await api("POST", "/api/push/test", {endpoint: sub && sub.endpoint}); b.textContent = r.ok ? "Sent. It should arrive in a few seconds." : "Couldn't send. Try again."; }
-    catch (x) { b.textContent = "Couldn't send. Try again."; }
+    try { clearTimeout(ASYNC_T); await alertsSyncNow(); const r = await api("POST", "/api/push/test", {endpoint: sub && sub.endpoint}); t.textContent = r.ok ? "Sent" : "Couldn't send"; }
+    catch (x) { t.textContent = "Couldn't send"; }
+    setTimeout(() => { if (t.isConnected) t.textContent = "Send a test alert"; }, 4000);
   };
 }
 async function alertsSyncNow() {
@@ -796,7 +848,6 @@ function clearBadge() {
 clearBadge();
 document.addEventListener("visibilitychange", () => { if (!document.hidden) clearBadge(); });
 inappNote();
-$("#acctclose").onclick = () => $("#acct").hidden = true;
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
 loadClerk(); applyGate(); loadGate();
