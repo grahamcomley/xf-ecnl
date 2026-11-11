@@ -40,3 +40,9 @@ SITE = "live"
 binding = "USERS"
 id = "KV_ID_PLACEHOLDER"
 # KV-END
+
+# Logs + private mirror of accounts/alert devices (read by Claude via Cloudflare D1; see api/log.js).
+[[d1_databases]]
+binding = "LOGS"
+database_name = "sideline-logs"
+database_id = "23792833-4c96-402e-b6d2-e87ce2b949ff"

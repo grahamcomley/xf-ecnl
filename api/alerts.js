@@ -14,6 +14,7 @@
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
 import {send as sendRaw, vapid} from "./push.js";
 import {wrapLine} from "./pickem.js";
+import {dbDevice} from "./log.js";
 
 // Every notification sent is logged (kind, who, what, push service status).
 let LOG = null;
@@ -79,7 +80,7 @@ export async function route(p, req, env, c, json) {
   }
   if (p === "/api/push" && req.method === "DELETE") {
     const d = await env.USERS.get(key, "json");
-    if (d && d.uid === c.sub) { await env.USERS.delete(key); LOG && LOG.keep("alerts.off", {uid: c.sub, dev: id}); }
+    if (d && d.uid === c.sub) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key)); LOG && LOG.keep("alerts.off", {uid: c.sub, dev: id}); }
     return json({ok: true});
   }
   if (p === "/api/push/test" && req.method === "POST") {
@@ -88,14 +89,14 @@ export async function route(p, req, env, c, json) {
     const t = d.teams[0];
     const st = await send(env, d.sub, {t: "Test alert", b: t ? `Alerts are on. You'll hear about ${t.n || "your team"} here.` : "Alerts are on.",
       u: "/" + (t ? "#t=" + t.k : ""), tag: "test", badge: d.badge}, "test", d);
-    if (st === 404 || st === 410) { await env.USERS.delete(key); return json({error: "gone"}, 410); }
+    if (st === 404 || st === 410) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key)); return json({error: "gone"}, 410); }
     return json({ok: st >= 200 && st < 300, status: st});
   }
   return json({error: "not found"}, 404);
 }
 
-const putDev = (env, key, rec) => env.USERS.put(key, JSON.stringify(rec), {metadata: {u: rec.uid, n: rec.teams.length,
-  t: rec.teams.slice(0, 50).map(t => t.k).join(","), tz: rec.tz}});
+const putDev = (env, key, rec) => { dbDevice(env, null, key.split(":")[2], rec); return env.USERS.put(key, JSON.stringify(rec), {metadata: {u: rec.uid, n: rec.teams.length,
+  t: rec.teams.slice(0, 50).map(t => t.k).join(","), tz: rec.tz}}); };
 // All device keys + metadata for this site.
 async function deviceMeta(env) {
   const out = []; let cursor;
@@ -119,7 +120,7 @@ async function devices(env, uid) {
 export async function deleteUser(env, uid) {
   for (const s of ["uat", "live"]) {
     const e = Object.assign({}, env, {SITE: s});
-    for (const k of await devices(e, uid)) await env.USERS.delete(k);
+    for (const k of await devices(e, uid)) (dbDevice(e, null, k.split(":")[2], null), await env.USERS.delete(k));
   }
 }
 export async function adminStats(env) {
@@ -139,7 +140,7 @@ export async function testOwner(env, uid) {
   for (const k of await devices(env, uid)) {
     const d = await env.USERS.get(k, "json"); if (!d) continue;
     const s = await send(env, d.sub, {t: "Admin test", b: "Test alert to every device you've turned alerts on.", u: "/", tag: "test", badge: d.badge}, "admin-test", d);
-    if (s === 404 || s === 410) await env.USERS.delete(k); else if (s < 300) n++;
+    if (s === 404 || s === 410) (dbDevice(env, null, k.split(":")[2], null), await env.USERS.delete(k)); else if (s < 300) n++;
   }
   return n;
 }
@@ -332,7 +333,7 @@ async function scores(env, st, fresh, due, now, addSent, addGone) {
     if (!out.length) continue;
     for (const n of compose(d, out, overnight)) {
       const s = await send(env, d.sub, Object.assign(n, {badge: d.badge}), overnight ? "overnight" : "score", d);
-      if (s === 404 || s === 410) { await env.USERS.delete(key); delete st.held[id]; gone++; break; }
+      if (s === 404 || s === 410) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key)); delete st.held[id]; gone++; break; }
       if (s < 300) sent++;
     }
     for (const t of new Set(out.map(i => i.t))) st.ll[id + "|" + t] = now;
@@ -394,7 +395,7 @@ async function reminders(env, st, up, now) {
         const title = (t.rem === "2h" && timed ? "In 2 hours: " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
         const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
         st.rem[key] = now;
-        if (s === 404 || s === 410) { await env.USERS.delete(m.name); break; }
+        if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); break; }
         if (s < 300) n++;
       }
     }
@@ -429,7 +430,7 @@ async function wrapups(env, st, wk, now) {
     try { const fri = new Date(Date.parse(L.date + "T12:00:00Z") - 2 * 864e5).toISOString().slice(0, 10); const pl = await wrapLine(env, d.uid, fri, L.date); if (pl) lines.push(pl); } catch (e) {}
     const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge}, "wrapup", d);
     st.wrap[id] = L.date;
-    if (s === 404 || s === 410) { await env.USERS.delete(m.name); continue; }
+    if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); continue; }
     if (s < 300) n++;
   }
   return n;

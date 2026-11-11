@@ -7,7 +7,7 @@
 // Sign-in is Clerk (clerk.sidelinestandings.com). Session tokens are checked here without a network
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
-import {makeLog} from "./log.js";
+import {makeLog, dbPerson, dbDailySync} from "./log.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
 
@@ -94,6 +94,7 @@ export default {
   async scheduled(evt, env, ctx) {
     if (!env.USERS) return;
     const L = makeLog(env, ctx); pushSetLog(L);
+    ctx.waitUntil(dbDailySync(env).then(r => r && L.info("mirror.sync", r)).catch(e => L.error("mirror.error", {msg: String(e)})));
     ctx.waitUntil(pushCheck(env).then(r => { const busy = r && (r.sent || r.gone || r.init || r.remErr || r.wrapErr); (busy ? L.keep : L.info).call(L, "check", r); })
       .catch(e => L.error("check.error", {msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}))
       .then(() => L.flush()));
@@ -119,7 +120,7 @@ async function handle(req, env, url, p, L, who0) {
 
     // GET /api/me: the account's saved teams. Also notes "last seen".
     if (p === "/api/me" && req.method === "GET") {
-      if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); L.keep("account.active", {uid: c.sub, email: rec.email || c.email || "", teams: rec.favs.length}); }
+      if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); dbPerson(env, null, c.sub, rec); L.keep("account.active", {uid: c.sub, email: rec.email || c.email || "", teams: rec.favs.length}); }
       return json({signedIn: true, exists: !!rec, favs: rec ? rec.favs : [], picks: rec && rec.picks || {}, admin: isOwner(c)});
     }
     // PUT /api/me: save teams (and the email shown in the admin list).
@@ -128,7 +129,7 @@ async function handle(req, env, url, p, L, who0) {
       const isNew = !rec;
       rec = Object.assign({created: now}, rec || {}, {favs: cleanFavs(body.favs), seen: now});
       const em = cleanEmail(c.email) || cleanEmail(body.email); if (em) rec.email = em;
-      await put(env, c.sub, rec);
+      await put(env, c.sub, rec); dbPerson(env, null, c.sub, rec);
       (isNew ? L.keep : L.info).call(L, isNew ? "account.created" : "account.favs", {uid: c.sub, email: rec.email || "", favs: rec.favs.join(" ")});
       return json({ok: true, favs: rec.favs});
     }
@@ -137,7 +138,7 @@ async function handle(req, env, url, p, L, who0) {
       let body = {}; try { body = await req.json(); } catch (e) {}
       if (!rec) rec = {created: now, favs: [], seen: now};
       rec.picks = cleanPicks(body.picks);
-      await put(env, c.sub, rec);
+      await put(env, c.sub, rec); dbPerson(env, null, c.sub, rec);
       L.info("picks.saved", {uid: c.sub, n: Object.values(rec.picks).reduce((a, g) => a + Object.keys(g).length, 0)});
       return json({ok: true});
     }
@@ -147,7 +148,7 @@ async function handle(req, env, url, p, L, who0) {
     if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
-      await env.USERS.delete(key);
+      await env.USERS.delete(key); dbPerson(env, null, c.sub, null);
       await pushDeleteUser(env, c.sub);
       L.keep("account.deleted", {uid: c.sub, email: rec && rec.email || ""});
       return json({ok: true});
