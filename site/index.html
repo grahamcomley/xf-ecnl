@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.30">
+<meta name="app-version" content="v0.99.31">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1334,7 +1334,7 @@ function renderTeam(D, fid, key) {
     , "s2")}
   ${sec("us", chipMe, "Results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
     + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
-  ${events.length ? sec("div", "Events", "Showcases & tournaments", "Don't count toward league standings.",
+  ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="league">
   ${sec("div", "League", "This week's results", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
@@ -1582,7 +1582,7 @@ function onPick(e) {
 // Events (national events, tournaments) inside the team page; brackets show the possible path.
 // One collapsed row per event: name + dates, and our first game (or that it's finished).
 const EV_WORDS = /showcase|cup|classic|tournament|invitational|festival|series|playoff|final|challenge|shootout/i;
-const evName = ev => (ev.name || "Event").replace(/\s+20\d\d(-\d\d)?\s*$/, "") + (EV_WORDS.test(ev.name || "") ? "" : " Showcase");
+const evName = ev => (ev.name || "Event").replace(/\s+20\d\d(-\d\d)?\s*$/, "") + (ev.competition || EV_WORDS.test(ev.name || "") ? "" : " Showcase");
 function dateRange(dates) {
   const a = new Date(dates[0] + "T12:00:00"), b = new Date(dates[dates.length - 1] + "T12:00:00");
   const m = d => d.toLocaleDateString(undefined, {month: "short"});
@@ -1597,13 +1597,13 @@ function eventRow(D, ev, fid, i) {
   let line;
   if (next) {
     const opp = next.home_id === fid ? next.away_id : next.home_id;
-    line = `First game: ${next.home_id === fid ? "vs" : "@"} ${esc(tn(opp))} · ${fmtDate(next.date)} · ${fmtTime(next.time)}`;
+    line = `${ev.competition ? "Next game" : "First game"}: ${next.home_id === fid ? "vs" : "@"} ${esc(tn(opp))} · ${fmtDate(next.date)} · ${fmtTime(next.time)}`;
   } else if (ours.length) {
     const w = ours.filter(g => (g.home_id === fid ? g.hs > g.as : g.as > g.hs)).length, d = ours.filter(g => g.hs === g.as).length;
     line = `Finished · ${w}-${d}-${ours.length - w - d}`;
   } else line = "Schedule not posted yet";
   const sk = `open2:ev-${ev.event_id}-${ev.flight_id}`, open = store.get(sk) === "1";
-  return `<details class="evrow" data-key="${sk}" ${open ? "open" : ""}><summary><div class="when"><span>${dates.length ? dateRange(dates) : "Dates TBD"}${ev.flight ? ` · Group: ${esc(ev.flight)}` : ""}</span></div>
+  return `<details class="evrow" data-key="${sk}" ${open ? "open" : ""}><summary><div class="when"><span>${dates.length ? dateRange(dates) : "Dates TBD"}${ev.flight && !ev.competition ? ` · Group: ${esc(ev.flight)}` : ""}</span></div>
     <div class="evhead"><div class="evt">${esc(evName(ev))}</div><span class="imp">Details ${CHEV}</span></div><div class="mut">${line}</div></summary>
     <div class="evbody"><div class="mut" style="margin-bottom:8px"><a class="vlink" href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a></div>${eventBody(D, ev, fid)}</div></details>`;
 }

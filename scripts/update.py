@@ -705,6 +705,25 @@ def main():
                      "teams": [team_obj(t, with_record=True) for t in tids]}
             for t in tids:
                 events_by_team.setdefault(t, []).append(block)
+        # MLS NEXT: a team that plays in two competitions (e.g. Pro Player Pathway + Flex) sees the
+        # other one's games on its page too, as its own section with that competition's table.
+        if pc.get("source") == "mlsnext":
+            by_bracket = {}
+            for g in games:
+                if re.match(r"ev\d+$", g["conf"]) and g.get("flight_id"):
+                    by_bracket.setdefault(g["conf"], []).append(g)
+            for ck, gs in by_bracket.items():
+                tids = sorted({t for g in gs for t in (g["home_id"], g["away_id"]) if t}, key=str)
+                others = [t for t in tids if team_conf.get(t) != ck]
+                if not others:
+                    continue
+                block = {"event_id": gs[0]["event_id"], "flight_id": gs[0]["flight_id"], "name": gs[0].get("event_name"),
+                         "flight": gs[0].get("flight_name"), "bracket": False, "competition": True,
+                         "ecnl_link": "https://www.mlssoccer.com/mlsnext/schedule/all/",
+                         "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
+                         "teams": [team_obj(t) for t in tids]}
+                for t in others:
+                    events_by_team.setdefault(t, []).append(block)
 
         # One file per league flight (conference).
         flights = {}
@@ -766,7 +785,7 @@ def main():
                 "conf_name": cname, "league": league_type(gs[0].get("event_name")),
                 "age_label": pc.get("label", ""), "flight": gs[0].get("flight_name"),
                 "playoff_spots": spots, "playoff_label": spots_label,
-                "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
+                "ecnl_link": "https://www.mlssoccer.com/mlsnext/standings/" if pc.get("source") == "mlsnext" else f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
                 "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
                 "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt and {k: v for k, v in bt.items() if k != "preds"}},
                 "teams": [team_obj(t) for t in tids],
