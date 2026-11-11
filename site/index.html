@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99">
+<meta name="app-version" content="v0.99.1">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -86,6 +86,14 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#info,#acct,#admin,#a2hs,#anudge{z-index:61}.setcard{max-height:92vh}.seth{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
+.setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
+.setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
+.opt{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line)}.opt:first-of-type{border-top:0}.opt>span:first-child{flex:1;min-width:0;font-size:13px}.opt .ddsub{display:block}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex:none}.seg button{background:none;border:0;color:var(--mut);font:inherit;font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer}.seg button.on{background:var(--red);color:#fff}
+.tname{font-weight:700;font-size:14px;margin-top:4px}.tname .ddsub{display:block}
+.qt{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mut)}.qt input{background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font:inherit;font-size:13px;color-scheme:dark}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -212,7 +220,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <body>
 <header>
   <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
-    <button class="ibtn plain" id="admintop" aria-label="Admin" hidden></button><button class="ibtn plain" id="infotop" aria-label="About this site"></button></div>
+    <button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
 <div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
@@ -222,13 +230,21 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <div class="f-body" id="fbody"></div>
 </div>
 <div id="info" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>About this site</b><button class="icon-btn" id="infoclose">Close</button></div>
+  <div class="sheet-head"><b>About</b><button class="icon-btn" id="infoclose">Back</button></div>
   <p><b>Unofficial.</b> Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them.</p>
   <p><b>Predictions</b> rate every team from all of this season's games across the country (plus last season's, lightly), then play out the rest of the season thousands of times. They're estimates, not guarantees.</p>
   <p><b>Find your team:</b> tap the search icon, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team to your list.</p>
-  <p><b>Put it on your phone:</b> iPhone: open in Safari, tap Share, then <i>Add to Home Screen</i>. Android: Chrome menu ⋮, then <i>Add to Home screen</i>.</p>
+  <p><b>Alerts:</b> turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts work from the Home Screen app.</p>
   <p><b>Share a team:</b> open the team and tap the share icon. The link opens straight to that team.</p>
   <p><b>Your account</b> is free and keeps your starred teams on all your devices. Google or Apple sign-in takes one tap. <a class="vlink" href="privacy.html">Privacy</a></p>
+</div></div>
+<div id="settings" class="sheet" hidden><div class="sheet-card setcard">
+  <div class="sheet-head"><b>Settings</b><button class="icon-btn" id="setclose">Close</button></div>
+  <div id="setbody"></div>
+</div></div>
+<div id="anudge" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
+  <div id="anudgebody"></div>
 </div></div>
 <div id="acct" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Your account</b><button class="icon-btn" id="acctclose">Close</button></div>
@@ -277,6 +293,9 @@ const ICON = {
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
   grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  right: '<path d="m9 6 6 6-6 6"/>',
   sliders: '<path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>',
 };
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
@@ -427,6 +446,7 @@ let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
 const CONF_CACHE = {}, PICKS = {};
 const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
 const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash();
+  if (typeof alertsSync === "function") alertsSync();
   if (ME && !SYNCING) pushFavs();
   else if (!ME && !SYNCING && store.get("signedInOnce")) { store.set("favsDirty", "1"); if (CLERK_READY && !store.get("askedResign")) { store.set("askedResign", "1"); setTimeout(signIn, 600); } } };
 const teamByKey = k => TEAMS.find(t => t.k === k);
@@ -440,9 +460,9 @@ async function boot() {
   fetch("data/status.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(s => { STATUS = s; const el = $("#checked"); if (el && s) el.innerHTML = checkedTxt(); }).catch(() => {});
   window.addEventListener("hashchange", route);
   $("#fclose").onclick = closeFinder;
-  $("#infotop").innerHTML = icon("info");
+  $("#settop").innerHTML = icon("gear");
   document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) { m.hidden = true; const t = $("#teamdd"); if (t) t.setAttribute("aria-expanded", "false"); } });
-  $("#infotop").onclick = () => { $("#info").hidden = false; };
+  $("#settop").onclick = openSettings;
   $("#infoclose").onclick = () => { $("#info").hidden = true; };
   $("#info").onclick = e => { if (e.target.id === "info") $("#info").hidden = true; };
   $("#fq").addEventListener("input", drawFinder);
@@ -529,6 +549,7 @@ async function onAuth() {
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
+    alertsSync();
     maybeOfferHome();
   } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
 }
@@ -547,7 +568,7 @@ async function openAcct() {
     <button class="btn-sec danger" id="acctdel">Delete account</button>
     <p class="mut" style="font-size:12px">Deleting removes your account and saved teams. The site keeps working without an account. <a class="vlink" href="privacy.html">Privacy</a></p>`;
   $("#acct").hidden = false;
-  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#admintop").hidden = true; applyGate(); toast("Signed out"); };
+  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#settings").hidden = true; applyGate(); toast("Signed out"); };
   $("#acctdel").onclick = async e => {
     const btn = e.currentTarget;
     if (!btn.dataset.sure) { btn.dataset.sure = "1"; btn.textContent = "Tap again to delete your account"; return; }
@@ -555,7 +576,7 @@ async function openAcct() {
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
-    ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#admintop").hidden = true; applyGate(); toast("Account deleted");
+    ME = null; store.set("signedInOnce", ""); $("#acct").hidden = true; $("#settings").hidden = true; store.set("alertsOn", ""); applyGate(); toast("Account deleted");
   };
 }
 // Admin page: header icon, shown only to the owner (the server checks; the icon is just a shortcut).
@@ -571,19 +592,24 @@ async function openAdmin() {
       <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
         <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
         <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
+      ${d.alerts ? `<h3 class="admh">Alerts</h3><div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
+        <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
+        <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
+        <div class="stat"><div class="v">${d.alerts.lastWeek}</div><div class="k">Sent last week</div></div></div>
+        <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
+        <p class="mut" style="font-size:12px;margin:4px 0 0">Alerts last sent: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>` : ""}
       <h3 class="admh">People</h3>
       <table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>
       ${d.top.length ? `<h3 class="admh">Most followed</h3><table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>` : ""}
       <p class="mut" style="font-size:12px;margin-top:14px">Last data check: ${esc(checkedTxt())} · page ${esc(document.querySelector('meta[name="app-version"]').content)}</p>`;
+    const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
     $("#gatetoggle").onclick = async () => {
       try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); openAdmin(); }
       catch (x) { toast("Couldn't change it. Try again."); }
     };
   } catch (x) { b.innerHTML = "<p class='mut'>Couldn't load the admin data.</p>"; }
 }
-$("#admintop").innerHTML = icon("chart");
-$("#admintop").onclick = openAdmin;
 $("#adminclose").onclick = () => $("#admin").hidden = true;
 // ---------- getting it onto the home screen ----------
 // iPhone has no install button for websites (Apple doesn't allow one), so iPhone users get the three
@@ -624,6 +650,151 @@ function maybeOfferHome() {
   if (!(IS_IOS || INSTALL_EVT || INAPP)) return;
   store.set("a2hsOffered", "1"); setTimeout(openA2hs, 1500);
 }
+// ---------- settings (gear, top right) ----------
+// One page for everything that isn't a team: account, alerts, home screen, about, and (owner only) admin.
+function setRow(id, ic, label, sub) { return `<button class="setrow" id="${id}">${icon(ic)}<span>${label}${sub ? `<span class="ddsub">${sub}</span>` : ""}</span>${icon("right")}</button>`; }
+function openSettings() {
+  recheck();
+  const b = $("#setbody"), ver = document.querySelector('meta[name="app-version"]').content;
+  b.innerHTML = `<div class="seth">Account</div>
+      ${ME ? setRow("setacct", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("setsignin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
+    <div class="seth">Alerts</div><div id="alertsbox"></div>
+    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("seta2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}
+    <div class="seth">About</div>
+      ${setRow("setabout", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
+      <a class="setrow" href="privacy.html" style="text-decoration:none">${icon("user")}<span>Privacy</span>${icon("right")}</a>
+    ${ME && ME.admin ? `<div class="seth">Admin</div>${setRow("setadmin", "chart", "Admin", "Sign-ups, alerts, Require sign-in")}` : ""}
+    <p class="mut" style="font-size:12px;margin-top:16px">Version ${esc(ver)} · Last data check ${esc(checkedTxt().replace(/<[^>]+>/g, ""))}</p>`;
+  $("#settings").hidden = false;
+  const on = (id, fn) => { const e = $("#" + id); if (e) e.onclick = fn; };
+  on("setacct", openAcct); on("setsignin", () => { $("#settings").hidden = true; signIn(); });
+  on("seta2hs", openA2hs); on("setabout", () => { $("#info").hidden = false; }); on("setadmin", openAdmin);
+  drawAlerts();
+}
+$("#setclose").onclick = () => $("#settings").hidden = true;
+$("#settings").onclick = e => { if (e.target.id === "settings") $("#settings").hidden = true; };
+
+// ---------- alerts (push notifications) ----------
+// This device only: the phone/browser asks permission, then the site's server sends a notification when a
+// score is posted. Settings live on this device and are copied to the server whenever they change.
+const PUSH_OK = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
+const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
+const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
+const tcfg = (c, k) => Object.assign({our: true, lg: "all"}, c.teams[k] || {});
+const alertsOn = () => !!store.get("alertsOn");
+async function pushSub() { try { const r = await navigator.serviceWorker.ready; return await r.pushManager.getSubscription(); } catch (e) { return null; } }
+let ASYNC_T = null;
+function alertsSync(soon) {
+  if (!alertsOn() || !ME || !PUSH_OK()) return;
+  clearTimeout(ASYNC_T);
+  ASYNC_T = setTimeout(async () => {
+    const sub = await pushSub(); if (!sub) { store.set("alertsOn", ""); return; }
+    const c = acfg();
+    const teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s}, tcfg(c, t.k)));
+    let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
+    try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
+  }, soon ? 400 : 1200);
+}
+const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
+async function enableAlerts() {
+  let perm;
+  try { perm = await Notification.requestPermission(); } catch (e) { perm = Notification.permission; }
+  if (perm !== "granted") { drawAlerts(); return false; }
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      const {key} = await fetch("/api/push/key", {cache: "no-store"}).then(r => r.json());
+      sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: keyBytes(key)});
+    }
+    store.set("alertsOn", "1"); alertsSync(true);
+    toast("Alerts are on"); drawAlerts(); return true;
+  } catch (e) { console.warn(e); toast("Couldn't turn on alerts. Try again."); drawAlerts(); return false; }
+}
+async function disableAlerts() {
+  const sub = await pushSub();
+  if (sub) { try { await api("DELETE", "/api/push", {endpoint: sub.endpoint}); } catch (e) {} try { await sub.unsubscribe(); } catch (e) {} }
+  store.set("alertsOn", ""); toast("Alerts are off on this device"); drawAlerts();
+}
+// Why alerts can't be turned on here (or "" when they can).
+function alertsBlocker() {
+  if (IS_IOS && !STANDALONE()) return {msg: "On iPhone, alerts work from the Home Screen app. Add Sideline to your Home Screen, open it from there, then turn on alerts in Settings.", btn: ["a2hs", "Show me how"]};
+  if (INAPP) return {msg: `Open this page in ${IS_IOS ? "Safari" : "Chrome"} to use alerts.`};
+  if (!PUSH_OK()) return {msg: "This browser can't show alerts. Try Chrome, Edge or Safari."};
+  if (!ME) return {msg: "Sign in to turn on alerts.", btn: ["signin", "Sign in"]};
+  if (!(favs() || []).filter(teamByKey).length) return {msg: "Star a team first, then turn on alerts for it."};
+  if (Notification.permission === "denied") return {msg: IS_IOS ? "Alerts are blocked for Sideline. Turn them on in your iPhone's Settings › Notifications › Sideline, then come back." : "Alerts are blocked for this site. Allow notifications for it in your browser's site settings, then come back."};
+  return null;
+}
+function aseg(name, opts, val) { return `<span class="seg" data-seg="${name}">${opts.map(([v, l]) => `<button data-v="${v}" class="${v === val ? "on" : ""}">${l}</button>`).join("")}</span>`; }
+async function drawAlerts() {
+  const box = $("#alertsbox"); if (!box) return;
+  const bl = alertsBlocker();
+  if (bl) {
+    box.innerHTML = `<div class="setbox"><p>${bl.msg}</p>${bl.btn ? `<button class="btn-sec" id="ablk">${bl.btn[1]}</button>` : ""}</div>`;
+    const x = $("#ablk"); if (x) x.onclick = () => bl.btn[0] === "a2hs" ? openA2hs() : ($("#settings").hidden = true, signIn());
+    return;
+  }
+  if (alertsOn() && !(await pushSub())) store.set("alertsOn", "");
+  if (!alertsOn()) {
+    box.innerHTML = `<div class="setbox"><p>Get your team's final score, and other results in your league, as soon as they're posted.</p><button class="btn-main" id="aon">${icon("bell")}Turn on alerts</button></div>`;
+    $("#aon").onclick = enableAlerts; $("#aon").style.cssText = "display:flex;align-items:center;justify-content:center;gap:8px";
+    return;
+  }
+  const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
+  box.innerHTML = list.map(t => { const tc = tcfg(c, t.k); return `<div class="setbox" data-team="${t.k}"><div class="tname">${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${esc(t.c)}</span></div>
+      <div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
+      <div class="opt"><span>Other games in our league</span>${aseg("lg", [["all", "All results"], ["off", "Off"]], tc.lg)}</div></div>`; }).join("")
+    + `<div class="setbox"><div class="opt"><span>Quiet hours<span class="ddsub">Held until morning, then sent as one summary</span></span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
+      ${c.q.on ? `<div class="qt" style="padding:0 0 8px">From <input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}
+      <div class="opt"><span>Red number on the app icon<span class="ddsub">Alerts you haven't opened yet</span></span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div>
+    <button class="btn-sec" id="atest">Send a test alert</button>
+    <button class="btn-sec danger" id="aoff">Turn off alerts on this device</button>
+    <p class="mut" style="font-size:12px;margin:6px 0 0">Scores arrive about 15 minutes after the ECNL posts them. Several at once are combined into one alert.</p>`;
+  box.onclick = e => {
+    const btn = e.target.closest(".seg button"); if (!btn) return;
+    const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
+    if (tk) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), s === "our" ? {our: v === "1"} : {lg: v}); }
+    else if (s === "qon") cc.q.on = v === "1";
+    else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
+    setAcfg(cc); drawAlerts();
+  };
+  ["qs", "qe"].forEach(id => { const el = $("#" + id); if (el) el.onchange = () => { const cc = acfg(); if (/^\d\d:\d\d$/.test(el.value)) { cc.q[id === "qs" ? "s" : "e"] = el.value; setAcfg(cc); } }; });
+  $("#aoff").onclick = disableAlerts;
+  $("#atest").onclick = async () => {
+    const b = $("#atest"); b.textContent = "Sending…";
+    const sub = await pushSub();
+    try { clearTimeout(ASYNC_T); await alertsSyncNow(); const r = await api("POST", "/api/push/test", {endpoint: sub && sub.endpoint}); b.textContent = r.ok ? "Sent. It should arrive in a few seconds." : "Couldn't send. Try again."; }
+    catch (x) { b.textContent = "Couldn't send. Try again."; }
+  };
+}
+async function alertsSyncNow() {
+  const sub = await pushSub(); if (!sub) return;
+  const c = acfg(), teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s}, tcfg(c, t.k)));
+  let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
+  await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge});
+}
+// Right after someone stars a team: offer alerts once (on iPhone in Safari, that means the Home Screen first).
+function maybeOfferAlerts(k) {
+  if (alertsOn() || store.get("alertsOffered")) return;
+  const t = teamByKey(k), b = $("#anudgebody");
+  const bl = alertsBlocker();
+  if (bl && !(IS_IOS && !STANDALONE() && !INAPP)) return;   // only nudge when the next step is clear
+  store.set("alertsOffered", "1");
+  if (bl) b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score on your phone as soon as it's posted. On iPhone, alerts work from the Home Screen app: add it first, open it from your Home Screen, then turn on alerts in Settings.</p><button class="btn-main" id="anudgego">Add to Home Screen</button>`;
+  else b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score, and other results in your league, as soon as they're posted. You can change what you get in Settings.</p><button class="btn-main" id="anudgego">Turn on alerts</button>`;
+  setTimeout(() => { $("#anudge").hidden = false; }, 700);
+  $("#anudgego").onclick = async () => { $("#anudge").hidden = true; if (bl) openA2hs(); else await enableAlerts(); };
+}
+$("#anudgeclose").onclick = () => $("#anudge").hidden = true;
+// Opening the app clears the red number.
+function clearBadge() {
+  if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {});
+  if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({clearBadge: true});
+}
+clearBadge();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) clearBadge(); });
 inappNote();
 $("#acctclose").onclick = () => $("#acct").hidden = true;
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
@@ -652,7 +823,6 @@ function route() {
 }
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
-  const ab = document.getElementById("admintop"); if (ab) ab.hidden = !(ME && ME.admin && window.Clerk && window.Clerk.user && window.Clerk.user.id === ME.id);
   const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
   m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
@@ -989,7 +1159,8 @@ function renderTeam(D, fid, key) {
     <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
   $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); };
   $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites");
-    if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); } };
+    if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
+    else if (on) maybeOfferAlerts(key); };
   $("#sharebtn").onclick = async () => {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
@@ -1207,6 +1378,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(checkForUpdate, 30 * 60000);
 checkForUpdate();
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.open) location.href = e.data.open; });
 boot().catch(e => { $("#app").innerHTML = `<div class="card ctx">Couldn't load data: ${esc(e.message)}</div>`; });
 </script>
 </body>

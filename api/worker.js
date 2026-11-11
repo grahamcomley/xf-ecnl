@@ -1,10 +1,13 @@
 // Sideline Standings API. Serves the static site, plus /api/* for signed-in accounts.
 // Accounts are optional: everything public works without one. A signed-in account only stores
 // the person's followed teams (so they follow them across devices) and when they were last on.
+// Alerts (push notifications): api/alerts.js (who gets what) and api/push.js (sending).
 // Storage: one Cloudflare KV namespace (binding USERS), shared by UAT and live, one key per user:
 //   u:<clerk user id> -> {favs: [team keys], email, created, seen}
 // Sign-in is Clerk (clerk.sidelinestandings.com). Session tokens are checked here without a network
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
+
+import {route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
 const OWNERS = ["grahamcomley@gmail.com"];
@@ -69,6 +72,7 @@ export default {
       const g = await env.USERS.get("cfg:gate");
       return json({gate: g !== "off"});
     }
+    if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
     const key = "u:" + c.sub, now = Date.now();
@@ -87,9 +91,12 @@ export default {
       await put(env, c.sub, rec);
       return json({ok: true, favs: rec.favs});
     }
+    // Alerts (push notifications) for this device: settings, test, turn off.
+    if (p === "/api/push" || p === "/api/push/test") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key);
+      await pushDeleteUser(env, c.sub);
       return json({ok: true});
     }
     // GET /api/admin: owner only. Everyone who has signed in, and the most-followed teams.
@@ -111,7 +118,8 @@ export default {
       }
       users.sort((a, b) => b.seen - a.seen);
       const top = Object.entries(count).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([k, n]) => ({k, n}));
-      return json({total: users.length, users, top});
+      let alerts = null; try { alerts = await pushStats(env); } catch (e) {}
+      return json({total: users.length, users, top, alerts});
     }
     // PUT /api/admin/config: owner turns "Require sign-in" on or off.
     if (p === "/api/admin/config" && req.method === "PUT") {
@@ -120,6 +128,16 @@ export default {
       await env.USERS.put("cfg:gate", body.gate ? "on" : "off");
       return json({ok: true, gate: !!body.gate});
     }
+    // POST /api/admin/pushtest: owner sends a test alert to every device they turned alerts on.
+    if (p === "/api/admin/pushtest" && req.method === "POST") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      return json({ok: true, sent: await pushTestOwner(env, c.sub)});
+    }
     return json({error: "not found"}, 404);
+  },
+  // Every 5 minutes: send alerts for scores that changed in the latest data update.
+  async scheduled(evt, env, ctx) {
+    if (!env.USERS) return;
+    ctx.waitUntil(pushCheck(env).then(r => console.log("alerts", JSON.stringify(r))).catch(e => console.error("alerts failed", e && e.stack || e)));
   }
 };

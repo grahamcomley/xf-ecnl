@@ -7,6 +7,10 @@ workers_dev        = true
 # The API (/api/*: optional accounts, saved teams). Everything else is the static site.
 main               = "../api/worker.js"
 
+# Alerts: check for new scores every 5 minutes and send notifications.
+[triggers]
+crons = ["*/5 * * * *"]
+
 [assets]
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
@@ -24,6 +28,8 @@ KTGDO1d/PlPu5887uQfO8MWJpGst2SVOOiEKMe0mxFwzf4f1EGWlxh3C8ljporOv
 WQIDAQAB
 -----END PUBLIC KEY-----"""
 OWNER_IDS = ""
+# Which site this is (keeps UAT and live alerts apart in the shared store).
+SITE = "uat"
 
 # KV-BEGIN (the update job fills in the id, or drops this block if the store can't be made)
 [[kv_namespaces]]

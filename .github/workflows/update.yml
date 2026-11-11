@@ -9,7 +9,7 @@ on:
         default: auto
   push:
     branches: [main]
-    paths: ["site/**", "site-worker/**", "site-worker-uat/**", "forwarder/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
+    paths: ["site/**", "api/**", "uat-overrides/**", "site-worker/**", "site-worker-uat/**", "forwarder/**", "scripts/**", "config.json", ".github/workflows/update.yml"]
   schedule:
     # Backup timer (GitHub's timer can be late). The outside timer triggers every 15 minutes.
     - cron: "23 */3 * * *"
@@ -70,6 +70,12 @@ jobs:
       - name: Fetch ECNL data, rate teams, build site data
         if: steps.plan.outputs.mode != 'publish'
         run: python scripts/update.py --${{ steps.plan.outputs.mode }}
+
+      # What changed for alerts (new and corrected scores). The site's server sends the notifications.
+      - name: Find new scores for alerts
+        if: steps.plan.outputs.mode != 'publish'
+        continue-on-error: true
+        run: python scripts/alerts.py
 
       # Two copies of the page: UAT = the latest page (main branch); live = the page last promoted
       # (live branch). Both get the same fresh data.
