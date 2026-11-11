@@ -2,11 +2,15 @@
 //
 // Storage (KV binding USERS, shared by UAT and live; SITE keeps them apart):
 //   d:<site>:<device id> -> one device that turned alerts on:
-//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, our, lg}], q: {on, s, e}, tz, badge, created, upd}
-//     our = our game's final score (and corrections); lg = "all" | "off" for other league games;
-//     q = quiet hours (start/end "HH:MM", phone's time zone tz).
-//   st:<site> -> one small state record written at most once per check:
-//     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms}, sent: {week: n}}
+//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr}], q: {on, s, e}, tz, badge, seen, created, upd}
+//     our = our game's final score (and corrections); lg = "all" | "near" | "off" for other league games
+//     ("near" = games with a team within 2 places of us); mo = big moments (a line on the score alert);
+//     rem = game-day reminder "am" (morning of) | "2h" (2 hours before) | "off"; wr = Sunday wrap-up;
+//     q = quiet hours (start/end "HH:MM", phone's time zone tz); seen = last time the app was opened.
+//     KV metadata: {u: user, n: teams, t: "team,keys", tz} so the 5-minute check can skip most reads.
+//   st:<site> -> one small state record written only when something changed:
+//     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
+//      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
 import {send, vapid} from "./push.js";
 
@@ -25,7 +29,9 @@ function cleanDevice(b) {
   if (!sub || !okEndpoint(sub.endpoint) || !sub.keys || typeof sub.keys.p256dh !== "string" || typeof sub.keys.auth !== "string") return null;
   const teams = (Array.isArray(b.teams) ? b.teams : []).filter(t => t && /^[a-z0-9-]{3,40}$/.test(t.k)).slice(0, 60).map(t => ({
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
-    n: String(t.n || "").slice(0, 40), our: t.our !== false, lg: t.lg === "off" ? "off" : "all"}));
+    n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
+    lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: t.mo !== false,
+    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: t.wr !== false}));
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
@@ -47,8 +53,16 @@ export async function route(p, req, env, c, json) {
   if (p === "/api/push" && req.method === "PUT") {
     const d = cleanDevice(body); if (!d) return json({error: "bad device"}, 400);
     const old = await env.USERS.get(key, "json");
-    const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), created: old && old.created || Date.now(), upd: Date.now()});
-    await env.USERS.put(key, JSON.stringify(rec), {metadata: {u: c.sub, n: rec.teams.length}});
+    const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
+    await putDev(env, key, rec);
+    return json({ok: true});
+  }
+  // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
+  // who have already seen the weekend's results.
+  if (p === "/api/push/seen" && req.method === "POST") {
+    const d = await env.USERS.get(key, "json");
+    if (!d || d.uid !== c.sub) return json({ok: false});
+    if (Date.now() - (d.seen || 0) > HOUR) { d.seen = Date.now(); await putDev(env, key, d); }
     return json({ok: true});
   }
   if (p === "/api/push" && req.method === "DELETE") {
@@ -68,6 +82,18 @@ export async function route(p, req, env, c, json) {
   return json({error: "not found"}, 404);
 }
 
+const putDev = (env, key, rec) => env.USERS.put(key, JSON.stringify(rec), {metadata: {u: rec.uid, n: rec.teams.length,
+  t: rec.teams.slice(0, 50).map(t => t.k).join(","), tz: rec.tz}});
+// All device keys + metadata for this site.
+async function deviceMeta(env) {
+  const out = []; let cursor;
+  do {
+    const r = await env.USERS.list({prefix: `d:${site(env)}:`, cursor, limit: 1000});
+    out.push(...r.keys);
+    cursor = r.list_complete ? null : r.cursor;
+  } while (cursor);
+  return out;
+}
 // Devices for this site (optionally just one person's).
 async function devices(env, uid) {
   const out = []; let cursor;
@@ -113,6 +139,25 @@ function localHM(tz, ms) {
   const h = p.find(x => x.type === "hour").value, m = p.find(x => x.type === "minute").value;
   return `${h === "24" ? "00" : h}:${m}`;
 }
+function tzOffset(tz, ms) {
+  const p = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"}).formatToParts(new Date(ms));
+  const g = t => +p.find(x => x.type === t).value;
+  return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour") % 24, g("minute"), g("second")) - Math.floor(ms / 1000) * 1000;
+}
+// A wall-clock date + time in a time zone -> ms.
+export function zonedMs(date, time, tz) {
+  const [y, m, d] = date.split("-").map(Number), [hh, mm] = time.split(":").map(Number);
+  const guess = Date.UTC(y, m - 1, d, hh, mm), off = tzOffset(tz, guess);
+  let t = guess - off; const off2 = tzOffset(tz, t); if (off2 !== off) t = guess - off2;
+  return t;
+}
+function localParts(tz, ms) {
+  const p = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", weekday: "short", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit"}).formatToParts(new Date(ms));
+  const g = t => p.find(x => x.type === t).value;
+  return {day: g("weekday"), date: `${g("year")}-${g("month")}-${g("day")}`, hour: +g("hour") % 24};
+}
+const time12 = t => { if (!t || t === "00:00") return "Time TBD"; const [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+const ordn = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 export function quiet(d, ms) {
   if (!d.q || !d.q.on) return false;
   const t = localHM(d.tz || "America/Los_Angeles", ms), s = d.q.s, e = d.q.e;
@@ -133,21 +178,23 @@ const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 // Turn one device's items into notifications: one per team, our game first.
 export function compose(d, items, overnight) {
   const byTeam = new Map();
-  for (const it of items) { if (!byTeam.has(it.t)) byTeam.set(it.t, {our: [], lg: []}); byTeam.get(it.t)[it.kind].push(it.c); }
+  for (const it of items) { if (!byTeam.has(it.t)) byTeam.set(it.t, {our: [], lg: [], mo: []}); byTeam.get(it.t)[it.kind].push(it.kind === "mo" ? it.text : it.c); }
   const notes = [];
   for (const [k, g] of byTeam) {
+    if (!g.our.length && !g.lg.length) continue;   // big moments never go out on their own
+    const mo = [...new Set(g.mo)].map(x => "Big moment: " + x);
     const team = d.teams.find(t => t.k === k) || {k, n: ""};
     const conf = (g.lg[0] || g.our[0] || {}).cn || "the league";
     const also = g.lg.length ? `${plural(g.lg.length, "new result")} in ${conf}` : "";
     if (g.our.length === 1) {
       const o = ourLine(g.our[0], k);
-      notes.push({t: o.line, b: [`Final · ${o.res}${o.fix}`, also && "Also " + also].filter(Boolean).join(" · "), u: `/#t=${k}`, tag: "g" + g.our[0].g});
+      notes.push({t: o.line, b: [`Final · ${o.res}${o.fix}`].concat(mo, also ? ["Also " + also] : []).join("\n"), u: `/#t=${k}`, tag: "g" + g.our[0].g});
     } else if (g.our.length > 1) {
       const lines = g.our.map(c => { const o = ourLine(c, k); return `${o.line}${o.fix}`; });
-      notes.push({t: `${team.n || ourLine(g.our[0], k).us}: ${plural(g.our.length, "new result")}`, b: lines.concat(also ? ["Also " + also] : []).join("\n"), u: `/#t=${k}`, tag: "t" + k});
+      notes.push({t: `${team.n || ourLine(g.our[0], k).us}: ${plural(g.our.length, "new result")}`, b: lines.concat(mo, also ? ["Also " + also] : []).join("\n"), u: `/#t=${k}`, tag: "t" + k});
     } else {
       const shown = g.lg.slice(0, 3).map(resLine), more = g.lg.length - shown.length;
-      notes.push({t: `${plural(g.lg.length, "new result")} in ${conf}`, b: shown.join("\n") + (more > 0 ? `\n+${more} more` : ""), u: `/#t=${k}`, tag: "l" + k});
+      notes.push({t: `${plural(g.lg.length, "new result")} in ${conf}`, b: mo.concat(shown).join("\n") + (more > 0 ? `\n+${more} more` : ""), u: `/#t=${k}`, tag: "l" + k});
     }
   }
   if (overnight && notes.length > 1) {   // morning summary: one notification for everything held overnight
@@ -158,7 +205,7 @@ export function compose(d, items, overnight) {
 }
 
 // Which changes this device should hear about (each game once per device; our game beats league).
-export function match(d, changes) {
+export function match(d, changes, moments = {}, pos = {}) {
   const items = [], used = new Set();
   for (const c of changes) {
     const ours = d.teams.find(t => t.our && (t.k === c.h || t.k === c.a));
@@ -167,9 +214,14 @@ export function match(d, changes) {
   for (const c of changes) {
     if (used.has(c.g) || !c.cf) continue;
     if (d.teams.some(t => t.k === c.h || t.k === c.a)) continue;   // our team's game with alerts off for it
-    const t = d.teams.find(x => x.lg === "all" && x.f === c.cf);
+    const P = pos[c.cf] || {};
+    const near = x => { const me = P[x.k]; return me && [P[c.h], P[c.a]].some(q => q && Math.abs(q - me) <= 2); };
+    const t = d.teams.find(x => x.f === c.cf && (x.lg === "all" || (x.lg === "near" && near(x))));
     if (t) { items.push({c, t: t.k, kind: "lg"}); used.add(c.g); }
   }
+  // big moments ride along on that team's score alert only (never on their own)
+  const has = new Set(items.map(i => i.t));
+  for (const t of d.teams) if (t.mo && moments[t.k] && has.has(t.k)) for (const text of moments[t.k]) items.push({t: t.k, kind: "mo", text});
   return items;
 }
 
@@ -190,11 +242,33 @@ export async function check(env, now = Date.now()) {
     return {init: st.last};
   }
   const fresh = runs.filter(r => r.id > st.last);
-  st.held = st.held || {}; st.ll = st.ll || {}; st.sent = st.sent || {};
+  st.held = st.held || {}; st.ll = st.ll || {}; st.sent = st.sent || {}; st.rem = st.rem || {}; st.wrap = st.wrap || {};
   const due = Object.keys(st.held).filter(id => st.held[id].some(h => (h.at || 0) <= now));
-  if (!fresh.length && !due.length) return {nothing: true};
+  let sent = 0, gone = 0;
+  const out = {runs: fresh.length};
+  if (fresh.length || due.length) Object.assign(out, await scores(env, st, fresh, due, now, n => sent += n, () => gone++));
+  try { out.reminders = await reminders(env, st, data.up || [], now); sent += out.reminders; } catch (e) { out.remErr = String(e); }
+  try { out.wrapups = await wrapups(env, st, data.wk || {}, now); sent += out.wrapups; } catch (e) { out.wrapErr = String(e); }
+  // tidy: forget hourly timers older than a day, reminders older than 2 days, wrap-ups older than 3 weeks; keep 8 weeks of counts
+  for (const k of Object.keys(st.ll)) if (now - st.ll[k] > 24 * HOUR) delete st.ll[k];
+  for (const k of Object.keys(st.rem)) if (now - st.rem[k] > 48 * HOUR) delete st.rem[k];
+  for (const k of Object.keys(st.wrap)) if (now - Date.parse(st.wrap[k] + "T12:00:00Z") > 21 * 24 * HOUR) delete st.wrap[k];
+  const wk = weekKey(now); if (sent) st.sent[wk] = (st.sent[wk] || 0) + sent;
+  for (const k of Object.keys(st.sent).sort().slice(0, -8)) delete st.sent[k];
+  if (fresh.length) st.last = fresh[fresh.length - 1].id;
+  // write only when something changed (a quiet night re-checks held alerts without writing)
+  if (JSON.stringify(Object.assign({}, st, {checked: 0})) !== before) { st.checked = now; await env.USERS.put(sk, JSON.stringify(st)); }
+  return Object.assign(out, {sent, gone});
+}
 
+// New and corrected scores (+ big moments) for every device that follows those teams or leagues.
+async function scores(env, st, fresh, due, now, addSent, addGone) {
   const changes = fresh.flatMap(r => r.c || []);
+  const moments = {}, pos = {};
+  for (const r of fresh) {
+    for (const [k, v] of Object.entries(r.m || {})) (moments[k] = moments[k] || []).push(...v);
+    Object.assign(pos, r.pos || {});
+  }
   const ids = new Set(due);
   let keys = [];
   if (changes.length) keys = await devices(env);
@@ -203,7 +277,7 @@ export async function check(env, now = Date.now()) {
   for (const key of keys) {
     const id = key.split(":")[2], d = await env.USERS.get(key, "json");
     if (!d) { delete st.held[id]; continue; }
-    const items = changes.length ? match(d, changes) : [];
+    const items = changes.length ? match(d, changes, moments, pos) : [];
     const held = st.held[id] || [];
     if (!items.length && !ids.has(id)) continue;
     let out = [], keep = [], overnight = false;
@@ -218,7 +292,7 @@ export async function check(env, now = Date.now()) {
       for (const it of all) {
         const ourTeam = all.some(x => x.t === it.t && x.kind === "our");
         const last = st.ll[id + "|" + it.t] || 0;
-        if (it.kind === "lg" && !ourTeam && !overnight && now - last < HOUR) keep.push(Object.assign(it, {at: last + HOUR}));
+        if (it.kind !== "our" && !ourTeam && !overnight && now - last < HOUR) keep.push(Object.assign(it, {at: last + HOUR}));
         else out.push(it);
       }
     }
@@ -231,12 +305,75 @@ export async function check(env, now = Date.now()) {
     }
     for (const t of new Set(out.map(i => i.t))) st.ll[id + "|" + t] = now;
   }
-  // tidy: forget hourly timers older than a day, keep 8 weeks of counts
-  for (const k of Object.keys(st.ll)) if (now - st.ll[k] > 24 * HOUR) delete st.ll[k];
-  const wk = weekKey(now); if (sent) st.sent[wk] = (st.sent[wk] || 0) + sent;
-  for (const k of Object.keys(st.sent).sort().slice(0, -8)) delete st.sent[k];
-  if (fresh.length) st.last = fresh[fresh.length - 1].id;
-  // write only when something changed (a quiet night re-checks held alerts without writing)
-  if (JSON.stringify(Object.assign({}, st, {checked: 0})) !== before) { st.checked = now; await env.USERS.put(sk, JSON.stringify(st)); }
-  return {runs: fresh.length, changes: changes.length, sent, gone};
+  addSent(sent); for (let i = 0; i < gone; i++) addGone();
+  return {changes: changes.length};
 }
+
+// Game-day reminders: "morning of" (8 AM, or when quiet hours end) or 2 hours before kickoff.
+// Game times are the field's local time; we read them in the phone's time zone.
+async function reminders(env, st, up, now) {
+  if (!up.length) return 0;
+  const pt = localParts("America/Los_Angeles", now);
+  const soon = up.some(g => { if (!g[7] || g[7] === "00:00") return false; const k = zonedMs(g[6], g[7], "America/Los_Angeles"); return k > now && k - now < 4 * HOUR; });
+  const morning = pt.hour >= 5 && pt.hour < 13 && up.some(g => g[6] === pt.date);
+  if (!soon && !morning) return 0;   // nothing could be due: skip listing devices
+  const byTeam = new Map();
+  for (const g of up) for (const k of [g[2], g[3]]) { if (!byTeam.has(k)) byTeam.set(k, []); byTeam.get(k).push(g); }
+  let n = 0;
+  for (const m of await deviceMeta(env)) {
+    const tk = ((m.metadata || {}).t || "").split(",").filter(k => byTeam.has(k));
+    if (!tk.length) continue;
+    const id = m.name.split(":")[2], d = await env.USERS.get(m.name, "json");
+    if (!d) continue;
+    const tz = d.tz || "America/Los_Angeles";
+    for (const t of d.teams) {
+      if (t.rem === "off" || !byTeam.has(t.k)) continue;
+      for (const g of byTeam.get(t.k)) {
+        const key = id + "|" + g[0]; if (st.rem[key]) continue;
+        const timed = g[7] && g[7] !== "00:00", kick = timed ? zonedMs(g[6], g[7], tz) : zonedMs(g[6], "20:00", tz);
+        const target = t.rem === "2h" && timed ? kick - 2 * HOUR : zonedMs(g[6], "08:00", tz);
+        if (now < target || now >= kick || quiet(d, now)) continue;
+        const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
+        const title = (t.rem === "2h" && timed ? "In 2 hours: " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
+        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}`, tag: "r" + g[0], badge: d.badge});
+        st.rem[key] = now;
+        if (s === 404 || s === 410) { await env.USERS.delete(m.name); break; }
+        if (s < 300) n++;
+      }
+    }
+  }
+  return n;
+}
+
+// Sunday-night wrap-up at 7 PM on the phone's clock: only if their teams played this weekend and the
+// person hasn't opened the app since the last of those results.
+async function wrapups(env, st, wk, now) {
+  if (!Object.keys(wk).length) return 0;
+  const u = new Date(now), day = u.getUTCDay(), h = u.getUTCHours();
+  if (!((day === 0 && h >= 16) || (day === 1 && h < 10))) return 0;   // Sunday evening somewhere in the US
+  let n = 0;
+  for (const m of await deviceMeta(env)) {
+    const meta = m.metadata || {}, id = m.name.split(":")[2], tz = meta.tz || "America/Los_Angeles";
+    const L = localParts(tz, now);
+    if (L.day !== "Sun" || L.hour < 19 || L.hour > 22 || st.wrap[id] === L.date) continue;
+    if (!(meta.t || "").split(",").some(k => wk[k])) { st.wrap[id] = L.date; continue; }
+    const d = await env.USERS.get(m.name, "json");
+    if (!d) continue;
+    const mine = d.teams.filter(t => t.wr && wk[t.k]);
+    if (!mine.length) { st.wrap[id] = L.date; continue; }
+    const latest = Math.max(...mine.map(t => Date.parse(wk[t.k][3]) || 0));
+    if (d.seen && d.seen > latest) { st.wrap[id] = L.date; continue; }   // already looked
+    if (quiet(d, now)) continue;
+    const lines = mine.map(t => {
+      const [place, of, , , res] = wk[t.k];
+      const r = res.map(([opp, a, b]) => `${a > b ? "W" : a < b ? "L" : "D"} ${a}${dash}${b} ${opp}`).join(", ");
+      return `${t.a ? t.a + " " : ""}${t.n}: ${r}${place ? ` · ${ordn(place)} of ${of}` : ""}`;
+    });
+    const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge});
+    st.wrap[id] = L.date;
+    if (s === 404 || s === 410) { await env.USERS.delete(m.name); continue; }
+    if (s < 300) n++;
+  }
+  return n;
+}
+

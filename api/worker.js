@@ -50,6 +50,20 @@ async function who(req, env) {
   try { return await verify(m[1], env.CLERK_JWT_KEY); } catch (e) { return null; }
 }
 const cleanFavs = a => Array.isArray(a) ? [...new Set(a.filter(k => typeof k === "string" && /^[a-z0-9-]{3,40}$/.test(k)))].slice(0, 60) : [];
+// Saved picks: p = their pick (H/D/A), o = our pick when they made it, t = when.
+function cleanPicks(x) {
+  const out = {}; let n = 0;
+  if (!x || typeof x !== "object") return out;
+  for (const [fk, games] of Object.entries(x)) {
+    if (!/^[a-z0-9-]{3,60}$/.test(fk) || !games || typeof games !== "object") continue;
+    for (const [g, v] of Object.entries(games)) {
+      if (!/^\d{1,12}$/.test(g) || !v || !["H", "D", "A"].includes(v.p) || n >= 4000) continue;
+      (out[fk] = out[fk] || {})[g] = {p: v.p, o: ["H", "D", "A"].includes(v.o) ? v.o : "", t: typeof v.t === "number" ? Math.round(v.t) : 0};
+      n++;
+    }
+  }
+  return out;
+}
 const cleanEmail = e => typeof e === "string" && e.length < 200 && /^[^@\s]+@[^@\s]+$/.test(e) ? e.toLowerCase() : "";
 // Owner check uses only what Clerk signed (the "email" claim added to the session token, or a user id
 // listed in OWNER_IDS) - never an email sent by the page, which anyone could fake.
@@ -81,7 +95,7 @@ export default {
     // GET /api/me: the account's saved teams. Also notes "last seen".
     if (p === "/api/me" && req.method === "GET") {
       if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); }
-      return json({signedIn: true, exists: !!rec, favs: rec ? rec.favs : [], admin: isOwner(c)});
+      return json({signedIn: true, exists: !!rec, favs: rec ? rec.favs : [], picks: rec && rec.picks || {}, admin: isOwner(c)});
     }
     // PUT /api/me: save teams (and the email shown in the admin list).
     if (p === "/api/me" && req.method === "PUT") {
@@ -91,8 +105,16 @@ export default {
       await put(env, c.sub, rec);
       return json({ok: true, favs: rec.favs});
     }
+    // PUT /api/picks: the person's saved Predict picks (private), {conf file: {game id: {p, o, t}}}.
+    if (p === "/api/picks" && req.method === "PUT") {
+      let body = {}; try { body = await req.json(); } catch (e) {}
+      if (!rec) rec = {created: now, favs: [], seen: now};
+      rec.picks = cleanPicks(body.picks);
+      await put(env, c.sub, rec);
+      return json({ok: true});
+    }
     // Alerts (push notifications) for this device: settings, test, turn off.
-    if (p === "/api/push" || p === "/api/push/test") return pushRoute(p, req, env, c, json);
+    if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key);

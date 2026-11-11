@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.6">
+<meta name="app-version" content="v0.99.10">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -105,6 +105,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex:none}.seg button{background:none;border:0;color:var(--mut);font:inherit;font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer}.seg button.on{background:var(--red);color:#fff}
 .tname{font-weight:700;font-size:14px;margin-top:4px}.tname .ddsub{display:block}
 .qt{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mut)}.qt input{background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font:inherit;font-size:13px;color-scheme:dark}
+.pchg{grid-column:1/-1;font-size:12px;color:#d4a72c;margin-top:4px}.pchg .reset{margin-left:4px}.yoursum{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:9px 12px;margin-bottom:10px}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -438,6 +439,28 @@ const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 // ---------- state: teams index, favorites, routing ----------
 let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
 const CONF_CACHE = {}, PICKS = {};
+// Saved picks (Predict): {conf file: {game id: {p: their pick, o: our pick when they made it, t: when}}}.
+// Kept on this device and, when signed in, in the account. Picks on played games stay, for grading.
+let SAVED = (() => { try { return JSON.parse(localStorage.getItem("savedPicks") || "{}") || {}; } catch (e) { return {}; } })();
+let PICKS_T = null;
+function savePicks() {
+  store.set("savedPicks", JSON.stringify(SAVED));
+  if (!ME) return;
+  clearTimeout(PICKS_T);
+  PICKS_T = setTimeout(() => api("PUT", "/api/picks", {picks: SAVED}).catch(e => console.warn("picks not saved", e)), 1500);
+}
+// After sign-in: combine this device's picks with the account's (the newer pick wins per game).
+function mergePicks(server) {
+  let changed = false;
+  for (const [fk, games] of Object.entries(server || {})) for (const [g, v] of Object.entries(games)) {
+    const mine = (SAVED[fk] || {})[g];
+    if (!mine || (v.t || 0) > (mine.t || 0)) { (SAVED[fk] = SAVED[fk] || {})[g] = v; changed = true; }
+  }
+  const differs = JSON.stringify(SAVED) !== JSON.stringify(server || {});
+  store.set("savedPicks", JSON.stringify(SAVED));
+  if (differs) savePicks();
+  if (changed && CUR) { const t = teamByKey(CUR); if (t) { PICKS[t.f] = null; openTeam(CUR); } }
+}
 const favs = () => { try { return JSON.parse(store.get("xfFavs") || "null"); } catch (e) { return null; } };
 const setFavs = a => { store.set("xfFavs", JSON.stringify(a)); drawPills(); if (typeof syncHash === "function") syncHash();
   if (typeof alertsSync === "function") alertsSync();
@@ -541,7 +564,8 @@ async function onAuth() {
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
-    alertsSync();
+    alertsSync(); seenPing();
+    mergePicks(r.picks || {});
     maybeOfferHome();
   } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
 }
@@ -740,7 +764,7 @@ const PUSH_OK = () => "serviceWorker" in navigator && "PushManager" in window &&
 const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
-const tcfg = (c, k) => Object.assign({our: true, lg: "all"}, c.teams[k] || {});
+const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
 const alertsOn = () => !!store.get("alertsOn");
 async function pushSub() { try { const r = await navigator.serviceWorker.ready; return await r.pushManager.getSubscription(); } catch (e) { return null; } }
 let ASYNC_T = null;
@@ -750,7 +774,7 @@ function alertsSync(soon) {
   ASYNC_T = setTimeout(async () => {
     const sub = await pushSub(); if (!sub) { store.set("alertsOn", ""); return; }
     const c = acfg();
-    const teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s}, tcfg(c, t.k)));
+    const teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
     let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
     try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
   }, soon ? 400 : 1200);
@@ -804,11 +828,14 @@ async function drawAlertsPage(b) {
     return;
   }
   const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
-  const sum = tc => [tc.our && "Our results", tc.lg === "all" && "League results"].filter(Boolean).join(" · ") || "No alerts";
+  const sum = tc => [tc.our && "Our results", tc.lg === "all" ? "League results" : tc.lg === "near" && "Nearby league results", tc.mo && "Big moments", tc.rem === "2h" ? "2-hour reminder" : tc.rem === "am" && "Morning reminder", tc.wr && "Wrap-up"].filter(Boolean).join(" · ") || "No alerts";
   b.innerHTML = `<div class="pgin"><div class="seth">Teams</div><div class="glist">`
     + list.map(t => { const tc = tcfg(c, t.k); return `<details class="arow" data-team="${t.k}" ${AOPEN.has(t.k) ? "open" : ""}><summary><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${sum(tc)}</span></span>${icon("chev")}</summary>
       <div class="aopts"><div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
-      <div class="opt"><span>Other games in ${esc(t.c)}</span>${aseg("lg", [["all", "On"], ["off", "Off"]], tc.lg)}</div></div></details>`; }).join("")
+      <div class="opt"><span>Other games in ${esc(t.c)}<span class="ddsub">Near us = a team within 2 places of us</span></span>${aseg("lg", [["all", "All"], ["near", "Near us"], ["off", "Off"]], tc.lg)}</div>
+      <div class="opt"><span>Big moments<span class="ddsub">Into 1st, playoff line, clinched</span></span>${aseg("mo", [["1", "On"], ["0", "Off"]], tc.mo ? "1" : "0")}</div>
+      <div class="opt"><span>Game-day reminder</span>${aseg("rem", [["am", "Morning"], ["2h", "2 hrs"], ["off", "Off"]], tc.rem)}</div>
+      <div class="opt"><span>Sunday wrap-up<span class="ddsub">7 PM, if you haven&#39;t seen the results</span></span>${aseg("wr", [["1", "On"], ["0", "Off"]], tc.wr ? "1" : "0")}</div></div></details>`; }).join("")
     + `</div><div class="seth">Options</div><div class="glist">
       <details class="arow" data-team="__quiet" ${AOPEN.has("__quiet") ? "open" : ""}><summary><span>Quiet hours<span class="ddsub">${c.q.on ? `${hm12(c.q.s)}–${hm12(c.q.e)} · alerts wait, then arrive as one summary` : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Quiet hours</span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
@@ -826,7 +853,7 @@ async function drawAlertsPage(b) {
     const btn = e.target.closest(".seg button"); if (!btn) return;
     e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
-    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), s === "our" ? {our: v === "1"} : {lg: v}); }
+    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}}[s] || {}); }
     else if (s === "qon") cc.q.on = v === "1";
     else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
     setAcfg(cc); refreshPage();
@@ -845,7 +872,7 @@ async function drawAlertsPage(b) {
 }
 async function alertsSyncNow() {
   const sub = await pushSub(); if (!sub) return;
-  const c = acfg(), teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s}, tcfg(c, t.k)));
+  const c = acfg(), teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
   let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
   await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge});
 }
@@ -868,7 +895,16 @@ function clearBadge() {
   if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({clearBadge: true});
 }
 clearBadge();
-document.addEventListener("visibilitychange", () => { if (!document.hidden) clearBadge(); });
+// Tell the server the app was opened (weekends only, at most every 3 hours): the Sunday wrap-up is
+// skipped for people who already saw the weekend's results.
+async function seenPing() {
+  const d = new Date().getDay();
+  if (!alertsOn() || !ME || !(d === 5 || d === 6 || d === 0) || Date.now() - +(store.get("seenPing") || 0) < 3 * 3600e3) return;
+  const sub = await pushSub(); if (!sub) return;
+  store.set("seenPing", String(Date.now()));
+  api("POST", "/api/push/seen", {endpoint: sub.endpoint}).catch(() => {});
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { clearBadge(); seenPing(); } });
 inappNote();
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
@@ -967,7 +1003,7 @@ async function openTeam(k) {
   const t = teamByKey(k);
   if (!CONF_CACHE[t.f]) CONF_CACHE[t.f] = await fetch(`data/conf/${t.f}.json`, {cache: "no-store"}).then(r => r.json());
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
-  PICKS[t.f] = PICKS[t.f] || {};
+  if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
   store.set("lastTeam", k);
   syncHash();
@@ -1043,6 +1079,11 @@ function gameRow(D, M, g, o = {}) {
     const keyL = flip ? "A" : "H", keyR = flip ? "H" : "A";
     const btn = (k, label) => `<button data-f="${k}" class="${P.pick === k ? "ours" : ""} ${picked === k ? "on" : ""}">${label}</button>`;
     toggles = `<div class="toggles" data-g="${g.id}">${btn(keyL, esc(code(D, L, o.teams)) + " win")}${btn("D", "Draw")}${btn(keyR, esc(code(D, R, o.teams)) + " win")}</div>`;
+    const sv = (SAVED[D.__fk] || {})[g.id];
+    if (sv && picked && sv.o && sv.o !== P.pick && picked !== P.pick) {
+      const lab = P.pick === "D" ? "Draw" : esc(code(D, P.pick === "H" ? g.home_id : g.away_id, o.teams)) + " win";
+      toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
+    }
   }
   return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${det}${toggles}</div>`;
 }
@@ -1188,11 +1229,16 @@ function renderTeam(D, fid, key) {
     return gameRow(D, M, g, {focus: fid, ours: true, noMark: true, left: "", tag: `<span class="gtag ${k}">${GRADE[k][0]}</span>`,
       det: `<div class="glk">We predicted ${likelyLine(hn, an, p).replace("Likely ", "")}. Final ${g.hs}–${g.as}.</div><div>${verdict}.</div>`});
   };
-  const howHtml = graded.length
+  const sign = (a, b) => a > b ? "H" : a < b ? "A" : "D";
+  const mine = played.filter(g => (SAVED[D.__fk] || {})[g.id]);
+  const youRight = mine.filter(g => SAVED[D.__fk][g.id].p === sign(g.hs, g.as)).length;
+  const modelOn = mine.filter(g => PG[g.id]), modelRight = modelOn.filter(g => sign(PG[g.id][0], PG[g.id][1]) === sign(g.hs, g.as)).length;
+  const yours = mine.length ? `<div class="yoursum"><b>Your picks: ${youRight} of ${mine.length} right</b>${modelOn.length ? ` · Our model: ${modelRight} of ${modelOn.length}` : ""}<div class="mut" style="font-size:12px">Games you picked yourself, once they were played.</div></div>` : "";
+  const howHtml = yours + (graded.length
     ? `<div class="howsum">Right result in <b>${graded.length - cnt("missed")} of ${graded.length}</b> games${cnt("exact") ? ` (${cnt("exact")} exact)` : ""}.</div>
        <div class="mut" style="margin-bottom:8px">Bigger win than expected ${cnt("bigger")} · Closer than expected ${cnt("closer")} · Missed ${cnt("missed")}</div>`
       + byDay(graded.map(x => x.g), g => howRow(graded.find(x => x.g === g)), d => fmtDate(d))
-    : "<div class='mut'>Fills in after the next full data update.</div>";
+    : "<div class='mut'>Fills in after the next full data update.</div>");
 
   $("#app").innerHTML = `
   ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
@@ -1310,20 +1356,35 @@ function drawPredictor() {
   const fin = rank(table(rows, played, ids), played, rows);
   const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? ` <span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
   $("#picksbar").hidden = !nP;
-  $("#picksbar").innerHTML = nP ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}.</b> <button class="reset" id="clearpicks">Reset to our picks</button>` : "";
+  $("#picksbar").innerHTML = nP ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}${ME ? ", saved to your account" : ", saved on this device"}.</b> <button class="reset" id="clearpicks">Reset all to our picks</button>` : "";
   $("#predtable").innerHTML = `<table class="grid"><tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
     ${fin.map((r, i) => { const s = S.get(r.id), b = base.get(r.id);
       return `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}<div class="sub">likely ${placeTxt(rangeOf(S, r.id))}</div></td>
       <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td><b>${r.pts}</b></td>
       <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, r.id, spots - 1))}${nP ? delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
   </table><div class="mut" style="margin-top:6px">Final table if every pick comes true. Shaded = chances${nP ? " with your changes" : ""}.</div>`;
-  const c = $("#clearpicks"); if (c) c.onclick = () => { PICKS[D.__fk] = {}; document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); drawPredictor(); };
+  const c = $("#clearpicks"); if (c) c.onclick = () => {
+    const S = SAVED[D.__fk] || {}; for (const id of Object.keys(PICKS[D.__fk])) delete S[id];   // games already played keep their pick (for grading)
+    PICKS[D.__fk] = {}; savePicks();
+    document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); document.querySelectorAll("#predgames .pchg").forEach(x => x.remove()); drawPredictor(); };
 }
 function onPick(e) {
+  const fk = CTX.D.__fk, S = SAVED[fk] = SAVED[fk] || {};
+  const u = e.target.closest("[data-useours]");
+  if (u) {
+    const id = u.dataset.useours; delete PICKS[fk][id]; delete S[id]; savePicks();
+    const tg = document.querySelector(`#predgames .toggles[data-g="${id}"]`); if (tg) tg.querySelectorAll("button").forEach(x => x.classList.remove("on"));
+    u.parentElement.remove();
+    $("#predtable").style.opacity = .55; setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
+    return;
+  }
   const b = e.target.closest(".toggles button"); if (!b) return;
-  const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[CTX.D.__fk];
-  if (P[id] === f || b.classList.contains("ours")) { delete P[id]; wrap.querySelectorAll("button").forEach(x => x.classList.remove("on")); }
-  else { P[id] = f; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
+  const wrap = b.parentElement, id = wrap.dataset.g, f = b.dataset.f, P = PICKS[fk];
+  const ours = (wrap.querySelector("button.ours") || {}).dataset;
+  if (P[id] === f || b.classList.contains("ours")) { delete P[id]; delete S[id]; wrap.querySelectorAll("button").forEach(x => x.classList.remove("on")); }
+  else { P[id] = f; S[id] = {p: f, o: ours ? ours.f : "", t: Date.now()}; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
+  const pc = wrap.parentElement.querySelector(".pchg"); if (pc) pc.remove();
+  savePicks();
   $("#predtable").style.opacity = .55; setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
 }
 
