@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.11">
+<meta name="app-version" content="v0.99.12">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -168,7 +168,9 @@ td .sub{font-size:11px;color:var(--mut);font-weight:400}
 .toggles button{flex:1;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:8px;padding:7px 4px;font:inherit;font-size:12px;cursor:pointer}
 .toggles button.ours{background:#3a4250;border-color:#8b95a5;color:#fff;font-weight:700}
 .toggles button.on{background:#f3f4f6;border-color:#f3f4f6;color:#111827;font-weight:800}
-.picksbar{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px}
+.picksbar{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:8px 10px;margin-bottom:10px;font-size:13px;display:flex;align-items:center;gap:10px}.picksbar[hidden]{display:none}.picksbar>span{flex:1;min-width:0}.picksbar .ddsub{display:block}.picksbar .reset{float:none;flex:none}
+table.pred{table-layout:fixed;width:100%}table.pred td.chance .delta{display:block;font-size:11px;line-height:1.1}table.pred td.chance .delta:empty::before{content:"\00a0"}
+.psaved{grid-column:1/-1;font-size:12px;color:var(--up);margin-top:4px;transition:opacity .4s}
 .reset{float:right;border:0;background:none;color:var(--link);font:inherit;font-size:13px;cursor:pointer;font-weight:600}
 details.inner{margin-top:10px}details.inner>summary{cursor:pointer;color:var(--link);font-size:14px;padding:6px 0;font-weight:600}
 details.list{border:1px solid var(--line2);border-radius:10px;padding:2px 10px;margin-top:12px;background:var(--card2)}
@@ -1354,14 +1356,14 @@ function drawPredictor() {
   const S = nP ? simulate(ids, M, played, remaining, picks, N) : base;
   const rows = remaining.map(g => { const P = M.probs(g.home_id, g.away_id); const sc = P.scores[picks[g.id] || P.pick]; return [g.home_id, g.away_id, sc[0], sc[1]]; });
   const fin = rank(table(rows, played, ids), played, rows);
-  const delta = (a, b) => { const d = Math.round((a - b) * 100); return d ? ` <span class="delta ${d > 0 ? "up" : "dn"}">${d > 0 ? "+" : ""}${d}</span>` : ""; };
+  const delta = (a, b) => { const d = Math.round((a - b) * 100); return `<span class="delta ${d > 0 ? "up" : d < 0 ? "dn" : ""}">${d ? (d > 0 ? "+" : "") + d : ""}</span>`; };
   $("#picksbar").hidden = !nP;
-  $("#picksbar").innerHTML = nP ? `<b>You've changed ${nP} pick${nP > 1 ? "s" : ""}${ME ? ", saved to your account" : ", saved on this device"}.</b> <button class="reset" id="clearpicks">Reset all to our picks</button>` : "";
-  $("#predtable").innerHTML = `<table class="grid"><tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
+  $("#picksbar").innerHTML = nP ? `<span><b>${nP} pick${nP > 1 ? "s" : ""} changed</b><span class="ddsub">${ME ? "Saved to your account" : "Saved on this device"}</span></span><button class="reset" id="clearpicks">Reset all</button>` : "";
+  $("#predtable").innerHTML = `<table class="grid pred"><colgroup><col style="width:20px"><col><col style="width:58px"><col style="width:36px"><col style="width:34px"><col style="width:50px">${spots ? `<col style="width:52px">` : ""}</colgroup><tr><th>#</th><th class="t">Team</th><th>W-D-L</th><th>GD</th><th>PTS</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}</tr>
     ${fin.map((r, i) => { const s = S.get(r.id), b = base.get(r.id);
       return `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}<div class="sub">likely ${placeTxt(rangeOf(S, r.id))}</div></td>
       <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td><b>${r.pts}</b></td>
-      <td class="chance">${pct(s.pos[0])}${nP ? delta(s.pos[0], b.pos[0]) : ""}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, r.id, spots - 1))}${nP ? delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1)) : ""}</td>` : ""}</tr>`; }).join("")}
+      <td class="chance">${pct(s.pos[0])}${delta(s.pos[0], b.pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, r.id, spots - 1))}${delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`; }).join("")}
   </table><div class="mut" style="margin-top:6px">Final table if every pick comes true. Shaded = chances${nP ? " with your changes" : ""}.</div>`;
   const c = $("#clearpicks"); if (c) c.onclick = () => {
     const S = SAVED[D.__fk] || {}; for (const id of Object.keys(PICKS[D.__fk])) delete S[id];   // games already played keep their pick (for grading)
@@ -1385,6 +1387,10 @@ function onPick(e) {
   else { P[id] = f; S[id] = {p: f, o: ours ? ours.f : "", t: Date.now()}; wrap.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); }
   const pc = wrap.parentElement.querySelector(".pchg"); if (pc) pc.remove();
   savePicks();
+  const row = wrap.parentElement; let note = row.querySelector(".psaved");
+  if (!note) { note = document.createElement("div"); note.className = "psaved"; wrap.after(note); }
+  note.textContent = P[id] ? (ME ? "Pick saved to your account · table above updated" : "Pick saved on this device · table above updated") : "Back to our pick · table above updated";
+  note.style.opacity = 1; clearTimeout(note._t); note._t = setTimeout(() => { note.style.opacity = 0; setTimeout(() => note.remove(), 450); }, 2500);
   $("#predtable").style.opacity = .55; setTimeout(() => { drawPredictor(); $("#predtable").style.opacity = 1; }, 10);
 }
 
