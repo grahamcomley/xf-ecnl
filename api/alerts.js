@@ -362,8 +362,8 @@ async function driftAlert(env, st, now) {
     const d = await env.USERS.get(m.name, "json");
     if (!d || !OWNER_EMAILS.includes((d.email || "").toLowerCase())) continue;
     const first = probs[0], t = first.teams[0];
-    const s = await send(env, d.sub, {t: `Data check: ${probs.length} conference${probs.length === 1 ? "" : "s"} differ from ECNL`,
-      b: `${first.name}: ${t.team} ours ${t.ours[0]} GP / ${t.ours[1]} pts, ECNL ${t.ecnl[0]} / ${t.ecnl[1]}` + (probs.length > 1 || first.teams.length > 1 ? " · more in Admin" : ""),
+    const s = await send(env, d.sub, {t: `Data check: ${probs.length} conference${probs.length === 1 ? "" : "s"} differ from the official table`,
+      b: `${first.name}: ${t.team} ours ${t.ours[0]} GP / ${t.ours[1]} pts, official ${t.ecnl[0]} / ${t.ecnl[1]}` + (probs.length > 1 || first.teams.length > 1 ? " · more in Admin" : ""),
       u: "/", tag: "drift", badge: false}, "drift", d);
     if (s < 300) n++;
   }

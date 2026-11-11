@@ -15,6 +15,7 @@ import ecnl_api as api  # noqa: E402
 import model  # noqa: E402
 import catalog  # noqa: E402
 import matcher  # noqa: E402
+import mlsnext  # noqa: E402
 import surf  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
@@ -216,8 +217,16 @@ def flight_raw(event_id, flight_id, done):
     return api.get(path, max_age_hours=24 if QUICK else 2) or []
 
 
+MLS_OFFICIAL = {}   # pool key -> {(event id, flight id): official table} for MLS NEXT pools
+
+
 def build_pool(name, pc, cfg):
     """Return (games, team_conf, team_names, conf_names, club_conf)."""
+    if pc.get("source") == "mlsnext":   # MLS NEXT: its own public data file (scripts/mlsnext.py)
+        games, team_conf, names, conf_names, official = mlsnext.pool(pc["mls_age"])
+        MLS_OFFICIAL[pc["key"]] = official
+        print(f"  mlsnext {pc['mls_age']}: {len(games)} games, {len(names)} teams, {len(conf_names)} brackets")
+        return games, team_conf, names, conf_names
     games, team_conf, names, conf_names = [], {}, {}, {}
     club_conf = {}
     rules = pc["age_rules"]
@@ -380,8 +389,11 @@ def standings_from_games(games, team_ids):
             if f > ag: me["w"] += 1
             elif f == ag: me["d"] += 1
             else: me["l"] += 1
+        # MLS NEXT: a draw goes to a shootout, the winner gets a second point
+        if g.get("pkp") and g["hs"] == g["as"] and g.get("hpk") is not None and g.get("apk") is not None and g["hpk"] != g["apk"]:
+            (h if g["hpk"] > g["apk"] else a)["pkw"] = (h if g["hpk"] > g["apk"] else a).get("pkw", 0) + 1
     for r in t.values():
-        r["pts"] = 3 * r["w"] + r["d"]
+        r["pts"] = 3 * r["w"] + r["d"] + r.pop("pkw", 0)
         r["ppg"] = round(r["pts"] / r["gp"], 2) if r["gp"] else 0.0
         r["gd"] = r["gf"] - r["ga"]
     return list(t.values())
@@ -507,11 +519,15 @@ def update_prediction_log(comp, games, m, log):
 
 
 GAME_KEYS = ("id", "num", "type", "date", "time", "home_id", "away_id", "home", "away",
-             "hs", "as", "hpk", "apk", "venue", "status", "bad")
+             "hs", "as", "hpk", "apk", "venue", "status", "bad", "tz")
 
 
 def league_type(name):
     n = (name or "").lower()
+    if "mls next flex" in n:
+        return "MLS NEXT Flex"
+    if "mls next" in n:
+        return "MLS NEXT"
     rl = "rl" in n.split() or "regional league" in n
     girls = "girls" in n
     if "pre-ecnl" in n or "pre ecnl" in n:
@@ -685,7 +701,7 @@ def main():
                      "flight": gs[0].get("flight_name"),
                      "bracket": any(g["type"] == "Bracket" or re.search(r"winner|loser", (g["home"] or ""), re.I) for g in gs),
                      "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
-                     "games": [{k: g[k] for k in GAME_KEYS} for g in gs],
+                     "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
                      "teams": [team_obj(t, with_record=True) for t in tids]}
             for t in tids:
                 events_by_team.setdefault(t, []).append(block)
@@ -710,13 +726,17 @@ def main():
             # ECNL's own table (with its tiebreak order): featured and Northwest conferences fresh every run,
             # every other conference about once a day (for the daily drift check against our table).
             div_id = comp.get("division_id") or gs[0].get("division_id")
-            if div_id:
-                st = api.get(f"Event/get-standings-by-div-and-flight/{div_id}/{fid}/{eid}",
-                             max_age_hours=0 if comp else 1 if "Northwest" in cname else 20)
-                rows = [r for b in (st or []) if isinstance(b, dict) for r in (b.get("teamStandings") or [])]
-                for r in rows:
-                    official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
-                                     "pts": to_int(r.get("standingpoints")), "rank": to_int(r.get("rank"))})
+            mls_tab = MLS_OFFICIAL.get(pkey, {}).get((eid, fid))
+            if mls_tab is not None or (div_id and pc.get("source") != "mlsnext"):
+                if mls_tab is not None:
+                    official = [dict(o) for o in mls_tab]
+                else:
+                    st = api.get(f"Event/get-standings-by-div-and-flight/{div_id}/{fid}/{eid}",
+                                 max_age_hours=0 if comp else 1 if "Northwest" in cname else 20)
+                    rows = [r for b in (st or []) if isinstance(b, dict) for r in (b.get("teamStandings") or [])]
+                    for r in rows:
+                        official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
+                                         "pts": to_int(r.get("standingpoints")), "rank": to_int(r.get("rank"))})
                 ours = standings_from_games(gs, tids)
                 ours_order = [t["id"] for t in sorted(ours, key=lambda t: (-t["ppg"], -t["pts"], -t["gd"], -t["gf"]))]
                 off_order = [o["id"] for o in sorted(official, key=lambda o: o["rank"] or 99)]
@@ -750,7 +770,7 @@ def main():
                 "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
                 "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt and {k: v for k, v in bt.items() if k != "preds"}},
                 "teams": [team_obj(t) for t in tids],
-                "games": [{k: g[k] for k in GAME_KEYS} for g in gs],
+                "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
                 "official": official, "computed": standings_from_games(gs, tids),
                 "events": ev_list, "team_events": evs,
                 "live_record": update_prediction_log(pseudo, gs, m, log),
@@ -769,6 +789,8 @@ def main():
                 tk = f"{pkey}-{t}"
                 # a team can sit in several league flights (stages, league cups): keep the one with most games
                 score = (sum(1 for g in gs if t in (g["home_id"], g["away_id"])), "cup" not in cname.lower())
+                if pc.get("source") == "mlsnext":   # MLS NEXT: list the team under its own league bracket, not Flex
+                    score = (team_conf.get(t) == f"ev{eid}",) + score
                 if tk not in teams_index or score > teams_index[tk][0]:
                     teams_index[tk] = (score, {"k": tk, "n": names.get(t), "s": short_name(names.get(t)), "c": cname,
                                                "l": out["league"], "a": pc.get("label", ""), "f": fkey})

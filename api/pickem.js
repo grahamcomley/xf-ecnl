@@ -21,6 +21,7 @@ function tzOffset(tz, ms) {
   return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour") % 24, g("minute"), g("second")) - Math.floor(ms / 1000) * 1000;
 }
 export function kickoff(g, tz) {
+  tz = g.tz || tz;   // MLS NEXT games carry their own time zone
   const [y, m, d] = g.date.split("-").map(Number);
   const [hh, mm] = g.time && g.time !== "00:00" ? g.time.split(":").map(Number) : [8, 0];   // no time yet: lock at 8 AM
   const guess = Date.UTC(y, m - 1, d, hh, mm), off = tzOffset(tz, guess);

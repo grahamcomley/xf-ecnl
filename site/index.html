@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.22">
+<meta name="app-version" content="v0.99.30">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -383,7 +383,11 @@ function table(rows, games, ids) {
   const add = (h, a, x, y) => { const H = t.get(h), A = t.get(a); if (!H || !A) return;
     H.gp++; A.gp++; H.gf += x; H.ga += y; A.gf += y; A.ga += x;
     if (x > y) { H.w++; H.pts += 3; A.l++; } else if (x === y) { H.d++; A.d++; H.pts++; A.pts++; } else { A.w++; A.pts += 3; H.l++; } };
-  for (const g of games) add(g.home_id, g.away_id, g.hs, g.as);
+  for (const g of games) {
+    add(g.home_id, g.away_id, g.hs, g.as);
+    // MLS NEXT: drawn games go to a shootout; the winner gets a second point
+    if (PK_POINTS && g.hs === g.as && g.hpk != null && g.apk != null && g.hpk !== g.apk) { const W = t.get(g.hpk > g.apk ? g.home_id : g.away_id); if (W) W.pts++; }
+  }
   for (const r of rows) add(r[0], r[1], r[2], r[3]);
   const list = [...t.values()]; for (const r of list) { r.ppg = r.gp ? r.pts / r.gp : 0; r.gd = r.gf - r.ga; }
   return list;
@@ -453,7 +457,7 @@ const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi =
 const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 
 // ---------- state: teams index, favorites, routing ----------
-let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null;
+let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null, PK_POINTS = false;
 const CONF_CACHE = {}, PICKS = {};
 // Saved picks (Predict): {conf file: {game id: {p: their pick, o: our pick when they made it, t: when}}}.
 // Kept on this device and, when signed in, in the account. Picks on played games stay, for grading.
@@ -708,7 +712,7 @@ function drawAccount(b) {
   };
 }
 const ABOUT = [
-  ["Unofficial", "Not run by or affiliated with the ECNL. Scores and schedules come from the ECNL's public schedule pages and appear here once clubs enter them."],
+  ["Unofficial", "Not run by or affiliated with the ECNL or MLS NEXT. Scores and schedules come from their public schedule pages and appear here once clubs enter them."],
   ["Predictions", "Every team is rated from all of this season's games across the country (plus last season's, lightly), then the rest of the season is played out thousands of times. They're estimates, not guarantees."],
   ["Find your team", "Open the team menu at the top, tap <b>Find a team</b>, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team."],
   ["Alerts", "Turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts work from the Home Screen app."],
@@ -762,7 +766,7 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
-      ${fold("drift", "Data check", DRIFT ? (DRIFT.points.length ? `${DRIFT.points.length} conference${DRIFT.points.length === 1 ? "" : "s"} differ from ECNL` : "All tables match ECNL") : "Not run yet", DRIFT ? (DRIFT.points.length ? DRIFT.points.map(x => `<div class="glk" style="margin-top:8px">${esc(x.name)}</div>${x.teams.map(t => `<div class="mut" style="font-size:12px">${esc(t.team)}: ours ${t.ours[0]} GP · ${t.ours[1]} pts, ECNL ${t.ecnl[0]} · ${t.ecnl[1]}</div>`).join("")}`).join("") : "<p class='mut'>Games played and points match ECNL's table in every conference.</p>") + `<p class="mut" style="font-size:12px;margin-top:8px">Checked ${esc(new Date(DRIFT.checked).toLocaleString())}. ${DRIFT.order.length} conference${DRIFT.order.length === 1 ? "" : "s"} list tied teams in a different order (tiebreakers).</p>` : "", DRIFT && DRIFT.points.length > 0)}
+      ${fold("drift", "Data check", DRIFT ? (DRIFT.points.length ? `${DRIFT.points.length} conference${DRIFT.points.length === 1 ? "" : "s"} differ from the official table` : "All tables match the official ones") : "Not run yet", DRIFT ? (DRIFT.points.length ? DRIFT.points.map(x => `<div class="glk" style="margin-top:8px">${esc(x.name)}</div>${x.teams.map(t => `<div class="mut" style="font-size:12px">${esc(t.team)}: ours ${t.ours[0]} GP · ${t.ours[1]} pts, official ${t.ecnl[0]} · ${t.ecnl[1]}</div>`).join("")}`).join("") : "<p class='mut'>Games played and points match the official table in every conference.</p>") + `<p class="mut" style="font-size:12px;margin-top:8px">Checked ${esc(new Date(DRIFT.checked).toLocaleString())}. ${DRIFT.order.length} conference${DRIFT.order.length === 1 ? "" : "s"} list tied teams in a different order (tiebreakers).</p>` : "", DRIFT && DRIFT.points.length > 0)}
       ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
@@ -953,7 +957,7 @@ function route() {
     openTeam(f[0]);
   } else {
     drawPills(); openFinder();
-    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">${icon("search")} Find a team</button><div class="thsub">Search or browse every ECNL, ECNL RL and Pre-ECNL team, then tap the star to save it.</div></div></div>`;
+    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">${icon("search")} Find a team</button><div class="thsub">Search or browse every ECNL, ECNL RL, Pre-ECNL and MLS NEXT team, then tap the star to save it.</div></div></div>`;
     $("#teamdd").onclick = openFinder;
     $("#app").innerHTML = ""; $("#tabbar").hidden = true;
   }
@@ -1040,7 +1044,7 @@ function drawFinder() {
     const {g, a, l, c} = FSTATE;
     const uniq = arr => [...new Set(arr)];
     const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
-    const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : 3);
+    const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : /^MLS NEXT Flex/.test(x) ? 4 : /^MLS NEXT/.test(x) ? 3 : 5);
     const ageShort = x => x.replace(/\s+(Boys|Girls)/, "");
     const crumbs = [g, a && ageShort(a), l, c].filter(Boolean);
     let html = `<div class="crumbs">${crumbs.map((x, i) => `<button class="pill-btn" data-up="${i}">${esc(x)} ✕</button>`).join("")}</div>`;
@@ -1224,6 +1228,7 @@ function checkedTxt() {
 
 function renderTeam(D, fid, key) {
   D.__fk = teamByKey(key).f;
+  PK_POINTS = /^MLS NEXT/.test(D.league || "");
   const M = makeModel(D.teams, D.model), today = todayISO(), ids = D.teams.map(t => t.id);
   const focus = D.teams.find(t => t.id === fid), me = esc(focus.short), chipMe = esc(code(D, fid));
   const valid = D.games.filter(g => g.home_id && g.away_id && !g.bad);
@@ -1309,7 +1314,7 @@ function renderTeam(D, fid, key) {
     : "<div class='mut'>Fills in after the next full data update.</div>");
 
   $("#app").innerHTML = `
-  ${mismatch.length ? `<div class="warn">⚠ ECNL's table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
+  ${mismatch.length ? `<div class="warn">⚠ ${/^MLS/.test(D.league || "") ? "MLS NEXT" : "ECNL"}'s table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
 <div class="pane" data-tab="team">
   ${sec("us", chipMe, "Where we stand", "", `
@@ -1451,6 +1456,7 @@ const PK_TZ = [[/Northwest|NorCal|Northern Cal|Southern Cal|SoCal|Far West|Golde
   [/Texas|STXCL|Frontier|Gulf Coast|Heartland|Midwest|Chicago|Lake Michigan|Mid-America|Twin Cities|Minnesota|Iowa|Missouri|Oklahoma/i, "America/Chicago"]];
 const pkTz = name => (PK_TZ.find(([re]) => re.test(name || "")) || [0, "America/New_York"])[1];
 function pkKick(g, tz) {   // same as the server: the field's local time, in the conference's time zone
+  tz = g.tz || tz;
   const [y, m, d] = g.date.split("-").map(Number), [hh, mm] = g.time && g.time !== "00:00" ? g.time.split(":").map(Number) : [8, 0];
   const off = ms => { const p = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"}).formatToParts(new Date(ms)); const q = t => +p.find(x => x.type === t).value; return Date.UTC(q("year"), q("month") - 1, q("day"), q("hour") % 24, q("minute"), q("second")) - Math.floor(ms / 1000) * 1000; };
   const guess = Date.UTC(y, m - 1, d, hh, mm), o = off(guess); let t = guess - o; const o2 = off(t); if (o2 !== o) t = guess - o2; return t;
