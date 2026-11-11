@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.97">
+<meta name="app-version" content="v0.98">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -80,6 +80,10 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .gate-logo{width:56px!important;height:56px!important;border-radius:14px!important;gap:5px!important;padding:0 13px!important;margin:0 auto 14px}.gate-logo i{height:5px!important}
 .gate-in h1{font-size:24px;margin:0 0 4px}.gate-sub{color:var(--mut);margin:0 0 14px}.gate-why{font-size:14px;margin:0 0 16px}
 #gatesignin{display:flex;justify-content:center;min-height:120px}.gate-foot{font-size:12px;color:var(--mut);margin-top:18px}
+.inapp{background:#3a2a10;border:1px solid #7c5a12;color:#fde68a;border-radius:10px;padding:10px 12px;font-size:14px;text-align:left;margin:0 0 14px}
+.steps{list-style:none;padding:0;margin:6px 0 4px;counter-reset:st}.steps li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.steps li::before{counter-increment:st;content:counter(st);flex:none;width:24px;height:24px;border-radius:50%;background:var(--card2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mut)}
+.steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
@@ -236,6 +240,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
     <h1>Sideline Standings</h1>
     <p class="gate-sub">ECNL standings, games and predictions for your team.</p>
     <p class="gate-why"><b>Free account.</b> Keeps your teams on all your devices. Google or Apple takes one tap.</p>
+    <div id="inapp" class="inapp" hidden></div>
     <div id="gatesignin"><p class="mut">Loading sign-in…</p></div>
     <p class="gate-foot"><a class="vlink" href="privacy.html">Privacy</a> · Not affiliated with the ECNL</p>
   </div>
@@ -243,6 +248,10 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <div id="admin" class="sheet" hidden><div class="sheet-card admcard">
   <div class="sheet-head"><b>Admin</b><button class="icon-btn" id="adminclose">Close</button></div>
   <div id="adminbody"></div>
+</div></div>
+<div id="a2hs" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Add it to your Home Screen</b><button class="icon-btn" id="a2hsclose">Not now</button></div>
+  <div id="a2hsbody"></div>
 </div></div>
 <div id="nudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Keep your teams everywhere</b><button class="icon-btn" id="nudgeclose">Not now</button></div>
@@ -261,6 +270,9 @@ const ICON = {
   info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 7.8h.01"/>',
   chev: '<path d="m6 9 6 6 6-6"/>',
   chart: '<path d="M4 20h16"/><rect x="6" y="11" width="3" height="6" rx=".6"/><rect x="10.5" y="7" width="3" height="10" rx=".6"/><rect x="15" y="4" width="3" height="13" rx=".6"/>',
+  phone: '<rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/>',
+  dots: '<circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/>',
+  plussq: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8.5v7M8.5 12h7"/>',
   user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
@@ -517,6 +529,7 @@ async function onAuth() {
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
+    maybeOfferHome();
   } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
 }
 function pushFavs(now) {
@@ -572,6 +585,46 @@ async function openAdmin() {
 $("#admintop").innerHTML = icon("chart");
 $("#admintop").onclick = openAdmin;
 $("#adminclose").onclick = () => $("#admin").hidden = true;
+// ---------- getting it onto the home screen ----------
+// iPhone has no install button for websites (Apple doesn't allow one), so iPhone users get the three
+// steps. Android/Chrome does: we keep its install offer and show our own button. In-app browsers
+// (Facebook, Instagram, Google app...) can't add to the home screen at all, so they're told to switch.
+const UA = navigator.userAgent || "";
+const IS_IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const IS_ANDROID = /Android/.test(UA);
+const STANDALONE = () => navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+const INAPP = /FBAN|FBAV|FB_IAB|Instagram|Line\/|GSA\/|LinkedInApp|Snapchat|Twitter|musical_ly|Bytedance|Pinterest/.test(UA);
+let INSTALL_EVT = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); INSTALL_EVT = e; drawPills(); });
+addEventListener("appinstalled", () => { INSTALL_EVT = null; store.set("a2hsDone", "1"); drawPills(); });
+const canSuggestHome = () => !STANDALONE() && (IS_IOS || INSTALL_EVT);
+function inappNote() {
+  const n = $("#inapp"); if (!n) return;
+  if (!INAPP) { n.hidden = true; return; }
+  n.hidden = false;
+  n.innerHTML = IS_IOS ? "<b>Open this in Safari first.</b> You're in another app's browser, which can't keep you signed in or add to your Home Screen. Tap <b>⋯</b> or the compass icon and choose <b>Open in Safari</b>."
+                       : "<b>Open this in Chrome first.</b> You're in another app's browser. Tap <b>⋮</b> and choose <b>Open in Chrome</b> (or Open in browser).";
+}
+function openA2hs() {
+  const b = $("#a2hsbody");
+  if (INAPP) b.innerHTML = `<p>You're in another app's browser. Open this page in ${IS_IOS ? "Safari" : "Chrome"} first, then come back to this menu.</p><button class="btn-main" id="a2hsok">OK</button>`;
+  else if (INSTALL_EVT) b.innerHTML = `<p>Install Sideline Standings so it opens like an app, full screen, from your home screen.</p><button class="btn-main" id="a2hsinstall">Install app</button>`;
+  else b.innerHTML = `<p>It opens like an app, full screen, and stays signed in. Three taps:</p>
+    <ol class="steps"><li>${icon("dots")}<span>Tap <b>⋯</b> next to the address bar</span></li><li>${icon("share")}<span>Tap <b>Share</b></span></li><li>${icon("plussq")}<span>Tap <b>Add to Home Screen</b>, then <b>Add</b></span></li></ol>
+    <p class="mut" style="font-size:12px">Then open Sideline from your Home Screen. If you see a Share button at the bottom instead of ⋯, tap that first.</p>
+    <button class="btn-main" id="a2hsok">Done</button>`;
+  $("#a2hs").hidden = false;
+  const ok = $("#a2hsok"); if (ok) ok.onclick = () => { store.set("a2hsDone", "1"); $("#a2hs").hidden = true; drawPills(); };
+  const ins = $("#a2hsinstall"); if (ins) ins.onclick = async () => { const ev = INSTALL_EVT; if (!ev) return; ev.prompt(); try { await ev.userChoice; } catch (e) {} INSTALL_EVT = null; $("#a2hs").hidden = true; drawPills(); };
+}
+$("#a2hsclose").onclick = () => { store.set("a2hsLater", String(Date.now())); $("#a2hs").hidden = true; };
+// Offer it once, a moment after someone is signed in and using the site in a plain browser tab.
+function maybeOfferHome() {
+  if (STANDALONE() || store.get("a2hsDone") || store.get("a2hsOffered")) return;
+  if (!(IS_IOS || INSTALL_EVT || INAPP)) return;
+  store.set("a2hsOffered", "1"); setTimeout(openA2hs, 1500);
+}
+inappNote();
 $("#acctclose").onclick = () => $("#acct").hidden = true;
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
@@ -604,9 +657,10 @@ function drawPills() {
   m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
     + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}</span><span class="ddsub">${esc(t.c)}</span></button>`; }).join("")
+    + (canSuggestHome() ? `<button class="ddi ddfind ddacct" data-home="1">${icon("phone")}<span>${INSTALL_EVT ? "Install the app" : "Add to Home Screen"}</span></button>` : "")
     + (ME ? `<button class="ddi ddfind ddacct" data-acct="1">${icon("user")}<span>Your account<span class="ddsub"> · ${esc(ME.email || "signed in")}</span></span></button>`
        : CLERK_READY ? `<button class="ddi ddfind ddacct" data-signin="1">${icon("user")}<span>${store.get("signedInOnce") ? "Sign in again to keep your teams in sync" : "Sign in to save your teams"}</span></button>` : "");
-  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); location.hash = "t=" + b.dataset.k; };
+  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); if (b.dataset.home) return openA2hs(); location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
   let f = favs() || [];
