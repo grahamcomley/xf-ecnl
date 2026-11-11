@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.20">
+<meta name="app-version" content="v0.99.21">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -86,7 +86,8 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#a2hs,#anudge,#nudge{z-index:80}
+#a2hs,#anudge,#nudge,#nsheet{z-index:80}.ntitle{font-size:17px;font-weight:800;margin:8px 0 6px}.nlines{font-size:14px;line-height:1.5}.nsp{height:8px}
+@keyframes flash{0%,60%{box-shadow:0 0 0 2px #fde047;background:rgba(253,224,71,.12)}100%{box-shadow:none}}.flash{animation:flash 3s ease-out}
 #pg{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;flex-direction:column}#pg[hidden]{display:none}body.pgopen{overflow:hidden}
 .pg-head{flex:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px;align-items:center;padding:calc(6px + env(safe-area-inset-top)) 8px 6px;border-bottom:1px solid var(--line);background:var(--bg)}.pg-head b{font-size:16px;text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pg-sp{justify-self:end;font-size:11px;color:var(--mut);white-space:nowrap;padding-right:6px}.pg-sp .stale{color:#d4a72c}
 .pg-back{justify-self:start;display:inline-flex;align-items:center;gap:2px;background:none;border:0;color:var(--link);font:inherit;font-size:15px;padding:10px 8px;cursor:pointer;min-height:44px}.pg-back .ic{width:22px;height:22px}
@@ -276,6 +277,10 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <button class="btn-main" id="nudgego">Sign in</button>
 </div></div>
 <div id="pg" hidden><div class="pg-head"><button class="pg-back" id="pgback"></button><b id="pgtitle"></b><span class="pg-sp" id="pgver"></span></div><div class="pg-body" id="pgbody"></div></div>
+<div id="nsheet" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Alert</b><button class="icon-btn" id="nsheetclose">Close</button></div>
+  <div id="nsheetbody"></div>
+</div></div>
 <div class="toast" id="toast"></div>
 <script>
 "use strict";
@@ -909,6 +914,7 @@ function maybeOfferAlerts(k) {
   $("#anudgego").onclick = async () => { $("#anudge").hidden = true; if (bl) openA2hs(); else await enableAlerts(); };
 }
 $("#anudgeclose").onclick = () => $("#anudge").hidden = true;
+$("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
 // Opening the app clears the red number.
 function clearBadge() {
   if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {});
@@ -940,7 +946,8 @@ function route() {
   if (keys.length) {
     if (keys[0] !== store.get("lastTeam")) TAB = "team";   // a link to a different team opens on Team
     if (f === null) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite
-    openTeam(keys[0]);
+    const q = new URLSearchParams(h), gids = (q.get("g") || "").split(",").filter(Boolean), view = q.get("v");
+    openTeam(keys[0]).then(() => { if (q.get("n")) showNote(gids, view); else if (gids.length || view) focusGames(gids, view); });
   } else if (f && f.length) {
     openTeam(f[0]);
   } else {
@@ -949,6 +956,33 @@ function route() {
     $("#teamdd").onclick = openFinder;
     $("#app").innerHTML = ""; $("#tabbar").hidden = true;
   }
+}
+// Opened from an alert: show the whole alert first; "Show in the app" then goes to the exact game(s).
+async function showNote(gids, view) {
+  let n = null;
+  try { const r = await (await caches.open("badge-v1")).match("/__note"); n = r ? await r.json() : null; } catch (e) {}
+  if (!n) return focusGames(gids, view);
+  if (view) showTab(view === "league" ? "league" : "games", false);
+  const lines = (n.x && n.x.length ? n.x : String(n.b || "").split("\n"));
+  $("#nsheetbody").innerHTML = `<div class="ntitle">${esc(n.t)}</div><div class="nlines">${lines.map(l => l ? `<div>${esc(l)}</div>` : "<div class='nsp'></div>").join("")}</div>
+    <button class="btn-main" id="ngo">${gids.length ? (gids.length > 1 ? "Show these games" : "Show this game") : "Open"}</button>`;
+  $("#nsheet").hidden = false;
+  $("#ngo").onclick = () => { $("#nsheet").hidden = true; focusGames(gids, view); };
+}
+function focusGames(gids, view) {
+  let el = null;
+  if (view) showTab(view === "league" ? "league" : view === "games" ? "games" : view, false);
+  for (const id of gids) {
+    const all = [...document.querySelectorAll(`#app [data-gid="${id}"]`)];
+    const pick = all.find(x => x.closest(".pane") && !x.closest(".pane").hidden) || all[0];
+    if (!pick) continue;
+    const pane = pick.closest(".pane"); if (pane && pane.hidden) showTab(pane.dataset.tab, false);
+    let d = pick.closest("details"); while (d) { d.open = true; d = d.parentElement && d.parentElement.closest("details"); }
+    const later = pick.closest("#later"); if (later) later.hidden = false;
+    pick.classList.remove("flash"); void pick.offsetWidth; pick.classList.add("flash");
+    el = el || pick;
+  }
+  if (el) setTimeout(() => el.scrollIntoView({block: "center", behavior: "smooth"}), 60);
 }
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
@@ -1046,14 +1080,14 @@ function fixtureCard(D, M, g, o = {}) {
   const cls = "fx" + (o.ours && us ? " ours" : "");
   if (g.hs != null && g.as != null) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
-    return `<div class="${cls}"><div class="when"><span>${fmtDate(g.date)} · Final</span></div>
+    return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${fmtDate(g.date)} · Final</span></div>
       <div class="teams"><div>${nm(LN, us, ls > rs)}</div><div class="score res">${ls} – ${rs}</div><div class="a">${nm(RN, false, rs > ls)}</div></div></div>`;
   }
   const P = M.probs(g.home_id, g.away_id, o.neutral);
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
   const likelyTop = us ? `Likely ${sL[0] > sL[1] ? "win" : sL[0] < sL[1] ? "loss" : "draw"} ${sL[0]}–${sL[1]}` : likelyLine(LN, RN, sL);
-  return `<div class="${cls}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+  return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
     <div class="teams t4"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
     <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
     </div>`;
@@ -1105,7 +1139,7 @@ function gameRow(D, M, g, o = {}) {
       toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
     }
   }
-  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${det}${toggles}</div>`;
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${det}${toggles}</div>`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
 const GRADE = {exact: ["EXACT", "Exact score"], called: ["CALLED", "Called it"], bigger: ["BIGGER", "Bigger win than expected"], closer: ["CLOSER", "Closer than expected"], missed: ["MISSED", "Missed"]};

@@ -27,14 +27,18 @@ self.addEventListener("push", e => {
   e.waitUntil((async () => {
     await self.registration.showNotification(m.t || "Sideline Standings", {
       body: m.b || "", tag: m.tag || undefined, renotify: !!m.tag, icon: "icons/icon-192.png", badge: "icons/icon-192.png",
-      data: {u: m.u || "/"}});
+      data: {u: m.u || "/", x: m.x || null}});
     if (m.badge !== false) await badgeSet((await badgeGet()) + 1);
   })());
 });
 self.addEventListener("notificationclick", e => {
   e.notification.close();
-  const url = new URL((e.notification.data && e.notification.data.u) || "/", self.location.origin).href;
+  const d = e.notification.data || {};
+  // The app opens with the full alert on screen first (iPhone cuts long alerts short); its
+  // "Show in the app" button then goes to the exact game.
+  const url = new URL((d.u || "/") + ((d.u || "").includes("#") ? "&n=" + Date.now() : ""), self.location.origin).href;
   e.waitUntil((async () => {
+    try { await (await caches.open(BADGE)).put("/__note", new Response(JSON.stringify({t: e.notification.title, b: e.notification.body, x: d.x || null, u: d.u || "/"}))); } catch (x) {}
     await badgeSet(0);
     const all = await self.clients.matchAll({type: "window", includeUncontrolled: true});
     for (const c of all) {

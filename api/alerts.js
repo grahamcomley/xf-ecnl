@@ -220,19 +220,22 @@ export function compose(d, items, overnight) {
     const also = g.lg.length ? `${plural(g.lg.length, "new result")} in ${conf}` : "";
     if (g.our.length === 1) {
       const o = ourLine(g.our[0], k);
-      notes.push({t: o.line, b: [`Final · ${o.res}${o.fix}`].concat(mo, also ? ["Also " + also] : []).join("\n"), u: `/#t=${k}`, tag: "g" + g.our[0].g});
+      const x = [`Final · ${o.res}${o.fix}`].concat(mo, g.lg.length ? ["", `Also in ${conf}:`].concat(g.lg.map(resLine)) : []);
+      notes.push({t: o.line, b: [`Final · ${o.res}${o.fix}`].concat(mo, also ? ["Also " + also] : []).join("\n"), x, u: `/#t=${k}&g=${g.our[0].g}&v=games`, tag: "g" + g.our[0].g});
     } else if (g.our.length > 1) {
       const lines = g.our.map(c => { const o = ourLine(c, k); return `${o.line}${o.fix}`; });
-      notes.push({t: `${team.n || ourLine(g.our[0], k).us}: ${plural(g.our.length, "new result")}`, b: lines.concat(mo, also ? ["Also " + also] : []).join("\n"), u: `/#t=${k}`, tag: "t" + k});
+      const x = lines.concat(mo, g.lg.length ? ["", `Also in ${conf}:`].concat(g.lg.map(resLine)) : []);
+      notes.push({t: `${team.n || ourLine(g.our[0], k).us}: ${plural(g.our.length, "new result")}`, b: lines.concat(mo, also ? ["Also " + also] : []).join("\n"), x, u: `/#t=${k}&g=${g.our.map(c => c.g).join(",")}&v=games`, tag: "t" + k});
     } else {
       const shown = g.lg.slice(0, 3).map(resLine), more = g.lg.length - shown.length;
-      notes.push({t: `${plural(g.lg.length, "new result")} in ${conf}`, b: mo.concat(shown).join("\n") + (more > 0 ? `\n+${more} more` : ""), u: `/#t=${k}`, tag: "l" + k});
+      notes.push({t: `${plural(g.lg.length, "new result")} in ${conf}`, b: mo.concat(shown).join("\n") + (more > 0 ? `\n+${more} more` : ""), x: mo.concat(g.lg.map(resLine)), u: `/#t=${k}&g=${g.lg.map(c => c.g).join(",")}&v=league`, tag: "l" + k});
     }
   }
   if (overnight && notes.length > 1) {   // morning summary: one notification for everything held overnight
-    return [{t: "Overnight results", b: notes.map(n => n.t).join("\n"), u: notes[0].u, tag: "overnight"}];
+    return [{t: "Overnight results", b: notes.map(n => n.t).join("\n"), x: notes.flatMap(n => [n.t].concat(n.x || [n.b], [""])), u: notes[0].u, tag: "overnight"}];
   }
   if (overnight && notes.length === 1) notes[0].t = "Overnight: " + notes[0].t;
+  for (const n of notes) if (n.x && n.x.length > 40) n.x = n.x.slice(0, 39).concat([`+${n.x.length - 39} more`]);   // push messages are capped at 4 KB
   return notes;
 }
 
@@ -393,7 +396,7 @@ async function reminders(env, st, up, now) {
         if (now < target || now >= kick || quiet(d, now)) continue;
         const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
         const title = (t.rem === "2h" && timed ? "In 2 hours: " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
-        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
+        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}&g=${g[0]}&v=games`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
         st.rem[key] = now;
         if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); break; }
         if (s < 300) n++;
@@ -428,7 +431,7 @@ async function wrapups(env, st, wk, now) {
       return `${t.a ? t.a + " " : ""}${t.n}: ${r}${place ? ` · ${ordn(place)} of ${of}` : ""}`;
     });
     try { const fri = new Date(Date.parse(L.date + "T12:00:00Z") - 2 * 864e5).toISOString().slice(0, 10); const pl = await wrapLine(env, d.uid, fri, L.date); if (pl) lines.push(pl); } catch (e) {}
-    const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge}, "wrapup", d);
+    const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), x: lines, u: `/#t=${mine[0].k}&v=games`, tag: "wrap", badge: d.badge}, "wrapup", d);
     st.wrap[id] = L.date;
     if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); continue; }
     if (s < 300) n++;
