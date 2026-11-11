@@ -2402,6 +2402,24 @@
    "gender": null,
    "start": "2027-02-06",
    "end": "2027-02-07"
+  },
+  {
+   "event_id": 4510,
+   "name": "11th CCU Spring Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-02-20",
+   "end": "2027-02-21"
+  },
+  {
+   "event_id": 4511,
+   "name": "39th CCU Summer Classic",
+   "org_id": null,
+   "org_season_id": null,
+   "gender": null,
+   "start": "2027-08-14",
+   "end": "2027-08-15"
   }
  ]
 }
