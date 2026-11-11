@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.32">
+<meta name="app-version" content="v0.99.34">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -116,7 +116,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .pkg{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--card);padding:8px 10px}.pkg.ours{border-color:#5b2330;background:var(--me)}.pkhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .pkrow{display:flex;align-items:center;gap:10px;padding:3px 0}.pkt{flex:1;min-width:0;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pkstep{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:var(--card2)}.pkstep button{background:none;border:0;color:var(--ink);font:inherit;font-size:18px;width:32px;height:34px;cursor:pointer}.pkstep button:disabled{color:var(--line2);cursor:default}.pkstep b{min-width:20px;text-align:center;font-size:17px}
-.pkfoot{font-size:12px;color:var(--mut);margin-top:4px}.pksave.ok{color:var(--up)}.pkpts{font-weight:800}.pkpts.p3{color:var(--up)}.pkpts.p1{color:#86c99a}.pkpts.p0{color:var(--mut)}
+.pkfoot{font-size:12px;color:var(--mut);margin-top:4px}.pkfinal{min-width:34px;text-align:center;font-size:18px;font-weight:800}.pksave.ok{color:var(--up)}.pkpts{font-weight:800}.pkpts.p3{color:var(--up)}.pkpts.p1{color:#86c99a}.pkpts.p0{color:var(--mut)}
 .pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
@@ -1169,7 +1169,7 @@ function gameRow(D, M, g, o = {}) {
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
     mid = `${ls} – ${rs}`; mcls = "res"; ln = nm(LN, us, ls > rs); rn = nm(RN, false, rs > ls);
-    if (us && !o.noMark) mark = `<span class="res res-${ls > rs ? "w" : ls === rs ? "d" : "l"}">${ls > rs ? "W" : ls === rs ? "D" : "L"}</span>`;
+    // (no W / D / L badge: the bold winner and the score say it)
   } else if (o.wait) {
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
   } else {
@@ -1497,10 +1497,11 @@ function pkKick(g, tz) {   // same as the server: the field's local time, in the
   const off = ms => { const p = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"}).formatToParts(new Date(ms)); const q = t => +p.find(x => x.type === t).value; return Date.UTC(q("year"), q("month") - 1, q("day"), q("hour") % 24, q("minute"), q("second")) - Math.floor(ms / 1000) * 1000; };
   const guess = Date.UTC(y, m - 1, d, hh, mm), o = off(guess); let t = guess - o; const o2 = off(t); if (o2 !== o) t = guess - o2; return t;
 }
-// The weekend in play: Friday–Sunday this week (Mon–Thu: the coming one).
+// The weekend in play (Fri–Sun): Wed–Sun = this / the coming weekend; Mon–Tue = the weekend just
+// played (results and points stay up for 48 hours), then it moves on.
 function pkWeekend(shift = 0) {
   const t = todayISO(), dow = new Date(t + "T12:00:00").getDay();
-  const fri = addDays(t, dow === 0 ? -2 : dow === 6 ? -1 : 5 - dow);
+  const fri = addDays(t, dow === 0 ? -2 : dow === 6 ? -1 : dow === 1 ? -3 : dow === 2 ? -4 : 5 - dow);
   const f = addDays(fri, 7 * shift); return [f, addDays(f, 2)];
 }
 const pkPts = (p, g) => g.hs == null || g.as == null ? null : (p[0] === g.hs && p[1] === g.as ? 3 : Math.sign(p[0] - p[1]) === Math.sign(g.hs - g.as) ? 1 : 0);
@@ -1515,12 +1516,12 @@ async function loadPickem(force) {
   const box = $("#pickem"); if (!box || !CTX) return;
   const {D} = CTX, fk = D.__fk;
   if (!ME) { box.innerHTML = `<div class="card ctx"><b>Pick'em</b><p class="mut">Pick the score of every league game each weekend and see how you stack up against other families. Sign in to play.</p><button class="btn-main" id="pksign">Sign in</button></div>`; $("#pksign").onclick = signIn; return; }
-  const [from, to] = pkWeekend(0), [lf, lt] = pkWeekend(-1);
-  if (!PK || PK.fk !== fk || force) PK = {fk, view: (PK && PK.view) || "week", draft: {}};
+  if (!PK || PK.fk !== fk) PK = {fk, view: "week", sel: null, draft: {}};
+  if (force) PK.draft = {};
+  const [from, to] = PK.sel || pkWeekend(0);
   if (!PK.data || force) box.innerHTML = "<div class='card ctx mut'>Loading Pick'em…</div>";
   try {
-    const q = (a, b) => api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${a}&to=${b}`);
-    [PK.data, PK.last] = await Promise.all([q(from, to), q(lf, lt)]);
+    PK.data = await api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${from}&to=${to}`);
   } catch (e) { box.innerHTML = "<div class='card ctx mut'>Couldn't load Pick'em. Try again in a moment.</div>"; return; }
   drawPickem();
 }
@@ -1531,12 +1532,12 @@ function pkGameRow(D, g, tz, mine, seen, locked) {
   const dr = PK.draft[g.id] || (mine ? [mine[0], mine[1]] : null);
   const done = g.hs != null && g.as != null, pts = dr && done ? pkPts(dr, g) : null;
   const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}`;
-  const step = side => `<span class="pkstep" data-side="${side}"><button data-d="-1" ${locked ? "disabled" : ""}>−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1" ${locked ? "disabled" : ""}>+</button></span>`;
+  const step = side => locked ? `<span class="pkfinal">${done ? (side ? g.as : g.hs) : ""}</span>` : `<span class="pkstep" data-side="${side}"><button data-d="-1">−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1">+</button></span>`;
   const others = (seen || []).filter(x => !x.me);
   return `<div class="pkg${ours ? " ours" : ""}" data-g="${g.id}">
     <div class="pkhead"><span class="gt">${when}</span>${locked ? `<span class="keytag">${done ? "FINAL" : "LOCKED"}</span>` : ""}</div>
     <div class="pkrow"><span class="pkt">${hn}</span>${step(0)}</div><div class="pkrow"><span class="pkt">${an}</span>${step(1)}</div>
-    <div class="pkfoot">${done ? `Final ${g.hs}–${g.as}${dr ? ` · <span class="pkpts p${pts}">${pts === 3 ? "+3 exact" : pts === 1 ? "+1 right result" : "0"}</span>` : " · no pick"}` : locked ? (dr ? "Your pick is in" : "No pick") : `Our model: ${sc[0]}–${sc[1]}`}<span class="pksave"></span></div>
+    <div class="pkfoot">${locked ? (dr ? `Your pick ${dr[0]}–${dr[1]}${done ? ` · <span class="pkpts p${pts}">${pts === 3 ? "+3 exact" : pts === 1 ? "+1 right result" : "0 pts"}</span>` : ""}` : "No pick") + (done ? "" : " · waiting for the score") : `Our model: ${sc[0]}–${sc[1]}`}<span class="pksave"></span></div>
     ${locked && others.length ? `<details class="inner"><summary>Everyone's picks (${others.length + (dr ? 1 : 0)})</summary>${(seen || []).map(x => `<div class="pkwho${x.me ? " me" : ""}"><span>${esc(x.me ? "You" : x.name)}</span><span>${x.p[0]}–${x.p[1]}${done ? ` <span class="pkpts p${pkPts(x.p, g)}">${pkPts(x.p, g)}</span>` : ""}</span></div>`).join("")}</details>` : ""}
   </div>`;
 }
@@ -1547,27 +1548,34 @@ function pkBoard(rows, f, x) {
 function drawPickem() {
   const box = $("#pickem"); if (!box || !PK || !PK.data) return;
   const {D} = CTX, d = PK.data, tz = d.tz || pkTz(D.conf_name), now = Date.now();
-  const [from, to] = pkWeekend(0), [lf, lt] = pkWeekend(-1);
+  const cur = pkWeekend(0), [from, to] = PK.sel || cur, past = !!PK.sel;
   const inWin = (g, a, b) => g.date >= a && g.date <= b && g.home_id && g.away_id && !g.bad;
   const order = (a, b) => ((b.home_id === CTX.fid || b.away_id === CTX.fid) - (a.home_id === CTX.fid || a.away_id === CTX.fid)) || (a.date + a.time).localeCompare(b.date + b.time);
-  const games = D.games.filter(g => inWin(g, from, to)).sort(order), lastGames = D.games.filter(g => inWin(g, lf, lt)).sort(order);
+  const games = D.games.filter(g => inWin(g, from, to)).sort(order);
   const me = d.week.find(r => r.me), ms = d.season.find(r => r.me), picked = games.filter(g => d.picks[g.id]).length;
-  const open = games.filter(g => now < pkKick(g, tz)).length;
+  const open = games.filter(g => now < pkKick(g, tz)).length, done = games.length && games.every(g => g.hs != null);
   const name = d.name || pkDefaultName();
-  const boards = {week: [d.week, "wk", "wkx"], last: [(PK.last || {}).week || [], "wk", "wkx"], season: [d.season, "se", "sex"]};
-  const [rows, f, x] = boards[PK.view];
+  const [rows, f, x] = PK.view === "season" ? [d.season, "se", "sex"] : [d.week, "wk", "wkx"];
+  // earlier weekends with league games, newest first, with your points from your own picks
+  const fris = [...new Set(D.games.filter(g => g.date < cur[0] && g.hs != null).map(g => { const dw = new Date(g.date + "T12:00:00").getDay(); return addDays(g.date, -((dw + 2) % 7)); }))].sort().reverse().slice(0, 12);
+  const pastRows = fris.map(fr => { const gs = D.games.filter(g => inWin(g, fr, addDays(fr, 2)));
+    const mine = gs.filter(g => d.picks[g.id]), pts = mine.reduce((s, g) => s + (pkPts(d.picks[g.id], g) || 0), 0);
+    return `<button class="inrow${PK.sel && PK.sel[0] === fr ? " unread" : ""}" data-wk="${fr}"><span><b>${fmtDate(fr)} – ${fmtDate(addDays(fr, 2))}</b><span class="ddsub">${gs.length} games · ${mine.length ? `you: ${pts} pts from ${mine.length} pick${mine.length === 1 ? "" : "s"}` : "no picks"}</span></span>${icon("right")}</button>`; }).join("");
+  const label = past ? "That weekend" : done ? "Last weekend" : "This weekend";
   box.innerHTML = `
-  <div class="card pkhero"><div class="pkh1">Pick'em · ${fmtDate(from)} – ${fmtDate(to)}</div>
-    <div class="mut" style="font-size:13px">Pick the score of every league game in ${esc(D.conf_name)}. 3 pts exact score · 1 pt right result · each game locks at kickoff.</div>
-    <div class="admtiles"><div class="stat"><div class="v">${picked}/${games.length}</div><div class="k">Picked this weekend</div></div>
-      <div class="stat"><div class="v">${me ? me.wk : 0}</div><div class="k">Points this weekend${me ? ` · ${ord(me.rank)}` : ""}</div></div>
+  <div class="card pkhero">${past ? `<button class="reset" id="pkback" style="float:none;padding:0 0 6px">‹ Back to ${done ? "this" : "the current"} weekend</button>` : ""}<div class="pkh1">Pick'em · ${fmtDate(from)} – ${fmtDate(to)}</div>
+    <div class="mut" style="font-size:13px">${past ? "Final scores, your picks and everyone's picks." : `Pick the score of every league game in ${esc(D.conf_name)}. 3 pts exact score · 1 pt right result · each game locks at kickoff.`}</div>
+    <div class="admtiles"><div class="stat"><div class="v">${picked}/${games.length}</div><div class="k">Picked</div></div>
+      <div class="stat"><div class="v">${me ? me.wk : 0}</div><div class="k">Points${me ? ` · ${ord(me.rank)}` : ""}</div></div>
       <div class="stat"><div class="v">${ms ? ms.se : 0}</div><div class="k">Season points${ms ? ` · ${ord(ms.rank)}` : ""}</div></div></div>
-    <div class="pkname" id="pkname">Playing as <b>${esc(name)}</b> · <button class="reset" id="pknamebtn">Change</button></div></div>
-  ${sec("div", "Pick'em", `This weekend's games`, games.length ? (open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
-  ${sec("div", "Pick'em", "Leaderboard", "", `<div class="pkviews">${[["week", "This weekend"], ["last", "Last weekend"], ["season", "Season"]].map(([k, l]) => `<button data-v="${k}" class="${PK.view === k ? "on" : ""}">${l}</button>`).join("")}</div>${pkBoard(rows, f, x)}`, "pk2")}
-  ${lastGames.length ? sec("div", "Pick'em", "Last weekend", `${fmtDate(lf)} – ${fmtDate(lt)}`, lastGames.map(g => pkGameRow(D, g, tz, (PK.last || {}).picks && PK.last.picks[g.id], (PK.last || {}).seen && PK.last.seen[g.id], true)).join(""), "pk3", false) : ""}`;
+    ${past ? "" : `<div class="pkname" id="pkname">Playing as <b>${esc(name)}</b> · <button class="reset" id="pknamebtn">Change</button></div>`}</div>
+  ${sec("div", "Pick'em", "Games", games.length ? (done ? "Final scores" : open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
+  ${sec("div", "Pick'em", "Leaderboard", "", `<div class="pkviews">${[["week", label], ["season", "Season"]].map(([k, l]) => `<button data-v="${k}" class="${PK.view === k ? "on" : ""}">${l}</button>`).join("")}</div>${pkBoard(rows, f, x)}
+    ${fris.length ? `<div class="seth" style="margin-top:14px">Past weekends</div><div class="glist" id="pkpast">${pastRows}</div>` : ""}`, "pk2")}`;
+  const bk = $("#pkback"); if (bk) bk.onclick = () => { PK.sel = null; PK.view = "week"; PK.data = null; loadPickem(); };
+  const pp = $("#pkpast"); if (pp) pp.onclick = e => { const r = e.target.closest("[data-wk]"); if (!r) return; PK.sel = [r.dataset.wk, addDays(r.dataset.wk, 2)]; PK.view = "week"; PK.data = null; loadPickem(); $("#scroller").scrollTop = $("#pickem").offsetTop - 60; };
   box.querySelectorAll("details.sec").forEach(dt => dt.addEventListener("toggle", () => store.set(dt.dataset.key, dt.open ? "1" : "0")));
-  $("#pknamebtn").onclick = () => {
+  if ($("#pknamebtn")) $("#pknamebtn").onclick = () => {
     $("#pkname").innerHTML = `<input id="pknamein" maxlength="20" value="${esc(name)}" autocomplete="off"> <button class="pillbtn" id="pknamesave">Save</button><div class="pkerr" id="pkerr"></div>`;
     const inp = $("#pknamein"); inp.focus(); inp.select();
     $("#pknamesave").onclick = async () => {
