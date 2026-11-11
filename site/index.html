@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.96">
+<meta name="app-version" content="v0.97">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -56,6 +56,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .ic{width:20px;height:20px;display:block}
 .topline{display:flex;align-items:center;gap:8px}.appname{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent)}
 .topline .checked{margin:0;font-size:11px}
+[hidden]{display:none!important}   /* hidden always wins over a class that sets display (the admin icon showed for everyone) */
 .ibtn{flex:none;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:10px;cursor:pointer;padding:0}
 .ibtn.starred{color:#fde047;border-color:#a16207}
 #teamwrap{position:relative;max-width:980px;margin:0 auto;padding:12px calc(10px + env(safe-area-inset-right,0px)) 0 calc(10px + env(safe-area-inset-left,0px))}
