@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.34">
+<meta name="app-version" content="v0.99.35">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -204,6 +204,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .more{display:block;width:100%;border:1px dashed var(--line2);background:transparent;color:var(--link);font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:10px;cursor:pointer;margin:4px 0 8px}.root[hidden]{display:none}
+.lose,.lose.me-n,.lose.win{color:var(--mut);font-weight:500}.lo{color:var(--mut);font-weight:500}.arr{display:inline-block;font-size:.72em;color:var(--ink);padding:0 4px;vertical-align:1px}.parr{font-style:normal;font-size:.7em;margin-left:3px;vertical-align:2px}
 .sb{font-size:16px;margin:6px 0 2px}.sc{font-size:inherit;color:var(--ink)}.win{font-weight:800}.me-n{color:var(--ink);font-weight:700}
 .rt .sc{font-weight:800}
 .ar{display:inline-block;transition:transform .15s}
@@ -982,9 +983,9 @@ async function showNote(gids, view, item) {
   if (!n) return TEAM_READY.then(() => focusGames(gids, view));
   if (n.id) markRead(n.id);
   const lines = (n.x && n.x.length ? n.x : String(n.b || "").split("\n"));
-  const row = l => { const m = l.match(SCORE_LINE); return m ? `<div class="nrow"><span class="nl">${esc(m[1])}</span><b>${m[2]}–${m[3]}</b><span class="nr">${esc(m[4])}</span></div>${m[5] ? `<div class="nnote">${esc(m[5].trim())}</div>` : ""}` : l ? `<div class="nnote${/^Big moment/.test(l) ? " big" : /^Also in /.test(l) ? " sub" : ""}">${esc(l)}</div>` : "<div class='nsp'></div>"; };
+  const row = l => { const m = l.match(SCORE_LINE); return m ? `<div class="nrow"><span class="nl${+m[2] < +m[3] ? " lose" : +m[2] > +m[3] ? " win" : ""}">${esc(m[1])}</span><b>${scoreMid(+m[2], +m[3])}</b><span class="nr${+m[3] < +m[2] ? " lose" : +m[3] > +m[2] ? " win" : ""}">${esc(m[4])}</span></div>${m[5] ? `<div class="nnote">${esc(m[5].trim())}</div>` : ""}` : l ? `<div class="nnote${/^Big moment/.test(l) ? " big" : /^Also in /.test(l) ? " sub" : ""}">${esc(l)}</div>` : "<div class='nsp'></div>"; };
   const t = n.t.match(SCORE_LINE);
-  $("#nsheetbody").innerHTML = (t ? `<div class="nhero"><span>${esc(t[1])}</span><b>${t[2]}–${t[3]}</b><span>${esc(t[4])}</span></div>` : `<div class="ntitle">${esc(n.t)}</div>`)
+  $("#nsheetbody").innerHTML = (t ? `<div class="nhero"><span class="${+t[2] < +t[3] ? "lose" : ""}">${esc(t[1])}</span><b>${scoreMid(+t[2], +t[3])}</b><span class="${+t[3] < +t[2] ? "lose" : ""}">${esc(t[4])}</span></div>` : `<div class="ntitle">${esc(n.t)}</div>`)
     + `<div class="nlines">${lines.map(row).join("")}</div>`
     + `<button class="btn-main" id="ngo">${gids.length ? (gids.length > 1 ? "Show these games" : "Show this game") : "Open"}</button>`;
   $("#nsheet").hidden = false;
@@ -1135,7 +1136,7 @@ function fixtureCard(D, M, g, o = {}) {
   if (g.hs != null && g.as != null) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
     return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${fmtDate(g.date)} · Final</span></div>
-      <div class="teams"><div>${nm(LN, us, ls > rs)}</div><div class="score res">${ls} – ${rs}</div><div class="a">${nm(RN, false, rs > ls)}</div></div></div>`;
+      <div class="teams"><div>${nm(LN, us, ls > rs, ls < rs)}</div><div class="score res">${scoreMid(ls, rs)}</div><div class="a">${nm(RN, false, rs > ls, rs < ls)}</div></div></div>`;
   }
   const P = M.probs(g.home_id, g.away_id, o.neutral);
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
@@ -1154,7 +1155,9 @@ const venueLink = v => `<a class="vlink" href="https://www.google.com/maps/searc
 // "Likely 2–1 for XF 1" / "Likely 1–1 draw" (scores in the same left-right order as the teams).
 const likelyLine = (LN, RN, sL) => `Likely ${sL[0]}–${sL[1]} ${sL[0] > sL[1] ? `for ${esc(LN)}` : sL[0] < sL[1] ? `for ${esc(RN)}` : "draw"}`;
 const CHEV = '<svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
-const nm = (n, me, win) => `<span class="${me ? "me-n" : ""}${win ? " win" : ""}">${esc(n)}</span>`;
+const nm = (n, me, win, lose) => `<span class="${me ? "me-n" : ""}${win ? " win" : ""}${lose ? " lose" : ""}">${esc(n)}</span>`;
+// Final score with the winner marked: the losing side is grey and a small arrow points at the winning score.
+const scoreMid = (ls, rs) => `<span class="${ls < rs ? "lo" : ""}">${ls}</span><span class="arr">${ls > rs ? "◂" : ls < rs ? "▸" : "–"}</span><span class="${rs < ls ? "lo" : ""}">${rs}</span>`;
 const shortTime = t => (!t || t === "00:00") ? "TBD" : fmtTime(t).replace(":00 ", " ").replace(" AM", "a").replace(" PM", "p");
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
@@ -1168,7 +1171,7 @@ function gameRow(D, M, g, o = {}) {
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
-    mid = `${ls} – ${rs}`; mcls = "res"; ln = nm(LN, us, ls > rs); rn = nm(RN, false, rs > ls);
+    mid = scoreMid(ls, rs); mcls = "res"; ln = nm(LN, us, ls > rs, ls < rs); rn = nm(RN, false, rs > ls, rs < ls);
     // (no W / D / L badge: the bold winner and the score say it)
   } else if (o.wait) {
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
@@ -1210,8 +1213,9 @@ function resultRow(D, g, f, showDate = true) {
 }
 // Scoreboard style: "XF 4 @ 0 Eastside FC", winner in bold.
 function scoreLine(LN, ls, sep, rs, RN, us) {
-  const nm = (n, win) => `<span class="${win ? "win" : ""}${us && n === LN ? " me-n" : ""}">${esc(n)}</span>`;
-  return `${nm(LN, ls > rs)} <b class="sc">${ls}</b> <span class="mut">${sep}</span> <b class="sc">${rs}</b> ${nm(RN, rs > ls)}`;
+  const nm = (n, win, lose) => `<span class="${win ? "win" : ""}${lose ? " lose" : ""}${us && n === LN ? " me-n" : ""}">${esc(n)}</span>`;
+  const arr = ls > rs ? "◂" : ls < rs ? "▸" : sep;
+  return `${nm(LN, ls > rs, ls < rs)} <b class="sc${ls < rs ? " lo" : ""}">${ls}</b> <span class="arr">${arr}</span> <b class="sc${rs < ls ? " lo" : ""}">${rs}</b> ${nm(RN, rs > ls, rs < ls)}`;
 }
 const seg = (cls, p) => `<div class="${cls}" style="width:${p * 100}%">${p >= 0.09 ? pct(p) : ""}</div>`;
 // Short, unique team codes per conference (sports-ticker style): XF, WPR, SEA / SNO, 3RSC.
@@ -1532,11 +1536,11 @@ function pkGameRow(D, g, tz, mine, seen, locked) {
   const dr = PK.draft[g.id] || (mine ? [mine[0], mine[1]] : null);
   const done = g.hs != null && g.as != null, pts = dr && done ? pkPts(dr, g) : null;
   const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}`;
-  const step = side => locked ? `<span class="pkfinal">${done ? (side ? g.as : g.hs) : ""}</span>` : `<span class="pkstep" data-side="${side}"><button data-d="-1">−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1">+</button></span>`;
+  const step = side => locked ? `<span class="pkfinal${done && (side ? g.as < g.hs : g.hs < g.as) ? " lo" : ""}">${done ? (side ? g.as : g.hs) : ""}${done && (side ? g.as > g.hs : g.hs > g.as) ? '<i class="parr">◂</i>' : ""}</span>` : `<span class="pkstep" data-side="${side}"><button data-d="-1">−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1">+</button></span>`;
   const others = (seen || []).filter(x => !x.me);
   return `<div class="pkg${ours ? " ours" : ""}" data-g="${g.id}">
     <div class="pkhead"><span class="gt">${when}</span>${locked ? `<span class="keytag">${done ? "FINAL" : "LOCKED"}</span>` : ""}</div>
-    <div class="pkrow"><span class="pkt">${hn}</span>${step(0)}</div><div class="pkrow"><span class="pkt">${an}</span>${step(1)}</div>
+    <div class="pkrow"><span class="pkt${done && g.hs < g.as ? " lose" : ""}">${hn}</span>${step(0)}</div><div class="pkrow"><span class="pkt${done && g.as < g.hs ? " lose" : ""}">${an}</span>${step(1)}</div>
     <div class="pkfoot">${locked ? (dr ? `Your pick ${dr[0]}–${dr[1]}${done ? ` · <span class="pkpts p${pts}">${pts === 3 ? "+3 exact" : pts === 1 ? "+1 right result" : "0 pts"}</span>` : ""}` : "No pick") + (done ? "" : " · waiting for the score") : `Our model: ${sc[0]}–${sc[1]}`}<span class="pksave"></span></div>
     ${locked && others.length ? `<details class="inner"><summary>Everyone's picks (${others.length + (dr ? 1 : 0)})</summary>${(seen || []).map(x => `<div class="pkwho${x.me ? " me" : ""}"><span>${esc(x.me ? "You" : x.name)}</span><span>${x.p[0]}–${x.p[1]}${done ? ` <span class="pkpts p${pkPts(x.p, g)}">${pkPts(x.p, g)}</span>` : ""}</span></div>`).join("")}</details>` : ""}
   </div>`;
