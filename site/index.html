@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.10">
+<meta name="app-version" content="v0.99.11">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -828,11 +828,11 @@ async function drawAlertsPage(b) {
     return;
   }
   const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
-  const sum = tc => [tc.our && "Our results", tc.lg === "all" ? "League results" : tc.lg === "near" && "Nearby league results", tc.mo && "Big moments", tc.rem === "2h" ? "2-hour reminder" : tc.rem === "am" && "Morning reminder", tc.wr && "Wrap-up"].filter(Boolean).join(" · ") || "No alerts";
+  const sum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.mo && "Big moments", tc.rem === "2h" ? "2-hour reminder" : tc.rem === "am" && "Morning reminder", tc.wr && "Wrap-up"].filter(Boolean).join(" · ") || "No alerts";
   b.innerHTML = `<div class="pgin"><div class="seth">Teams</div><div class="glist">`
     + list.map(t => { const tc = tcfg(c, t.k); return `<details class="arow" data-team="${t.k}" ${AOPEN.has(t.k) ? "open" : ""}><summary><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${sum(tc)}</span></span>${icon("chev")}</summary>
       <div class="aopts"><div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
-      <div class="opt"><span>Other games in ${esc(t.c)}<span class="ddsub">Near us = a team within 2 places of us</span></span>${aseg("lg", [["all", "All"], ["near", "Near us"], ["off", "Off"]], tc.lg)}</div>
+      <div class="opt"><span>Other games in ${esc(t.c)}</span>${aseg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
       <div class="opt"><span>Big moments<span class="ddsub">Into 1st, playoff line, clinched</span></span>${aseg("mo", [["1", "On"], ["0", "Off"]], tc.mo ? "1" : "0")}</div>
       <div class="opt"><span>Game-day reminder</span>${aseg("rem", [["am", "Morning"], ["2h", "2 hrs"], ["off", "Off"]], tc.rem)}</div>
       <div class="opt"><span>Sunday wrap-up<span class="ddsub">7 PM, if you haven&#39;t seen the results</span></span>${aseg("wr", [["1", "On"], ["0", "Off"]], tc.wr ? "1" : "0")}</div></div></details>`; }).join("")
