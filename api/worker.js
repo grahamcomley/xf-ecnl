@@ -7,7 +7,8 @@
 // Sign-in is Clerk (clerk.sidelinestandings.com). Session tokens are checked here without a network
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
-import {route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner} from "./alerts.js";
+import {makeLog} from "./log.js";
+import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
 const OWNERS = ["grahamcomley@gmail.com"];
@@ -75,9 +76,31 @@ async function put(env, id, rec) {
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url), p = url.pathname;
     if (!p.startsWith("/api/")) return env.ASSETS.fetch(req);
+    // Every API call is logged: method, path, status, who, how long (+ kept events, see api/log.js).
+    const L = makeLog(env, ctx), t0 = Date.now(), who0 = {uid: null};
+    pushSetLog(L);
+    let res;
+    try { res = await handle(req, env, url, p, L, who0); }
+    catch (e) { L.error("api.error", {m: req.method, p, uid: who0.uid, msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}); res = json({error: "server error"}, 500); }
+    L.info("api", {m: req.method, p, s: res.status, uid: who0.uid, ms: Date.now() - t0, ua: (req.headers.get("user-agent") || "").slice(0, 120)});
+    L.flush();
+    return res;
+  },
+  // Every 5 minutes: send alerts for scores that changed in the latest data update.
+  async scheduled(evt, env, ctx) {
+    if (!env.USERS) return;
+    const L = makeLog(env, ctx); pushSetLog(L);
+    ctx.waitUntil(pushCheck(env).then(r => { const busy = r && (r.sent || r.gone || r.init || r.remErr || r.wrapErr); (busy ? L.keep : L.info).call(L, "check", r); })
+      .catch(e => L.error("check.error", {msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}))
+      .then(() => L.flush()));
+  }
+};
+
+async function handle(req, env, url, p, L, who0) {
+  {
     OWNER_IDS = (env.OWNER_IDS || "").split(",").map(s => s.trim()).filter(Boolean);
     if (!env.USERS) return json({error: "storage not set up"}, 503);
 
@@ -89,20 +112,23 @@ export default {
     if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
+    who0.uid = c.sub;
     const key = "u:" + c.sub, now = Date.now();
     let rec = await env.USERS.get(key, "json");
 
     // GET /api/me: the account's saved teams. Also notes "last seen".
     if (p === "/api/me" && req.method === "GET") {
-      if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); }
+      if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); L.keep("account.active", {uid: c.sub, email: rec.email || c.email || "", teams: rec.favs.length}); }
       return json({signedIn: true, exists: !!rec, favs: rec ? rec.favs : [], picks: rec && rec.picks || {}, admin: isOwner(c)});
     }
     // PUT /api/me: save teams (and the email shown in the admin list).
     if (p === "/api/me" && req.method === "PUT") {
       let body = {}; try { body = await req.json(); } catch (e) {}
+      const isNew = !rec;
       rec = Object.assign({created: now}, rec || {}, {favs: cleanFavs(body.favs), seen: now});
       const em = cleanEmail(c.email) || cleanEmail(body.email); if (em) rec.email = em;
       await put(env, c.sub, rec);
+      (isNew ? L.keep : L.info).call(L, isNew ? "account.created" : "account.favs", {uid: c.sub, email: rec.email || "", favs: rec.favs.join(" ")});
       return json({ok: true, favs: rec.favs});
     }
     // PUT /api/picks: the person's saved Predict picks (private), {conf file: {game id: {p, o, t}}}.
@@ -111,6 +137,7 @@ export default {
       if (!rec) rec = {created: now, favs: [], seen: now};
       rec.picks = cleanPicks(body.picks);
       await put(env, c.sub, rec);
+      L.info("picks.saved", {uid: c.sub, n: Object.values(rec.picks).reduce((a, g) => a + Object.keys(g).length, 0)});
       return json({ok: true});
     }
     // Alerts (push notifications) for this device: settings, test, turn off.
@@ -119,6 +146,7 @@ export default {
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key);
       await pushDeleteUser(env, c.sub);
+      L.keep("account.deleted", {uid: c.sub, email: rec && rec.email || ""});
       return json({ok: true});
     }
     // GET /api/admin: owner only. Everyone who has signed in, and the most-followed teams.
@@ -148,7 +176,15 @@ export default {
       if (!isOwner(c)) return json({error: "not allowed"}, 403);
       let body = {}; try { body = await req.json(); } catch (e) {}
       await env.USERS.put("cfg:gate", body.gate ? "on" : "off");
+      L.keep("admin.gate", {uid: c.sub, gate: !!body.gate});
       return json({ok: true, gate: !!body.gate});
+    }
+    // POST /api/admin/replay: owner gets last weekend's real results as alerts on their own devices.
+    if (p === "/api/admin/replay" && req.method === "POST") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      const r = await pushReplay(env, c.sub);
+      L.keep("admin.replay", Object.assign({uid: c.sub}, r));
+      return json(Object.assign({ok: true}, r));
     }
     // POST /api/admin/pushtest: owner sends a test alert to every device they turned alerts on.
     if (p === "/api/admin/pushtest" && req.method === "POST") {
@@ -156,10 +192,6 @@ export default {
       return json({ok: true, sent: await pushTestOwner(env, c.sub)});
     }
     return json({error: "not found"}, 404);
-  },
-  // Every 5 minutes: send alerts for scores that changed in the latest data update.
-  async scheduled(evt, env, ctx) {
-    if (!env.USERS) return;
-    ctx.waitUntil(pushCheck(env).then(r => console.log("alerts", JSON.stringify(r))).catch(e => console.error("alerts failed", e && e.stack || e)));
   }
-};
+}
+

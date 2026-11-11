@@ -7,6 +7,10 @@ workers_dev        = true
 # The API (/api/*: optional accounts, saved teams). Everything else is the static site.
 main               = "../api/worker.js"
 
+# Logs: every API call and alerts check (Workers Logs, 7 days; important events also kept in KV, see api/log.js).
+[observability]
+enabled = true
+
 # Alerts: check for new scores every 5 minutes and send notifications.
 [triggers]
 crons = ["*/5 * * * *"]

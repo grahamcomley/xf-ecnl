@@ -12,7 +12,17 @@
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
 //      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
-import {send, vapid} from "./push.js";
+import {send as sendRaw, vapid} from "./push.js";
+
+// Every notification sent is logged (kind, who, what, push service status).
+let LOG = null;
+export const setLog = l => { LOG = l; };
+async function send(env, sub, msg, kind = "alert", d = null) {
+  let s;
+  try { s = await sendRaw(env, sub, msg); } catch (e) { s = 0; LOG && LOG.error("push.error", {kind, uid: d && d.uid, title: msg.t, msg: String(e)}); }
+  LOG && LOG.keep("push", {kind, uid: d && d.uid, title: msg.t, body: String(msg.b || "").slice(0, 240), status: s});
+  return s;
+}
 
 const HOUR = 3600e3;
 const DEF_Q = {on: true, s: "22:00", e: "07:00"};
@@ -55,6 +65,7 @@ export async function route(p, req, env, c, json) {
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
+    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: new URL(rec.sub.endpoint).host});
     return json({ok: true});
   }
   // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
@@ -62,12 +73,12 @@ export async function route(p, req, env, c, json) {
   if (p === "/api/push/seen" && req.method === "POST") {
     const d = await env.USERS.get(key, "json");
     if (!d || d.uid !== c.sub) return json({ok: false});
-    if (Date.now() - (d.seen || 0) > HOUR) { d.seen = Date.now(); await putDev(env, key, d); }
+    if (Date.now() - (d.seen || 0) > HOUR) { d.seen = Date.now(); await putDev(env, key, d); LOG && LOG.info("alerts.seen", {uid: c.sub, dev: id}); }
     return json({ok: true});
   }
   if (p === "/api/push" && req.method === "DELETE") {
     const d = await env.USERS.get(key, "json");
-    if (d && d.uid === c.sub) await env.USERS.delete(key);
+    if (d && d.uid === c.sub) { await env.USERS.delete(key); LOG && LOG.keep("alerts.off", {uid: c.sub, dev: id}); }
     return json({ok: true});
   }
   if (p === "/api/push/test" && req.method === "POST") {
@@ -75,7 +86,7 @@ export async function route(p, req, env, c, json) {
     if (!d || d.uid !== c.sub) return json({error: "alerts not on for this device"}, 404);
     const t = d.teams[0];
     const st = await send(env, d.sub, {t: "Test alert", b: t ? `Alerts are on. You'll hear about ${t.n || "your team"} here.` : "Alerts are on.",
-      u: "/" + (t ? "#t=" + t.k : ""), tag: "test", badge: d.badge});
+      u: "/" + (t ? "#t=" + t.k : ""), tag: "test", badge: d.badge}, "test", d);
     if (st === 404 || st === 410) { await env.USERS.delete(key); return json({error: "gone"}, 410); }
     return json({ok: st >= 200 && st < 300, status: st});
   }
@@ -126,10 +137,29 @@ export async function testOwner(env, uid) {
   let n = 0;
   for (const k of await devices(env, uid)) {
     const d = await env.USERS.get(k, "json"); if (!d) continue;
-    const s = await send(env, d.sub, {t: "Admin test", b: "Test alert to every device you've turned alerts on.", u: "/", tag: "test", badge: d.badge});
+    const s = await send(env, d.sub, {t: "Admin test", b: "Test alert to every device you've turned alerts on.", u: "/", tag: "test", badge: d.badge}, "admin-test", d);
     if (s === 404 || s === 410) await env.USERS.delete(k); else if (s < 300) n++;
   }
   return n;
+}
+
+// Owner test: last weekend's real results, sent to the owner's own devices exactly as alerts would
+// compose them (per team, combined, with "Replay:" in front). Ignores quiet hours and hourly limits.
+export async function replayOwner(env, uid) {
+  const r = await env.ASSETS.fetch(new Request("https://assets.local/data/replay.json"));
+  if (!r.ok) return {sent: 0, note: "no replay file yet"};
+  const rp = await r.json();
+  let sent = 0, notes = 0;
+  for (const k of await devices(env, uid)) {
+    const d = await env.USERS.get(k, "json"); if (!d) continue;
+    const out = compose(d, match(d, rp.c || [])).slice(0, 8);
+    notes += out.length;
+    for (const n of out) {
+      const s = await send(env, d.sub, Object.assign(n, {t: "Replay: " + n.t, tag: "replay-" + n.tag, badge: d.badge}), "replay", d);
+      if (s < 300) sent++;
+    }
+  }
+  return {sent, notes, from: rp.from, to: rp.to, games: (rp.c || []).length};
 }
 
 // ---------- the check (every 5 minutes) ----------
@@ -249,6 +279,7 @@ export async function check(env, now = Date.now()) {
   if (fresh.length || due.length) Object.assign(out, await scores(env, st, fresh, due, now, n => sent += n, () => gone++));
   try { out.reminders = await reminders(env, st, data.up || [], now); sent += out.reminders; } catch (e) { out.remErr = String(e); }
   try { out.wrapups = await wrapups(env, st, data.wk || {}, now); sent += out.wrapups; } catch (e) { out.wrapErr = String(e); }
+  try { out.drift = await driftAlert(env, st, now); sent += out.drift; } catch (e) { out.driftErr = String(e); }
   // tidy: forget hourly timers older than a day, reminders older than 2 days, wrap-ups older than 3 weeks; keep 8 weeks of counts
   for (const k of Object.keys(st.ll)) if (now - st.ll[k] > 24 * HOUR) delete st.ll[k];
   for (const k of Object.keys(st.rem)) if (now - st.rem[k] > 48 * HOUR) delete st.rem[k];
@@ -299,7 +330,7 @@ async function scores(env, st, fresh, due, now, addSent, addGone) {
     if (keep.length) st.held[id] = keep.slice(-200); else delete st.held[id];
     if (!out.length) continue;
     for (const n of compose(d, out, overnight)) {
-      const s = await send(env, d.sub, Object.assign(n, {badge: d.badge}));
+      const s = await send(env, d.sub, Object.assign(n, {badge: d.badge}), overnight ? "overnight" : "score", d);
       if (s === 404 || s === 410) { await env.USERS.delete(key); delete st.held[id]; gone++; break; }
       if (s < 300) sent++;
     }
@@ -307,6 +338,31 @@ async function scores(env, st, fresh, due, now, addSent, addGone) {
   }
   addSent(sent); for (let i = 0; i < gone; i++) addGone();
   return {changes: changes.length};
+}
+
+// Daily drift check: when our table's games played / points don't match ECNL's for a conference,
+// tell the owner (only when the list of problems changes, at most once every 20 hours).
+const OWNER_EMAILS = ["grahamcomley@gmail.com"];
+async function driftAlert(env, st, now) {
+  const r = await env.ASSETS.fetch(new Request("https://assets.local/data/drift.json"));
+  if (!r.ok) return 0;
+  const dr = await r.json(), probs = dr.points || [];
+  const sig = probs.map(p => p.conf + ":" + p.teams.map(t => t.id + "=" + t.ours.join("/") + "~" + t.ecnl.join("/")).join(",")).sort().join("|");
+  const prev = st.drift || {};
+  if (sig === (prev.sig || "") || (prev.at && now - prev.at < 20 * HOUR && prev.sig)) { if (!sig) st.drift = {sig: "", at: prev.at || 0}; return 0; }
+  st.drift = {sig, at: now};
+  if (!probs.length) return 0;   // fixed: no alert for "all clear"
+  let n = 0;
+  for (const m of await deviceMeta(env)) {
+    const d = await env.USERS.get(m.name, "json");
+    if (!d || !OWNER_EMAILS.includes((d.email || "").toLowerCase())) continue;
+    const first = probs[0], t = first.teams[0];
+    const s = await send(env, d.sub, {t: `Data check: ${probs.length} conference${probs.length === 1 ? "" : "s"} differ from ECNL`,
+      b: `${first.name}: ${t.team} ours ${t.ours[0]} GP / ${t.ours[1]} pts, ECNL ${t.ecnl[0]} / ${t.ecnl[1]}` + (probs.length > 1 || first.teams.length > 1 ? " · more in Admin" : ""),
+      u: "/", tag: "drift", badge: false}, "drift", d);
+    if (s < 300) n++;
+  }
+  return n;
 }
 
 // Game-day reminders: "morning of" (8 AM, or when quiet hours end) or 2 hours before kickoff.
@@ -335,7 +391,7 @@ async function reminders(env, st, up, now) {
         if (now < target || now >= kick || quiet(d, now)) continue;
         const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
         const title = (t.rem === "2h" && timed ? "In 2 hours: " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
-        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}`, tag: "r" + g[0], badge: d.badge});
+        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
         st.rem[key] = now;
         if (s === 404 || s === 410) { await env.USERS.delete(m.name); break; }
         if (s < 300) n++;
@@ -369,7 +425,7 @@ async function wrapups(env, st, wk, now) {
       const r = res.map(([opp, a, b]) => `${a > b ? "W" : a < b ? "L" : "D"} ${a}${dash}${b} ${opp}`).join(", ");
       return `${t.a ? t.a + " " : ""}${t.n}: ${r}${place ? ` · ${ordn(place)} of ${of}` : ""}`;
     });
-    const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge});
+    const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge}, "wrapup", d);
     st.wrap[id] = L.date;
     if (s === 404 || s === 410) { await env.USERS.delete(m.name); continue; }
     if (s < 300) n++;

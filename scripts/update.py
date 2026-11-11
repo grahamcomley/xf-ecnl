@@ -707,10 +707,12 @@ def main():
             comp = featured.get((eid, fid), {})
             cname = short_conf(gs[0].get("event_name"))
             official = []
-            # ECNL's own table (with its tiebreak order) for featured and all Northwest conferences
-            if comp or "Northwest" in cname:
-                div_id = comp.get("division_id") or gs[0].get("division_id")
-                st = api.get(f"Event/get-standings-by-div-and-flight/{div_id}/{fid}/{eid}", max_age_hours=0 if comp else 1)
+            # ECNL's own table (with its tiebreak order): featured and Northwest conferences fresh every run,
+            # every other conference about once a day (for the daily drift check against our table).
+            div_id = comp.get("division_id") or gs[0].get("division_id")
+            if div_id:
+                st = api.get(f"Event/get-standings-by-div-and-flight/{div_id}/{fid}/{eid}",
+                             max_age_hours=0 if comp else 1 if "Northwest" in cname else 20)
                 rows = [r for b in (st or []) if isinstance(b, dict) for r in (b.get("teamStandings") or [])]
                 for r in rows:
                     official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
@@ -720,6 +722,13 @@ def main():
                 off_order = [o["id"] for o in sorted(official, key=lambda o: o["rank"] or 99)]
                 if official and ours_order != off_order:
                     order_diffs.append({"conf": fkey, "name": cname, "ours": ours_order, "ecnl": off_order})
+                # games played / points that don't match ECNL's table = a missing or different score
+                mine = {t["id"]: t for t in ours}
+                bad = [{"id": o["id"], "team": short_name(names.get(o["id"])), "ours": [mine[o["id"]]["gp"], mine[o["id"]]["pts"]],
+                        "ecnl": [o["gp"], o["pts"]]}
+                       for o in official if o["id"] in mine and (o["gp"], o["pts"]) != (mine[o["id"]]["gp"], mine[o["id"]]["pts"])]
+                if bad:
+                    order_diffs.append({"conf": fkey, "name": cname, "kind": "points", "teams": bad})
             # each event stored once; teams point to it by index
             ev_list, ev_index, evs = [], {}, {}
             for t in tids:
@@ -773,6 +782,12 @@ def main():
             os.remove(os.path.join(OUT, "conf", fn))
     with open(os.path.join(ROOT, "data", "order_check.json"), "w") as f:
         json.dump(order_diffs, f, indent=1)
+    # Daily drift check summary (Admin > Data check; the site's server alerts Graham when points differ).
+    pts_bad = [d for d in order_diffs if d.get("kind") == "points"]
+    with open(os.path.join(OUT, "drift.json"), "w") as f:
+        json.dump({"checked": now, "points": [{"conf": d["conf"], "name": d["name"], "teams": d["teams"]} for d in pts_bad],
+                   "order": [{"conf": d["conf"], "name": d["name"]} for d in order_diffs if d.get("kind") != "points"]},
+                  f, separators=(",", ":"))
     tot = api.stats["live"] + api.stats["failed"]
     if tot > 50 and api.stats["failed"] > 0.3 * tot:
         print(f"::error::Too many failed ECNL requests ({api.stats['failed']} of {tot}); not publishing this run")

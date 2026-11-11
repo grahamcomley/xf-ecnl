@@ -237,6 +237,13 @@ def main():
                 if k in wk and wk[k][1] == 0:
                     wk[k][0], wk[k][1], wk[k][2] = v["pos"], n, v["pts"]
 
+    # last full weekend's results, for the owner's "Replay last weekend" test button
+    last_sun = pt_today - timedelta(days=(pt_today.weekday() + 1) % 7 or 7) if pt_today.weekday() != 6 else pt_today - timedelta(days=7)
+    last_fri = last_sun - timedelta(days=2)
+    rep = [{k: v for k, v in g.items() if k != "ts"} for g in finals.values() if last_fri.isoformat() <= g["d"] <= last_sun.isoformat()]
+    with open(os.path.join(OUT, "replay.json"), "w") as f:
+        json.dump({"from": last_fri.isoformat(), "to": last_sun.isoformat(), "c": sorted(rep, key=lambda c: (c["d"], c["g"]))}, f, separators=(",", ":"))
+
     runs = []
     if os.path.exists(out_path):
         try:
