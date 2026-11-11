@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.13">
+<meta name="app-version" content="v0.99.20">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -106,6 +106,13 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tname{font-weight:700;font-size:14px;margin-top:4px}.tname .ddsub{display:block}
 .qt{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mut)}.qt input{background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font:inherit;font-size:13px;color-scheme:dark}
 .pchg{grid-column:1/-1;font-size:12px;color:#d4a72c;margin-top:4px}.pchg .reset{margin-left:4px}.yoursum{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:9px 12px;margin-bottom:10px}
+.pviews,.pkviews{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:0 0 10px}.pviews button,.pkviews button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer}.pviews button.on,.pkviews button.on{background:var(--red);color:#fff}.pkviews button{font-size:12px;padding:6px}
+.pkhero{padding:12px 14px}.pkh1{font-size:17px;font-weight:800;margin-bottom:4px}.pkname{font-size:13px;margin-top:10px;color:var(--mut)}.pkname b{color:var(--ink)}.pkname .reset{float:none}.pkname input{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:6px 8px;font:inherit;font-size:14px;width:60%}.pkerr{color:var(--dn);font-size:12px;margin-top:4px}
+.pkg{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--card);padding:8px 10px}.pkg.ours{border-color:#5b2330;background:var(--me)}.pkhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.pkrow{display:flex;align-items:center;gap:10px;padding:3px 0}.pkt{flex:1;min-width:0;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pkstep{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:var(--card2)}.pkstep button{background:none;border:0;color:var(--ink);font:inherit;font-size:18px;width:32px;height:34px;cursor:pointer}.pkstep button:disabled{color:var(--line2);cursor:default}.pkstep b{min-width:20px;text-align:center;font-size:17px}
+.pkfoot{font-size:12px;color:var(--mut);margin-top:4px}.pksave.ok{color:var(--up)}.pkpts{font-weight:800}.pkpts.p3{color:var(--up)}.pkpts.p1{color:#86c99a}.pkpts.p0{color:var(--mut)}
+.pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -729,7 +736,7 @@ async function drawAdmin(b) {
   if (!(ME && ME.admin)) { b.innerHTML = "<div class='pgin'><p class='mut'>Not available.</p></div>"; return; }
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
-    const [d, dr] = await Promise.all([api("GET", "/api/admin"), fetch("data/drift.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).catch(() => null)]);
+    const [d, dr, pkp] = await Promise.all([api("GET", "/api/admin"), fetch("data/drift.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).catch(() => null), api("GET", "/api/admin/pickem").catch(() => ({players: []}))]);
     DRIFT = dr; const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
@@ -749,12 +756,18 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
       ${fold("drift", "Data check", DRIFT ? (DRIFT.points.length ? `${DRIFT.points.length} conference${DRIFT.points.length === 1 ? "" : "s"} differ from ECNL` : "All tables match ECNL") : "Not run yet", DRIFT ? (DRIFT.points.length ? DRIFT.points.map(x => `<div class="glk" style="margin-top:8px">${esc(x.name)}</div>${x.teams.map(t => `<div class="mut" style="font-size:12px">${esc(t.team)}: ours ${t.ours[0]} GP · ${t.ours[1]} pts, ECNL ${t.ecnl[0]} · ${t.ecnl[1]}</div>`).join("")}`).join("") : "<p class='mut'>Games played and points match ECNL's table in every conference.</p>") + `<p class="mut" style="font-size:12px;margin-top:8px">Checked ${esc(new Date(DRIFT.checked).toLocaleString())}. ${DRIFT.order.length} conference${DRIFT.order.length === 1 ? "" : "s"} list tied teams in a different order (tiebreakers).</p>` : "", DRIFT && DRIFT.points.length > 0)}
+      ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
       ${d.top.length ? fold("top", "Most followed", `${d.top.length} team${d.top.length === 1 ? "" : "s"}`, `<table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>`, false) : ""}
       </div>`;
     b.querySelectorAll("details.fold").forEach(dt => dt.addEventListener("toggle", () => { ADM_OPEN[dt.dataset.fold] = dt.open; }));
     const rp = $("#admreplay"); if (rp) rp.onclick = async () => { rp.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/replay"); rp.textContent = r.notes ? `Sent ${r.sent} alert${r.sent === 1 ? "" : "s"} (${r.games} games, ${fmtDate(r.from)}–${fmtDate(r.to)})` : "Nothing to replay for your teams"; } catch (x) { rp.textContent = "Couldn't send. Try again."; } };
+    b.querySelectorAll("[data-pact]").forEach(btn => btn.onclick = async () => {
+      const uid = btn.closest("tr").dataset.pu, act = btn.dataset.pact, body = {uid};
+      if (act === "rename") { const n = prompt("New Pick'em name"); if (!n) return; body.name = n; } else body.hidden = act === "hide";
+      try { await api("PUT", "/api/admin/pickem", body); toast("Saved"); refreshPage(); } catch (x) { toast("Couldn't save that name"); }
+    });
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
     $("#gatetoggle").onclick = async () => {
       try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); refreshPage(); }
@@ -1275,9 +1288,12 @@ function renderTeam(D, fid, key) {
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b")}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c")}
 </div><div class="pane" data-tab="predict">
+  <div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>
+  <div data-pv="season" class="pv">
   ${sec("div", "Predict", "Predicted final table", "", `<div class="picksbar" id="picksbar" hidden></div><div id="predtable"></div>`, "s5")}
   ${sec("div", "Predict", "Remaining games", "Gray = our pick. Tap a result to change it.", `<div id="predgames" class="pcards">${predHtml || "<div class='mut'>No games left.</div>"}</div>`, "s5b")}
   ${sec("div", "Predict", "How we did", "", howHtml, "s5c")}
+  </div><div data-pv="pickem" class="pv" hidden><div id="pickem"></div></div>
 </div>
 `;
 
@@ -1298,6 +1314,10 @@ function renderTeam(D, fid, key) {
   CTX = {D, M, played, remaining, base, fid, spots, N, ids};
   drawPredictor();
   $("#predgames").addEventListener("click", onPick);
+  // Predict: Season | Pick'em
+  const setPv = v => { store.set("predView", v); document.querySelectorAll("#pviews button").forEach(b => b.classList.toggle("on", b.dataset.pv === v)); document.querySelectorAll(".pv").forEach(x => x.hidden = x.dataset.pv !== v); if (v === "pickem") loadPickem(); };
+  $("#pviews").onclick = e => { const b = e.target.closest("button"); if (b) setPv(b.dataset.pv); };
+  setPv(store.get("predView") === "pickem" ? "pickem" : "season");
 
   // Impact lines: worked out for the visible cards in the background (so "Matters to us" can show),
   // and for any other card when its Impact link is tapped.
@@ -1374,6 +1394,112 @@ function drawPredictor() {
     const S = SAVED[D.__fk] || {}; for (const id of Object.keys(PICKS[D.__fk])) delete S[id];   // games already played keep their pick (for grading)
     PICKS[D.__fk] = {}; savePicks();
     document.querySelectorAll("#predgames .toggles button.on").forEach(b => b.classList.remove("on")); document.querySelectorAll("#predgames .pchg").forEach(x => x.remove()); drawPredictor(); };
+}
+// ---------- Pick'em (Predict › Pick'em) ----------
+// Each weekend (Fri–Sun): pick the score of every league game in this conference. 3 pts exact score,
+// 1 pt right result. Each game locks at kickoff; then everyone's picks for it can be seen.
+const PK_TZ = [[/Northwest|NorCal|Northern Cal|Southern Cal|SoCal|Far West|Golden State|Nevada|Pacific/i, "America/Los_Angeles"],
+  [/Southwest|Arizona/i, "America/Phoenix"], [/Mountain|Rocky|Utah|Colorado/i, "America/Denver"],
+  [/Texas|STXCL|Frontier|Gulf Coast|Heartland|Midwest|Chicago|Lake Michigan|Mid-America|Twin Cities|Minnesota|Iowa|Missouri|Oklahoma/i, "America/Chicago"]];
+const pkTz = name => (PK_TZ.find(([re]) => re.test(name || "")) || [0, "America/New_York"])[1];
+function pkKick(g, tz) {   // same as the server: the field's local time, in the conference's time zone
+  const [y, m, d] = g.date.split("-").map(Number), [hh, mm] = g.time && g.time !== "00:00" ? g.time.split(":").map(Number) : [8, 0];
+  const off = ms => { const p = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"}).formatToParts(new Date(ms)); const q = t => +p.find(x => x.type === t).value; return Date.UTC(q("year"), q("month") - 1, q("day"), q("hour") % 24, q("minute"), q("second")) - Math.floor(ms / 1000) * 1000; };
+  const guess = Date.UTC(y, m - 1, d, hh, mm), o = off(guess); let t = guess - o; const o2 = off(t); if (o2 !== o) t = guess - o2; return t;
+}
+// The weekend in play: Friday–Sunday this week (Mon–Thu: the coming one).
+function pkWeekend(shift = 0) {
+  const t = todayISO(), dow = new Date(t + "T12:00:00").getDay();
+  const fri = addDays(t, dow === 0 ? -2 : dow === 6 ? -1 : 5 - dow);
+  const f = addDays(fri, 7 * shift); return [f, addDays(f, 2)];
+}
+const pkPts = (p, g) => g.hs == null || g.as == null ? null : (p[0] === g.hs && p[1] === g.as ? 3 : Math.sign(p[0] - p[1]) === Math.sign(g.hs - g.as) ? 1 : 0);
+let PK = null;   // {fk, data, last, view, draft: {gid: [h, a]}}
+function pkDefaultName() {
+  const u = window.Clerk && window.Clerk.user;
+  const f = (u && u.firstName) || (ME && ME.email ? ME.email.split("@")[0].replace(/[^A-Za-z]/g, " ").trim().split(" ")[0] : "");
+  const l = u && u.lastName ? " " + u.lastName[0].toUpperCase() + "." : "";
+  return ((f ? f[0].toUpperCase() + f.slice(1) : "Player") + l).slice(0, 20);
+}
+async function loadPickem(force) {
+  const box = $("#pickem"); if (!box || !CTX) return;
+  const {D} = CTX, fk = D.__fk;
+  if (!ME) { box.innerHTML = `<div class="card ctx"><b>Pick'em</b><p class="mut">Pick the score of every league game each weekend and see how you stack up against other families. Sign in to play.</p><button class="btn-main" id="pksign">Sign in</button></div>`; $("#pksign").onclick = signIn; return; }
+  const [from, to] = pkWeekend(0), [lf, lt] = pkWeekend(-1);
+  if (!PK || PK.fk !== fk || force) PK = {fk, view: (PK && PK.view) || "week", draft: {}};
+  if (!PK.data || force) box.innerHTML = "<div class='card ctx mut'>Loading Pick'em…</div>";
+  try {
+    const q = (a, b) => api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${a}&to=${b}`);
+    [PK.data, PK.last] = await Promise.all([q(from, to), q(lf, lt)]);
+  } catch (e) { box.innerHTML = "<div class='card ctx mut'>Couldn't load Pick'em. Try again in a moment.</div>"; return; }
+  drawPickem();
+}
+function pkGameRow(D, g, tz, mine, seen, locked) {
+  const hn = esc(teamName(D, g.home_id, g.home)), an = esc(teamName(D, g.away_id, g.away));
+  const ours = g.home_id === CTX.fid || g.away_id === CTX.fid;
+  const P = CTX.M.probs(g.home_id, g.away_id), sc = P.scores[P.pick];
+  const dr = PK.draft[g.id] || (mine ? [mine[0], mine[1]] : null);
+  const done = g.hs != null && g.as != null, pts = dr && done ? pkPts(dr, g) : null;
+  const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}`;
+  const step = side => `<span class="pkstep" data-side="${side}"><button data-d="-1" ${locked ? "disabled" : ""}>−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1" ${locked ? "disabled" : ""}>+</button></span>`;
+  const others = (seen || []).filter(x => !x.me);
+  return `<div class="pkg${ours ? " ours" : ""}" data-g="${g.id}">
+    <div class="pkhead"><span class="gt">${when}</span>${locked ? `<span class="keytag">${done ? "FINAL" : "LOCKED"}</span>` : ""}</div>
+    <div class="pkrow"><span class="pkt">${hn}</span>${step(0)}</div><div class="pkrow"><span class="pkt">${an}</span>${step(1)}</div>
+    <div class="pkfoot">${done ? `Final ${g.hs}–${g.as}${dr ? ` · <span class="pkpts p${pts}">${pts === 3 ? "+3 exact" : pts === 1 ? "+1 right result" : "0"}</span>` : " · no pick"}` : locked ? (dr ? "Your pick is in" : "No pick") : `Our model: ${sc[0]}–${sc[1]}`}<span class="pksave"></span></div>
+    ${locked && others.length ? `<details class="inner"><summary>Everyone's picks (${others.length + (dr ? 1 : 0)})</summary>${(seen || []).map(x => `<div class="pkwho${x.me ? " me" : ""}"><span>${esc(x.me ? "You" : x.name)}</span><span>${x.p[0]}–${x.p[1]}${done ? ` <span class="pkpts p${pkPts(x.p, g)}">${pkPts(x.p, g)}</span>` : ""}</span></div>`).join("")}</details>` : ""}
+  </div>`;
+}
+function pkBoard(rows, f, x) {
+  if (!rows.length) return "<div class='mut'>No points yet. Scores count once games are final.</div>";
+  return `<table class="grid pkboard"><tr><th>#</th><th class="t">Name</th><th>Pts</th><th>Exact</th></tr>${rows.slice(0, 25).map(r => `<tr class="${r.me ? "me" : ""}"><td>${r.rank}</td><td class="t">${esc(r.me ? r.name + " (you)" : r.name)}</td><td><b>${r[f]}</b></td><td>${r[x]}</td></tr>`).join("")}${rows.length > 25 && !rows.slice(0, 25).some(r => r.me) && rows.some(r => r.me) ? (r => `<tr class="me"><td>${r.rank}</td><td class="t">${esc(r.name)} (you)</td><td><b>${r[f]}</b></td><td>${r[x]}</td></tr>`)(rows.find(r => r.me)) : ""}</table>`;
+}
+function drawPickem() {
+  const box = $("#pickem"); if (!box || !PK || !PK.data) return;
+  const {D} = CTX, d = PK.data, tz = d.tz || pkTz(D.conf_name), now = Date.now();
+  const [from, to] = pkWeekend(0), [lf, lt] = pkWeekend(-1);
+  const inWin = (g, a, b) => g.date >= a && g.date <= b && g.home_id && g.away_id && !g.bad;
+  const order = (a, b) => ((b.home_id === CTX.fid || b.away_id === CTX.fid) - (a.home_id === CTX.fid || a.away_id === CTX.fid)) || (a.date + a.time).localeCompare(b.date + b.time);
+  const games = D.games.filter(g => inWin(g, from, to)).sort(order), lastGames = D.games.filter(g => inWin(g, lf, lt)).sort(order);
+  const me = d.week.find(r => r.me), ms = d.season.find(r => r.me), picked = games.filter(g => d.picks[g.id]).length;
+  const open = games.filter(g => now < pkKick(g, tz)).length;
+  const name = d.name || pkDefaultName();
+  const boards = {week: [d.week, "wk", "wkx"], last: [(PK.last || {}).week || [], "wk", "wkx"], season: [d.season, "se", "sex"]};
+  const [rows, f, x] = boards[PK.view];
+  box.innerHTML = `
+  <div class="card pkhero"><div class="pkh1">Pick'em · ${fmtDate(from)} – ${fmtDate(to)}</div>
+    <div class="mut" style="font-size:13px">Pick the score of every league game in ${esc(D.conf_name)}. 3 pts exact score · 1 pt right result · each game locks at kickoff.</div>
+    <div class="admtiles"><div class="stat"><div class="v">${picked}/${games.length}</div><div class="k">Picked this weekend</div></div>
+      <div class="stat"><div class="v">${me ? me.wk : 0}</div><div class="k">Points this weekend${me ? ` · ${ord(me.rank)}` : ""}</div></div>
+      <div class="stat"><div class="v">${ms ? ms.se : 0}</div><div class="k">Season points${ms ? ` · ${ord(ms.rank)}` : ""}</div></div></div>
+    <div class="pkname" id="pkname">Playing as <b>${esc(name)}</b> · <button class="reset" id="pknamebtn">Change</button></div></div>
+  ${sec("div", "Pick'em", `This weekend's games`, games.length ? (open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
+  ${sec("div", "Pick'em", "Leaderboard", "", `<div class="pkviews">${[["week", "This weekend"], ["last", "Last weekend"], ["season", "Season"]].map(([k, l]) => `<button data-v="${k}" class="${PK.view === k ? "on" : ""}">${l}</button>`).join("")}</div>${pkBoard(rows, f, x)}`, "pk2")}
+  ${lastGames.length ? sec("div", "Pick'em", "Last weekend", `${fmtDate(lf)} – ${fmtDate(lt)}`, lastGames.map(g => pkGameRow(D, g, tz, (PK.last || {}).picks && PK.last.picks[g.id], (PK.last || {}).seen && PK.last.seen[g.id], true)).join(""), "pk3", false) : ""}`;
+  box.querySelectorAll("details.sec").forEach(dt => dt.addEventListener("toggle", () => store.set(dt.dataset.key, dt.open ? "1" : "0")));
+  $("#pknamebtn").onclick = () => {
+    $("#pkname").innerHTML = `<input id="pknamein" maxlength="20" value="${esc(name)}" autocomplete="off"> <button class="pillbtn" id="pknamesave">Save</button><div class="pkerr" id="pkerr"></div>`;
+    const inp = $("#pknamein"); inp.focus(); inp.select();
+    $("#pknamesave").onclick = async () => {
+      try { const r = await api("PUT", "/api/pickem/name", {name: inp.value}); d.name = r.name; toast("Name saved"); drawPickem(); }
+      catch (e) { $("#pkerr").textContent = "That name isn't allowed. Letters, numbers and spaces, 2–20 characters."; }
+    };
+  };
+  box.querySelectorAll(".pkviews button").forEach(b => b.onclick = () => { PK.view = b.dataset.v; drawPickem(); });
+  const pg = $("#pkgames"); if (pg) pg.onclick = e => {
+    const b = e.target.closest(".pkstep button"); if (!b || b.disabled) return;
+    const row = b.closest(".pkg"), id = row.dataset.g, side = +b.closest(".pkstep").dataset.side, g = D.games.find(x => String(x.id) === id);
+    if (Date.now() >= pkKick(g, tz)) { toast("That game has started: picks are locked"); return loadPickem(true); }
+    const cur = PK.draft[id] || (d.picks[id] ? [d.picks[id][0], d.picks[id][1]] : [0, 0]);
+    if (!PK.draft[id] && !d.picks[id] && +b.dataset.d < 0) cur[side] = 0; else cur[side] = Math.max(0, Math.min(20, cur[side] + +b.dataset.d));
+    PK.draft[id] = cur;
+    row.querySelectorAll(".pkstep b").forEach((el, i) => el.textContent = cur[i]);
+    const note = row.querySelector(".pksave"); note.textContent = " · saving…";
+    clearTimeout(row._t); row._t = setTimeout(async () => {
+      try { const r = await api("PUT", "/api/pickem", {fk: D.__fk, g: id, h: cur[0], a: cur[1], name: pkDefaultName()}); d.picks[id] = [cur[0], cur[1], Date.now()]; if (!d.name) d.name = r.name; note.textContent = " · Pick saved"; note.classList.add("ok"); }
+      catch (x) { note.textContent = String(x.message).includes("409") ? " · locked" : " · couldn't save, try again"; note.classList.remove("ok"); }
+    }, 700);
+  };
 }
 function onPick(e) {
   const fk = CTX.D.__fk, S = SAVED[fk] = SAVED[fk] || {};

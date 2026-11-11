@@ -8,6 +8,7 @@
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
 import {makeLog} from "./log.js";
+import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
@@ -140,6 +141,8 @@ async function handle(req, env, url, p, L, who0) {
       L.info("picks.saved", {uid: c.sub, n: Object.values(rec.picks).reduce((a, g) => a + Object.keys(g).length, 0)});
       return json({ok: true});
     }
+    // Pick'em: weekend score picks, names, leaderboard (api/pickem.js).
+    if (p === "/api/pickem" || p === "/api/pickem/name") return pickRoute(p, req, env, c, json, L);
     // Alerts (push notifications) for this device: settings, test, turn off.
     if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
@@ -178,6 +181,21 @@ async function handle(req, env, url, p, L, who0) {
       await env.USERS.put("cfg:gate", body.gate ? "on" : "off");
       L.keep("admin.gate", {uid: c.sub, gate: !!body.gate});
       return json({ok: true, gate: !!body.gate});
+    }
+    // Pick'em players: list, rename, hide (owner only).
+    if (p === "/api/admin/pickem" && req.method === "GET") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      const list = await pickList(env);
+      const emails = {};
+      await Promise.all(list.map(async x => { const u = await env.USERS.get("u:" + x.uid, "json"); emails[x.uid] = u && u.email || ""; }));
+      return json({players: list.map(x => Object.assign(x, {email: emails[x.uid]}))});
+    }
+    if (p === "/api/admin/pickem" && req.method === "PUT") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      let body = {}; try { body = await req.json(); } catch (e) {}
+      const r = await pickSet(env, String(body.uid || ""), body);
+      L.keep("admin.pickem", Object.assign({uid: c.sub, player: body.uid}, r));
+      return json(r, r.error ? 422 : 200);
     }
     // POST /api/admin/replay: owner gets last weekend's real results as alerts on their own devices.
     if (p === "/api/admin/replay" && req.method === "POST") {

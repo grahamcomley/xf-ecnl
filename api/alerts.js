@@ -13,6 +13,7 @@
 //      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
 import {send as sendRaw, vapid} from "./push.js";
+import {wrapLine} from "./pickem.js";
 
 // Every notification sent is logged (kind, who, what, push service status).
 let LOG = null;
@@ -425,6 +426,7 @@ async function wrapups(env, st, wk, now) {
       const r = res.map(([opp, a, b]) => `${a > b ? "W" : a < b ? "L" : "D"} ${a}${dash}${b} ${opp}`).join(", ");
       return `${t.a ? t.a + " " : ""}${t.n}: ${r}${place ? ` · ${ordn(place)} of ${of}` : ""}`;
     });
+    try { const fri = new Date(Date.parse(L.date + "T12:00:00Z") - 2 * 864e5).toISOString().slice(0, 10); const pl = await wrapLine(env, d.uid, fri, L.date); if (pl) lines.push(pl); } catch (e) {}
     const s = await send(env, d.sub, {t: "Weekend wrap-up", b: lines.join("\n"), u: `/#t=${mine[0].k}`, tag: "wrap", badge: d.badge}, "wrapup", d);
     st.wrap[id] = L.date;
     if (s === 404 || s === 410) { await env.USERS.delete(m.name); continue; }
