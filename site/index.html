@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.98">
+<meta name="app-version" content="v0.99">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -609,8 +609,8 @@ function openA2hs() {
   const b = $("#a2hsbody");
   if (INAPP) b.innerHTML = `<p>You're in another app's browser. Open this page in ${IS_IOS ? "Safari" : "Chrome"} first, then come back to this menu.</p><button class="btn-main" id="a2hsok">OK</button>`;
   else if (INSTALL_EVT) b.innerHTML = `<p>Install Sideline Standings so it opens like an app, full screen, from your home screen.</p><button class="btn-main" id="a2hsinstall">Install app</button>`;
-  else b.innerHTML = `<p>It opens like an app, full screen, and stays signed in. Three taps:</p>
-    <ol class="steps"><li>${icon("dots")}<span>Tap <b>⋯</b> next to the address bar</span></li><li>${icon("share")}<span>Tap <b>Share</b></span></li><li>${icon("plussq")}<span>Tap <b>Add to Home Screen</b>, then <b>Add</b></span></li></ol>
+  else b.innerHTML = `<p>It opens like an app, full screen, and stays signed in. Four taps:</p>
+    <ol class="steps"><li>${icon("dots")}<span>Tap <b>⋯</b> next to the address bar</span></li><li>${icon("share")}<span>Tap <b>Share</b></span></li><li>${icon("chev")}<span>Tap <b>View More</b></span></li><li>${icon("plussq")}<span>Tap <b>Add to Home Screen</b>, then <b>Add</b></span></li></ol>
     <p class="mut" style="font-size:12px">Then open Sideline from your Home Screen. If you see a Share button at the bottom instead of ⋯, tap that first.</p>
     <button class="btn-main" id="a2hsok">Done</button>`;
   $("#a2hs").hidden = false;
