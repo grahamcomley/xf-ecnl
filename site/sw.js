@@ -42,13 +42,22 @@ async function badgeSet(n) {
   try { await (await caches.open(BADGE)).put(BKEY, new Response(String(n))); } catch (e) {}
   try { if (n > 0 && self.navigator.setAppBadge) await self.navigator.setAppBadge(n); else if (self.navigator.clearAppBadge) await self.navigator.clearAppBadge(); } catch (e) {}
 }
+// Alert inbox: every alert received is kept on the phone (last 60) so the app can list them
+// (bell in the header). Each entry: {id, t, b, x, u, at, read}.
+async function inboxGet() { try { const r = await (await caches.open(BADGE)).match("/__inbox"); return r ? await r.json() : []; } catch (e) { return []; } }
+async function inboxPut(list) { try { await (await caches.open(BADGE)).put("/__inbox", new Response(JSON.stringify(list.slice(0, 60)))); } catch (e) {} }
+async function tellPages(msg) { for (const c of await self.clients.matchAll({type: "window", includeUncontrolled: true})) c.postMessage(msg); }
 self.addEventListener("push", e => {
   let m = {};
   try { m = e.data ? e.data.json() : {}; } catch (x) { m = {t: "Sideline Standings", b: e.data ? e.data.text() : ""}; }
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
   e.waitUntil((async () => {
     await self.registration.showNotification(m.t || "Sideline Standings", {
       body: m.b || "", tag: m.tag || undefined, renotify: !!m.tag, icon: "icons/icon-192.png", badge: "icons/icon-192.png",
-      data: {u: m.u || "/", x: m.x || null}});
+      data: {u: m.u || "/", x: m.x || null, id}});
+    const list = await inboxGet();
+    list.unshift({id, t: m.t || "Sideline Standings", b: m.b || "", x: m.x || null, u: m.u || "/", at: Date.now(), read: false});
+    await inboxPut(list); await tellPages({inbox: true});
     if (m.badge !== false) await badgeSet((await badgeGet()) + 1);
   })());
 });
@@ -59,7 +68,8 @@ self.addEventListener("notificationclick", e => {
   // "Show in the app" button then goes to the exact game.
   const url = new URL((d.u || "/") + ((d.u || "").includes("#") ? "&n=" + Date.now() : ""), self.location.origin).href;
   e.waitUntil((async () => {
-    try { await (await caches.open(BADGE)).put("/__note", new Response(JSON.stringify({t: e.notification.title, b: e.notification.body, x: d.x || null, u: d.u || "/"}))); } catch (x) {}
+    try { await (await caches.open(BADGE)).put("/__note", new Response(JSON.stringify({id: d.id, t: e.notification.title, b: e.notification.body, x: d.x || null, u: d.u || "/"}))); } catch (x) {}
+    if (d.id) { const list = await inboxGet(); const it = list.find(x => x.id === d.id); if (it) { it.read = true; await inboxPut(list); } }
     await badgeSet(0);
     // App already open: bring it forward and tell it which alert was tapped (no reload).
     const all = await self.clients.matchAll({type: "window", includeUncontrolled: true});

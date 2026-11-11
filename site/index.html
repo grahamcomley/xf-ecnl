@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.31">
+<meta name="app-version" content="v0.99.32">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -86,7 +86,9 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#a2hs,#anudge,#nudge,#nsheet{z-index:80}.ntitle{font-size:17px;font-weight:800;margin:8px 0 8px}.nlines{font-size:14px;line-height:1.45;margin-bottom:4px}.nsp{height:10px}
+#a2hs,#anudge,#nudge,#nsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
+.inrow{display:flex;gap:10px;align-items:flex-start;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;text-align:left;padding:11px 12px;cursor:pointer}.inrow:first-child{border-top:0}.inrow .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:transparent}.inrow.unread .dot{background:var(--red)}.inrow>span{flex:1;min-width:0}.inrow b{display:block;font-size:14px}.inrow.unread b{font-weight:800}.inrow .ddsub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.inrow .when{flex:none;font-size:11px;color:var(--mut);margin-top:2px}
+.ntitle{font-size:17px;font-weight:800;margin:8px 0 8px}.nlines{font-size:14px;line-height:1.45;margin-bottom:4px}.nsp{height:10px}
 .nhero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:10px 0 10px;font-size:17px;font-weight:700}.nhero span:first-child{text-align:right}.nhero b{font-size:26px;font-weight:800}
 .nrow{display:grid;grid-template-columns:1fr 44px 1fr;align-items:center;gap:6px;padding:6px 0;border-top:1px solid var(--line)}.nrow .nl{text-align:right}.nrow b{text-align:center}.nnote{color:var(--mut);font-size:13px;padding:2px 0}.nnote.big{color:#fde047;font-weight:700}.nnote.sub{color:var(--ink);font-weight:700;margin-top:4px}
 @keyframes flash{0%,60%{box-shadow:0 0 0 2px #fde047;background:rgba(253,224,71,.12)}100%{box-shadow:none}}.flash{animation:flash 3s ease-out}
@@ -245,7 +247,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <body>
 <header>
   <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
-    <button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
+    <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
 <div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
@@ -646,6 +648,7 @@ const PAGES = {
   about: {title: "About", draw: drawAbout},
   privacy: {title: "Privacy", draw: drawPrivacy},
   admin: {title: "Admin", draw: drawAdmin},
+  inbox: {title: "Recent alerts", draw: drawInbox},
 };
 function openPage(name, fresh) {
   if (fresh) STACK = [];
@@ -747,8 +750,8 @@ async function drawAdmin(b) {
   if (!(ME && ME.admin)) { b.innerHTML = "<div class='pgin'><p class='mut'>Not available.</p></div>"; return; }
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
-    const [d, dr, pkp] = await Promise.all([api("GET", "/api/admin"), fetch("data/drift.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).catch(() => null), api("GET", "/api/admin/pickem").catch(() => ({players: []}))]);
-    DRIFT = dr; const week = Date.now() - 7 * 864e5;
+    const [d, pkp] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []}))]);
+    const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
     const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
@@ -766,7 +769,6 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
-      ${fold("drift", "Data check", DRIFT ? (DRIFT.points.length ? `${DRIFT.points.length} conference${DRIFT.points.length === 1 ? "" : "s"} differ from the official table` : "All tables match the official ones") : "Not run yet", DRIFT ? (DRIFT.points.length ? DRIFT.points.map(x => `<div class="glk" style="margin-top:8px">${esc(x.name)}</div>${x.teams.map(t => `<div class="mut" style="font-size:12px">${esc(t.team)}: ours ${t.ours[0]} GP · ${t.ours[1]} pts, official ${t.ecnl[0]} · ${t.ecnl[1]}</div>`).join("")}`).join("") : "<p class='mut'>Games played and points match the official table in every conference.</p>") + `<p class="mut" style="font-size:12px;margin-top:8px">Checked ${esc(new Date(DRIFT.checked).toLocaleString())}. ${DRIFT.order.length} conference${DRIFT.order.length === 1 ? "" : "s"} list tied teams in a different order (tiebreakers).</p>` : "", DRIFT && DRIFT.points.length > 0)}
       ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
@@ -936,7 +938,8 @@ async function seenPing() {
   store.set("seenPing", String(Date.now()));
   api("POST", "/api/push/seen", {endpoint: sub.endpoint}).catch(() => {});
 }
-document.addEventListener("visibilitychange", () => { if (!document.hidden) { clearBadge(); seenPing(); } });
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { clearBadge(); seenPing(); loadInbox(); } });
+loadInbox();
 inappNote();
 $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
@@ -973,10 +976,11 @@ function deepLink(h, key) {
   else if (gids.length || view) TEAM_READY.then(() => focusGames(gids, view));
 }
 const SCORE_LINE = /^(.+?) (\d+)–(\d+) (.+?)( \(corrected.*\))?$/;
-async function showNote(gids, view) {
-  let n = null;
-  try { const r = await (await caches.open("badge-v1")).match("/__note"); n = r ? await r.json() : null; } catch (e) {}
+async function showNote(gids, view, item) {
+  let n = item || null;
+  if (!n) { try { const r = await (await caches.open("badge-v1")).match("/__note"); n = r ? await r.json() : null; } catch (e) {} }
   if (!n) return TEAM_READY.then(() => focusGames(gids, view));
+  if (n.id) markRead(n.id);
   const lines = (n.x && n.x.length ? n.x : String(n.b || "").split("\n"));
   const row = l => { const m = l.match(SCORE_LINE); return m ? `<div class="nrow"><span class="nl">${esc(m[1])}</span><b>${m[2]}–${m[3]}</b><span class="nr">${esc(m[4])}</span></div>${m[5] ? `<div class="nnote">${esc(m[5].trim())}</div>` : ""}` : l ? `<div class="nnote${/^Big moment/.test(l) ? " big" : /^Also in /.test(l) ? " sub" : ""}">${esc(l)}</div>` : "<div class='nsp'></div>"; };
   const t = n.t.match(SCORE_LINE);
@@ -984,7 +988,7 @@ async function showNote(gids, view) {
     + `<div class="nlines">${lines.map(row).join("")}</div>`
     + `<button class="btn-main" id="ngo">${gids.length ? (gids.length > 1 ? "Show these games" : "Show this game") : "Open"}</button>`;
   $("#nsheet").hidden = false;
-  if (view) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));
+  if (view && !item) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));
   $("#ngo").onclick = () => { $("#nsheet").hidden = true; TEAM_READY.then(() => focusGames(gids, view)); };
 }
 function focusGames(gids, view) {
@@ -1002,6 +1006,38 @@ function focusGames(gids, view) {
   }
   if (el) setTimeout(() => el.scrollIntoView({block: "center", behavior: "smooth"}), 60);
 }
+// ---------- alert inbox (bell in the header) ----------
+// Every alert this phone received (kept by the service worker), newest first, with an unread count.
+let INBOX = [];
+async function loadInbox() {
+  try { const r = await (await caches.open("badge-v1")).match("/__inbox"); INBOX = r ? await r.json() : []; } catch (e) { INBOX = []; }
+  const unread = INBOX.filter(x => !x.read).length, bell = $("#belltop"), c = $("#bellcount");
+  bell.hidden = !(INBOX.length || alertsOn());
+  c.hidden = !unread; c.textContent = unread > 99 ? "99+" : String(unread);
+  if (pageIs("inbox")) refreshPage();
+}
+async function saveInbox() { try { await (await caches.open("badge-v1")).put("/__inbox", new Response(JSON.stringify(INBOX.slice(0, 60)))); } catch (e) {} loadInbox(); }
+function markRead(id) { const it = INBOX.find(x => x.id === id); if (it && !it.read) { it.read = true; saveInbox(); } }
+const agoShort = ms => { const m = Math.round((Date.now() - ms) / 60000); return m < 1 ? "now" : m < 60 ? `${m}m` : m < 1440 ? `${Math.round(m / 60)}h` : `${Math.round(m / 1440)}d`; };
+function drawInbox(b) {
+  if (!INBOX.length) { b.innerHTML = `<div class="pgin"><div class="setbox mut">No alerts yet. When scores are posted for your teams, they'll show up here too.</div></div>`; return; }
+  const unread = INBOX.filter(x => !x.read).length;
+  b.innerHTML = `<div class="pgin"><div class="seth" style="display:flex;justify-content:space-between;align-items:center"><span>${unread ? `${unread} unread` : "All read"}</span>${unread ? `<button class="reset" id="inall" style="float:none">Mark all read</button>` : ""}</div>
+    <div class="glist">${INBOX.map(x => `<button class="inrow${x.read ? "" : " unread"}" data-in="${x.id}"><i class="dot"></i><span><b>${esc(x.t)}</b><span class="ddsub">${esc(String(x.b || "").split("\n")[0])}</span></span><span class="when">${agoShort(x.at)}</span></button>`).join("")}</div>
+    <p class="mut pgfoot">The last 60 alerts on this device.</p></div>`;
+  const all = $("#inall"); if (all) all.onclick = () => { INBOX.forEach(x => x.read = true); saveInbox(); };
+  b.onclick = e => {
+    const r = e.target.closest("[data-in]"); if (!r) return;
+    const it = INBOX.find(x => x.id === r.dataset.in); if (!it) return;
+    const q = new URLSearchParams((it.u || "").split("#")[1] || ""), key = (q.get("t") || "").split(",").find(k => teamByKey(k));
+    const gids = (q.get("g") || "").split(",").filter(Boolean), view = q.get("v");
+    // card over the list; "Show this game" closes the list and goes to the game
+    const go = () => { closePages(); if (key && key !== CUR) TEAM_READY = openTeam(key); TEAM_READY.then(() => focusGames(gids, view)); };
+    showNote(gids, view, it).then(() => { const btn = $("#ngo"); if (btn) btn.onclick = () => { $("#nsheet").hidden = true; go(); }; });
+  };
+}
+$("#belltop").innerHTML += icon("bell");
+$("#belltop").onclick = () => openPage("inbox", true);
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
   const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
@@ -1706,7 +1742,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 setInterval(checkForUpdate, 30 * 60000);
 checkForUpdate();
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.open) { const u = new URL(e.data.open); history.replaceState(null, "", u.hash); deepLink(u.hash.slice(1)); } });
+if ("serviceWorker" in navigator) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.inbox) loadInbox(); if (e.data && e.data.open) { loadInbox(); const u = new URL(e.data.open); history.replaceState(null, "", u.hash); deepLink(u.hash.slice(1)); } });
 boot().catch(e => { $("#app").innerHTML = `<div class="card ctx">Couldn't load data: ${esc(e.message)}</div>`; });
 </script>
 </body>

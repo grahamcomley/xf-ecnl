@@ -356,18 +356,9 @@ async function driftAlert(env, st, now) {
   const prev = st.drift || {};
   if (sig === (prev.sig || "") || (prev.at && now - prev.at < 20 * HOUR && prev.sig)) { if (!sig) st.drift = {sig: "", at: prev.at || 0}; return 0; }
   st.drift = {sig, at: now};
-  if (!probs.length) return 0;   // fixed: no alert for "all clear"
-  let n = 0;
-  for (const m of await deviceMeta(env)) {
-    const d = await env.USERS.get(m.name, "json");
-    if (!d || !OWNER_EMAILS.includes((d.email || "").toLowerCase())) continue;
-    const first = probs[0], t = first.teams[0];
-    const s = await send(env, d.sub, {t: `Data check: ${probs.length} conference${probs.length === 1 ? "" : "s"} differ from the official table`,
-      b: `${first.name}: ${t.team} ours ${t.ours[0]} GP / ${t.ours[1]} pts, official ${t.ecnl[0]} / ${t.ecnl[1]}` + (probs.length > 1 || first.teams.length > 1 ? " · more in Admin" : ""),
-      u: "/", tag: "drift", badge: false}, "drift", d);
-    if (s < 300) n++;
-  }
-  return n;
+  // Logged only (Claude reads the logs); no alert to the owner (Graham, 2026-11-11).
+  LOG && LOG.keep("drift", {conferences: probs.length, list: probs.slice(0, 20).map(p => `${p.name}: ` + p.teams.slice(0, 4).map(t => `${t.team} ${t.ours.join("/")} vs ${t.ecnl.join("/")}`).join("; "))});
+  return 0;
 }
 
 // Game-day reminders: "morning of" (8 AM, or when quiet hours end) or 2 hours before kickoff.
