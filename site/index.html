@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.35">
+<meta name="app-version" content="v0.99.36">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -103,6 +103,8 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .aopts{background:#13171d;border-top:1px solid var(--line);padding:2px 0 4px}.aopts .opt:first-child{border-top:0}.arow[open]+.arow{border-top-color:var(--line2)}
 .pillbtn{flex:none;background:var(--red);color:#fff;border:0;border-radius:8px;font:inherit;font-size:12px;font-weight:700;padding:7px 14px;cursor:pointer}.pillbtn.danger{background:none;border:1px solid var(--dn);color:var(--dn)}.abtn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;font-size:14px;text-align:left;padding:10px 12px;cursor:pointer}.abtn:first-child{border-top:0}.abtn>span{flex:1;font-weight:600}.abtn .ddsub{display:block;font-weight:400}.abtn .ic{width:18px;height:18px;color:var(--mut)}.abtn .dn{color:var(--dn)}
 .fold{background:var(--card2);border:1px solid var(--line2);border-radius:10px;margin-top:10px}.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}.fold>summary::-webkit-details-marker{display:none}.fold>summary>span{flex:1;font-weight:700}.fold>summary .ddsub{display:block;font-weight:400}.fold>summary .ic{width:18px;height:18px;color:var(--mut)}.fold[open]>summary .ic{transform:rotate(180deg)}.foldin{padding:0 12px 12px}.foldin .admtiles{margin-top:0;grid-template-columns:repeat(4,1fr)}.foldin .stat{padding:8px}.foldin .stat .v{font-size:20px}.foldin .stat .k{font-size:11px}.setcard{max-height:92vh}.seth{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
+.acard{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:13px 14px 12px;margin-bottom:10px}.acard .ah{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px}.acard .ah .ic{width:19px;height:19px;color:var(--red)}.acard p{margin:6px 0 2px;color:var(--mut);font-size:14px;line-height:1.4}.acard .acardno{display:block;width:100%;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;padding:10px 0 2px;cursor:pointer}
+#settop{position:relative}.gdot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--red);border:2px solid var(--bg)}.setrow .rdot{width:8px;height:8px;border-radius:50%;background:var(--red);flex:none;margin-left:auto;margin-right:-4px}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
@@ -588,6 +590,7 @@ async function onAuth() {
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
     alertsSync(); seenPing();
+    showAlertPrompt();
     mergePicks(r.picks || {});
     maybeOfferHome();
   } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
@@ -659,6 +662,7 @@ function backPage() { STACK.pop(); if (STACK.length) showPage(false); else close
 function closePages() { STACK = []; $("#pg").hidden = true; document.body.classList.remove("pgopen"); }
 function showPage(scrollTop) {
   const name = STACK[STACK.length - 1], P = PAGES[name]; if (!P) return closePages();
+  if (name === "alerts" && ME) { store.set("alertsSeen", "1"); setGearDot(); }
   $("#pg").hidden = false; document.body.classList.add("pgopen");
   $("#pgtitle").textContent = P.title;
   const st = $("#checked");
@@ -684,7 +688,7 @@ function drawSettings(b) {
   const ver = document.querySelector('meta[name="app-version"]').content;
   b.innerHTML = `<div class="pgin"><div class="seth">Account</div>
       ${ME ? setRow("account", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("signin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
-    <div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary())}
+    <div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary()).replace(/(<svg(?:(?!<svg)[^])*)$/, alertNew() ? '<span class="rdot"></span>$1' : "$1")}
     ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}
     <div class="seth">About</div>
       ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
@@ -826,7 +830,7 @@ async function enableAlerts() {
       sub = await reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: keyBytes(key)});
     }
     store.set("alertsOn", "1"); alertsSync(true);
-    toast("Alerts are on"); drawAlerts(); return true;
+    toast("Alerts are on"); store.set("alertCardNo", "1"); hideAlertCards(); setGearDot(); drawAlerts(); return true;
   } catch (e) { console.warn(e); toast("Couldn't turn on alerts. Try again."); drawAlerts(); return false; }
 }
 async function disableAlerts() {
@@ -910,6 +914,40 @@ async function alertsSyncNow() {
   let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
   await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge});
 }
+// New-feature prompt: until alerts are on (or turned down), a card at the top of Standings and Games
+// and a red dot on the gear point people to alerts.
+const alertNew = () => !!ME && !alertsOn() && !store.get("alertsSeen");
+function setGearDot() {
+  const g = $("#settop"); if (!g) return;
+  const d = g.querySelector(".gdot");
+  if (alertNew() && !d) g.insertAdjacentHTML("beforeend", '<span class="gdot"></span>'); else if (!alertNew() && d) d.remove();
+}
+function alertCard() {
+  if (!ME || alertsOn() || store.get("alertCardNo") || INAPP) return "";
+  if (!PUSH_OK() && !(IS_IOS && !STANDALONE())) return "";
+  if ("Notification" in window && Notification.permission === "denied") return "";
+  const t = (favs() || []).map(teamByKey).filter(Boolean)[0]; if (!t) return "";
+  const home = IS_IOS && !STANDALONE();
+  return `<div class="acard"><div class="ah">${icon("bell")}<span>New: game alerts</span></div>
+    <p>Get ${esc(t.s)}'s scores, every result in your league and game-day reminders on your phone the moment they're posted.${home ? " On iPhone, alerts work from the Home Screen app: add it first, then open Sideline from your Home Screen." : ""}</p>
+    <button class="btn-main acardgo" data-home="${home ? 1 : ""}">${home ? "Add to Home Screen" : "Turn on alerts"}</button><button class="acardno">Not now</button></div>`;
+}
+function showAlertPrompt() {
+  setGearDot();
+  const c = alertCard(); if (!c) return;
+  document.querySelectorAll('.pane[data-tab="team"], .pane[data-tab="games"]').forEach(p => { if (!p.querySelector(".acard")) p.insertAdjacentHTML("afterbegin", c); });
+}
+const hideAlertCards = () => document.querySelectorAll(".acard").forEach(e => e.remove());
+document.addEventListener("click", async e => {
+  const go = e.target.closest(".acardgo"), no = e.target.closest(".acardno");
+  if (no) { store.set("alertCardNo", "1"); hideAlertCards(); return; }
+  if (!go) return;
+  if (go.dataset.home) { openA2hs(); return; }
+  go.disabled = true;
+  const ok = await enableAlerts();
+  if (ok || Notification.permission === "denied") { store.set("alertCardNo", "1"); hideAlertCards(); } else go.disabled = false;
+  setGearDot();
+});
 // Right after someone stars a team: offer alerts once (on iPhone in Safari, that means the Home Screen first).
 function maybeOfferAlerts(k) {
   if (alertsOn() || store.get("alertsOffered")) return;
@@ -1267,6 +1305,7 @@ function checkedTxt() {
 }
 
 function renderTeam(D, fid, key) {
+  setGearDot();
   D.__fk = teamByKey(key).f;
   PK_POINTS = /^MLS NEXT/.test(D.league || "");
   const M = makeModel(D.teams, D.model), today = todayISO(), ids = D.teams.map(t => t.id);
@@ -1357,6 +1396,7 @@ function renderTeam(D, fid, key) {
   ${mismatch.length ? `<div class="warn">⚠ ${/^MLS/.test(D.league || "") ? "MLS NEXT" : "ECNL"}'s table doesn't match the posted scores for ${mismatch.map(o => esc(teamName(D, o.id))).join(", ")}. Our table uses the scores.</div>` : ""}
 
 <div class="pane" data-tab="team">
+  ${alertCard()}
   ${sec("us", chipMe, "Where we stand", "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
@@ -1368,6 +1408,7 @@ function renderTeam(D, fid, key) {
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
 </div><div class="pane" data-tab="games">
+  ${alertCard()}
   ${sec("us", chipMe, "Upcoming", "",
     (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
     + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
