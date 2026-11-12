@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- Apple / Google send people back here after signing in; Clerk finishes the sign-in (or sign-up)
+     and goes on to the page they started from. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex">
+<title>Signing in · Sideline Standings</title>
+<style>html,body{margin:0;height:100%;background:#0d1015;color:#e8eaed;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif}.w{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;box-sizing:border-box}p{color:#a3acb9;margin:0}a{color:#7aa7ff}</style></head>
+<body><div class="w"><b>Signing you in…</b><p id="m"></p></div>
+<script>
+const sc = document.createElement("script");
+sc.src = "https://clerk.sidelinestandings.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js";
+sc.async = true; sc.crossOrigin = "anonymous"; sc.setAttribute("data-clerk-publishable-key", "pk_live_Y2xlcmsuc2lkZWxpbmVzdGFuZGluZ3MuY29tJA");
+sc.onload = async () => {
+  try { await window.Clerk.load(); await window.Clerk.handleRedirectCallback({signInFallbackRedirectUrl: "/", signUpFallbackRedirectUrl: "/"}); }
+  catch (e) { document.getElementById("m").innerHTML = 'That didn\'t finish. <a href="/">Back to Sideline Standings</a>'; }
+};
+document.head.appendChild(sc);
+</script></body></html>

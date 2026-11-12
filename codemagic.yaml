@@ -1,7 +1,7 @@
 # Sideline Standings iPhone app -> TestFlight (Codemagic, Mac build).
 # Copied from Hashmark's proven setup. The app is a native shell (Capacitor, in app/) that loads the
 # live site, so page changes reach the app with no build. A build is needed only for:
-#   app/capacitor.config.json, app/native/*, app/sideline-native/*, app/icon-1024.png, or this file.
+#   app/capacitor.config.json, app/native/*, app/sideline-native/*, app/icon-1024.png, app/splash-2732.png, or this file.
 #
 # NO triggering: block on purpose. A website push must never start a Mac build. Builds start only
 # from GitHub: Actions > "Build iPhone app" > Run workflow (.github/workflows/ios-build.yml).
@@ -53,6 +53,26 @@ workflows:
             sips -s format png -z "$H" "$W" /tmp/ss-icon.png --out "$f" >/dev/null
             echo "  icon -> $(basename "$f") ${W}x${H}"
           done
+
+      - name: Launch screen, iPhone only, portrait
+        script: |
+          set -euo pipefail
+          cd app
+          SPL="ios/App/App/Assets.xcassets/Splash.imageset"
+          if [ -d "$SPL" ]; then for f in "$SPL"/*.png; do cp splash-2732.png "$f"; echo "  splash -> $(basename "$f")"; done; else echo "!! no Splash.imageset"; ls ios/App/App/Assets.xcassets; fi
+          ruby -e '
+            require "xcodeproj"
+            project = Xcodeproj::Project.open("ios/App/App.xcodeproj")
+            target = project.targets.find { |t| t.name == "App" } or abort("No App target")
+            target.build_configurations.each { |c| c.build_settings["TARGETED_DEVICE_FAMILY"] = "1" }
+            project.save
+            puts "iPhone only"
+          '
+          PLIST="ios/App/App/Info.plist"
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations array" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations:0 string UIInterfaceOrientationPortrait" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations~ipad" "$PLIST" 2>/dev/null || true
 
       - name: Native code (push hooks, push entitlement, our plugin registered)
         script: |
@@ -120,6 +140,7 @@ workflows:
         script: |
           set -euo pipefail
           APPV=$(grep -o 'name="app-version" content="v[0-9.]*' site/index.html | sed 's/.*content="v//')
+          APPV=$(echo "$APPV" | sed -E 's/^([0-9]+)\.00$/\1.0/')   # v1.00 -> 1.0, the App Store version
           echo "App version from the page: $APPV"
           LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo "0")
           NEXT=$(($LATEST + 1))

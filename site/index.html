@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.47">
+<meta name="app-version" content="v1.00">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -118,6 +118,7 @@ body.locked #tabbar button:not([data-tab="team"]),body.locked #belltop,body.lock
 .fnote{display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin:0 0 10px;font-size:13px}.fnote[hidden]{display:none}.fnote .ic{width:18px;height:18px;color:var(--red);flex:none}.fnote span{flex:1}.fnote button{background:var(--red);color:#fff;border:0;border-radius:8px;padding:7px 12px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
 #teamwrap .teamdd[aria-expanded="true"] .ic{transform:none}
 body.ddopen #scroller,body.ddopen #tabbar{filter:brightness(.4);transition:filter .15s}#scroller,#tabbar{transition:filter .15s}
+.authbtns{display:flex;flex-direction:column;gap:10px;margin-top:14px}.authbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border-radius:12px;padding:14px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;border:0}.authbtn.apple{background:#fff;color:#000}.authbtn.google{background:#1f2630;color:#e8eaed;border:1px solid #3a4452}.authbtn[disabled]{opacity:.6}.authemail{background:none;border:0;color:#a3acb9;font:inherit;font-size:14px;margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
@@ -275,6 +276,11 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <div id="anudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
+</div></div>
+<div id="authsheet" class="sheet" hidden><div class="sheet-card" style="text-align:center">
+  <div class="sheet-head"><b>Sign in to Sideline Standings</b><button class="icon-btn" id="authclose">Not now</button></div>
+  <p class="mut" style="font-size:14px;margin:2px 0 0;text-align:left">Free. Keeps your teams, alerts and picks on every device.</p>
+  <div class="authbtns"><button class="authbtn apple" data-oauth="oauth_apple"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span>Continue with Apple</span></button><button class="authbtn google" data-oauth="oauth_google"><svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Continue with Google</span></button></div><button class="authemail" data-email="1">Use email instead</button>
 </div></div>
 <div id="signsheet" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Free account</b><button class="icon-btn" id="signsheetclose">Not now</button></div>
@@ -636,12 +642,26 @@ async function appSignIn() {
   catch (e) { console.warn(e); toast("Couldn't sign in. Try again."); }
   return true;
 }
+// Apple / Google straight to the provider (Clerk handles the return on /sso-callback.html).
+async function oauthGo(strategy, back) {
+  try { await window.Clerk.client.signIn.authenticateWithRedirect({strategy, redirectUrl: location.origin + "/sso-callback.html", redirectUrlComplete: back}); }
+  catch (e) { console.warn(e); toast("Couldn't open sign-in. Try email instead."); document.querySelectorAll("[data-oauth]").forEach(b => b.disabled = false); }
+}
+$("#authclose").onclick = () => { $("#authsheet").hidden = true; };
+$("#authsheet").addEventListener("click", e => {
+  const o = e.target.closest("[data-oauth]");
+  if (o) { o.disabled = true; return oauthGo(o.dataset.oauth, location.href); }
+  if (e.target.closest("[data-email]")) { $("#authsheet").hidden = true; try { window.Clerk.openSignIn(SIGNIN_OPTS()); } catch (x) { window.Clerk.openSignIn({}); } watchSignIn(); }
+});
+function watchSignIn() {
+  clearInterval(SIGNIN_T); let n = 0;
+  SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
+}
 function signIn() {
   if (!window.Clerk) return;
   if (IS_APP && SA() && !signIn.web) { appSignIn().then(ok => { if (!ok) { signIn.web = true; signIn(); } }); return; }
-  try { window.Clerk.openSignIn(SIGNIN_OPTS()); } catch (e) { window.Clerk.openSignIn({}); }
-  clearInterval(SIGNIN_T); let n = 0;
-  SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
+  document.querySelectorAll("[data-oauth]").forEach(b => b.disabled = false);
+  $("#authsheet").hidden = false;
 }
 const recheck = () => { if (CLERK_READY) onAuth(); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden) recheck(); });
@@ -856,6 +876,7 @@ async function drawAdmin(b) {
   try {
     const [d, pkp, ak] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false}))]);
     const ck = await api("GET", "/api/admin/clerk").catch(() => ({saved: false}));
+    const rv = await api("GET", "/api/admin/reviewer").catch(() => ({}));
     const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
@@ -881,6 +902,9 @@ async function drawAdmin(b) {
         <div class="setbox" style="font-size:13px;margin-top:8px"><b>Clerk secret key</b><div class="mut" style="margin-top:2px">${ck.saved ? `Saved (${day(ck.at)}). The app's iPhone sign-in sheet works. Paste a new one only to replace it.` : "Needed for the app's iPhone sign-in sheet. In Clerk: Configure › API keys, copy the Secret key (starts sk_live_)."}</div>
           <input id="clerksk" placeholder="sk_live_…" autocomplete="off" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:12px ui-monospace,monospace">
           <button class="btn-sec" id="clerksave">Save Clerk key</button></div>
+        <div class="setbox" style="font-size:13px;margin-top:8px"><b>App Review login</b><div class="mut" style="margin-top:2px">For Apple's reviewer (they can't get email codes). Paste both into App Store Connect › App Review.</div>
+          <div id="rvbox" style="margin-top:6px">${rv.email ? `<div>Email: <code>${esc(rv.email)}</code></div><div>Password: <code>${esc(rv.password)}</code></div>` : ""}</div>
+          <button class="btn-sec" id="rvmake">${rv.email ? "Make a new password" : "Create the reviewer login"}</button></div>
         ${IS_APP ? `<button class="btn-sec" id="appsite">${location.host.startsWith("uat.") ? "Switch this app to live" : "Switch this app to UAT"}</button>` : ""}
         <p class="mut" style="font-size:12px;margin:6px 0 0" id="appinfo">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
       ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
@@ -908,6 +932,13 @@ async function drawAdmin(b) {
       catch (x) { cs.textContent = "Save Clerk key"; toast("Couldn't save it. Try again."); }
     };
     if (IS_APP && SA()) Promise.resolve(SA().info && SA().info()).then(i => { const el = $("#appinfo"); if (el && i && i.build) el.textContent = `App ${i.version} (build ${i.build}) · ` + el.textContent; }).catch(() => {});
+    const rb = $("#rvmake"); if (rb) rb.onclick = async () => {
+      rb.textContent = "Creating…";
+      try { const t = await token(); const r = await fetch("/api/admin/reviewer", {method: "POST", headers: {authorization: "Bearer " + t}}); const j = await r.json();
+        if (r.ok) { $("#rvbox").innerHTML = `<div>Email: <code>${esc(j.email)}</code></div><div>Password: <code>${esc(j.password)}</code></div>`; rb.textContent = "Make a new password"; }
+        else { rb.textContent = "Create the reviewer login"; toast(j.error || "Couldn't create it"); } }
+      catch (x) { rb.textContent = "Create the reviewer login"; toast("Couldn't create it. Try again."); }
+    };
     const sw = $("#appsite"); if (sw) sw.onclick = () => { location.href = (location.host.startsWith("uat.") ? "https://sidelinestandings.com/" : "https://uat.sidelinestandings.com/"); };
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
     if ($("#gatetoggle")) $("#gatetoggle").onclick = async () => {

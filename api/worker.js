@@ -253,6 +253,33 @@ async function handle(req, env, url, p, L, who0) {
         return json({ok: true});
       }
     }
+    // /api/admin/reviewer: the login for Apple's App Review (they can't receive email codes). POST makes the
+    // Clerk account appreview@sidelinestandings.com with a new password (or resets it) and follows XF 1;
+    // GET shows it. Owner only; kept in KV cfg:reviewer. Needs password sign-in turned on in Clerk.
+    if (p === "/api/admin/reviewer") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      if (req.method === "GET") { const r = await env.USERS.get("cfg:reviewer", "json"); return json(r || {}); }
+      if (req.method === "POST") {
+        const k = await env.USERS.get("cfg:clerk", "json"); if (!k || !k.sk) return json({error: "Save the Clerk secret key first."}, 400);
+        const H = {authorization: "Bearer " + k.sk, "content-type": "application/json"}, email = "appreview@sidelinestandings.com";
+        const abc = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789", rnd = crypto.getRandomValues(new Uint8Array(14));
+        const password = "Sideline-" + [...rnd].map(b => abc[b % abc.length]).join("");
+        const err = j => (j && j.errors && j.errors[0] && (j.errors[0].long_message || j.errors[0].message)) || "Clerk said no.";
+        const found = await (await fetch("https://api.clerk.com/v1/users?email_address=" + encodeURIComponent(email), {headers: H})).json().catch(() => []);
+        let id = Array.isArray(found) && found[0] && found[0].id, r;
+        if (id) r = await fetch("https://api.clerk.com/v1/users/" + id, {method: "PATCH", headers: H, body: JSON.stringify({password, skip_password_checks: true})});
+        else r = await fetch("https://api.clerk.com/v1/users", {method: "POST", headers: H, body: JSON.stringify({email_address: [email], password, skip_password_checks: true, first_name: "App", last_name: "Review"})});
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) { L.error("admin.reviewer", {status: r.status, why: err(j)}); return json({error: err(j)}, 400); }
+        id = id || j.id;
+        const u = await env.USERS.get("u:" + id, "json") || {created: Date.now()};
+        if (!(u.favs || []).length) { u.favs = ["u16b-82130"]; u.email = email; await env.USERS.put("u:" + id, JSON.stringify(u)); }
+        const rec = {email, password, at: Date.now()};
+        await env.USERS.put("cfg:reviewer", JSON.stringify(rec));
+        L.keep("admin.reviewer", {uid: c.sub, reviewer: id});
+        return json(rec);
+      }
+    }
     // /api/admin/apns: Apple push key for the App Store app. GET says whether one is saved (never returns it);
     // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
     if (p === "/api/admin/apns") {
