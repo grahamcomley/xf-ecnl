@@ -5187,6 +5187,37 @@
   ]
  },
  {
+  "conf": "u14b-4273-40438",
+  "name": "ECNL Boys Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133422,
+    "team": "Oregon Premier FC",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     20
+    ]
+   },
+   {
+    "id": 132507,
+    "team": "United PDX",
+    "ours": [
+     10,
+     16
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4274-40444",
   "name": "ECNL Boys Florida",
   "ours": [
@@ -11873,8 +11904,8 @@
    131463,
    58844,
    134472,
-   133553,
    131401,
+   133553,
    133670,
    130992,
    69634,
@@ -11895,6 +11926,37 @@
    59247,
    58844,
    133670
+  ]
+ },
+ {
+  "conf": "u19b-4287-41627",
+  "name": "ECNL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133553,
+    "team": "CDA Slammers FC",
+    "ours": [
+     11,
+     17
+    ],
+    "ecnl": [
+     10,
+     16
+    ]
+   },
+   {
+    "id": 69634,
+    "team": "Rebels SC",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   }
   ]
  },
  {
@@ -13755,6 +13817,57 @@
    131747,
    131955,
    132839
+  ]
+ },
+ {
+  "conf": "u12g-4253-41803",
+  "name": "Pre-ECNL Girls Ohio Valley",
+  "ours": [
+   132014,
+   132573,
+   131795,
+   132597,
+   103468,
+   93693
+  ],
+  "ecnl": [
+   132573,
+   132014,
+   131795,
+   132597,
+   103468,
+   93693
+  ]
+ },
+ {
+  "conf": "u12g-4253-41803",
+  "name": "Pre-ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132573,
+    "team": "Indy Eleven Pre-ECNL G2014/15 II",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
+    "id": 132014,
+    "team": "Mercury Pre-ECNL G2014/15 North",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     22
+    ]
+   }
   ]
  },
  {
