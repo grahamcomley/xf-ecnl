@@ -8,7 +8,7 @@
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
 import {makeLog, dbPerson, dbDailySync} from "./log.js";
-import {apnsKey, APNS_TEAM, APNS_TOPIC} from "./push.js";
+import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
 
@@ -96,6 +96,17 @@ export default {
     if (!env.USERS) return;
     const L = makeLog(env, ctx); pushSetLog(L);
     ctx.waitUntil(dbDailySync(env).then(r => r && L.info("mirror.sync", r)).catch(e => L.error("mirror.error", {msg: String(e)})));
+    // Apple push: once per saved key, check this server can reach Apple and the key is accepted. A made-up
+    // device token is used, so Apple answering "BadDeviceToken" means the connection and the key both work.
+    ctx.waitUntil((async () => {
+      const k = await env.USERS.get("cfg:apns", "json");
+      if (!k || !k.p8 || k.chk === k.at + ":" + env.SITE) return;
+      let r; try { r = await apnsSend(env, "0".repeat(64), {aps: {alert: {title: "check", body: "check"}}}); } catch (e) { r = {status: -1, reason: String(e && e.message || e)}; }
+      const ok = r.status === 410 && /BadDeviceToken/.test(r.reason);
+      L.keep("apns.check", {site: env.SITE, kid: k.kid, status: r.status, reason: r.reason, ok});
+      k.chk = k.at + ":" + env.SITE; k.chkr = {status: r.status, reason: r.reason, ok, when: Date.now(), site: env.SITE};
+      await env.USERS.put("cfg:apns", JSON.stringify(k));
+    })().catch(e => L.error("apns.check.error", {msg: String(e)})));
     ctx.waitUntil(pushCheck(env).then(r => { const busy = r && (r.sent || r.gone || r.init || r.remErr || r.wrapErr); (busy ? L.keep : L.info).call(L, "check", r); })
       .catch(e => L.error("check.error", {msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}))
       .then(() => L.flush()));
@@ -215,7 +226,7 @@ async function handle(req, env, url, p, L, who0) {
     // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
     if (p === "/api/admin/apns") {
       if (!isOwner(c)) return json({error: "not allowed"}, 403);
-      if (req.method === "GET") { const k = await env.USERS.get("cfg:apns", "json"); return json({saved: !!(k && k.p8), kid: k ? k.kid : "", at: k ? k.at : 0}); }
+      if (req.method === "GET") { const k = await env.USERS.get("cfg:apns", "json"); return json({saved: !!(k && k.p8), kid: k ? k.kid : "", at: k ? k.at : 0, chk: k && k.chkr || null}); }
       if (req.method === "PUT") {
         let b = {}; try { b = await req.json(); } catch (e) {}
         const p8 = String(b.p8 || "").trim(), kid = String(b.kid || "").trim().toUpperCase();

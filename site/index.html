@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.37">
+<meta name="app-version" content="v0.99.38">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -797,7 +797,7 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
       ${fold("app", "App Store app", `${ak.saved ? "Apple push key saved" : "Apple push key needed"} · ${IS_APP ? "you're in the app" : "you're in the browser"}`, `
-        <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
+        <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). ${ak.chk ? (ak.chk.ok ? "Connection to Apple checked: working." : `Connection to Apple: not working yet (${esc(String(ak.chk.status))} ${esc(ak.chk.reason || "")}).`) : "Connection check runs within 5 minutes."} Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
           <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
           <input id="apnskid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
           <button class="btn-sec" id="apnssave">Save push key</button></div>
