@@ -6,7 +6,7 @@
 # NO triggering: block on purpose. A website push must never start a Mac build. Builds start only
 # from GitHub: Actions > "Build iPhone app" > Run workflow (.github/workflows/ios-build.yml).
 workflows:
-  ios-testflight:
+  ios-testflight: &ios
     name: Sideline iOS to TestFlight
     instance_type: mac_mini_m2
     max_build_duration: 60
@@ -22,7 +22,26 @@ workflows:
         BUNDLE_ID: "com.sidelinestandings.app"
         TEAM_ID: "55FGL4DVG5"
         APP_STORE_APPLE_ID: "6833709358"
+        APP_VARIANT: "live"        # live = the App Store app (loads sidelinestandings.com)
+        DISPLAY_NAME: "Sideline"
     scripts:
+      - name: Variant (live or UAT)
+        script: |
+          set -euo pipefail
+          cd app
+          if [ "$APP_VARIANT" = "uat" ]; then
+            # The UAT app: its own app ID, name and icon, and it always loads the UAT site.
+            node -e '
+              const fs = require("fs"), f = "capacitor.config.json", c = JSON.parse(fs.readFileSync(f, "utf8"));
+              c.appId = process.env.BUNDLE_ID; c.appName = "Sideline UAT"; c.server.url = "https://uat.sidelinestandings.com/";
+              fs.writeFileSync(f, JSON.stringify(c, null, 2));
+              console.log(c.appId, c.server.url);
+            '
+            sed -i '' 's#https://sidelinestandings.com/#https://uat.sidelinestandings.com/#g' www/offline.html www/index.html
+            cp icon-1024-uat.png icon-1024.png
+          fi
+          grep -E '"appId"|"url"' capacitor.config.json
+
       - name: Install JS dependencies
         script: |
           cd app
@@ -121,7 +140,7 @@ workflows:
           set -euo pipefail
           cd app
           PLIST="ios/App/App/Info.plist"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName Sideline" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string Sideline" "$PLIST"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName $DISPLAY_NAME" "$PLIST" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :CFBundleDisplayName string $DISPLAY_NAME" "$PLIST"
           # App-bound domains: lets the site's service worker run inside the app (offline copy, fast
           # start). The app may only navigate to these (max 10); sign-in pages are included.
           /usr/libexec/PlistBuddy -c "Delete :WKAppBoundDomains" "$PLIST" 2>/dev/null || true
@@ -179,3 +198,21 @@ workflows:
         submit_to_testflight: false   # internal testers get every build with no review (Hashmark lesson)
       # No email block: this repo is public, so no addresses here. Apple emails TestFlight builds,
       # and the GitHub "Build iPhone app" run reports early failures.
+
+  # The UAT app: TestFlight only, never submitted. Same steps as above (YAML merge); only the app ID,
+  # App Store Connect record, name, icon and site differ (see the Variant step).
+  ios-uat-testflight:
+    <<: *ios
+    name: Sideline UAT iOS to TestFlight
+    environment:
+      node: 22
+      xcode: latest
+      cocoapods: default
+      groups:
+        - signing
+      vars:
+        BUNDLE_ID: "com.sidelinestandings.app.uat"
+        TEAM_ID: "55FGL4DVG5"
+        APP_STORE_APPLE_ID: "6834018479"
+        APP_VARIANT: "uat"
+        DISPLAY_NAME: "Sideline UAT"

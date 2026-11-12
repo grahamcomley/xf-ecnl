@@ -88,6 +88,8 @@ export async function send(env, sub, msg, opts = {}) {
 // kept in KV cfg:apns {p8, kid, team, topic}. Sign-in token: ES256, reused for 40 minutes.
 let APNS = null;
 export const APNS_TOPIC = "com.sidelinestandings.app", APNS_TEAM = "55FGL4DVG5";
+// Apps the push key may send to: the App Store app and the UAT app (TestFlight only).
+export const APNS_TOPICS = ["com.sidelinestandings.app", "com.sidelinestandings.app.uat"];
 export async function apnsKey(p8) {
   const der = Uint8Array.from(atob(String(p8).replace(/-----[^-]+-----/g, "").replace(/\s+/g, "")), c => c.charCodeAt(0));
   return crypto.subtle.importKey("pkcs8", der, {name: "ECDSA", namedCurve: "P-256"}, false, ["sign"]);
@@ -114,7 +116,7 @@ async function apnsJwt(c) {
 // 0 = no push key yet. reason (when Apple gives one) is kept for the log.
 export async function apnsSend(env, token, payload, opts = {}) {
   const c = await apnsCfg(env); if (!c) return {status: 0, reason: "no push key"};
-  const h = {authorization: "bearer " + await apnsJwt(c), "apns-topic": c.topic, "apns-push-type": "alert", "apns-priority": "10",
+  const h = {authorization: "bearer " + await apnsJwt(c), "apns-topic": APNS_TOPICS.includes(opts.topic) ? opts.topic : c.topic, "apns-push-type": "alert", "apns-priority": "10",
     "apns-expiration": String(Math.floor(Date.now() / 1000) + 86400), "content-type": "application/json"};
   if (opts.collapse) h["apns-collapse-id"] = String(opts.collapse).slice(0, 64);
   const r = await fetch(`https://${opts.sandbox ? "api.sandbox.push.apple.com" : "api.push.apple.com"}/3/device/${token}`, {method: "POST", headers: h, body: JSON.stringify(payload)});

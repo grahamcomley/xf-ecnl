@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.02">
+<meta name="app-version" content="v1.03">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -957,6 +957,9 @@ const PUSH_OK = () => IS_APP ? !!PN() : "serviceWorker" in navigator && "PushMan
 const permDenied = () => IS_APP ? !!store.get("appPushDenied") : ("Notification" in window && Notification.permission === "denied");
 // App: Apple's device token for this phone (kept on the phone; the server keys the device on it).
 let APNS_TOK = store.get("apnsTok") || "", APNS_WAIT = null;
+// Which app this is (App Store app or the UAT app), so the server sends its alerts through the right app.
+var APP_ID = store.get("appId") || "";
+if (IS_APP) setTimeout(() => { try { Promise.resolve(SA() && SA().info && SA().info()).then(i => { if (i && i.id && i.id !== APP_ID) { APP_ID = i.id; store.set("appId", i.id); if (alertsOn()) alertsSync(true); } }).catch(() => {}); } catch (e) {} }, 0);
 function appRegister() {
   return new Promise((res, rej) => {
     APNS_WAIT = {res, rej};
@@ -970,7 +973,7 @@ const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true
 const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
 const alertsOn = () => !!store.get("alertsOn");
 async function pushSub() {
-  if (IS_APP) return APNS_TOK ? {endpoint: "apns:" + APNS_TOK, toJSON: () => ({endpoint: "apns:" + APNS_TOK, apns: APNS_TOK}),
+  if (IS_APP) return APNS_TOK ? {endpoint: "apns:" + APNS_TOK, toJSON: () => Object.assign({endpoint: "apns:" + APNS_TOK, apns: APNS_TOK}, APP_ID ? {topic: APP_ID} : {}),
     unsubscribe: async () => { try { await PN().unregister(); } catch (e) {} APNS_TOK = ""; store.set("apnsTok", ""); }} : null;
   try { const r = await navigator.serviceWorker.ready; return await r.pushManager.getSubscription(); } catch (e) { return null; }
 }

@@ -12,7 +12,7 @@
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
 //      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
-import {send as sendRaw, vapid, apnsSend} from "./push.js";
+import {send as sendRaw, vapid, apnsSend, APNS_TOPICS} from "./push.js";
 import {wrapLine} from "./pickem.js";
 import {dbDevice} from "./log.js";
 
@@ -39,7 +39,7 @@ async function sendApp(env, sub, msg) {
   const counts = msg.badge !== false, bc = (ib.items || []).filter(x => !x.read).length + 1;
   const aps = {alert: {title: msg.t || "Sideline Standings", body: String(msg.b || "").slice(0, 1500)}, sound: "default", "thread-id": "sideline"};
   if (counts) aps.badge = bc;
-  const r = await apnsSend(env, sub.apns, {aps, u: msg.u || "/", id: nid}, {collapse: msg.tag});
+  const r = await apnsSend(env, sub.apns, {aps, u: msg.u || "/", id: nid}, {collapse: msg.tag, topic: sub.topic});
   if (r.status === 200) {
     ib.items = [{id: nid, t: msg.t || "Sideline Standings", b: msg.b || "", x: msg.x || null, u: msg.u || "/", at: Date.now(), read: false}, ...(ib.items || [])].slice(0, 60);
     await env.USERS.put(ik, JSON.stringify(ib), {expirationTtl: 90 * 86400});
@@ -71,7 +71,7 @@ function cleanDevice(b) {
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
-  return {sub: app ? {endpoint: sub.endpoint, apns: sub.endpoint.slice(5).toLowerCase()} : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
+  return {sub: app ? Object.assign({endpoint: sub.endpoint, apns: sub.endpoint.slice(5).toLowerCase()}, APNS_TOPICS.includes(sub.topic) ? {topic: sub.topic} : {}) : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
     teams, q: {on: q.on !== false, s: hhmm(q.s) || DEF_Q.s, e: hhmm(q.e) || DEF_Q.e}, tz, badge: b.badge !== false};
 }
 

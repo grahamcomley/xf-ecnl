@@ -23,7 +23,8 @@ public class SidelineApp: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticationPresen
     // The app's version and TestFlight build number (shown in Admin).
     @objc func info(_ call: CAPPluginCall) {
         let b = Bundle.main.infoDictionary ?? [:]
-        call.resolve(["version": b["CFBundleShortVersionString"] as? String ?? "", "build": b["CFBundleVersion"] as? String ?? ""])
+        call.resolve(["version": b["CFBundleShortVersionString"] as? String ?? "", "build": b["CFBundleVersion"] as? String ?? "",
+                      "id": Bundle.main.bundleIdentifier ?? ""])
     }
 
     @objc func setBadge(_ call: CAPPluginCall) {
