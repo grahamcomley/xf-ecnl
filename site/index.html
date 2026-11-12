@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.09">
+<meta name="app-version" content="v1.10">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -854,7 +854,8 @@ function drawAccount(b) {
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
-    ME = null; store.set("signedInOnce", ""); store.set("alertsOn", ""); closePages(); applyGate(); toast("Account deleted");
+    ME = null; store.set("signedInOnce", ""); store.set("alertsOn", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null;
+    closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Account deleted");
   }
 }
 const ABOUT = [

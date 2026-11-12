@@ -297,8 +297,9 @@ async function handle(req, env, url, p, L, who0) {
         const j = await r.json().catch(() => ({}));
         if (!r.ok) { L.error("admin.reviewer", {status: r.status, why: err(j)}); return json({error: err(j)}, 400); }
         id = id || j.id;
+        // starts with no teams (Graham: just the search page; the reviewer is told which team to add)
         const u = await env.USERS.get("u:" + id, "json") || {created: Date.now()};
-        if (!(u.favs || []).length) { u.favs = ["u16b-82130"]; u.email = email; await env.USERS.put("u:" + id, JSON.stringify(u)); }
+        u.favs = []; u.email = email; u.seen = u.seen || Date.now(); await put(env, id, u);
         const rec = {email, password, at: Date.now()};
         await env.USERS.put(demo ? "cfg:demo" : "cfg:reviewer", JSON.stringify(rec));
         L.keep("admin.reviewer", {uid: c.sub, reviewer: id});
