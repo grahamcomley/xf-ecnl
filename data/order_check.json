@@ -14787,6 +14787,37 @@
   ]
  },
  {
+  "conf": "u13g-4260-41141",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132070,
+    "team": "Lonestar SAT ECNL RL STXCL G2013/14 II",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 109640,
+    "team": "Lonestar SAT ECNL RL STXCL G2013/14 I",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4260-41139",
   "name": "ECNL RL Girls STXCL",
   "ours": [
@@ -16606,6 +16637,37 @@
    114765,
    110736,
    90864
+  ]
+ },
+ {
+  "conf": "u13g-4311-41483",
+  "name": "ECNL RL Girls Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134561,
+    "team": "WA Premier",
+    "ours": [
+     9,
+     18
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
+    "id": 93840,
+    "team": "Northwest United",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
+    ]
+   }
   ]
  },
  {
@@ -20218,8 +20280,8 @@
    94349,
    134850,
    134302,
-   131831,
    136037,
+   131831,
    95580,
    114380,
    134170,
@@ -20248,6 +20310,37 @@
    134412,
    131581,
    79780
+  ]
+ },
+ {
+  "conf": "u15g-4264-40559",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136037,
+    "team": "Eclipse Select Soccer Club",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     22
+    ]
+   },
+   {
+    "id": 79684,
+    "team": "FC Wisconsin",
+    "ours": [
+     13,
+     2
+    ],
+    "ecnl": [
+     12,
+     2
+    ]
+   }
   ]
  },
  {
