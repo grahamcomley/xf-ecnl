@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.10">
+<meta name="app-version" content="v1.11">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -298,7 +298,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 <div id="signsheet" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Free account</b><button class="icon-btn" id="signsheetclose">Not now</button></div>
   <p id="signwhy" style="margin:4px 0 2px"></p>
-  <p class="mut" style="font-size:13px;margin:6px 0 0">Save your teams on every device, get alerts the moment scores post, see games and the league, and play Pick'em. Apple, Google or email.</p>
+  <p class="mut" style="font-size:13px;margin:6px 0 0">Save your teams on every device, get alerts the moment scores post, see games and the league, and predict results. Apple, Google or email.</p>
   <button class="btn-main" id="signsheetgo">Sign in</button>
 </div></div>
 <div id="gate" hidden>
@@ -556,10 +556,13 @@ let ME = null, SYNCING = false, CLERK_READY = false, PUSH_T = null, GATE = null;
 // "Require sign-in" (owner switch on the Admin page). A device that has signed in before is never
 // locked out, even after Clerk's 7-day session ends: it keeps working from saved teams.
 const knownDevice = () => !!store.get("signedInOnce");
+// Pick'em is off until launched (Admin › Pick'em switch); the owner always sees it, to test.
+var PKON = !!store.get("pkOn");
+const pkShown = () => PKON || !!(ME && ME.admin);
 async function loadGate() {
   try {
     const r = await Promise.race([fetch("/api/config", {cache: "no-store", headers: {"x-sv": visitorId()}}).then(x => x.json()), new Promise((_, no) => setTimeout(() => no(new Error("slow")), 4000))]);
-    GATE = r.gate !== false;
+    GATE = r.gate !== false; PKON = r.pickem === true; store.set("pkOn", PKON ? "1" : "");
   } catch (e) { GATE = true; }
   store.set("gateCache", GATE ? "on" : "off");
   applyGate();
@@ -930,7 +933,7 @@ async function drawAdmin(b) {
           <button class="btn-sec" id="dmmake" data-who="demo">${rv.demo ? "Make it again" : "Create the demo login"}</button></div>
         ${IS_APP ? `<button class="btn-sec" id="appsite">${location.host.startsWith("uat.") ? "Switch this app to live" : "Switch this app to UAT"}</button>` : ""}
         <p class="mut" style="font-size:12px;margin:6px 0 0" id="appinfo">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
-      ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}${x.reports ? ` <span class="keytag" style="background:var(--red);color:#fff">REPORTED ${x.reports}</span>` : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
+      ${fold("pickem", "Pick'em players", `${PKON ? "On" : "Off (only you see it)"} · ${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, `<button class="btn-sec" id="pkswitch">${PKON ? "Turn Pick'em off for everyone" : "Turn Pick'em on for everyone"}</button>` + (pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}${x.reports ? ` <span class="keytag" style="background:var(--red);color:#fff">REPORTED ${x.reports}</span>` : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>"), false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
       ${d.top.length ? fold("top", "Most followed", `${d.top.length} team${d.top.length === 1 ? "" : "s"}`, `<table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>`, false) : ""}
@@ -942,6 +945,9 @@ async function drawAdmin(b) {
       if (act === "rename") { const n = prompt("New Pick'em name"); if (!n) return; body.name = n; } else body.hidden = act === "hide";
       try { await api("PUT", "/api/admin/pickem", body); toast("Saved"); refreshPage(); } catch (x) { toast("Couldn't save that name"); }
     });
+    const psw = $("#pkswitch"); if (psw) psw.onclick = async () => {
+      try { await api("PUT", "/api/admin/pickem-switch", {on: !PKON}); PKON = !PKON; store.set("pkOn", PKON ? "1" : ""); toast(PKON ? "Pick'em is on" : "Pick'em is off"); refreshPage(); } catch (x) { toast("Couldn't change it"); }
+    };
     const as = $("#apnssave"); if (as) as.onclick = async () => {
       as.textContent = "Saving…";
       try { const t = await token(); const r = await fetch("/api/admin/apns", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({p8: $("#apnsp8").value, kid: $("#apnskid").value})}); const j = await r.json();
@@ -1370,7 +1376,7 @@ function drawLanding() {
     <div class="land-acct">
       <div>${icon("star")}<span>Save your teams on every device</span></div>
       <div>${icon("bell")}<span>Alerts the moment scores are posted</span></div>
-      <div>${icon("sliders")}<span>Predict the season and play weekly Pick'em</span></div>
+      <div>${icon("sliders")}<span>${PKON ? "Predict the season and play weekly Pick'em" : "Predict how the season finishes"}</span></div>
     </div>
     <button class="land-sign" id="landsign">Already have an account? <b>Sign in</b></button>`}
   </div>`;
@@ -1711,12 +1717,12 @@ function renderTeam(D, fid, key) {
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
 </div><div class="pane" data-tab="predict">
-  <div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>
+  ${pkShown() ? `<div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>` : ""}
   <div data-pv="season" class="pv">
   ${sec("div", "Predict", "Predicted final table", "", `<div class="picksbar" id="picksbar" hidden></div><div id="predtable"></div>`, "s5")}
   ${sec("div", "Predict", "Remaining games", "Gray = our pick. Tap a result to change it.", `<div id="predgames" class="pcards">${predHtml || "<div class='mut'>No games left.</div>"}</div>`, "s5b")}
   ${sec("div", "Predict", "How we did", "", howHtml, "s5c")}
-  </div><div data-pv="pickem" class="pv" hidden><div id="pickem"></div></div>
+  </div>${pkShown() ? `<div data-pv="pickem" class="pv" hidden><div id="pickem"></div></div>` : ""}
 </div>
 `;
 
@@ -1739,8 +1745,8 @@ function renderTeam(D, fid, key) {
   $("#predgames").addEventListener("click", onPick);
   // Predict: Season | Pick'em
   const setPv = v => { store.set("predView", v); document.querySelectorAll("#pviews button").forEach(b => b.classList.toggle("on", b.dataset.pv === v)); document.querySelectorAll(".pv").forEach(x => x.hidden = x.dataset.pv !== v); if (v === "pickem") loadPickem(); };
-  $("#pviews").onclick = e => { const b = e.target.closest("button"); if (b) setPv(b.dataset.pv); };
-  setPv(store.get("predView") === "pickem" ? "pickem" : "season");
+  if ($("#pviews")) $("#pviews").onclick = e => { const b = e.target.closest("button"); if (b) setPv(b.dataset.pv); };
+  setPv(pkShown() && store.get("predView") === "pickem" ? "pickem" : "season");
 
   // Impact lines: worked out for the visible cards in the background (so "Matters to us" can show),
   // and for any other card when its Impact link is tapped.

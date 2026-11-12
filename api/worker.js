@@ -130,8 +130,8 @@ async function handle(req, env, url, p, L, who0) {
 
     // Public: does the site require sign-in? (Owner switch on the Admin page; on unless turned off.)
     if (p === "/api/config" && req.method === "GET") {
-      const g = await env.USERS.get("cfg:gate");
-      return json({gate: g !== "off"});
+      const g = await env.USERS.get("cfg:gate"), pk = await env.USERS.get("cfg:pickem:" + env.SITE);
+      return json({gate: g !== "off", pickem: pk === "on"});   // Pick'em: off until Graham launches it (Admin switch)
     }
     if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
     const c = await who(req, env);
@@ -305,6 +305,14 @@ async function handle(req, env, url, p, L, who0) {
         L.keep("admin.reviewer", {uid: c.sub, reviewer: id});
         return json(rec);
       }
+    }
+    // /api/admin/pickem-switch: PUT {on} turns Pick'em on or off for everyone on this site (owner always sees it).
+    if (p === "/api/admin/pickem-switch" && req.method === "PUT") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      let b = {}; try { b = await req.json(); } catch (e) {}
+      await env.USERS.put("cfg:pickem:" + env.SITE, b.on ? "on" : "off");
+      L.keep("admin.pickem", {uid: c.sub, on: !!b.on, site: env.SITE});
+      return json({ok: true, on: !!b.on});
     }
     // /api/admin/apns: Apple push key for the App Store app. GET says whether one is saved (never returns it);
     // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
