@@ -81,19 +81,11 @@ sc.onload = async () => {
       const o = e.target.closest("[data-oauth]");
       if (o) { o.disabled = true; pick(); try { await window.Clerk.client.signIn.authenticateWithRedirect({strategy: o.dataset.oauth, redirectUrl: location.origin + "/sso-callback.html", redirectUrlComplete: location.href}); } catch (x) { o.disabled = false; msg("Couldn't open that. Try email instead."); } }
       if (e.target.closest("[data-email]")) {
-        pick();
-        document.querySelector(".authbtns").style.display = "none"; e.target.style.display = "none";
-        const box = document.getElementById("box"); box.classList.add("on");
+        pick();   // buttons stay behind the window, so closing it leaves the choices
+        // Clerk's own sign-in window (the embedded form needs a page route of its own and showed blank here)
         slog("email", window.Clerk.user ? "user" : "nouser");
-        try { window.Clerk.mountSignIn(box, {withSignUp: true, fallbackRedirectUrl: location.href, signUpFallbackRedirectUrl: location.href}); }
-        catch (x) { slog("mount-error", x && x.message); }
-        // if the form doesn't appear, open Clerk's own sign-in window instead
-        setTimeout(() => {
-          if (box.querySelector("input,button")) { slog("mounted", "ok"); return; }
-          slog("mount-empty", window.Clerk.user ? "user" : "nouser");
-          box.classList.remove("on");
-          try { window.Clerk.openSignIn({withSignUp: true, fallbackRedirectUrl: location.href}); } catch (x) { slog("open-error", x && x.message); msg("Couldn't open email sign-in. Close this and try again."); }
-        }, 2500);
+        try { window.Clerk.openSignIn({withSignUp: true, fallbackRedirectUrl: location.href, signUpFallbackRedirectUrl: location.href}); slog("opened", "ok"); }
+        catch (x) { slog("open-error", x && x.message); msg("Couldn't open email sign-in. Close this and try again."); }
       }
     });
   } catch (e) { slog("load-error", e && e.message); msg("Sign-in didn't load. Close this and try again."); }
