@@ -4,6 +4,7 @@ import UserNotifications
 import AuthenticationServices
 
 // Native bits the page asks for:
+//   info()              {version, build} of the installed app
 //   setBadge({n})       the red number on the app icon (0 when the app opens; Apple's push sets it on arrival)
 //   signIn({url, scheme}) the iPhone's own sign-in sheet. It shares Safari, so saved Google logins and
 //                        passwords work and Sign in with Apple uses Face ID. Resolves {url} with the
@@ -14,9 +15,16 @@ public class SidelineApp: CAPPlugin, CAPBridgedPlugin, ASWebAuthenticationPresen
     public let jsName = "SidelineApp"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "setBadge", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "signIn", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "signIn", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "info", returnType: CAPPluginReturnPromise)
     ]
     private var authSession: ASWebAuthenticationSession?
+
+    // The app's version and TestFlight build number (shown in Admin).
+    @objc func info(_ call: CAPPluginCall) {
+        let b = Bundle.main.infoDictionary ?? [:]
+        call.resolve(["version": b["CFBundleShortVersionString"] as? String ?? "", "build": b["CFBundleVersion"] as? String ?? ""])
+    }
 
     @objc func setBadge(_ call: CAPPluginCall) {
         let n = max(0, call.getInt("n") ?? 0)

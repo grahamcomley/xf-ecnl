@@ -1,0 +1,10 @@
+{
+  "name": "sideline-native",
+  "version": "1.0.0",
+  "description": "Sideline Standings native bits (red number, iPhone sign-in sheet, app info) as a local Capacitor plugin, so cap sync finds and registers it like any npm plugin.",
+  "private": true,
+  "capacitor": {
+    "ios": { "src": "ios" }
+  },
+  "peerDependencies": { "@capacitor/core": "^8.0.0" }
+}
