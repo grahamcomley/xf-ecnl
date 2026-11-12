@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.46">
+<meta name="app-version" content="v0.99.47">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1117,11 +1117,7 @@ $("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
 // Opening the app clears the red number.
 var APP_NOTE = null;
 function clearBadge() {
-  if (IS_APP) {
-    try { const s = SA(); if (s) s.setBadge({n: 0}); } catch (e) {}
-    if (ME && APNS_TOK && alertsOn()) api("POST", "/api/push/inbox", {endpoint: appEp(), opened: true}).catch(() => {});
-    return;
-  }
+  if (IS_APP) return;   // the app's red number follows the unread list (drawInboxCount)
   if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {});
   if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({clearBadge: true});
 }
@@ -1145,8 +1141,9 @@ if (IS_APP && PN()) {
     const u = d.u || "/";
     APP_NOTE = {id: d.id, t: n.title, b: n.body, u};
     if (d.id) { const it = INBOX.find(x => x.id === d.id); if (it) APP_NOTE = it; }
-    clearBadge();
+    if (d.id) { const it = INBOX.find(x => x.id === d.id); if (it) it.read = true; if (ME && APNS_TOK) api("POST", "/api/push/inbox", {endpoint: appEp(), read: [d.id]}).then(() => loadInbox()).catch(() => {}); }
     if (u.includes("#")) { const h = u.split("#")[1] + "&n=" + Date.now(); history.replaceState(null, "", "#" + h); deepLink(h); }
+    else { const n = APP_NOTE; APP_NOTE = null; TEAM_READY.then(() => showNote([], null, n)); }
     loadInbox();
   });
   // Already allowed: refresh the token each start (Apple can change it) and the blocked flag.
@@ -1238,13 +1235,15 @@ function focusGames(gids, view) {
 var INBOX = [];
 const appEp = () => "apns:" + APNS_TOK;
 async function loadInbox() {
-  if (IS_APP) { if (ME && APNS_TOK && alertsOn()) { try { INBOX = (await api("GET", "/api/push/inbox?endpoint=" + encodeURIComponent(appEp()))).items || []; } catch (e) {} } }
+  if (IS_APP) { if (ME && APNS_TOK && alertsOn()) { try { INBOX = (await api("GET", "/api/push/inbox?endpoint=" + encodeURIComponent(appEp()))).items || []; APP_INBOX_OK = true; } catch (e) {} } }
   else try { const r = await (await caches.open("badge-v1")).match("/__inbox"); INBOX = r ? await r.json() : []; } catch (e) { INBOX = []; }
   drawInboxCount();
   if (pageIs("inbox")) refreshPage();
 }
+var APP_INBOX_OK = false;
 function drawInboxCount() {
   const L = INBOX || [], unread = L.filter(x => !x.read).length, bell = $("#belltop"), c = $("#bellcount");
+  if (IS_APP && APP_INBOX_OK) { try { const s = SA(); if (s) s.setBadge({n: unread}); } catch (e) {} }
   bell.hidden = !(L.length || alertsOn());
   c.hidden = !unread; c.textContent = unread > 99 ? "99+" : String(unread);
 }

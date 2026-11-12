@@ -30,18 +30,18 @@ async function send(env, sub, msg, kind = "alert", d = null) {
 }
 // App Store app: Apple push, plus the device's inbox (last 60 alerts) and red-number count kept here,
 // because the app has no service worker receiving the alerts.
-//   ib:<site>:<device id> -> {bc: alerts since the app was last opened, items: [{id, t, b, x, u, at, read}]}
+//   ib:<site>:<device id> -> {items: [{id, t, b, x, u, at, read}]}. The red number = unread items in this list.
 const ibKey = (env, id) => `ib:${site(env)}:${id}`;
 async function sendApp(env, sub, msg) {
   const id = await devId(sub.endpoint), ik = ibKey(env, id);
   const ib = await env.USERS.get(ik, "json") || {bc: 0, items: []};
   const nid = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-  const counts = msg.badge !== false, bc = (ib.bc || 0) + (counts ? 1 : 0);
+  const counts = msg.badge !== false, bc = (ib.items || []).filter(x => !x.read).length + 1;
   const aps = {alert: {title: msg.t || "Sideline Standings", body: String(msg.b || "").slice(0, 1500)}, sound: "default", "thread-id": "sideline"};
   if (counts) aps.badge = bc;
   const r = await apnsSend(env, sub.apns, {aps, u: msg.u || "/", id: nid}, {collapse: msg.tag});
   if (r.status === 200) {
-    ib.bc = bc; ib.items = [{id: nid, t: msg.t || "Sideline Standings", b: msg.b || "", x: msg.x || null, u: msg.u || "/", at: Date.now(), read: false}, ...(ib.items || [])].slice(0, 60);
+    ib.items = [{id: nid, t: msg.t || "Sideline Standings", b: msg.b || "", x: msg.x || null, u: msg.u || "/", at: Date.now(), read: false}, ...(ib.items || [])].slice(0, 60);
     await env.USERS.put(ik, JSON.stringify(ib), {expirationTtl: 90 * 86400});
     return {status: 201, reason: ""};
   }
@@ -107,13 +107,13 @@ export async function route(p, req, env, c, json) {
     const d = await env.USERS.get(key, "json");
     if (!d || d.uid !== c.sub) return json({items: []});
     const ik = ibKey(env, id), ib = await env.USERS.get(ik, "json") || {bc: 0, items: []};
-    if (req.method === "GET") return json({items: ib.items || [], bc: ib.bc || 0});
+    const unread = () => (ib.items || []).filter(x => !x.read).length;
+    if (req.method === "GET") return json({items: ib.items || [], unread: unread()});
     let ch = false;
-    if (body.opened && ib.bc) { ib.bc = 0; ch = true; }
     const ids = body.read === "all" ? (ib.items || []).map(x => x.id) : Array.isArray(body.read) ? body.read : [];
     (ib.items || []).forEach(x => { if (ids.includes(x.id) && !x.read) { x.read = true; ch = true; } });
     if (ch) await env.USERS.put(ik, JSON.stringify(ib), {expirationTtl: 90 * 86400});
-    return json({ok: true, bc: ib.bc || 0});
+    return json({ok: true, unread: unread()});
   }
   if (p === "/api/push" && req.method === "DELETE") {
     const d = await env.USERS.get(key, "json");

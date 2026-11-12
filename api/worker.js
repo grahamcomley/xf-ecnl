@@ -158,7 +158,7 @@ async function handle(req, env, url, p, L, who0) {
     // Pick'em: weekend score picks, names, leaderboard (api/pickem.js).
     if (p === "/api/pickem" || p === "/api/pickem/name") return pickRoute(p, req, env, c, json, L);
     // Alerts (push notifications) for this device: settings, test, turn off.
-    if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen") return pushRoute(p, req, env, c, json);
+    if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen" || p === "/api/push/inbox") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key); dbPerson(env, null, c.sub, null);
