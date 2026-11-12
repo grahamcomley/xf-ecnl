@@ -100,11 +100,11 @@ export default {
     // device token is used, so Apple answering "BadDeviceToken" means the connection and the key both work.
     const apnsCheck = (async () => {
       const k = await env.USERS.get("cfg:apns", "json");
-      if (!k || !k.p8 || k.chk === k.at + ":" + env.SITE + ":2") return;
+      if (!k || !k.p8 || (k.chks || {})[env.SITE] === k.at) return;   // once per key, per site
       let r; try { r = await apnsSend(env, "0".repeat(64), {aps: {alert: {title: "check", body: "check"}}}); } catch (e) { r = {status: -1, reason: String(e && e.message || e)}; }
       const ok = r.status === 410 && /BadDeviceToken/.test(r.reason);
       L.keep("apns.check", {site: env.SITE, kid: k.kid, status: r.status, reason: r.reason, ok});
-      k.chk = k.at + ":" + env.SITE + ":2"; k.chkr = {status: r.status, reason: r.reason, ok, when: Date.now(), site: env.SITE};
+      k.chks = Object.assign({}, k.chks, {[env.SITE]: k.at}); k.chkr = {status: r.status, reason: r.reason, ok, when: Date.now(), site: env.SITE};
       await env.USERS.put("cfg:apns", JSON.stringify(k));
     })().catch(e => L.error("apns.check.error", {msg: String(e)}));
     // the log is saved once, after the alerts check: wait for the Apple check too
