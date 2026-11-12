@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.43">
+<meta name="app-version" content="v0.99.44">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -620,9 +620,14 @@ async function api(method, path, body) {
 let SIGNIN_T = null;
 // App: sign in through the iPhone's own sign-in sheet (shares Safari's saved logins); the sheet hands back
 // a one-time pass that signs the app in. Returns false when this app build can't do it (older build).
+// App problems go to the server log as the address itself (the log keeps the path), so they can be
+// read with no steps on the phone: /api/log/app/<what>/<detail>.
+function appLog(what, detail) { try { navigator.sendBeacon("/api/log/app/" + what + "/" + encodeURIComponent(String(detail || "").slice(0, 160)).replace(/%/g, "~")); } catch (e) {} }
 async function appSignIn() {
   let r;
-  try { r = await SA().signIn({url: location.origin + "/app-signin.html", scheme: "sideline"}); } catch (e) { return false; }
+  try { r = await SA().signIn({url: location.origin + "/app-signin.html", scheme: "sideline"}); }
+  catch (e) { appLog("signin-error", (e && (e.code || "") + " " + (e.message || e.errorMessage || JSON.stringify(e))) || "unknown"); return false; }
+  appLog("signin-back", r && (r.cancelled ? "cancelled" : r.url ? "url" : "empty"));
   if (!r || r.cancelled || !r.url) return true;
   const ticket = new URL(r.url).searchParams.get("ticket"); if (!ticket) return true;
   try { const si = await window.Clerk.client.signIn.create({strategy: "ticket", ticket}); await window.Clerk.setActive({session: si.createdSessionId}); onAuth(); }
@@ -1120,6 +1125,7 @@ function clearBadge() {
 clearBadge();
 // App: Apple push events. Token arrives after register(); a tap on an alert opens it like the web app
 // does (full alert card first, then "Show this game").
+if (IS_APP) appLog("start", bridgeInfo());
 if (IS_APP && PN()) {
   const p = PN(), on = (ev, cb) => { try { p.addListener(ev, cb); } catch (e) { console.warn("listener", ev, e); } };
   on("registration", t => {
