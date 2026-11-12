@@ -1103,9 +1103,9 @@
   "name": "Pre-ECNL Boys New England",
   "ours": [
    135952,
+   133925,
    136441,
    133926,
-   133925,
    134891,
    117692,
    134847,
@@ -1131,6 +1131,37 @@
   ]
  },
  {
+  "conf": "u11b-4364-40817",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133925,
+    "team": "SUSA FC Pre-ECNL B2015/16 ACADEMY",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
+    "id": 117008,
+    "team": "AC Connecticut Pre-ECNL B2015/16 I",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4364-40819",
   "name": "Pre-ECNL Boys New England",
   "ours": [
@@ -1139,8 +1170,8 @@
    132346,
    135096,
    136440,
-   135958,
    133945,
+   135958,
    133186,
    134695,
    117010,
@@ -1160,6 +1191,37 @@
    127267,
    135311,
    133186
+  ]
+ },
+ {
+  "conf": "u11b-4364-40819",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133945,
+    "team": "SUSA FC Pre-ECNL B2015/16 ACADEMY ll",
+    "ours": [
+     11,
+     17
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   },
+   {
+    "id": 117010,
+    "team": "AC Connecticut Pre-ECNL B2015/16 II",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   }
   ]
  },
  {
@@ -2645,11 +2707,11 @@
   "conf": "u12b-4359-42074",
   "name": "Pre-ECNL Boys GMA",
   "ours": [
-   133530,
    115314,
    115324,
    120242,
    134997,
+   133530,
    132698,
    115315,
    136179,
@@ -2678,15 +2740,15 @@
   "kind": "points",
   "teams": [
    {
-    "id": 134997,
-    "team": "Royal Oak FC Pre-ECNL GMA B2014/2015 Green",
+    "id": 133530,
+    "team": "Plymouth Reign Pre-ECNL B2014/15",
     "ours": [
      4,
      9
     ],
     "ecnl": [
-     5,
-     12
+     3,
+     9
     ]
    },
    {
@@ -3013,9 +3075,9 @@
    118001,
    117145,
    134846,
-   117011,
    111638,
    135308,
+   117011,
    116958,
    134889,
    114509,
@@ -3035,6 +3097,68 @@
    114652,
    134846,
    134889
+  ]
+ },
+ {
+  "conf": "u12b-4364-40818",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114508,
+    "team": "SUSA FC Pre-ECNL B2014/15 ACADEMY",
+    "ours": [
+     11,
+     31
+    ],
+    "ecnl": [
+     10,
+     28
+    ]
+   },
+   {
+    "id": 117011,
+    "team": "AC Connecticut Pre-ECNL B2014/15 I",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     10
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u12b-4364-40820",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133939,
+    "team": "SUSA FC Pre-ECNL B2014/15 ACADEMY ll",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
+    ]
+   },
+   {
+    "id": 117012,
+    "team": "AC Connecticut Pre-ECNL B2014/15 II",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     4
+    ]
+   }
   ]
  },
  {
@@ -4024,6 +4148,37 @@
   ]
  },
  {
+  "conf": "u13b-4281-41757",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 116991,
+    "team": "AC Connecticut",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
+    "id": 114495,
+    "team": "SUSA FC ACADEMY",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4282-40503",
   "name": "ECNL Boys North Atlantic",
   "ours": [
@@ -4386,9 +4541,9 @@
    134883,
    114651,
    117144,
+   116992,
    135073,
    126415,
-   116992,
    94545,
    114503,
    133862,
@@ -4409,6 +4564,37 @@
    116957,
    117144,
    133862
+  ]
+ },
+ {
+  "conf": "u13b-4340-41829",
+  "name": "ECNL RL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 116992,
+    "team": "AC Connecticut",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
+    "id": 133862,
+    "team": "SUSA FC ACADEMY",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   }
   ]
  },
  {
@@ -4476,6 +4662,37 @@
    134955,
    133261,
    126585
+  ]
+ },
+ {
+  "conf": "u13b-4342-40683",
+  "name": "ECNL RL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 91704,
+    "team": "Pipeline SC",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
+    "id": 131023,
+    "team": "Baltimore Celtic",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     7
+    ]
+   }
   ]
  },
  {
@@ -5413,8 +5630,8 @@
   "conf": "u14b-4281-41758",
   "name": "ECNL Boys New England",
   "ours": [
-   95342,
    82173,
+   95342,
    115173,
    97125,
    113900,
@@ -5439,6 +5656,37 @@
    113900,
    116956,
    114494
+  ]
+ },
+ {
+  "conf": "u14b-4281-41758",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95342,
+    "team": "SUSA FC ACADEMY",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 97125,
+    "team": "AC Connecticut",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   }
   ]
  },
  {
@@ -5854,8 +6102,8 @@
    82174,
    94752,
    135070,
-   81912,
    116993,
+   81912,
    133861,
    96818,
    135320
@@ -5873,6 +6121,37 @@
    96818,
    135320,
    134884
+  ]
+ },
+ {
+  "conf": "u14b-4340-41828",
+  "name": "ECNL RL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 116993,
+    "team": "AC Connecticut",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     7
+    ]
+   },
+   {
+    "id": 133861,
+    "team": "SUSA FC ACADEMY",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   }
   ]
  },
  {
@@ -17906,6 +18185,37 @@
    131592,
    79385,
    134967
+  ]
+ },
+ {
+  "conf": "u14g-4266-40570",
+  "name": "ECNL Girls North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95035,
+    "team": "Maryland United FC",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     9
+    ]
+   },
+   {
+    "id": 131592,
+    "team": "HEX FC Bucks",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     3
+    ]
+   }
   ]
  },
  {
