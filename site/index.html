@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.03">
+<meta name="app-version" content="v1.04">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1176,7 +1176,9 @@ if (IS_APP && PN()) {
     const u = d.u || "/";
     APP_NOTE = {id: d.id, t: n.title, b: n.body, u};
     if (d.id) { const it = INBOX.find(x => x.id === d.id); if (it) APP_NOTE = it; }
-    if (d.id) { const it = INBOX.find(x => x.id === d.id); if (it) it.read = true; if (ME && APNS_TOK) api("POST", "/api/push/inbox", {endpoint: appEp(), read: [d.id]}).then(() => loadInbox()).catch(() => {}); }
+    // Opening the app from an alert can fire before sign-in has loaded: remember the alert and mark it
+    // read once the inbox loads (before, the read was dropped and the red number stayed).
+    if (d.id) { PENDING_READ.add(d.id); const it = INBOX.find(x => x.id === d.id); if (it) it.read = true; if (ME && APNS_TOK) api("POST", "/api/push/inbox", {endpoint: appEp(), read: [d.id]}).then(() => { PENDING_READ.delete(d.id); loadInbox(); }).catch(() => {}); }
     if (u.includes("#")) { const h = u.split("#")[1] + "&n=" + Date.now(); history.replaceState(null, "", "#" + h); deepLink(h); }
     else { const n = APP_NOTE; APP_NOTE = null; TEAM_READY.then(() => showNote([], null, n)); }
     loadInbox();
@@ -1268,9 +1270,15 @@ function focusGames(gids, view) {
 // ---------- alert inbox (bell in the header) ----------
 // Every alert this phone received (kept by the service worker), newest first, with an unread count.
 var INBOX = [];
+var PENDING_READ = new Set();   // alerts tapped before the app could reach the server
 const appEp = () => "apns:" + APNS_TOK;
 async function loadInbox() {
-  if (IS_APP) { if (ME && APNS_TOK && alertsOn()) { try { INBOX = (await api("GET", "/api/push/inbox?endpoint=" + encodeURIComponent(appEp()))).items || []; APP_INBOX_OK = true; } catch (e) {} } }
+  if (IS_APP) { if (ME && APNS_TOK && alertsOn()) { try {
+    INBOX = (await api("GET", "/api/push/inbox?endpoint=" + encodeURIComponent(appEp()))).items || []; APP_INBOX_OK = true;
+    const pend = [...PENDING_READ].filter(id => INBOX.some(x => x.id === id && !x.read));
+    if (pend.length) { INBOX.forEach(x => { if (pend.includes(x.id)) x.read = true; }); await api("POST", "/api/push/inbox", {endpoint: appEp(), read: pend}); }
+    PENDING_READ.clear();
+  } catch (e) {} } }
   else try { const r = await (await caches.open("badge-v1")).match("/__inbox"); INBOX = r ? await r.json() : []; } catch (e) { INBOX = []; }
   drawInboxCount();
   if (pageIs("inbox")) refreshPage();
@@ -1678,8 +1686,8 @@ function renderTeam(D, fid, key) {
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="league">
   ${sec("div", "League", "This week's results", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
-  ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b")}
-  ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c")}
+  ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
+  ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
 </div><div class="pane" data-tab="predict">
   <div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>
   <div data-pv="season" class="pv">
