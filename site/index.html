@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.42">
+<meta name="app-version" content="v0.99.43">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -114,6 +114,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .land-sign{background:none;border:0;color:var(--mut);font:inherit;font-size:14px;margin-top:16px;cursor:pointer}.land-sign b{color:var(--ink)}
 body.locked #tabbar button:not([data-tab="team"]),body.locked #belltop,body.locked #sharebtn{opacity:.4}
 #tabbar button{position:relative}.tlock{display:none;position:absolute;top:1px;left:calc(50% + 7px);width:13px;height:13px}.tlock .ic{width:13px!important;height:13px!important}body.locked #tabbar button:not([data-tab="team"]) .tlock{display:block}
+.cl-modalBackdrop{align-items:center!important;padding-top:env(safe-area-inset-top)!important}.cl-modalContent{margin:auto 0!important}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
@@ -777,8 +778,8 @@ function drawSettings(b) {
   const ver = document.querySelector('meta[name="app-version"]').content;
   b.innerHTML = `<div class="pgin"><div class="seth">Account</div>
       ${ME ? setRow("account", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("signin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
-    <div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary()).replace(/(<svg(?:(?!<svg)[^])*)$/, alertNew() ? '<span class="rdot"></span>$1' : "$1")}
-    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}
+    ${ME ? `<div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary()).replace(/(<svg(?:(?!<svg)[^])*)$/, alertNew() ? '<span class="rdot"></span>$1' : "$1")}
+    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}` : ""}
     <div class="seth">About</div>
       ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
       ${setRow("privacy", "lock", "Privacy", "What we store and how to delete it")}
