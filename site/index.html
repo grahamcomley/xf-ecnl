@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.39">
+<meta name="app-version" content="v0.99.40">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -263,6 +263,12 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
 </div></div>
+<div id="signsheet" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b>Free account</b><button class="icon-btn" id="signsheetclose">Not now</button></div>
+  <p id="signwhy" style="margin:4px 0 2px"></p>
+  <p class="mut" style="font-size:13px;margin:6px 0 0">Save your teams on every device, get alerts the moment scores post, see games and the league, and play Pick'em. Apple, Google or email.</p>
+  <button class="btn-main" id="signsheetgo">Sign in</button>
+</div></div>
 <div id="gate" hidden>
   <div class="gate-in">
     <span class="logo gate-logo" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -318,6 +324,7 @@ const ICON = {
 const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["league", "grid", "League"], ["predict", "sliders", "Predict"]];
 let TAB = (() => { try { return localStorage.getItem("tab") || "team"; } catch (e) { return "team"; } })();
 function showTab(t, scroll = true) {
+  if (t !== "team" && LOCKED()) t = "team";
   TAB = t; try { localStorage.setItem("tab", t); } catch (e) {}
   document.querySelectorAll("#app .pane").forEach(p => p.hidden = p.dataset.tab !== t);
   document.querySelectorAll("#tabbar button").forEach(b => { b.classList.toggle("on", b.dataset.tab === t); b.setAttribute("aria-current", b.dataset.tab === t ? "page" : "false"); });
@@ -524,13 +531,48 @@ async function loadGate() {
   store.set("gateCache", GATE ? "on" : "off");
   applyGate();
 }
+// "Require sign-in" on: anyone can search teams and see a team's Standings. Everything else (the star,
+// the other tabs, share, settings, the bell) asks them to sign in first, then does what they tapped.
+function LOCKED() { return (GATE === null ? store.get("gateCache") !== "off" : GATE) && !knownDevice() && !ME && !(window.Clerk && window.Clerk.user); }
 function applyGate() {
-  const g = GATE === null ? store.get("gateCache") !== "off" : GATE;
-  const show = g && !knownDevice() && !(window.Clerk && window.Clerk.user);
-  $("#gate").hidden = !show;
-  if (show && CLERK_READY) mountGate();
+  $("#gate").hidden = true;
+  document.body.classList.toggle("locked", LOCKED());
+  if (!LOCKED() && TAB !== "team" && $("#signsheet") && !$("#signsheet").hidden) $("#signsheet").hidden = true;
   drawPills();
 }
+const PEND_WHY = {star: "Sign in to save this team.", share: "Sign in to share this team.", settings: "Sign in to change your settings.", bell: "Sign in to see your alerts.",
+  "tab:games": "Sign in to see games and results.", "tab:league": "Sign in to see every game in the league.", "tab:predict": "Sign in to predict the season and play Pick'em."};
+function askSignIn(act) {
+  store.set("pendAct", JSON.stringify({act, team: CUR, at: Date.now()}));
+  $("#signwhy").textContent = PEND_WHY[act] || "Sign in to keep going.";
+  $("#signsheet").hidden = false;
+  try { navigator.sendBeacon && navigator.sendBeacon("/api/log/anon?e=ask&a=" + encodeURIComponent(act)); } catch (e) {}
+}
+$("#signsheetclose").onclick = () => { $("#signsheet").hidden = true; store.set("pendAct", ""); };
+$("#signsheetgo").onclick = () => { $("#signsheet").hidden = true; signIn(); };
+// After signing in: do what they tapped (kept across the sign-in page reload, for 15 minutes).
+function runPending() {
+  let p = null; try { p = JSON.parse(store.get("pendAct") || "null"); } catch (e) {}
+  store.set("pendAct", "");
+  if (!p || Date.now() - p.at > 15 * 60e3) return;
+  setTimeout(() => {
+    const a = p.act;
+    if (a === "star") { if (p.team && !(favs() || []).includes(p.team)) { toggleFav(p.team); refreshStar(); toast("Saved to favorites"); } }
+    else if (a === "share") { const b = $("#sharebtn"); if (b) b.click(); }
+    else if (a === "settings") openSettings();
+    else if (a === "bell") openPage("inbox", true);
+    else if (a.startsWith("tab:")) showTab(a.slice(4));
+  }, 700);
+}
+// Taps that need an account while signed out (capture phase: runs before the button's own handler).
+document.addEventListener("click", e => {
+  if (!LOCKED()) return;
+  const t = e.target.closest("#starbtn, #sharebtn, #settop, #belltop, #tabbar button");
+  if (!t) return;
+  let act = t.id === "starbtn" ? "star" : t.id === "sharebtn" ? "share" : t.id === "settop" ? "settings" : t.id === "belltop" ? "bell" : "tab:" + t.dataset.tab;
+  if (act === "tab:team") return;
+  e.preventDefault(); e.stopPropagation(); askSignIn(act);
+}, true);
 const SIGNIN_OPTS = () => ({withSignUp: true, fallbackRedirectUrl: location.href, signUpFallbackRedirectUrl: location.href});
 let GATE_MOUNTED = false;
 function mountGate() {
@@ -605,7 +647,7 @@ async function onAuth() {
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
     alertsSync(); seenPing();
-    showAlertPrompt();
+    showAlertPrompt(); runPending();
     if (IS_APP) { clearBadge(); loadInbox(); }
     mergePicks(r.picks || {});
     maybeOfferHome();
@@ -804,7 +846,7 @@ async function drawAdmin(b) {
       <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
         <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
         <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
-      <div class="admswitch"><div><b>Require sign-in</b><div class="mut" style="font-size:12px">${gateOn ? "On: new visitors see the welcome screen." : "Off: the site is open; sign-in is optional."} Takes about a minute to reach everyone.</div></div><button class="btn-sec admtoggle" id="gatetoggle">${gateOn ? "Turn off" : "Turn on"}</button></div>
+      <div class="admswitch"><div><b>Require sign-in</b><div class="mut" style="font-size:12px">${gateOn ? "On: anyone can search teams and see Standings; everything else asks them to sign in." : "Off: everything is open; sign-in is optional."} Takes about a minute to reach everyone.</div></div><button class="btn-sec admtoggle" id="gatetoggle">${gateOn ? "Turn off" : "Turn on"}</button></div>
       ${d.alerts ? fold("alerts", "Alerts", `${d.alerts.people} ${d.alerts.people === 1 ? "person" : "people"} · ${d.alerts.week} sent this week`, `<div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
         <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
         <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
@@ -1117,7 +1159,7 @@ function route() {
   let f = favs();
   if (keys.length) {
     if (keys[0] !== store.get("lastTeam")) TAB = "team";   // a link to a different team opens on Team
-    if (f === null) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite
+    if (f === null && !LOCKED()) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite (signed out: the star asks to sign in)
     deepLink(h, keys[0]);
   } else if (f && f.length) {
     openTeam(f[0]);
