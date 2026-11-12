@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.40">
+<meta name="app-version" content="v0.99.41">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -105,6 +105,15 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .fold{background:var(--card2);border:1px solid var(--line2);border-radius:10px;margin-top:10px}.fold>summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}.fold>summary::-webkit-details-marker{display:none}.fold>summary>span{flex:1;font-weight:700}.fold>summary .ddsub{display:block;font-weight:400}.fold>summary .ic{width:18px;height:18px;color:var(--mut)}.fold[open]>summary .ic{transform:rotate(180deg)}.foldin{padding:0 12px 12px}.foldin .admtiles{margin-top:0;grid-template-columns:repeat(4,1fr)}.foldin .stat{padding:8px}.foldin .stat .v{font-size:20px}.foldin .stat .k{font-size:11px}.setcard{max-height:92vh}.seth{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);margin:18px 0 6px}
 .acard{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:13px 14px 12px;margin-bottom:10px}.acard .ah{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px}.acard .ah .ic{width:19px;height:19px;color:var(--red)}.acard p{margin:6px 0 2px;color:var(--mut);font-size:14px;line-height:1.4}.acard .acardno{display:block;width:100%;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;padding:10px 0 2px;cursor:pointer}
 #settop{position:relative}.gdot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--red);border:2px solid var(--bg)}.setrow .rdot{width:8px;height:8px;border-radius:50%;background:var(--red);flex:none;margin-left:auto;margin-right:-4px}
+.land{max-width:460px;margin:0 auto;padding:26px 6px 30px;text-align:center}.land .land-logo{width:54px;height:54px;border-radius:14px;gap:5px;padding:0 13px;margin:6px auto 16px}.land .land-logo i{height:4px}
+.land h1{font-size:24px;margin:0 0 6px}.land-sub{color:var(--mut);font-size:15px;line-height:1.45;margin:0 0 18px}
+.land-search{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:14px;color:var(--mut);font:inherit;font-size:15px;text-align:left;cursor:pointer}.land-search .ic{width:20px;height:20px;color:var(--ink)}
+.land-h{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:22px 0 8px;text-align:left}
+.land-browse{display:grid;grid-template-columns:1fr 1fr;gap:8px}.land-browse button{background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:13px;color:var(--ink);font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.land-acct{background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:4px 12px;text-align:left}.land-acct div{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px}.land-acct div+div{border-top:1px solid var(--line)}.land-acct .ic{width:19px;height:19px;color:var(--red);flex:none}
+.land-sign{background:none;border:0;color:var(--mut);font:inherit;font-size:14px;margin-top:16px;cursor:pointer}.land-sign b{color:var(--ink)}
+body.locked #tabbar button:not([data-tab="team"]),body.locked #belltop,body.locked #sharebtn{opacity:.4}
+#tabbar button{position:relative}.tlock{display:none;position:absolute;top:1px;left:calc(50% + 7px);width:13px;height:13px}.tlock .ic{width:13px!important;height:13px!important}body.locked #tabbar button:not([data-tab="team"]) .tlock{display:block}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
@@ -542,8 +551,8 @@ function applyGate() {
 }
 const PEND_WHY = {star: "Sign in to save this team.", share: "Sign in to share this team.", settings: "Sign in to change your settings.", bell: "Sign in to see your alerts.",
   "tab:games": "Sign in to see games and results.", "tab:league": "Sign in to see every game in the league.", "tab:predict": "Sign in to predict the season and play Pick'em."};
-function askSignIn(act) {
-  store.set("pendAct", JSON.stringify({act, team: CUR, at: Date.now()}));
+function askSignIn(act, team) {
+  store.set("pendAct", JSON.stringify({act, team: team || CUR, at: Date.now()}));
   $("#signwhy").textContent = PEND_WHY[act] || "Sign in to keep going.";
   $("#signsheet").hidden = false;
   try { navigator.sendBeacon && navigator.sendBeacon("/api/log/anon?e=ask&a=" + encodeURIComponent(act)); } catch (e) {}
@@ -567,9 +576,10 @@ function runPending() {
 // Taps that need an account while signed out (capture phase: runs before the button's own handler).
 document.addEventListener("click", e => {
   if (!LOCKED()) return;
-  const t = e.target.closest("#starbtn, #sharebtn, #settop, #belltop, #tabbar button");
+  const t = e.target.closest("#starbtn, #sharebtn, #belltop, #tabbar button, #finder [data-star]");
   if (!t) return;
-  let act = t.id === "starbtn" ? "star" : t.id === "sharebtn" ? "share" : t.id === "settop" ? "settings" : t.id === "belltop" ? "bell" : "tab:" + t.dataset.tab;
+  if (t.dataset.star) { e.preventDefault(); e.stopPropagation(); return askSignIn("star", t.dataset.star); }
+  let act = t.id === "starbtn" ? "star" : t.id === "sharebtn" ? "share" : t.id === "belltop" ? "bell" : "tab:" + t.dataset.tab;
   if (act === "tab:team") return;
   e.preventDefault(); e.stopPropagation(); askSignIn(act);
 }, true);
@@ -1150,7 +1160,7 @@ $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
 loadClerk(); applyGate(); loadGate();
 
-$("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span></button>`).join("");
+$("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
 function route() {
   let h = location.hash.slice(1);
@@ -1163,11 +1173,10 @@ function route() {
     deepLink(h, keys[0]);
   } else if (f && f.length) {
     openTeam(f[0]);
+  } else if (LOCKED() && teamByKey(store.get("lastTeam") || "")) {
+    openTeam(store.get("lastTeam"));     // a returning signed-out visitor: the last team they looked at
   } else {
-    drawPills(); openFinder();
-    $("#teamhead").innerHTML = `<div class="th"><div class="thl"><button class="teamdd" id="teamdd">${icon("search")} Find a team</button><div class="thsub">Search or browse every ECNL, ECNL RL, Pre-ECNL and MLS NEXT team, then tap the star to save it.</div></div></div>`;
-    $("#teamdd").onclick = openFinder;
-    $("#app").innerHTML = ""; $("#tabbar").hidden = true;
+    drawPills(); drawLanding();
   }
 }
 // Links from alerts: #t=<team>&g=<game ids>&v=<tab>&n=<tapped>. A tapped alert shows in full right
@@ -1270,6 +1279,29 @@ function toggleFav(k) {
 
 // ---------- finder ----------
 let FSTATE = {};
+// First screen with no team yet: what Sideline is, search, browse, and what a free account adds.
+function drawLanding() {
+  CUR = null; closeFinder();
+  $("#teamhead").innerHTML = ""; $("#tabbar").hidden = true;
+  $("#app").innerHTML = `<div class="land">
+    <span class="logo land-logo" aria-hidden="true"><i></i><i></i><i></i></span>
+    <h1>Welcome to Sideline Standings</h1>
+    <p class="land-sub">Live standings, results and predictions for your club soccer team.</p>
+    <button class="land-search" id="landq">${icon("search")}<span>Search your club or team (e.g. XF)</span></button>
+    <div class="land-h">Or browse</div>
+    <div class="land-browse"><button data-lg="Boys">Boys</button><button data-lg="Girls">Girls</button></div>
+    ${ME ? "" : `<div class="land-h">With a free account</div>
+    <div class="land-acct">
+      <div>${icon("star")}<span>Save your teams on every device</span></div>
+      <div>${icon("bell")}<span>Alerts the moment scores are posted</span></div>
+      <div>${icon("sliders")}<span>Predict the season and play weekly Pick'em</span></div>
+    </div>
+    <button class="land-sign" id="landsign">Already have an account? <b>Sign in</b></button>`}
+  </div>`;
+  $("#landq").onclick = () => openFinder();
+  document.querySelectorAll("[data-lg]").forEach(b => b.onclick = () => { openFinder(); FSTATE = {g: b.dataset.lg}; drawFinder(); });
+  const s = $("#landsign"); if (s) s.onclick = signIn;
+}
 function openFinder() { FSTATE = {}; $("#fq").value = ""; $("#finder").classList.add("open"); drawFinder(); setTimeout(() => $("#fq").focus(), 50); }
 function closeFinder() { $("#finder").classList.remove("open"); }
 function teamRow(t) {
