@@ -77,6 +77,12 @@ async function put(env, id, rec) {
   await env.USERS.put("u:" + id, JSON.stringify(rec), {metadata: {e: rec.email || "", n: rec.favs.length, s: rec.seen, c: rec.created}});
 }
 
+// Person or bot, for the logs: bots name themselves in the user agent, or come from data-center
+// networks (real families come from home internet and phone carriers). No IP address or location is kept.
+const BOT_UA = /bot|crawl|spider|slurp|heritrix|curl|wget|python|okhttp|go-http|java\/|headless|scan|httpclient|axios|node-fetch|libwww|facebookexternalhit|preview/i;
+const DC_NET = /amazon|aws|google llc|google cloud|microsoft|azure|digitalocean|ovh|hetzner|linode|akamai|alibaba|tencent|huawei cloud|oracle|contabo|vultr|choopa|leaseweb|m247|hostinger|scaleway|datacamp|cdn77|colocrossing|hosting|server|data ?center|cloudflare/i;
+function visitorKind(ua, net) { return BOT_UA.test(ua) ? "bot" : DC_NET.test(net) ? "datacenter" : "person"; }
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url), p = url.pathname;
@@ -87,7 +93,8 @@ export default {
     let res;
     try { res = await handle(req, env, url, p, L, who0); }
     catch (e) { L.error("api.error", {m: req.method, p, uid: who0.uid, msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}); res = json({error: "server error"}, 500); }
-    L.info("api", {m: req.method, p, s: res.status, uid: who0.uid, ms: Date.now() - t0, ua: (req.headers.get("user-agent") || "").slice(0, 120)});
+    const ua = (req.headers.get("user-agent") || "").slice(0, 120), net = String((req.cf && req.cf.asOrganization) || "").slice(0, 60);
+    L.info("api", {m: req.method, p, s: res.status, uid: who0.uid, ms: Date.now() - t0, ua, net, vid: (req.headers.get("x-sv") || "").slice(0, 24) || undefined, kind: visitorKind(ua, net)});
     L.flush();
     return res;
   },
@@ -96,6 +103,7 @@ export default {
     if (!env.USERS) return;
     const L = makeLog(env, ctx); pushSetLog(L);
     ctx.waitUntil(dbDailySync(env).then(r => r && L.info("mirror.sync", r)).catch(e => L.error("mirror.error", {msg: String(e)})));
+    ctx.waitUntil(dailyVisitors(env, L).catch(e => L.error("daily.error", {msg: String(e)})));
     // Apple push: once per saved key, check this server can reach Apple and the key is accepted. A made-up
     // device token is used, so Apple answering "BadDeviceToken" means the connection and the key both work.
     const apnsCheck = (async () => {
@@ -299,3 +307,20 @@ async function handle(req, env, url, p, L, who0) {
   }
 }
 
+// Once a day (first timer run after midnight Pacific): yesterday's visitors for this site, kept as one
+// "daily" log line: people (unique devices), bots, data-center visits, sign-ins, alerts turned on.
+async function dailyVisitors(env, L) {
+  if (!env.LOGS) return;
+  const site = env.SITE || "live", now = new Date(), pt = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+  const day = pt.toISOString().slice(0, 10), flag = `cfg:daily:${site}`;
+  if (await env.USERS.get(flag) === day) return;
+  await env.USERS.put(flag, day);
+  const end = now.getTime() - (pt.getHours() * 3600 + pt.getMinutes() * 60 + pt.getSeconds()) * 1000, start = end - 86400e3;
+  const q = (sql, ...b) => env.LOGS.prepare(sql).bind(site, start, end, ...b).first();
+  const opens = "evt = 'api' AND json_extract(data, '$.p') = '/api/config'";
+  const people = await q(`SELECT count(DISTINCT coalesce(json_extract(data, '$.vid'), json_extract(data, '$.ua'))) n, count(*) opens FROM events WHERE site = ? AND at >= ? AND at < ? AND ${opens} AND coalesce(json_extract(data, '$.kind'), 'person') = 'person'`);
+  const bots = await q(`SELECT count(*) n FROM events WHERE site = ? AND at >= ? AND at < ? AND evt = 'api' AND json_extract(data, '$.kind') IN ('bot', 'datacenter')`);
+  const signed = await q(`SELECT count(DISTINCT uid) n FROM events WHERE site = ? AND at >= ? AND at < ? AND evt = 'account.active'`);
+  const alerts = await q(`SELECT count(*) n FROM events WHERE site = ? AND at >= ? AND at < ? AND evt = 'alerts.on'`);
+  L.keep("daily", {day: new Date(start).toISOString().slice(0, 10), people: people.n, opens: people.opens, bots: bots.n, signedIn: signed.n, alertsOn: alerts.n});
+}
