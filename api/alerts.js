@@ -56,7 +56,7 @@ export async function devId(endpoint) {
   const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(endpoint)));
   return [...h.slice(0, 12)].map(b => b.toString(16).padStart(2, "0")).join("");
 }
-const isApp = e => typeof e === "string" && /^apns:[0-9a-f]{32,200}$/.test(e);
+const isApp = e => typeof e === "string" && /^apns:[0-9a-f]{32,200}$/i.test(e);   // Capacitor gives the token in capitals
 const okEndpoint = e => isApp(e) || (typeof e === "string" && e.length < 1000 && /^https:\/\/[a-z0-9.-]+(:\d+)?\//i.test(e));
 const hhmm = s => typeof s === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(s) ? s : null;
 function cleanDevice(b) {
@@ -71,7 +71,7 @@ function cleanDevice(b) {
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
-  return {sub: app ? {endpoint: sub.endpoint, apns: sub.endpoint.slice(5)} : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
+  return {sub: app ? {endpoint: sub.endpoint, apns: sub.endpoint.slice(5).toLowerCase()} : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
     teams, q: {on: q.on !== false, s: hhmm(q.s) || DEF_Q.s, e: hhmm(q.e) || DEF_Q.e}, tz, badge: b.badge !== false};
 }
 
@@ -80,14 +80,14 @@ export async function route(p, req, env, c, json) {
   if (p === "/api/push/key" && req.method === "GET") return json({key: (await vapid(env)).pub});
   let body = {}; if (req.method !== "GET") { try { body = await req.json(); } catch (e) {} }
   const ep = req.method === "GET" ? new URL(req.url).searchParams.get("endpoint") : (body.endpoint || (body.sub && body.sub.endpoint));
-  if (!okEndpoint(ep)) return json({error: "no device"}, 400);
+  if (!okEndpoint(ep)) { LOG && LOG.error("alerts.nodevice", {uid: c.sub, p, start: String(ep || "").slice(0, 6), len: String(ep || "").length}); return json({error: "no device"}, 400); }
   const id = await devId(ep), key = devKey(env, id);
   if (p === "/api/push" && req.method === "GET") {
     const d = await env.USERS.get(key, "json");
     return json(d && d.uid === c.sub ? {on: true, teams: d.teams, q: d.q, badge: d.badge} : {on: false});
   }
   if (p === "/api/push" && req.method === "PUT") {
-    const d = cleanDevice(body); if (!d) return json({error: "bad device"}, 400);
+    const d = cleanDevice(body); if (!d) { LOG && LOG.error("alerts.bad", {uid: c.sub, kind: isApp(ep) ? "app" : "web", teams: Array.isArray(body.teams) ? body.teams.length : -1}); return json({error: "bad device"}, 400); }
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
