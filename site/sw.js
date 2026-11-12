@@ -1,7 +1,7 @@
-// Fast start: the page itself, icons and the team list open instantly from the phone's copy and are
-// refreshed in the background (a new page version reloads itself once, see checkForUpdate). Scores
+// Start: the page itself comes from the network when it answers within 3 s; icons and the team list open
+// instantly from the phone's copy and are refreshed in the background (a new page version reloads itself once, see checkForUpdate). Scores
 // (conference files, status) try the network first but fall back to the saved copy after 2.5 s.
-const CACHE = "standings-v3";
+const CACHE = "standings-v4";
 const SHELL = /\/($|index\.html$|manifest\.webmanifest$|privacy\.html$|icons\/|data\/teams\.json$|data\/index\.json$)/;
 self.addEventListener("install", e => self.skipWaiting());
 self.addEventListener("activate", e => e.waitUntil((async () => {
@@ -14,11 +14,17 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET" || url.origin !== location.origin || url.pathname.startsWith("/api/") || url.pathname.endsWith("version.txt")) return;
   const key = req.mode === "navigate" ? new Request(url.origin + "/") : req;
   if (req.mode === "navigate" || SHELL.test(url.pathname)) {
+    // The page itself: newest from the network when it answers within 3 s (so a new version shows on
+    // the first open), else the phone's copy (no signal, slow field Wi-Fi). Icons and team lists: phone's
+    // copy first, refreshed in the background.
     e.respondWith((async () => {
       const hit = await caches.match(key, {ignoreSearch: true});
       const net = fetch(req).then(r => put(key, r)).catch(() => null);
-      if (hit) { e.waitUntil(net); return hit; }
-      return (await net) || new Response("Offline", {status: 503});
+      if (hit && !(req.mode === "navigate" || /\/($|index\.html$)/.test(url.pathname))) { e.waitUntil(net); return hit; }
+      if (!hit) return (await net) || new Response("Offline", {status: 503});
+      const first = await Promise.race([net, new Promise(r => setTimeout(r, 3000, null))]);
+      if (first) return first;
+      e.waitUntil(net); return hit;
     })());
     return;
   }

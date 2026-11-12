@@ -90,7 +90,7 @@ jobs:
           cp uat-overrides/icons/*.png site/icons/
           sed -i 's/"name": "Sideline Standings"/"name": "Sideline UAT"/; s/"short_name": "Sideline"/"short_name": "Sideline UAT"/' site/manifest.webmanifest
           sed -i 's/apple-mobile-web-app-title" content="Sideline"/apple-mobile-web-app-title" content="Sideline UAT"/; s#<title>Sideline Standings</title>#<title>Sideline UAT</title>#' site/index.html
-          for d in site site-live; do cat $d/index.html $d/sw.js $d/manifest.webmanifest | sha1sum | cut -c1-12 > $d/version.txt; done
+          for d in site site-live; do echo "$(cat $d/index.html $d/sw.js $d/manifest.webmanifest | sha1sum | cut -c1-12) $(grep -o 'name="app-version" content="[^"]*"' $d/index.html | cut -d'"' -f4)" > $d/version.txt; done
           echo "UAT page $(cat site/version.txt) · live page $(cat site-live/version.txt)"
           # Live runs the server settings + API from the live branch too, so nothing new reaches the live
           # site until it's promoted. (Older live branches have no API yet: then live stays static-only.)

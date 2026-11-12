@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.00">
+<meta name="app-version" content="v1.01">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -2029,9 +2029,14 @@ fitStandalone(); addEventListener("resize", fitStandalone); addEventListener("or
 $("#ver").textContent = document.querySelector('meta[name="app-version"]').content;
 async function checkForUpdate() {
   try {
-    const v = (await fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.text() : "")).trim();
+    // version.txt = "<build hash> <version>". A page showing an older version than the newest one (the
+    // phone's saved copy) reloads once; with no version in the file, a change of hash since this page
+    // loaded does the same.
+    const raw = (await fetch("version.txt?t=" + Date.now(), {cache: "no-store"}).then(r => r.ok ? r.text() : "")).trim();
+    const [v, vnum] = raw.split(/\s+/), mine = document.querySelector('meta[name="app-version"]').content;
+    const stale = vnum ? vnum !== mine : (v && LOADED_VER !== null && v !== LOADED_VER);
     if (v && LOADED_VER === null) LOADED_VER = v;
-    else if (v && v !== LOADED_VER) {
+    if (stale && !(typeof pageIs === "function" && !$("#pg").hidden) && $("#nsheet").hidden) {
       const k = "reloaded:" + v, last = +(sessionStorage.getItem(k) || 0);
       if (Date.now() - last > 600000) { sessionStorage.setItem(k, String(Date.now())); location.reload(); return; }
     }
