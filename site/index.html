@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.38">
+<meta name="app-version" content="v0.99.39">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -536,6 +536,7 @@ let GATE_MOUNTED = false;
 function mountGate() {
   if (GATE_MOUNTED) return;
   const el = $("#gatesignin"); el.innerHTML = "";
+  if (IS_APP && SA() && !signIn.web) { el.innerHTML = "<button class='btn-main' id='gatebtn'>Sign in</button><p class='mut' style='font-size:12px;margin-top:8px'>Apple, Google or email. Uses your iPhone's saved sign-ins.</p>"; $("#gatebtn").onclick = signIn; GATE_MOUNTED = true; return; }
   try { window.Clerk.mountSignIn(el, SIGNIN_OPTS()); GATE_MOUNTED = true; }
   catch (e) { try { window.Clerk.mountSignIn(el); GATE_MOUNTED = true; } catch (e2) { el.innerHTML = "<button class='btn-main' id='gatebtn'>Sign in</button>"; $("#gatebtn").onclick = signIn; } }
 }
@@ -564,8 +565,20 @@ async function api(method, path, body) {
 }
 // After the sign-in window opens, keep checking until it finishes (Clerk doesn't always announce it).
 let SIGNIN_T = null;
+// App: sign in through the iPhone's own sign-in sheet (shares Safari's saved logins); the sheet hands back
+// a one-time pass that signs the app in. Returns false when this app build can't do it (older build).
+async function appSignIn() {
+  let r;
+  try { r = await SA().signIn({url: location.origin + "/app-signin.html", scheme: "sideline"}); } catch (e) { return false; }
+  if (!r || r.cancelled || !r.url) return true;
+  const ticket = new URL(r.url).searchParams.get("ticket"); if (!ticket) return true;
+  try { const si = await window.Clerk.client.signIn.create({strategy: "ticket", ticket}); await window.Clerk.setActive({session: si.createdSessionId}); onAuth(); }
+  catch (e) { console.warn(e); toast("Couldn't sign in. Try again."); }
+  return true;
+}
 function signIn() {
   if (!window.Clerk) return;
+  if (IS_APP && SA() && !signIn.web) { appSignIn().then(ok => { if (!ok) { signIn.web = true; signIn(); } }); return; }
   try { window.Clerk.openSignIn(SIGNIN_OPTS()); } catch (e) { window.Clerk.openSignIn({}); }
   clearInterval(SIGNIN_T); let n = 0;
   SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
@@ -587,6 +600,8 @@ async function onAuth() {
     store.set("favsDirty", ""); store.set("askedResign", "");
     store.set("merged:" + u.id, "1");
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
+    // a fresh device (new phone, the app) has no teams until the account sends them: show them now
+    if (!CUR && next.filter(teamByKey).length) { closeFinder(); route(); }
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
     alertsSync(); seenPing();
@@ -778,6 +793,7 @@ async function drawAdmin(b) {
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
     const [d, pkp, ak] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false}))]);
+    const ck = await api("GET", "/api/admin/clerk").catch(() => ({saved: false}));
     const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
@@ -801,6 +817,9 @@ async function drawAdmin(b) {
           <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
           <input id="apnskid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
           <button class="btn-sec" id="apnssave">Save push key</button></div>
+        <div class="setbox" style="font-size:13px;margin-top:8px"><b>Clerk secret key</b><div class="mut" style="margin-top:2px">${ck.saved ? `Saved (${day(ck.at)}). The app's iPhone sign-in sheet works. Paste a new one only to replace it.` : "Needed for the app's iPhone sign-in sheet. In Clerk: Configure › API keys, copy the Secret key (starts sk_live_)."}</div>
+          <input id="clerksk" placeholder="sk_live_…" autocomplete="off" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:12px ui-monospace,monospace">
+          <button class="btn-sec" id="clerksave">Save Clerk key</button></div>
         ${IS_APP ? `<button class="btn-sec" id="appsite">${location.host.startsWith("uat.") ? "Switch this app to live" : "Switch this app to UAT"}</button>` : ""}
         <p class="mut" style="font-size:12px;margin:6px 0 0">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
       ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
@@ -820,6 +839,12 @@ async function drawAdmin(b) {
       try { const t = await token(); const r = await fetch("/api/admin/apns", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({p8: $("#apnsp8").value, kid: $("#apnskid").value})}); const j = await r.json();
         if (r.ok) { toast("Push key saved"); refreshPage(); } else { as.textContent = "Save push key"; toast(j.error || "Couldn't save it"); } }
       catch (x) { as.textContent = "Save push key"; toast("Couldn't save it. Try again."); }
+    };
+    const cs = $("#clerksave"); if (cs) cs.onclick = async () => {
+      cs.textContent = "Checking…";
+      try { const t = await token(); const r = await fetch("/api/admin/clerk", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({sk: $("#clerksk").value})}); const j = await r.json();
+        if (r.ok) { toast("Clerk key saved"); refreshPage(); } else { cs.textContent = "Save Clerk key"; toast(j.error || "Couldn't save it"); } }
+      catch (x) { cs.textContent = "Save Clerk key"; toast("Couldn't save it. Try again."); }
     };
     const sw = $("#appsite"); if (sw) sw.onclick = () => { location.href = (location.host.startsWith("uat.") ? "https://sidelinestandings.com/" : "https://uat.sidelinestandings.com/"); };
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };

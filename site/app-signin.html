@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!-- Sign-in for the App Store app. The app opens this page in the iPhone's own sign-in sheet
+     (ASWebAuthenticationSession), which shares Safari: Google already knows you, passwords autofill,
+     Sign in with Apple uses Face ID. Once signed in here, this page gets a one-time sign-in pass from
+     /api/app/ticket and hands it back to the app (sideline://signin?ticket=...). -->
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Sign in · Sideline Standings</title>
+<style>
+html,body{margin:0;background:#0d1015;color:#e8eaed;font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+.w{max-width:420px;margin:0 auto;padding:max(28px,env(safe-area-inset-top)) 18px 40px;text-align:center}
+.logo{width:56px;height:56px;border-radius:14px;margin:10px auto 12px;display:block}
+h1{font-size:22px;margin:0 0 6px}p{color:#a3acb9;font-size:15px;line-height:1.45;margin:0 0 18px}
+#box{display:flex;justify-content:center;min-height:120px}
+.msg{color:#a3acb9;font-size:14px;margin-top:18px}
+a{color:#7aa7ff}
+</style></head>
+<body><div class="w">
+<img class="logo" src="icons/icon-192.png" alt="">
+<h1>Sign in to Sideline Standings</h1>
+<p>Free account. Keeps your teams, alerts and picks on all your devices.</p>
+<div id="box"></div>
+<div class="msg" id="msg">Loading sign-in…</div>
+<div class="msg"><a href="sideline://signin?cancel=1">Cancel</a></div>
+</div>
+<script>
+const PK = "pk_live_Y2xlcmsuc2lkZWxpbmVzdGFuZGluZ3MuY29tJA";
+const msg = t => document.getElementById("msg").textContent = t;
+let going = false;
+async function handBack() {
+  if (going || !window.Clerk.user) return; going = true;
+  msg("Signing you in to the app…");
+  try {
+    const t = await window.Clerk.session.getToken();
+    const r = await fetch("/api/app/ticket", {method: "POST", headers: {authorization: "Bearer " + t}, cache: "no-store"});
+    const j = await r.json();
+    if (!r.ok || !j.ticket) throw new Error(j.error || "no pass");
+    location.href = "sideline://signin?ticket=" + encodeURIComponent(j.ticket);
+  } catch (e) { going = false; msg("Couldn't finish signing in. Close this and try again."); }
+}
+const sc = document.createElement("script");
+sc.src = "https://clerk.sidelinestandings.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js";
+sc.async = true; sc.crossOrigin = "anonymous"; sc.setAttribute("data-clerk-publishable-key", PK);
+sc.onload = async () => {
+  try {
+    await window.Clerk.load({appearance: {variables: {colorPrimary: "#c8102e", colorBackground: "#151a21", colorText: "#e8eaed", colorTextSecondary: "#a3acb9", colorInputBackground: "#1b2129", colorInputText: "#e8eaed", colorNeutral: "#e8eaed", borderRadius: "10px"}}});
+    window.Clerk.addListener(() => handBack());
+    if (window.Clerk.user) return handBack();
+    msg("");
+    window.Clerk.mountSignIn(document.getElementById("box"), {withSignUp: true, fallbackRedirectUrl: location.href, signUpFallbackRedirectUrl: location.href});
+  } catch (e) { msg("Sign-in didn't load. Close this and try again."); }
+};
+document.head.appendChild(sc);
+</script>
+</body></html>

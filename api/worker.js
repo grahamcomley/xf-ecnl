@@ -223,6 +223,36 @@ async function handle(req, env, url, p, L, who0) {
       if (!isOwner(c)) return json({error: "not allowed"}, 403);
       return json({ok: true, sent: await pushTestOwner(env, c.sub)});
     }
+    // POST /api/app/ticket: the App Store app's sign-in. The app opens /app-signin.html in the iPhone's own
+    // sign-in sheet (shares Safari: saved Google login, passwords, Face ID for Apple). Once signed in there,
+    // that page asks here for a one-time sign-in pass for the same person (Clerk sign-in token, 2 minutes),
+    // and the app signs itself in with it. Needs the Clerk secret key (Admin › App Store app; KV cfg:clerk).
+    if (p === "/api/app/ticket" && req.method === "POST") {
+      const k = await env.USERS.get("cfg:clerk", "json");
+      if (!k || !k.sk) { L.error("app.ticket", {uid: c.sub, why: "no clerk key"}); return json({error: "not set up"}, 503); }
+      const r = await fetch("https://api.clerk.com/v1/sign_in_tokens", {method: "POST", headers: {authorization: "Bearer " + k.sk, "content-type": "application/json"},
+        body: JSON.stringify({user_id: c.sub, expires_in_seconds: 120})});
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.token) { L.error("app.ticket", {uid: c.sub, status: r.status, why: (j.errors && j.errors[0] && j.errors[0].code) || ""}); return json({error: "couldn't sign in"}, 502); }
+      L.keep("app.ticket", {uid: c.sub});
+      return json({ticket: j.token});
+    }
+    // /api/admin/clerk: the Clerk secret key for the app's sign-in passes. GET says whether one is saved;
+    // PUT {sk} checks it with Clerk, then saves it (KV cfg:clerk). Shared by UAT and live.
+    if (p === "/api/admin/clerk") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      if (req.method === "GET") { const k = await env.USERS.get("cfg:clerk", "json"); return json({saved: !!(k && k.sk), at: k ? k.at : 0}); }
+      if (req.method === "PUT") {
+        let b = {}; try { b = await req.json(); } catch (e) {}
+        const sk = String(b.sk || "").trim();
+        if (!/^sk_live_[A-Za-z0-9]+$/.test(sk)) return json({error: "That isn't a live secret key. In Clerk: Configure › API keys › Secret keys, copy the one starting sk_live_."}, 400);
+        const t = await fetch("https://api.clerk.com/v1/users?limit=1", {headers: {authorization: "Bearer " + sk}});
+        if (!t.ok) return json({error: "Clerk didn't accept that key (" + t.status + ")."}, 400);
+        await env.USERS.put("cfg:clerk", JSON.stringify({sk, at: Date.now()}));
+        L.keep("admin.clerk", {uid: c.sub});
+        return json({ok: true});
+      }
+    }
     // /api/admin/apns: Apple push key for the App Store app. GET says whether one is saved (never returns it);
     // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
     if (p === "/api/admin/apns") {
