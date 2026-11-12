@@ -21,7 +21,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.sidelinestandings.app"
         TEAM_ID: "55FGL4DVG5"
-        APP_STORE_APPLE_ID: "0"   # set after the App Store Connect app record exists
+        APP_STORE_APPLE_ID: "6833709358"
     scripts:
       - name: Install JS dependencies
         script: |
