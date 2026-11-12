@@ -50,7 +50,7 @@ export function dbDevice(env, ctx, dev, d) {
   let q;
   if (d) {
     const settings = {q: d.q, badge: d.badge, teams: (d.teams || []).map(t => ({k: t.k, our: t.our, lg: t.lg, mo: t.mo, rem: t.rem, wr: t.wr}))};
-    let host = ""; try { host = new URL(d.sub.endpoint).host; } catch (e) {}
+    let host = ""; try { host = d.sub.apns ? "app" : new URL(d.sub.endpoint).host; } catch (e) {}
     q = env.LOGS.prepare("INSERT INTO devices (site, dev, uid, service, tz, settings, created, seen, updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(site, dev) DO UPDATE SET uid=excluded.uid, service=excluded.service, tz=excluded.tz, settings=excluded.settings, created=excluded.created, seen=excluded.seen, updated=excluded.updated")
       .bind(site, dev, d.uid || "", host, d.tz || "", JSON.stringify(settings), d.created || 0, d.seen || 0, Date.now());
   } else q = env.LOGS.prepare("DELETE FROM devices WHERE site = ? AND dev = ?").bind(site, dev);

@@ -1,0 +1,32 @@
+{
+  "appId": "com.sidelinestandings.app",
+  "appName": "Sideline Standings",
+  "webDir": "www",
+  "server": {
+    "url": "https://sidelinestandings.com/",
+    "cleartext": false,
+    "errorPath": "offline.html",
+    "allowNavigation": [
+      "sidelinestandings.com",
+      "*.sidelinestandings.com",
+      "accounts.google.com",
+      "*.google.com",
+      "*.gstatic.com",
+      "*.googleapis.com",
+      "*.googleusercontent.com",
+      "appleid.apple.com"
+    ]
+  },
+  "ios": {
+    "contentInset": "never",
+    "limitsNavigationsToAppBoundDomains": true,
+    "backgroundColor": "#0d1015"
+  },
+  "appendUserAgent": "SidelineShell/1",
+  "backgroundColor": "#0d1015",
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

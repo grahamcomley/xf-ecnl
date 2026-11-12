@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v0.99.36">
+<meta name="app-version" content="v0.99.37">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -591,6 +591,7 @@ async function onAuth() {
     if (first && local.length) toast("Your teams are saved to your account");
     alertsSync(); seenPing();
     showAlertPrompt();
+    if (IS_APP) { clearBadge(); loadInbox(); }
     mergePicks(r.picks || {});
     maybeOfferHome();
   } catch (e) { SYNCING = false; console.warn("account sync failed", e); }
@@ -609,7 +610,28 @@ const ago = ms => { if (!ms) return "-"; const m = Math.round((Date.now() - ms) 
 const UA = navigator.userAgent || "";
 const IS_IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const IS_ANDROID = /Android/.test(UA);
-const STANDALONE = () => navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+// App Store app: the same page inside a native shell (Capacitor). The shell injects window.Capacitor
+// and adds "SidelineShell/" to the user agent.
+const CAP = window.Capacitor;
+const IS_APP = !!(CAP && typeof CAP.isNativePlatform === "function" && CAP.isNativePlatform()) || /SidelineShell\//.test(UA);
+if (IS_APP) document.documentElement.classList.add("app");
+const STANDALONE = () => IS_APP || navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+// A native plugin, whatever shape this Capacitor version exposes it in (same approach as Hashmark).
+function plug(name, methods) {
+  try {
+    if (!CAP) return null;
+    const P = CAP.Plugins || {};
+    if (P[name]) return P[name];
+    if (typeof CAP.registerPlugin === "function") return CAP.registerPlugin(name);
+    if (typeof CAP.nativePromise === "function") { const o = {}; methods.forEach(m => o[m] = a => CAP.nativePromise(name, m, a || {})); o.addListener = (ev, cb) => CAP.addListener && CAP.addListener(name, ev, cb); return o; }
+  } catch (e) {}
+  return null;
+}
+const PN = () => plug("PushNotifications", ["requestPermissions", "checkPermissions", "register", "unregister", "removeAllDeliveredNotifications"]);
+const SA = () => plug("SidelineApp", ["setBadge"]);
+function bridgeInfo() {
+  try { if (!CAP) return "no native bridge"; return `native=${IS_APP} · plugins=[${Object.keys(CAP.Plugins || {}).join(",")}] · push=${!!PN()} · badge=${!!SA()}`; } catch (e) { return "bridge check failed"; }
+}
 const INAPP = /FBAN|FBAV|FB_IAB|Instagram|Line\/|GSA\/|LinkedInApp|Snapchat|Twitter|musical_ly|Bytedance|Pinterest/.test(UA);
 let INSTALL_EVT = null;
 addEventListener("beforeinstallprompt", e => { e.preventDefault(); INSTALL_EVT = e; drawPills(); });
@@ -755,7 +777,7 @@ async function drawAdmin(b) {
   if (!(ME && ME.admin)) { b.innerHTML = "<div class='pgin'><p class='mut'>Not available.</p></div>"; return; }
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
-    const [d, pkp] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []}))]);
+    const [d, pkp, ak] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false}))]);
     const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
@@ -774,6 +796,13 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
+      ${fold("app", "App Store app", `${ak.saved ? "Apple push key saved" : "Apple push key needed"} · ${IS_APP ? "you're in the app" : "you're in the browser"}`, `
+        <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
+          <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
+          <input id="apnskid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
+          <button class="btn-sec" id="apnssave">Save push key</button></div>
+        ${IS_APP ? `<button class="btn-sec" id="appsite">${location.host.startsWith("uat.") ? "Switch this app to live" : "Switch this app to UAT"}</button>` : ""}
+        <p class="mut" style="font-size:12px;margin:6px 0 0">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
       ${fold("pickem", "Pick'em players", `${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>", false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
@@ -786,6 +815,13 @@ async function drawAdmin(b) {
       if (act === "rename") { const n = prompt("New Pick'em name"); if (!n) return; body.name = n; } else body.hidden = act === "hide";
       try { await api("PUT", "/api/admin/pickem", body); toast("Saved"); refreshPage(); } catch (x) { toast("Couldn't save that name"); }
     });
+    const as = $("#apnssave"); if (as) as.onclick = async () => {
+      as.textContent = "Saving…";
+      try { const t = await token(); const r = await fetch("/api/admin/apns", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({p8: $("#apnsp8").value, kid: $("#apnskid").value})}); const j = await r.json();
+        if (r.ok) { toast("Push key saved"); refreshPage(); } else { as.textContent = "Save push key"; toast(j.error || "Couldn't save it"); } }
+      catch (x) { as.textContent = "Save push key"; toast("Couldn't save it. Try again."); }
+    };
+    const sw = $("#appsite"); if (sw) sw.onclick = () => { location.href = (location.host.startsWith("uat.") ? "https://sidelinestandings.com/" : "https://uat.sidelinestandings.com/"); };
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
     $("#gatetoggle").onclick = async () => {
       try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); refreshPage(); }
@@ -798,13 +834,27 @@ let DRIFT = null;
 // ---------- alerts (push notifications) ----------
 // This device only: the phone/browser asks permission, then the site's server sends a notification when a
 // score is posted. Settings live on this device and are copied to the server whenever they change.
-const PUSH_OK = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const PUSH_OK = () => IS_APP ? !!PN() : "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+const permDenied = () => IS_APP ? !!store.get("appPushDenied") : ("Notification" in window && Notification.permission === "denied");
+// App: Apple's device token for this phone (kept on the phone; the server keys the device on it).
+let APNS_TOK = store.get("apnsTok") || "", APNS_WAIT = null;
+function appRegister() {
+  return new Promise((res, rej) => {
+    APNS_WAIT = {res, rej};
+    setTimeout(() => { if (APNS_WAIT) { APNS_WAIT = null; rej(new Error("no token")); } }, 20000);
+    Promise.resolve(PN().register()).catch(e => { if (APNS_WAIT) { APNS_WAIT = null; rej(e); } });
+  });
+}
 const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
 const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
 const alertsOn = () => !!store.get("alertsOn");
-async function pushSub() { try { const r = await navigator.serviceWorker.ready; return await r.pushManager.getSubscription(); } catch (e) { return null; } }
+async function pushSub() {
+  if (IS_APP) return APNS_TOK ? {endpoint: "apns:" + APNS_TOK, toJSON: () => ({endpoint: "apns:" + APNS_TOK, apns: APNS_TOK}),
+    unsubscribe: async () => { try { await PN().unregister(); } catch (e) {} APNS_TOK = ""; store.set("apnsTok", ""); }} : null;
+  try { const r = await navigator.serviceWorker.ready; return await r.pushManager.getSubscription(); } catch (e) { return null; }
+}
 let ASYNC_T = null;
 function alertsSync(soon) {
   if (!alertsOn() || !ME || !PUSH_OK()) return;
@@ -819,6 +869,14 @@ function alertsSync(soon) {
 }
 const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
 async function enableAlerts() {
+  if (IS_APP) {
+    let st = null; try { st = await PN().requestPermissions(); } catch (e) {}
+    if (!st || st.receive !== "granted") { if (st && st.receive === "denied") store.set("appPushDenied", "1"); drawAlerts(); return false; }
+    store.set("appPushDenied", "");
+    try { await appRegister(); } catch (e) { console.warn(e); toast("Couldn't turn on alerts. Try again."); drawAlerts(); return false; }
+    store.set("alertsOn", "1"); alertsSync(true);
+    toast("Alerts are on"); store.set("alertCardNo", "1"); hideAlertCards(); setGearDot(); drawAlerts(); return true;
+  }
   let perm;
   try { perm = await Notification.requestPermission(); } catch (e) { perm = Notification.permission; }
   if (perm !== "granted") { drawAlerts(); return false; }
@@ -840,6 +898,13 @@ async function disableAlerts() {
 }
 // Why alerts can't be turned on here (or "" when they can).
 function alertsBlocker() {
+  if (IS_APP) {
+    if (!PUSH_OK()) return {msg: "This version of the app can't show alerts yet. Update Sideline Standings from the App Store."};
+    if (!ME) return {msg: "Sign in to turn on alerts.", btn: ["signin", "Sign in"]};
+    if (!(favs() || []).filter(teamByKey).length) return {msg: "Star a team first, then turn on alerts for it."};
+    if (permDenied()) return {msg: "Alerts are blocked for Sideline Standings. Turn them on in your iPhone's Settings › Notifications › Sideline Standings, then come back."};
+    return null;
+  }
   if (IS_IOS && !STANDALONE()) return {msg: "On iPhone, alerts work from the Home Screen app. Add Sideline to your Home Screen, open it from there, then turn on alerts in Settings.", btn: ["a2hs", "Show me how"]};
   if (INAPP) return {msg: `Open this page in ${IS_IOS ? "Safari" : "Chrome"} to use alerts.`};
   if (!PUSH_OK()) return {msg: "This browser can't show alerts. Try Chrome, Edge or Safari."};
@@ -925,7 +990,7 @@ function setGearDot() {
 function alertCard() {
   if (!ME || alertsOn() || store.get("alertCardNo") || INAPP) return "";
   if (!PUSH_OK() && !(IS_IOS && !STANDALONE())) return "";
-  if ("Notification" in window && Notification.permission === "denied") return "";
+  if (permDenied()) return "";
   const t = (favs() || []).map(teamByKey).filter(Boolean)[0]; if (!t) return "";
   const home = IS_IOS && !STANDALONE();
   return `<div class="acard"><div class="ah">${icon("bell")}<span>New: game alerts</span></div>
@@ -945,7 +1010,7 @@ document.addEventListener("click", async e => {
   if (go.dataset.home) { openA2hs(); return; }
   go.disabled = true;
   const ok = await enableAlerts();
-  if (ok || Notification.permission === "denied") { store.set("alertCardNo", "1"); hideAlertCards(); } else go.disabled = false;
+  if (ok || permDenied()) { store.set("alertCardNo", "1"); hideAlertCards(); } else go.disabled = false;
   setGearDot();
 });
 // Right after someone stars a team: offer alerts once (on iPhone in Safari, that means the Home Screen first).
@@ -963,11 +1028,45 @@ function maybeOfferAlerts(k) {
 $("#anudgeclose").onclick = () => $("#anudge").hidden = true;
 $("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
 // Opening the app clears the red number.
+var APP_NOTE = null;
 function clearBadge() {
+  if (IS_APP) {
+    try { const s = SA(); if (s) s.setBadge({n: 0}); } catch (e) {}
+    if (ME && APNS_TOK && alertsOn()) api("POST", "/api/push/inbox", {endpoint: appEp(), opened: true}).catch(() => {});
+    return;
+  }
   if (navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {});
   if (navigator.serviceWorker && navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage({clearBadge: true});
 }
 clearBadge();
+// App: Apple push events. Token arrives after register(); a tap on an alert opens it like the web app
+// does (full alert card first, then "Show this game").
+if (IS_APP && PN()) {
+  const p = PN(), on = (ev, cb) => { try { p.addListener(ev, cb); } catch (e) { console.warn("listener", ev, e); } };
+  on("registration", t => {
+    const tok = t && t.value; if (!tok) return;
+    const changed = tok !== APNS_TOK; APNS_TOK = tok; store.set("apnsTok", tok);
+    if (APNS_WAIT) { APNS_WAIT.res(tok); APNS_WAIT = null; }
+    if (changed && alertsOn()) alertsSync(true);
+  });
+  on("registrationError", e => { if (APNS_WAIT) { APNS_WAIT.rej(new Error((e && e.error) || "registration failed")); APNS_WAIT = null; } });
+  on("pushNotificationReceived", () => loadInbox());
+  on("pushNotificationActionPerformed", a => {
+    const n = (a && a.notification) || {}, d = n.data || {};
+    const u = d.u || "/";
+    APP_NOTE = {id: d.id, t: n.title, b: n.body, u};
+    if (d.id) { const it = INBOX.find(x => x.id === d.id); if (it) APP_NOTE = it; }
+    clearBadge();
+    if (u.includes("#")) { const h = u.split("#")[1] + "&n=" + Date.now(); history.replaceState(null, "", "#" + h); deepLink(h); }
+    loadInbox();
+  });
+  // Already allowed: refresh the token each start (Apple can change it) and the blocked flag.
+  Promise.resolve(p.checkPermissions && p.checkPermissions()).then(s => {
+    if (!s) return;
+    store.set("appPushDenied", s.receive === "denied" ? "1" : "");
+    if (s.receive === "granted" && alertsOn()) p.register();
+  }).catch(() => {});
+}
 // Tell the server the app was opened (weekends only, at most every 3 hours): the Sunday wrap-up is
 // skipped for people who already saw the weekend's results.
 async function seenPing() {
@@ -1017,6 +1116,7 @@ function deepLink(h, key) {
 const SCORE_LINE = /^(.+?) (\d+)–(\d+) (.+?)( \(corrected.*\))?$/;
 async function showNote(gids, view, item) {
   let n = item || null;
+  if (!n && APP_NOTE) { n = APP_NOTE; APP_NOTE = null; }
   if (!n) { try { const r = await (await caches.open("badge-v1")).match("/__note"); n = r ? await r.json() : null; } catch (e) {} }
   if (!n) return TEAM_READY.then(() => focusGames(gids, view));
   if (n.id) markRead(n.id);
@@ -1047,15 +1147,22 @@ function focusGames(gids, view) {
 }
 // ---------- alert inbox (bell in the header) ----------
 // Every alert this phone received (kept by the service worker), newest first, with an unread count.
-let INBOX = [];
+var INBOX = [];
+const appEp = () => "apns:" + APNS_TOK;
 async function loadInbox() {
-  try { const r = await (await caches.open("badge-v1")).match("/__inbox"); INBOX = r ? await r.json() : []; } catch (e) { INBOX = []; }
-  const unread = INBOX.filter(x => !x.read).length, bell = $("#belltop"), c = $("#bellcount");
-  bell.hidden = !(INBOX.length || alertsOn());
-  c.hidden = !unread; c.textContent = unread > 99 ? "99+" : String(unread);
+  if (IS_APP) { if (ME && APNS_TOK && alertsOn()) { try { INBOX = (await api("GET", "/api/push/inbox?endpoint=" + encodeURIComponent(appEp()))).items || []; } catch (e) {} } }
+  else try { const r = await (await caches.open("badge-v1")).match("/__inbox"); INBOX = r ? await r.json() : []; } catch (e) { INBOX = []; }
+  drawInboxCount();
   if (pageIs("inbox")) refreshPage();
 }
-async function saveInbox() { try { await (await caches.open("badge-v1")).put("/__inbox", new Response(JSON.stringify(INBOX.slice(0, 60)))); } catch (e) {} loadInbox(); }
+function drawInboxCount() {
+  const L = INBOX || [], unread = L.filter(x => !x.read).length, bell = $("#belltop"), c = $("#bellcount");
+  bell.hidden = !(L.length || alertsOn());
+  c.hidden = !unread; c.textContent = unread > 99 ? "99+" : String(unread);
+}
+async function saveInbox() {
+  if (IS_APP) { const read = INBOX.filter(x => x.read).map(x => x.id); drawInboxCount(); if (ME && APNS_TOK) api("POST", "/api/push/inbox", {endpoint: appEp(), read}).catch(() => {}); if (pageIs("inbox")) refreshPage(); return; }
+  try { await (await caches.open("badge-v1")).put("/__inbox", new Response(JSON.stringify(INBOX.slice(0, 60)))); } catch (e) {} loadInbox(); }
 function markRead(id) { const it = INBOX.find(x => x.id === id); if (it && !it.read) { it.read = true; saveInbox(); } }
 const agoShort = ms => { const m = Math.round((Date.now() - ms) / 60000); return m < 1 ? "now" : m < 60 ? `${m}m` : m < 1440 ? `${Math.round(m / 60)}h` : `${Math.round(m / 1440)}d`; };
 function drawInbox(b) {

@@ -8,6 +8,7 @@
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
 import {makeLog, dbPerson, dbDailySync} from "./log.js";
+import {apnsKey, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
 
@@ -209,6 +210,21 @@ async function handle(req, env, url, p, L, who0) {
     if (p === "/api/admin/pushtest" && req.method === "POST") {
       if (!isOwner(c)) return json({error: "not allowed"}, 403);
       return json({ok: true, sent: await pushTestOwner(env, c.sub)});
+    }
+    // /api/admin/apns: Apple push key for the App Store app. GET says whether one is saved (never returns it);
+    // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
+    if (p === "/api/admin/apns") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      if (req.method === "GET") { const k = await env.USERS.get("cfg:apns", "json"); return json({saved: !!(k && k.p8), kid: k ? k.kid : "", at: k ? k.at : 0}); }
+      if (req.method === "PUT") {
+        let b = {}; try { b = await req.json(); } catch (e) {}
+        const p8 = String(b.p8 || "").trim(), kid = String(b.kid || "").trim().toUpperCase();
+        if (!/^[A-Z0-9]{10}$/.test(kid)) return json({error: "The Key ID is the 10 letters and numbers next to the key in Apple's list."}, 400);
+        try { await apnsKey(p8); } catch (e) { return json({error: "That doesn't look like the .p8 key file's contents. Open the file and copy everything, including the BEGIN and END lines."}, 400); }
+        await env.USERS.put("cfg:apns", JSON.stringify({p8, kid, team: APNS_TEAM, topic: APNS_TOPIC, at: Date.now()}));
+        L.keep("admin.apns", {uid: c.sub, kid});
+        return json({ok: true});
+      }
     }
     return json({error: "not found"}, 404);
   }

@@ -12,7 +12,7 @@
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
 //      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
-import {send as sendRaw, vapid} from "./push.js";
+import {send as sendRaw, vapid, apnsSend} from "./push.js";
 import {wrapLine} from "./pickem.js";
 import {dbDevice} from "./log.js";
 
@@ -20,10 +20,32 @@ import {dbDevice} from "./log.js";
 let LOG = null;
 export const setLog = l => { LOG = l; };
 async function send(env, sub, msg, kind = "alert", d = null) {
-  let s;
-  try { s = await sendRaw(env, sub, msg); } catch (e) { s = 0; LOG && LOG.error("push.error", {kind, uid: d && d.uid, title: msg.t, msg: String(e)}); }
-  LOG && LOG.keep("push", {kind, uid: d && d.uid, title: msg.t, body: String(msg.b || "").slice(0, 240), status: s});
+  let s, why = "";
+  try {
+    if (sub.apns) { const r = await sendApp(env, sub, msg); s = r.status; why = r.reason; }
+    else s = await sendRaw(env, sub, msg);
+  } catch (e) { s = 0; why = String(e); LOG && LOG.error("push.error", {kind, uid: d && d.uid, app: !!sub.apns, title: msg.t, msg: String(e)}); }
+  LOG && LOG.keep("push", Object.assign({kind, uid: d && d.uid, title: msg.t, body: String(msg.b || "").slice(0, 240), status: s}, sub.apns ? {app: true, reason: why} : {}));
   return s;
+}
+// App Store app: Apple push, plus the device's inbox (last 60 alerts) and red-number count kept here,
+// because the app has no service worker receiving the alerts.
+//   ib:<site>:<device id> -> {bc: alerts since the app was last opened, items: [{id, t, b, x, u, at, read}]}
+const ibKey = (env, id) => `ib:${site(env)}:${id}`;
+async function sendApp(env, sub, msg) {
+  const id = await devId(sub.endpoint), ik = ibKey(env, id);
+  const ib = await env.USERS.get(ik, "json") || {bc: 0, items: []};
+  const nid = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const counts = msg.badge !== false, bc = (ib.bc || 0) + (counts ? 1 : 0);
+  const aps = {alert: {title: msg.t || "Sideline Standings", body: String(msg.b || "").slice(0, 1500)}, sound: "default", "thread-id": "sideline"};
+  if (counts) aps.badge = bc;
+  const r = await apnsSend(env, sub.apns, {aps, u: msg.u || "/", id: nid}, {collapse: msg.tag});
+  if (r.status === 200) {
+    ib.bc = bc; ib.items = [{id: nid, t: msg.t || "Sideline Standings", b: msg.b || "", x: msg.x || null, u: msg.u || "/", at: Date.now(), read: false}, ...(ib.items || [])].slice(0, 60);
+    await env.USERS.put(ik, JSON.stringify(ib), {expirationTtl: 90 * 86400});
+    return {status: 201, reason: ""};
+  }
+  return r;
 }
 
 const HOUR = 3600e3;
@@ -34,11 +56,13 @@ export async function devId(endpoint) {
   const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(endpoint)));
   return [...h.slice(0, 12)].map(b => b.toString(16).padStart(2, "0")).join("");
 }
-const okEndpoint = e => typeof e === "string" && e.length < 1000 && /^https:\/\/[a-z0-9.-]+(:\d+)?\//i.test(e);
+const isApp = e => typeof e === "string" && /^apns:[0-9a-f]{32,200}$/.test(e);
+const okEndpoint = e => isApp(e) || (typeof e === "string" && e.length < 1000 && /^https:\/\/[a-z0-9.-]+(:\d+)?\//i.test(e));
 const hhmm = s => typeof s === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(s) ? s : null;
 function cleanDevice(b) {
   const sub = b && b.sub;
-  if (!sub || !okEndpoint(sub.endpoint) || !sub.keys || typeof sub.keys.p256dh !== "string" || typeof sub.keys.auth !== "string") return null;
+  const app = sub && isApp(sub.endpoint);
+  if (!sub || !okEndpoint(sub.endpoint) || (!app && !sub.keys) || (!app && typeof sub.keys.p256dh !== "string") || (!app && typeof sub.keys.auth !== "string")) return null;
   const teams = (Array.isArray(b.teams) ? b.teams : []).filter(t => t && /^[a-z0-9-]{3,40}$/.test(t.k)).slice(0, 60).map(t => ({
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
     n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
@@ -47,7 +71,7 @@ function cleanDevice(b) {
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
-  return {sub: {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
+  return {sub: app ? {endpoint: sub.endpoint, apns: sub.endpoint.slice(5)} : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
     teams, q: {on: q.on !== false, s: hhmm(q.s) || DEF_Q.s, e: hhmm(q.e) || DEF_Q.e}, tz, badge: b.badge !== false};
 }
 
@@ -67,7 +91,7 @@ export async function route(p, req, env, c, json) {
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
-    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: new URL(rec.sub.endpoint).host});
+    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
     return json({ok: true});
   }
   // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
@@ -78,9 +102,22 @@ export async function route(p, req, env, c, json) {
     if (Date.now() - (d.seen || 0) > HOUR) { d.seen = Date.now(); await putDev(env, key, d); LOG && LOG.info("alerts.seen", {uid: c.sub, dev: id}); }
     return json({ok: true});
   }
+  // App Store app: its alert inbox, marking alerts read, and "the app was opened" (red number back to 0).
+  if (p === "/api/push/inbox") {
+    const d = await env.USERS.get(key, "json");
+    if (!d || d.uid !== c.sub) return json({items: []});
+    const ik = ibKey(env, id), ib = await env.USERS.get(ik, "json") || {bc: 0, items: []};
+    if (req.method === "GET") return json({items: ib.items || [], bc: ib.bc || 0});
+    let ch = false;
+    if (body.opened && ib.bc) { ib.bc = 0; ch = true; }
+    const ids = body.read === "all" ? (ib.items || []).map(x => x.id) : Array.isArray(body.read) ? body.read : [];
+    (ib.items || []).forEach(x => { if (ids.includes(x.id) && !x.read) { x.read = true; ch = true; } });
+    if (ch) await env.USERS.put(ik, JSON.stringify(ib), {expirationTtl: 90 * 86400});
+    return json({ok: true, bc: ib.bc || 0});
+  }
   if (p === "/api/push" && req.method === "DELETE") {
     const d = await env.USERS.get(key, "json");
-    if (d && d.uid === c.sub) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key)); LOG && LOG.keep("alerts.off", {uid: c.sub, dev: id}); }
+    if (d && d.uid === c.sub) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key), await env.USERS.delete(ibKey(env, id))); LOG && LOG.keep("alerts.off", {uid: c.sub, dev: id}); }
     return json({ok: true});
   }
   if (p === "/api/push/test" && req.method === "POST") {
@@ -120,7 +157,7 @@ async function devices(env, uid) {
 export async function deleteUser(env, uid) {
   for (const s of ["uat", "live"]) {
     const e = Object.assign({}, env, {SITE: s});
-    for (const k of await devices(e, uid)) (dbDevice(e, null, k.split(":")[2], null), await env.USERS.delete(k));
+    for (const k of await devices(e, uid)) (dbDevice(e, null, k.split(":")[2], null), await env.USERS.delete(k), await env.USERS.delete(`ib:${s}:${k.split(":")[2]}`));
   }
 }
 export async function adminStats(env) {

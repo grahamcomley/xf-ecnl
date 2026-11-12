@@ -81,3 +81,45 @@ export async function send(env, sub, msg, opts = {}) {
     "content-type": "application/octet-stream", ttl: String(opts.ttl || 86400), urgency: opts.urgency || "normal"}});
   return r.status;
 }
+
+// ---------- Apple push (the App Store app) ----------
+// The native app can't use web push, so iPhones running the app get alerts straight from Apple's
+// push service. Needs Apple's push key (.p8), pasted once by the owner in Admin › Apple push key and
+// kept in KV cfg:apns {p8, kid, team, topic}. Sign-in token: ES256, reused for 40 minutes.
+let APNS = null;
+export const APNS_TOPIC = "com.sidelinestandings.app", APNS_TEAM = "55FGL4DVG5";
+export async function apnsKey(p8) {
+  const der = Uint8Array.from(atob(String(p8).replace(/-----[^-]+-----/g, "").replace(/\s+/g, "")), c => c.charCodeAt(0));
+  return crypto.subtle.importKey("pkcs8", der, {name: "ECDSA", namedCurve: "P-256"}, false, ["sign"]);
+}
+async function apnsCfg(env) {
+  if (APNS && Date.now() - APNS.at < 10 * 60e3) return APNS;
+  const c = await env.USERS.get("cfg:apns", "json");
+  if (!c || !c.p8 || !c.kid) { APNS = null; return null; }
+  if (!APNS || APNS.kid !== c.kid || APNS.p8 !== c.p8) APNS = {kid: c.kid, p8: c.p8, team: c.team || APNS_TEAM, topic: c.topic || APNS_TOPIC, key: await apnsKey(c.p8), jwt: null, iat: 0};
+  APNS.at = Date.now();
+  return APNS;
+}
+async function apnsJwt(c) {
+  const now = Math.floor(Date.now() / 1000);
+  if (!c.jwt || now - c.iat > 2400) {
+    const head = b64u(te.encode(JSON.stringify({alg: "ES256", kid: c.kid})));
+    const body = b64u(te.encode(JSON.stringify({iss: c.team, iat: now})));
+    const sig = await crypto.subtle.sign({name: "ECDSA", hash: "SHA-256"}, c.key, te.encode(head + "." + body));
+    c.jwt = `${head}.${body}.${b64u(sig)}`; c.iat = now;
+  }
+  return c.jwt;
+}
+// Returns Apple's status: 200 = sent; 410 = this app was deleted or the token is no good (delete the device);
+// 0 = no push key yet. reason (when Apple gives one) is kept for the log.
+export async function apnsSend(env, token, payload, opts = {}) {
+  const c = await apnsCfg(env); if (!c) return {status: 0, reason: "no push key"};
+  const h = {authorization: "bearer " + await apnsJwt(c), "apns-topic": c.topic, "apns-push-type": "alert", "apns-priority": "10",
+    "apns-expiration": String(Math.floor(Date.now() / 1000) + 86400), "content-type": "application/json"};
+  if (opts.collapse) h["apns-collapse-id"] = String(opts.collapse).slice(0, 64);
+  const r = await fetch(`https://${opts.sandbox ? "api.sandbox.push.apple.com" : "api.push.apple.com"}/3/device/${token}`, {method: "POST", headers: h, body: JSON.stringify(payload)});
+  let reason = ""; if (r.status !== 200) { try { reason = (await r.json()).reason || ""; } catch (e) {} }
+  if (r.status === 403 && reason === "ExpiredProviderToken") c.jwt = null;
+  const gone = r.status === 410 || (r.status === 400 && /BadDeviceToken|DeviceTokenNotForTopic/.test(reason));
+  return {status: gone ? 410 : r.status, reason};
+}

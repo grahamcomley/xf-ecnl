@@ -1,0 +1,119 @@
+# BUILD IPHONE APP: starts a Codemagic Mac build of the App Store app (app/) and watches the first
+# part of it. MANUAL ONLY (Actions > Build iPhone app > Run workflow): a website push must never start
+# a Mac build. Needed only when app/capacitor.config.json, app/native/*, app/icon-1024.png or
+# codemagic.yaml change; page changes reach the app with no build.
+# Needs the CODEMAGIC_API_TOKEN repository secret (same token as Hashmark).
+
+name: Build iPhone app
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "What changed in the native shell (shows up in the run list)"
+        required: false
+        default: "native build"
+
+concurrency:
+  group: sideline-ios
+  cancel-in-progress: false
+
+jobs:
+  ios:
+    runs-on: ubuntu-24.04
+    # Codemagic does the building; this job only starts it and watches. The cap is deliberate -
+    # see the wait step.
+    timeout-minutes: 35
+
+    env:
+      CODEMAGIC_API_TOKEN: ${{ secrets.CODEMAGIC_API_TOKEN }}
+      CM_WORKFLOW: ios-testflight
+      CM_BRANCH: main
+
+    steps:
+      - name: Check the Codemagic key
+        run: |
+          if [ -z "$CODEMAGIC_API_TOKEN" ]; then
+            echo "::error title=No Codemagic token::The CODEMAGIC_API_TOKEN repository secret is missing. Get it from codemagic.io: the hamburger menu, then your avatar at the BOTTOM LEFT next to Log out, then Account settings > API token > Show. It is NOT under Settings or Integrations - we lost time hunting for it once already."
+            exit 1
+          fi
+          echo "token present (${#CODEMAGIC_API_TOKEN} chars)"
+
+      # The appId is Codemagic's own id for the app, not anything in this repo, so it has to be
+      # looked up. Matching on the repository URL rather than the display name: the name is a label
+      # someone can rename in the UI, the repo it builds from is what actually makes it the right
+      # app.
+      # RULE: MATCH ON THE THING THAT CANNOT BE RENAMED.
+      - name: Find the app on Codemagic
+        id: find
+        run: |
+          APPS=$(curl -fsS --max-time 30 -H "x-auth-token: $CODEMAGIC_API_TOKEN" \
+                 https://api.codemagic.io/apps) || {
+            echo "::error title=Codemagic would not answer::GET /apps failed. The token is probably wrong or revoked - re-copy it from Account settings > API token."
+            exit 1; }
+          # jq, not an inline python heredoc. The first version embedded a multi-line python
+          # script whose lines started at column 0, which ENDS a YAML block scalar - so the whole
+          # file stopped parsing and GitHub ran nothing, reporting "No jobs were run" with the
+          # workflow named by its path instead of its name. jq is on every runner and keeps every
+          # line indented inside the block.
+          # RULE: NOTHING INSIDE A YAML BLOCK MAY START AT COLUMN 0.
+          APPID=$(echo "$APPS" | jq -r '[(.applications // .apps // [])[]
+                   | select((tostring | ascii_downcase | contains("grahamcomley/xf-ecnl"))
+                            or ((.appName // "") | ascii_downcase | contains("sideline")))
+                   | (._id // .id)][0] // ""')
+          if [ -z "$APPID" ]; then
+            NAMES=$(echo "$APPS" | jq -r '[(.applications // .apps // [])[] | .appName // "?"] | join(", ")')
+            echo "::error title=Sideline is not set up in Codemagic::No Codemagic app matches this repo. Apps on the account: ${NAMES}. Add the app from the GitHub integration, then run this again."
+            exit 1
+          fi
+          echo "appId: $APPID"
+          echo "appid=$APPID" >> "$GITHUB_OUTPUT"
+
+      - name: Start the build
+        id: start
+        run: |
+          RESP=$(curl -fsS --max-time 30 -X POST \
+            -H "x-auth-token: $CODEMAGIC_API_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"appId\":\"${{ steps.find.outputs.appid }}\",\"workflowId\":\"${CM_WORKFLOW}\",\"branch\":\"${CM_BRANCH}\"}" \
+            https://api.codemagic.io/builds) || {
+            echo "::error title=Codemagic refused to start the build::POST /builds failed. Check the workflow id '${CM_WORKFLOW}' still matches the one in codemagic.yaml."
+            exit 1; }
+          BID=$(echo "$RESP" | jq -r '.buildId // ""')
+          if [ -z "$BID" ]; then
+            echo "::error title=No build id::Codemagic accepted the request but returned no buildId. Reply was: ${RESP}"
+            exit 1
+          fi
+          echo "buildId: $BID"
+          echo "::notice title=Build started::Codemagic build ${BID} is running. TestFlight email usually arrives in 15-40 minutes."
+          echo "bid=$BID" >> "$GITHUB_OUTPUT"
+
+      # *** THE WAIT IS CAPPED ON PURPOSE. ***
+      # Polling costs Actions minutes for the whole time it waits, and Codemagic already emails
+      # Graham on both success and failure (codemagic.yaml publishing.email). So this watches long
+      # enough to catch the failures that happen EARLY - signing, the plugin copy, Info.plist, the
+      # things that have actually broken before - and then stops rather than billing 40 minutes to
+      # learn what an email was going to say anyway.
+      # RULE: DO NOT PAY A MACHINE TO WAIT FOR A MESSAGE THAT IS ALREADY BEING SENT.
+      - name: Wait for the build
+        run: |
+          BID="${{ steps.start.outputs.bid }}"
+          for i in $(seq 1 44); do
+            sleep 30
+            B=$(curl -fsS --max-time 30 -H "x-auth-token: $CODEMAGIC_API_TOKEN" \
+                "https://api.codemagic.io/builds/$BID" || echo '')
+            [ -z "$B" ] && { echo "  poll $i: no answer"; continue; }
+            ST=$(echo "$B" | jq -r '.build.status // ""')
+            echo "  poll $i: $ST"
+            case "$ST" in
+              finished|success)
+                echo "::notice title=Build finished::Codemagic build ${BID} succeeded. Apple takes another 5-30 minutes to process, then the TestFlight email arrives."
+                exit 0 ;;
+              failed|error|canceled|cancelled|timeout)
+                STEP=$(echo "$B" | jq -r '[(.build.buildActions // [])[]
+                        | select(.status=="failed" or .status=="error") | .name // "?"]
+                        | if length==0 then "no step was named" else join(", ") end')
+                echo "::error title=Codemagic build ${ST}::Failing step(s): ${STEP}. Open the build at https://codemagic.io/app/${{ steps.find.outputs.appid }}/build/${BID} for the log."
+                exit 1 ;;
+            esac
+          done
+          echo "::notice title=Still building::Codemagic build ${BID} was still running after 22 minutes, so this stopped watching to save Actions minutes. It has NOT failed - Codemagic will email the result."
