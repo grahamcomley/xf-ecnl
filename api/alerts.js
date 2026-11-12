@@ -172,6 +172,16 @@ export async function adminStats(env) {
   return {devices: keys.length, people: people.size, week: (st.sent || {})[weekKey(Date.now())] || 0,
     lastWeek: (st.sent || {})[weekKey(Date.now() - 7 * 864e5)] || 0, lastCheck: st.checked || 0};
 }
+// A short alert to the owner's own devices (e.g. a Pick'em name was reported). Ignores quiet hours.
+export async function notifyOwner(env, uid, t, b) {
+  let n = 0;
+  for (const k of await devices(env, uid)) {
+    const d = await env.USERS.get(k, "json"); if (!d) continue;
+    const s = await send(env, d.sub, {t, b, u: "/#admin", tag: "owner-" + Date.now(), badge: d.badge}, "owner", d);
+    if (s < 300) n++;
+  }
+  return n;
+}
 export async function testOwner(env, uid) {
   let n = 0;
   for (const k of await devices(env, uid)) {

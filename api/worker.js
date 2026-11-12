@@ -10,7 +10,7 @@
 import {makeLog, dbPerson, dbDailySync} from "./log.js";
 import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
-import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay} from "./alerts.js";
+import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
 const OWNERS = ["grahamcomley@gmail.com"];
@@ -71,6 +71,7 @@ const cleanEmail = e => typeof e === "string" && e.length < 200 && /^[^@\s]+@[^@
 // Owner check uses only what Clerk signed (the "email" claim added to the session token, or a user id
 // listed in OWNER_IDS) - never an email sent by the page, which anyone could fake.
 let OWNER_IDS = [];
+let OWNER_SEEN = "";
 const isOwner = c => OWNERS.includes(cleanEmail(c.email)) || OWNER_IDS.includes(c.sub);
 
 async function put(env, id, rec) {
@@ -141,6 +142,7 @@ async function handle(req, env, url, p, L, who0) {
 
     // GET /api/me: the account's saved teams. Also notes "last seen".
     if (p === "/api/me" && req.method === "GET") {
+      if (isOwner(c) && OWNER_SEEN !== c.sub) { OWNER_SEEN = c.sub; if (await env.USERS.get("cfg:owner") !== c.sub) await env.USERS.put("cfg:owner", c.sub); }   // who to tell about reports
       if (rec && now - (rec.seen || 0) > SEEN_EVERY) { rec.seen = now; await put(env, c.sub, rec); dbPerson(env, null, c.sub, rec); L.keep("account.active", {uid: c.sub, email: rec.email || c.email || "", teams: rec.favs.length}); }
       return json({signedIn: true, exists: !!rec, favs: rec ? rec.favs : [], picks: rec && rec.picks || {}, admin: isOwner(c)});
     }
@@ -164,13 +166,25 @@ async function handle(req, env, url, p, L, who0) {
       return json({ok: true});
     }
     // Pick'em: weekend score picks, names, leaderboard (api/pickem.js).
-    if (p === "/api/pickem" || p === "/api/pickem/name") return pickRoute(p, req, env, c, json, L);
+    if (p === "/api/pickem/report" && req.method === "POST") {
+      const r = await pickRoute(p, req, env, c, json, L);
+      if (r.status === 200) {
+        const j = await r.clone().json(), owner = await env.USERS.get("cfg:owner");
+        if (owner && j.reports === 1) await pushNotifyOwner(env, owner, "Pick'em name reported", `"${j.name}" was reported. Admin › Pick'em to rename or hide.`).catch(e => L.error("pickem.report.notify", {msg: String(e)}));
+      }
+      return r;
+    }
+    if (p === "/api/pickem" || p === "/api/pickem/name" || p === "/api/pickem/block") return pickRoute(p, req, env, c, json, L);
     // Alerts (push notifications) for this device: settings, test, turn off.
     if (p === "/api/push" || p === "/api/push/test" || p === "/api/push/seen" || p === "/api/push/inbox") return pushRoute(p, req, env, c, json);
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key); dbPerson(env, null, c.sub, null);
       await pushDeleteUser(env, c.sub);
+      for (const s of ["live", "uat"]) { await env.USERS.delete(`pk:${s}:${c.sub}`); await env.USERS.delete(`pkr:${s}:${c.sub}`); }   // Pick'em name + picks
+      // the sign-in account itself (the page also asks Clerk; this covers it if that fails)
+      const ck = await env.USERS.get("cfg:clerk", "json");
+      if (ck && ck.sk) { const r = await fetch("https://api.clerk.com/v1/users/" + encodeURIComponent(c.sub), {method: "DELETE", headers: {authorization: "Bearer " + ck.sk}}).catch(() => null); if (r && !r.ok && r.status !== 404) L.error("account.delete.clerk", {status: r.status}); }
       L.keep("account.deleted", {uid: c.sub, email: rec && rec.email || ""});
       return json({ok: true});
     }
@@ -266,24 +280,27 @@ async function handle(req, env, url, p, L, who0) {
     // GET shows it. Owner only; kept in KV cfg:reviewer. Needs password sign-in turned on in Clerk.
     if (p === "/api/admin/reviewer") {
       if (!isOwner(c)) return json({error: "not allowed"}, 403);
-      if (req.method === "GET") { const r = await env.USERS.get("cfg:reviewer", "json"); return json(r || {}); }
+      // Two logins: "review" (Apple's reviewer, stays) and "demo" (throwaway, for showing account deletion
+      // in the screen recording; tap again to make it again). Short passwords that are easy to type.
+      if (req.method === "GET") { const r = await env.USERS.get("cfg:reviewer", "json"), d = await env.USERS.get("cfg:demo", "json"); return json(Object.assign({}, r || {}, {demo: d || null})); }
       if (req.method === "POST") {
+        const demo = url.searchParams.get("who") === "demo";
         const k = await env.USERS.get("cfg:clerk", "json"); if (!k || !k.sk) return json({error: "Save the Clerk secret key first."}, 400);
-        const H = {authorization: "Bearer " + k.sk, "content-type": "application/json"}, email = "appreview@sidelinestandings.com";
-        const abc = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789", rnd = crypto.getRandomValues(new Uint8Array(14));
-        const password = "Sideline-" + [...rnd].map(b => abc[b % abc.length]).join("");
+        const H = {authorization: "Bearer " + k.sk, "content-type": "application/json"}, email = demo ? "demo@sidelinestandings.com" : "appreview@sidelinestandings.com";
+        const words = ["kick", "goal", "pass", "save", "shot", "cross", "volley", "header", "corner", "keeper"], rnd = crypto.getRandomValues(new Uint16Array(2));
+        const password = words[rnd[0] % words.length] + "-" + String(1000 + rnd[1] % 9000);
         const err = j => (j && j.errors && j.errors[0] && (j.errors[0].long_message || j.errors[0].message)) || "Clerk said no.";
         const found = await (await fetch("https://api.clerk.com/v1/users?email_address=" + encodeURIComponent(email), {headers: H})).json().catch(() => []);
         let id = Array.isArray(found) && found[0] && found[0].id, r;
         if (id) r = await fetch("https://api.clerk.com/v1/users/" + id, {method: "PATCH", headers: H, body: JSON.stringify({password, skip_password_checks: true})});
-        else r = await fetch("https://api.clerk.com/v1/users", {method: "POST", headers: H, body: JSON.stringify({email_address: [email], password, skip_password_checks: true, first_name: "App", last_name: "Review"})});
+        else r = await fetch("https://api.clerk.com/v1/users", {method: "POST", headers: H, body: JSON.stringify({email_address: [email], password, skip_password_checks: true, first_name: demo ? "Demo" : "App", last_name: demo ? "Account" : "Review"})});
         const j = await r.json().catch(() => ({}));
         if (!r.ok) { L.error("admin.reviewer", {status: r.status, why: err(j)}); return json({error: err(j)}, 400); }
         id = id || j.id;
         const u = await env.USERS.get("u:" + id, "json") || {created: Date.now()};
         if (!(u.favs || []).length) { u.favs = ["u16b-82130"]; u.email = email; await env.USERS.put("u:" + id, JSON.stringify(u)); }
         const rec = {email, password, at: Date.now()};
-        await env.USERS.put("cfg:reviewer", JSON.stringify(rec));
+        await env.USERS.put(demo ? "cfg:demo" : "cfg:reviewer", JSON.stringify(rec));
         L.keep("admin.reviewer", {uid: c.sub, reviewer: id});
         return json(rec);
       }
