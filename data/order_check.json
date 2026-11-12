@@ -11993,10 +11993,10 @@
   "ours": [
    132182,
    133456,
-   48849,
    131463,
    58844,
    134472,
+   48849,
    131401,
    133553,
    133670,
@@ -12026,6 +12026,30 @@
   "name": "ECNL Boys Southwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 132182,
+    "team": "Beach Futbol Club (CA)",
+    "ours": [
+     9,
+     21
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   },
+   {
+    "id": 48849,
+    "team": "West Coast FC",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
    {
     "id": 133553,
     "team": "CDA Slammers FC",
@@ -13263,6 +13287,37 @@
    135260,
    137657,
    120862
+  ]
+ },
+ {
+  "conf": "u11g-4372-41908",
+  "name": "Pre-ECNL Girls GMA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 137656,
+    "team": "Liverpool FC-IA Michigan C Pre Red",
+    "ours": [
+     7,
+     10
+    ],
+    "ecnl": [
+     6,
+     10
+    ]
+   },
+   {
+    "id": 134999,
+    "team": "Royal Oak FC Pre ECNL RL GMA G2015/16 Green",
+    "ours": [
+     8,
+     11
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   }
   ]
  },
  {
