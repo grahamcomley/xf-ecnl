@@ -67,19 +67,34 @@ jobs:
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"
           echo "Mode: $MODE"
 
+      # A one-off ECNL outage (too many failed requests) shouldn't email anyone: put back the last good data,
+      # publish that, and only fail the run once the scores are more than 2 hours old (same point the site
+      # header shows "Paused").
       - name: Fetch ECNL data, rate teams, build site data
+        id: fetch
         if: steps.plan.outputs.mode != 'publish'
+        continue-on-error: true
         run: python scripts/update.py --${{ steps.plan.outputs.mode }}
+
+      - name: If the fetch failed, skip this run (fail only if prod's scores are over 2 hours old)
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          t=$(curl -fsS "https://sidelinestandings.com/data/status.json?t=$(date +%s)" | jq -r '.checked // empty' || true)
+          age=$(python3 -c "import sys,datetime as d; t=sys.argv[1]; print(int((d.datetime.now(d.timezone.utc)-d.datetime.fromisoformat(t.replace('Z','+00:00'))).total_seconds()//60) if t else 9999)" "$t")
+          echo "Fetch failed this run; prod's scores were last updated ${age} minutes ago. Nothing is published this run."
+          if [ "$age" -gt 120 ]; then echo "::error title=Scores not updating::Prod's scores have not updated for ${age} minutes (the ECNL fetch keeps failing). Check the run log."; exit 1; fi
+          echo "::warning title=Skipped this update::ECNL fetch failed once; prod keeps its current data. The next run (15 min) normally fixes it."
 
       # What changed for alerts (new and corrected scores). The site's server sends the notifications.
       - name: Find new scores for alerts
-        if: steps.plan.outputs.mode != 'publish'
+        if: steps.plan.outputs.mode != 'publish' && steps.fetch.outcome == 'success'
         continue-on-error: true
         run: python scripts/alerts.py
 
       # Two copies of the page: UAT = the latest page (main branch); live = the page last promoted
       # (live branch). Both get the same fresh data.
       - name: Build the live copy and stamp both page versions
+        if: steps.fetch.outcome != 'failure'
         run: |
           git fetch -q origin live:live
           rm -rf /tmp/livesrc site-live && mkdir -p /tmp/livesrc site-live
@@ -102,6 +117,7 @@ jobs:
       # Accounts store (Cloudflare KV, shared by UAT and live). Made once; its id is filled into both
       # server settings. If the token can't make it, the sites still publish, just without accounts.
       - name: Accounts store
+        if: steps.fetch.outcome != 'failure'
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
@@ -117,7 +133,7 @@ jobs:
           if [ -n "$ID" ]; then echo "Accounts store: $ID"; else echo "::warning::Couldn't find or make the accounts store (token needs Workers KV Storage: Edit). Sites publish without accounts."; fi
 
       - name: Save raw data back to the repo (only when it changed)
-        if: steps.plan.outputs.mode != 'publish'
+        if: (steps.plan.outputs.mode != 'publish') && steps.fetch.outcome != 'failure'
         continue-on-error: true   # never block publishing the site
         run: |
           git config user.name "xf-ecnl-bot"
@@ -135,6 +151,7 @@ jobs:
       # Cloudflare sometimes returns a one-off error: each publish gets one retry 30 s later, so a failure
       # email means something real (the check at the end still fails if a site isn't serving the new page).
       - name: Publish UAT (uat.sidelinestandings.com)
+        if: steps.fetch.outcome != 'failure'
         id: uat1
         continue-on-error: true
         uses: cloudflare/wrangler-action@v3
@@ -144,10 +161,10 @@ jobs:
           workingDirectory: site-worker-uat
           command: deploy
       - name: Wait before retrying UAT
-        if: steps.uat1.outcome == 'failure'
+        if: (steps.uat1.outcome == 'failure') && steps.fetch.outcome != 'failure'
         run: sleep 30
       - name: Publish UAT, second try
-        if: steps.uat1.outcome == 'failure'
+        if: (steps.uat1.outcome == 'failure') && steps.fetch.outcome != 'failure'
         continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
@@ -157,6 +174,7 @@ jobs:
           command: deploy
 
       - name: Publish live (sidelinestandings.com)
+        if: steps.fetch.outcome != 'failure'
         id: live1
         continue-on-error: true
         uses: cloudflare/wrangler-action@v3
@@ -166,10 +184,10 @@ jobs:
           workingDirectory: livecfg/site-worker
           command: deploy
       - name: Wait before retrying live
-        if: steps.live1.outcome == 'failure'
+        if: (steps.live1.outcome == 'failure') && steps.fetch.outcome != 'failure'
         run: sleep 30
       - name: Publish live, second try
-        if: steps.live1.outcome == 'failure'
+        if: (steps.live1.outcome == 'failure') && steps.fetch.outcome != 'failure'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -180,19 +198,23 @@ jobs:
       # The old github.io address only forwards to the new one (team links keep working). It never changes,
       # so a GitHub Pages hiccup here must not fail the run.
       - uses: actions/configure-pages@v5
+        if: steps.fetch.outcome != 'failure'
         continue-on-error: true
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.fetch.outcome != 'failure'
         continue-on-error: true
         with:
           path: forwarder
 
       - id: deploy
+        if: steps.fetch.outcome != 'failure'
         continue-on-error: true
         uses: actions/deploy-pages@v4
 
       # Confirm both sites are really serving the page just built (version.txt + the v-number in the page).
       - name: Verify UAT and live are serving the new version
+        if: steps.fetch.outcome != 'failure'
         run: |
           check() {  # $1 = site url, $2 = local folder
             want=$(cat $2/version.txt); num=$(grep -o 'name="app-version" content="[^"]*"' $2/index.html | cut -d'"' -f4)
