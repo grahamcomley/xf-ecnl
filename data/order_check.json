@@ -1086,8 +1086,8 @@
    134121,
    128625,
    132307,
-   133602,
    137146,
+   133602,
    134323,
    133514,
    118144,
@@ -1107,6 +1107,37 @@
    120875,
    132307,
    137146
+  ]
+ },
+ {
+  "conf": "u11b-4362-40814",
+  "name": "Pre-ECNL Boys Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133602,
+    "team": "NWI Lions United Pre-ECNL B2015/16",
+    "ours": [
+     10,
+     11
+    ],
+    "ecnl": [
+     9,
+     11
+    ]
+   },
+   {
+    "id": 118144,
+    "team": "Chicago City SC Pre-ECNL B2015/16",
+    "ours": [
+     11,
+     6
+    ],
+    "ecnl": [
+     10,
+     3
+    ]
+   }
   ]
  },
  {
@@ -3057,6 +3088,37 @@
    111465,
    118143,
    136045
+  ]
+ },
+ {
+  "conf": "u12b-4362-40815",
+  "name": "Pre-ECNL Boys Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133603,
+    "team": "NWI Lions United Pre-ECNL B2014/15",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
+    "id": 118143,
+    "team": "Chicago City SC Pre-ECNL B2014/15",
+    "ours": [
+     11,
+     3
+    ],
+    "ecnl": [
+     10,
+     3
+    ]
+   }
   ]
  },
  {
@@ -8190,8 +8252,8 @@
    132983,
    132191,
    130993,
-   94965,
    132485,
+   94965,
    133117,
    133569,
    131035,
@@ -8219,6 +8281,37 @@
    94647,
    134410,
    131035
+  ]
+ },
+ {
+  "conf": "u15b-4358-40733",
+  "name": "ECNL RL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94965,
+    "team": "Rebels SC",
+    "ours": [
+     7,
+     8
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   },
+   {
+    "id": 133569,
+    "team": "CDA Slammers FC Maroon",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   }
   ]
  },
  {
