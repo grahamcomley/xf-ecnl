@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.18">
+<meta name="app-version" content="v1.19">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1886,8 +1886,8 @@ function pkGameRow(D, g, tz, mine, seen, locked) {
     ${locked && others.length ? `<details class="inner"><summary>Everyone's picks (${others.length + (dr ? 1 : 0)})</summary>${(seen || []).map(x => `<div class="pkwho${x.me ? " me" : ""}"><span>${esc(x.me ? "You" : x.name)}</span><span>${x.p[0]}–${x.p[1]}${done ? ` <span class="pkpts p${pkPts(x.p, g)}">${pkPts(x.p, g)}</span>` : ""}</span></div>`).join("")}</details>` : ""}
   </div>`;
 }
-function pkBoard(rows, f, x) {
-  if (!rows.length) return "<div class='mut'>No points yet. Scores count once games are final.</div>";
+function pkBoard(rows, f, x, empty) {
+  if (!rows.length) return `<div class='mut'>${empty || "No picks yet."}</div>`;
   return `<table class="grid pkboard"><tr><th>#</th><th class="t">Name</th><th>Pts</th><th>Exact</th></tr>${rows.slice(0, 25).map(r => `<tr class="${r.me ? "me" : ""}"><td>${r.rank}</td><td class="t">${esc(r.me ? r.name + " (you)" : r.name)}${!r.me && r.pid ? ` <button class="pkmore" data-pid="${esc(r.pid)}" data-n="${esc(r.name)}" aria-label="Report or hide ${esc(r.name)}">⋯</button>` : ""}</td><td><b>${r[f]}</b></td><td>${r[x]}</td></tr>`).join("")}${rows.length > 25 && !rows.slice(0, 25).some(r => r.me) && rows.some(r => r.me) ? (r => `<tr class="me"><td>${r.rank}</td><td class="t">${esc(r.name)} (you)</td><td><b>${r[f]}</b></td><td>${r[x]}</td></tr>`)(rows.find(r => r.me)) : ""}</table>`;
 }
 // Report / hide a Pick'em player (App Store rule for names people choose themselves).
@@ -1898,6 +1898,7 @@ function pkReportSheet(pid, name, fk) {
   $("#pkrepreport").onclick = async () => { close(); try { await api("POST", "/api/pickem/report", {pid, fk}); toast("Thanks. We'll look at it within 24 hours."); } catch (e) { toast("Couldn't send the report. Try again."); } };
   $("#pkrephide").onclick = async () => { close(); try { await api("POST", "/api/pickem/block", {pid, on: true}); toast(name + " hidden"); loadPickem(true); } catch (e) { toast("Couldn't hide them. Try again."); } };
 }
+const PK_START = "2026-11-13";   // Pick'em launched this weekend: no "earlier weekends" before it
 function drawPickem() {
   const box = $("#pickem"); if (!box || !PK || !PK.data) return;
   const {D} = CTX, d = PK.data, tz = d.tz || pkTz(D.conf_name), now = Date.now();
@@ -1908,13 +1909,11 @@ function drawPickem() {
   const me = d.week.find(r => r.me), ms = d.season.find(r => r.me), picked = games.filter(g => d.picks[g.id]).length;
   const open = games.filter(g => now < pkKick(g, tz)).length, done = games.length && games.every(g => g.hs != null);
   const name = d.name || pkDefaultName();
-  const [rows, f, x] = PK.view === "season" ? [d.season, "se", "sex"] : [d.week, "wk", "wkx"];
   // earlier weekends with league games, newest first, with your points from your own picks
-  const fris = [...new Set(D.games.filter(g => g.date < cur[0] && g.hs != null).map(g => { const dw = new Date(g.date + "T12:00:00").getDay(); return addDays(g.date, -((dw + 2) % 7)); }))].sort().reverse().slice(0, 12);
+  const fris = [...new Set(D.games.filter(g => g.date < cur[0] && g.date >= PK_START && g.hs != null).map(g => { const dw = new Date(g.date + "T12:00:00").getDay(); return addDays(g.date, -((dw + 2) % 7)); }))].sort().reverse().slice(0, 12);
   const pastRows = fris.map(fr => { const gs = D.games.filter(g => inWin(g, fr, addDays(fr, 2)));
     const mine = gs.filter(g => d.picks[g.id]), pts = mine.reduce((s, g) => s + (pkPts(d.picks[g.id], g) || 0), 0);
     return `<button class="inrow${PK.sel && PK.sel[0] === fr ? " unread" : ""}" data-wk="${fr}"><span><b>${fmtDate(fr)} – ${fmtDate(addDays(fr, 2))}</b><span class="ddsub">${gs.length} games · ${mine.length ? `you: ${pts} pts from ${mine.length} pick${mine.length === 1 ? "" : "s"}` : "no picks"}</span></span>${icon("right")}</button>`; }).join("");
-  const label = past ? "That weekend" : done ? "Last weekend" : "This weekend";
   box.innerHTML = `
   <div class="card pkhero">${past ? `<button class="reset" id="pkback" style="float:none;padding:0 0 6px">‹ Back to ${done ? "this" : "the current"} weekend</button>` : ""}<div class="pkh1">Pick'em · ${fmtDate(from)} – ${fmtDate(to)}</div>
     <div class="mut" style="font-size:13px">${past ? "Final scores, your picks and everyone's picks." : `Pick the score of every league game in ${esc(D.conf_name)}. 3 pts exact score · 1 pt right result · each game locks at kickoff.`}</div>
@@ -1922,9 +1921,11 @@ function drawPickem() {
       <div class="stat"><div class="v">${me ? me.wk : 0}</div><div class="k">Points${me ? ` · ${ord(me.rank)}` : ""}</div></div>
       <div class="stat"><div class="v">${ms ? ms.se : 0}</div><div class="k">Season points${ms ? ` · ${ord(ms.rank)}` : ""}</div></div></div>
     ${past ? "" : `<div class="pkname" id="pkname">Playing as <b>${esc(name)}</b> · <button class="reset" id="pknamebtn">Change</button></div>`}</div>
-  ${sec("div", "Pick'em", "Games", games.length ? (done ? "Final scores" : open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
-  ${sec("div", "Pick'em", "Leaderboard", "", `<div class="pkviews">${[["week", label], ["season", "Season"]].map(([k, l]) => `<button data-v="${k}" class="${PK.view === k ? "on" : ""}">${l}</button>`).join("")}</div>${pkBoard(rows, f, x)}${d.hiddenCount ? `<div class="mut" style="font-size:12px;margin-top:6px">${d.hiddenCount} player${d.hiddenCount > 1 ? "s" : ""} hidden · <button class="reset" id="pkunhide">Show them again</button></div>` : ""}
-    ${fris.length ? `<div class="seth" style="margin-top:14px">Past weekends</div><div class="glist" id="pkpast">${pastRows}</div>` : ""}`, "pk2")}`;
+  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's leaderboard`, "", pkBoard(d.week, "wk", "wkx", "No picks yet this weekend. Make yours below."), "pk2")}
+  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's games`, games.length ? (done ? "Final scores" : open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
+  ${fris.length ? sec("div", "Pick'em", "Earlier weekends", "", `<div class="glist" id="pkpast">${pastRows}</div>`, "pk3", false) : ""}
+  ${sec("div", "Pick'em", "Season leaderboard", "", pkBoard(d.season, "se", "sex", "No picks yet."), "pk4")}
+  ${d.hiddenCount ? `<div class="mut" style="font-size:12px;margin:6px 2px">${d.hiddenCount} player${d.hiddenCount > 1 ? "s" : ""} hidden · <button class="reset" id="pkunhide">Show them again</button></div>` : ""}`;
   const bk = $("#pkback"); if (bk) bk.onclick = () => { PK.sel = null; PK.view = "week"; PK.data = null; loadPickem(); };
   const pp = $("#pkpast"); if (pp) pp.onclick = e => { const r = e.target.closest("[data-wk]"); if (!r) return; PK.sel = [r.dataset.wk, addDays(r.dataset.wk, 2)]; PK.view = "week"; PK.data = null; loadPickem(); $("#scroller").scrollTop = $("#pickem").offsetTop - 60; };
   box.querySelectorAll("details.sec").forEach(dt => dt.addEventListener("toggle", () => store.set(dt.dataset.key, dt.open ? "1" : "0")));
@@ -1936,7 +1937,6 @@ function drawPickem() {
       catch (e) { $("#pkerr").textContent = "That name isn't allowed. Letters, numbers and spaces, 2–20 characters."; }
     };
   };
-  box.querySelectorAll(".pkviews button").forEach(b => b.onclick = () => { PK.view = b.dataset.v; drawPickem(); });
   box.querySelectorAll(".pkmore").forEach(b => b.onclick = () => pkReportSheet(b.dataset.pid, b.dataset.n, D.__fk));
   const uh = $("#pkunhide"); if (uh) uh.onclick = async () => { try { await api("POST", "/api/pickem/block", {clear: true}); toast("Hidden players shown again"); loadPickem(true); } catch (e) { toast("Couldn't do that. Try again."); } };
   const pg = $("#pkgames"); if (pg) pg.onclick = e => {

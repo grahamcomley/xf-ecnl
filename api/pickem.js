@@ -94,9 +94,10 @@ export async function board(env, fk, from, to, me, now = Date.now(), blocked = [
     const h = uid === me ? null : await pid(env, uid);
     if (h && blocked.includes(h)) continue;
     const picks = (rec.picks || {})[fk] || {};
-    let wk = 0, wkx = 0, wkn = 0, se = 0, sex = 0, sen = 0;
+    let wk = 0, wkx = 0, wkn = 0, se = 0, sex = 0, sen = 0, wp = 0, sp = 0;   // wp/sp: picks made (scored or not)
     for (const [gid, p] of Object.entries(picks)) {
       const g = games.get(gid); if (!g) continue;
+      sp++; if (g.date >= from && g.date <= to) wp++;
       const locked = now >= kickoff(g, tz);
       if (locked) (seen[gid] = seen[gid] || []).push({name: rec.hidden && uid !== me ? null : rec.name, me: uid === me, pid: h, p: [p[0], p[1]]});
       const pts = points(p, g); if (pts == null) continue;
@@ -104,13 +105,14 @@ export async function board(env, fk, from, to, me, now = Date.now(), blocked = [
       if (g.date >= from && g.date <= to) { wk += pts; wkn++; if (pts === 3) wkx++; }
     }
     if (rec.hidden && uid !== me) continue;
-    rows.push({name: rec.name || "Player", me: uid === me, pid: h, wk, wkx, wkn, se, sex, sen});
+    rows.push({name: rec.name || "Player", me: uid === me, pid: h, wk, wkx, wkn, se, sex, sen, wp, sp});
   }
   for (const k of Object.keys(seen)) seen[k] = seen[k].filter(x => x.name || x.me);
   const rank = (list, f, x) => list.slice().sort((a, b) => b[f] - a[f] || b[x] - a[x] || a.name.localeCompare(b.name))
     .map((r, i, arr) => Object.assign({}, r, {rank: i && arr[i - 1][f] === r[f] && arr[i - 1][x] === r[x] ? null : i + 1}));
   const fix = l => { let last = 1; return l.map(r => { if (r.rank) last = r.rank; return Object.assign(r, {rank: last}); }); };
-  return {tz, week: fix(rank(rows.filter(r => r.wkn), "wk", "wkx")), season: fix(rank(rows.filter(r => r.sen), "se", "sex")), seen};
+  // everyone who has picked shows (0 pts until games are final), not only players with points
+  return {tz, week: fix(rank(rows.filter(r => r.wp), "wk", "wkx")), season: fix(rank(rows.filter(r => r.sp), "se", "sex")), seen};
 }
 
 // ---------- the page's calls ----------
