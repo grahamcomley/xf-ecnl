@@ -124,7 +124,7 @@ export async function route(p, req, env, c, json) {
     const d = await env.USERS.get(key, "json");
     if (!d || d.uid !== c.sub) return json({error: "alerts not on for this device"}, 404);
     const t = d.teams[0];
-    const st = await send(env, d.sub, {t: "Test alert", b: t ? `Alerts are on. You'll hear about ${t.n || "your team"} here.` : "Alerts are on.",
+    const st = await send(env, d.sub, {t: "Test alert", b: "Alerts are on. You'll get Sideline Standings alerts on this device.",
       u: "/" + (t ? "#t=" + t.k : ""), tag: "test", badge: d.badge}, "test", d);
     if (st === 404 || st === 410) { (dbDevice(env, null, key.split(":")[2], null), await env.USERS.delete(key)); return json({error: "gone"}, 410); }
     return json({ok: st >= 200 && st < 300, status: st});
