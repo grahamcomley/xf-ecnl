@@ -1010,37 +1010,6 @@
   ]
  },
  {
-  "conf": "u11b-4360-40813",
-  "name": "Pre-ECNL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131371,
-    "team": "FC Tulsa Academy Pre-ECNL B2015/16 II",
-    "ours": [
-     10,
-     19
-    ],
-    "ecnl": [
-     9,
-     16
-    ]
-   },
-   {
-    "id": 130547,
-    "team": "Tulsa SC Frontier Pre-ECNL B2015/16",
-    "ours": [
-     14,
-     9
-    ],
-    "ecnl": [
-     13,
-     9
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4361-41036",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
@@ -1107,37 +1076,6 @@
    120875,
    132307,
    137146
-  ]
- },
- {
-  "conf": "u11b-4362-40814",
-  "name": "Pre-ECNL Boys Lake Michigan",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133602,
-    "team": "NWI Lions United Pre-ECNL B2015/16",
-    "ours": [
-     10,
-     11
-    ],
-    "ecnl": [
-     9,
-     11
-    ]
-   },
-   {
-    "id": 118144,
-    "team": "Chicago City SC Pre-ECNL B2015/16",
-    "ours": [
-     11,
-     6
-    ],
-    "ecnl": [
-     10,
-     3
-    ]
-   }
   ]
  },
  {
@@ -2447,7 +2385,7 @@
      11
     ],
     "ecnl": [
-     7,
+     8,
      14
     ]
    },
@@ -2488,8 +2426,8 @@
    131664
   ],
   "ecnl": [
-   131197,
    133225,
+   131197,
    132713,
    131177,
    133251,
@@ -2510,6 +2448,18 @@
     ],
     "ecnl": [
      7,
+     16
+    ]
+   },
+   {
+    "id": 133225,
+    "team": "Lonestar ATX NW Pre-ECNL STXCL B2014/15 Red A",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     8,
      16
     ]
    },
@@ -2931,37 +2881,6 @@
   ]
  },
  {
-  "conf": "u12b-4360-40811",
-  "name": "Pre-ECNL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 130550,
-    "team": "Tulsa SC Frontier Pre-ECNL B2014/15",
-    "ours": [
-     14,
-     26
-    ],
-    "ecnl": [
-     13,
-     23
-    ]
-   },
-   {
-    "id": 131369,
-    "team": "FC Tulsa Academy Pre-ECNL B2014/15 II",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4361-40812",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
@@ -3088,37 +3007,6 @@
    111465,
    118143,
    136045
-  ]
- },
- {
-  "conf": "u12b-4362-40815",
-  "name": "Pre-ECNL Boys Lake Michigan",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133603,
-    "team": "NWI Lions United Pre-ECNL B2014/15",
-    "ours": [
-     10,
-     15
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   },
-   {
-    "id": 118143,
-    "team": "Chicago City SC Pre-ECNL B2014/15",
-    "ours": [
-     11,
-     3
-    ],
-    "ecnl": [
-     10,
-     3
-    ]
-   }
   ]
  },
  {
@@ -14643,6 +14531,37 @@
   ]
  },
  {
+  "conf": "u12g-4379-42031",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 68054,
+    "team": "NJ Crush FC Pre-ECNL G2014/15",
+    "ours": [
+     5,
+     11
+    ],
+    "ecnl": [
+     4,
+     8
+    ]
+   },
+   {
+    "id": 136452,
+    "team": "PSA North Pre-ECNL G2014/15",
+    "ours": [
+     7,
+     3
+    ],
+    "ecnl": [
+     6,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12g-4381-41019",
   "name": "Pre-ECNL Girls Florida",
   "ours": [
@@ -18453,8 +18372,8 @@
    133074,
    131646,
    135271,
-   133951,
    114575,
+   133951,
    111949,
    112796,
    115793
@@ -18472,6 +18391,37 @@
    111949,
    112796,
    115793
+  ]
+ },
+ {
+  "conf": "u14g-4302-42348",
+  "name": "ECNL RL Girls GMA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133951,
+    "team": "Liverpool FC-IA Michigan NO G 12/13 ECNL RL GMA",
+    "ours": [
+     11,
+     9
+    ],
+    "ecnl": [
+     11,
+     12
+    ]
+   },
+   {
+    "id": 111949,
+    "team": "TKO Premier SC",
+    "ours": [
+     10,
+     8
+    ],
+    "ecnl": [
+     10,
+     5
+    ]
+   }
   ]
  },
  {
