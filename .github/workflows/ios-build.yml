@@ -114,7 +114,10 @@ jobs:
               finished|success)
                 echo "::notice title=Build finished::Codemagic build ${BID} succeeded. Apple takes another 5-30 minutes to process, then the TestFlight email arrives."
                 exit 0 ;;
-              failed|error|canceled|cancelled|timeout)
+              canceled|cancelled)
+                echo "::notice title=Build cancelled::Codemagic build ${BID} was cancelled (by hand or by Codemagic). Not a failure, so no failure email."
+                exit 0 ;;
+              failed|error|timeout)
                 STEP=$(echo "$B" | jq -r '[(.build.buildActions // [])[]
                         | select(.status=="failed" or .status=="error") | .name // "?"]
                         | if length==0 then "no step was named" else join(", ") end')

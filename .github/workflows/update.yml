@@ -132,7 +132,22 @@ jobs:
           fi
 
       # Only changed files upload to Cloudflare.
+      # Cloudflare sometimes returns a one-off error: each publish gets one retry 30 s later, so a failure
+      # email means something real (the check at the end still fails if a site isn't serving the new page).
       - name: Publish UAT (uat.sidelinestandings.com)
+        id: uat1
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4"
+          workingDirectory: site-worker-uat
+          command: deploy
+      - name: Wait before retrying UAT
+        if: steps.uat1.outcome == 'failure'
+        run: sleep 30
+      - name: Publish UAT, second try
+        if: steps.uat1.outcome == 'failure'
         continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
@@ -142,6 +157,19 @@ jobs:
           command: deploy
 
       - name: Publish live (sidelinestandings.com)
+        id: live1
+        continue-on-error: true
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4"
+          workingDirectory: livecfg/site-worker
+          command: deploy
+      - name: Wait before retrying live
+        if: steps.live1.outcome == 'failure'
+        run: sleep 30
+      - name: Publish live, second try
+        if: steps.live1.outcome == 'failure'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -149,14 +177,18 @@ jobs:
           workingDirectory: livecfg/site-worker
           command: deploy
 
-      # The old github.io address only forwards to the new one (team links keep working).
+      # The old github.io address only forwards to the new one (team links keep working). It never changes,
+      # so a GitHub Pages hiccup here must not fail the run.
       - uses: actions/configure-pages@v5
+        continue-on-error: true
 
       - uses: actions/upload-pages-artifact@v3
+        continue-on-error: true
         with:
           path: forwarder
 
       - id: deploy
+        continue-on-error: true
         uses: actions/deploy-pages@v4
 
       # Confirm both sites are really serving the page just built (version.txt + the v-number in the page).
