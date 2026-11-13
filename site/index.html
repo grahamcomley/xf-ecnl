@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.13">
+<meta name="app-version" content="v1.14">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -275,7 +275,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 </div>
 <div id="delsheet" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Delete your account?</b><button class="icon-btn" id="delclose">Cancel</button></div>
-  <p>This permanently deletes your account, your followed teams, alerts and Pick'em picks. It can't be undone.</p>
+  <p>This permanently deletes your account, your followed teams and your alerts. It can't be undone.</p>
   <p class="mut" style="font-size:13px">Type <b>DELETE</b> to confirm.</p>
   <input id="delin" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="DELETE" style="width:100%;box-sizing:border-box;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:11px;font:inherit;font-size:16px">
   <button class="btn-sec danger" id="delgo" disabled style="margin-top:10px;width:100%">Delete my account</button>
@@ -577,10 +577,10 @@ function applyGate() {
   drawPills();
 }
 const PEND_WHY = {star: "Sign in to save this team.", share: "Sign in to share this team.", settings: "Sign in to change your settings.", bell: "Sign in to see your alerts.",
-  "tab:games": "Sign in to see games and results.", "tab:league": "Sign in to see every game in the league.", "tab:predict": "Sign in to predict the season and play Pick'em."};
+  "tab:games": "Sign in to see games and results.", "tab:league": "Sign in to see every game in the league.", "tab:predict": "Sign in to predict how the season finishes."};
 function askSignIn(act, team) {
   store.set("pendAct", JSON.stringify({act, team: team || CUR, at: Date.now()}));
-  $("#signwhy").textContent = PEND_WHY[act] || "Sign in to keep going.";
+  $("#signwhy").textContent = act === "tab:predict" && PKON ? "Sign in to predict the season and play Pick'em." : PEND_WHY[act] || "Sign in to keep going.";
   $("#signsheet").hidden = false;
   try { navigator.sendBeacon && navigator.sendBeacon("/api/log/anon?e=ask&a=" + encodeURIComponent(act)); } catch (e) {}
 }
@@ -828,7 +828,7 @@ function drawSettings(b) {
     <div class="seth">About</div>
       ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
       ${setRow("privacy", "lock", "Privacy", "What we store and how to delete it")}
-    ${ME && ME.admin ? `<div class="seth">Admin</div>${setRow("admin", "chart", "Admin", "Sign-ups, alerts, Require sign-in")}` : ""}
+    ${ME && ME.admin ? `<div class="seth">Admin</div>${setRow("admin", "chart", "Admin", "Sign-ups, alerts, App Store app, Pick'em")}` : ""}
     </div>`;
   b.onclick = e => {
     const r = e.target.closest("[data-go]"); if (!r) return;
@@ -904,7 +904,6 @@ async function drawAdmin(b) {
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
     const day = ms => ms ? new Date(ms).toLocaleDateString(undefined, {month: "short", day: "numeric"}) : "-";
-    const gateOn = GATE !== false;
     const fold = (id, title, sub, body, open) => `<details class="fold" data-fold="${id}" ${(ADM_OPEN[id] ?? open) ? "open" : ""}><summary><span>${title}<span class="ddsub">${sub}</span></span>${icon("chev")}</summary><div class="foldin">${body}</div></details>`;
     b.innerHTML = `<div class="pgin">
       <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
@@ -931,8 +930,7 @@ async function drawAdmin(b) {
         <div class="setbox" style="font-size:13px;margin-top:8px"><b>Demo login (to delete)</b><div class="mut" style="margin-top:2px">A throwaway account for showing Delete account in the review video. Tap again after deleting it to make it again.</div>
           <div id="dmbox" style="margin-top:6px">${rv.demo ? `<div>Email: <code>${esc(rv.demo.email)}</code></div><div>Password: <code>${esc(rv.demo.password)}</code></div>` : ""}</div>
           <button class="btn-sec" id="dmmake" data-who="demo">${rv.demo ? "Make it again" : "Create the demo login"}</button></div>
-        ${IS_APP ? `<button class="btn-sec" id="appsite">${location.host.startsWith("uat.") ? "Switch this app to live" : "Switch this app to UAT"}</button>` : ""}
-        <p class="mut" style="font-size:12px;margin:6px 0 0" id="appinfo">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
+        <p class="mut" style="font-size:12px;margin:6px 0 0;overflow-wrap:anywhere" id="appinfo">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
       ${fold("pickem", "Pick'em players", `${PKON ? "On" : "Off (only you see it)"} · ${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, `<button class="btn-sec" id="pkswitch">${PKON ? "Turn Pick'em off for everyone" : "Turn Pick'em on for everyone"}</button>` + (pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}${x.reports ? ` <span class="keytag" style="background:var(--red);color:#fff">REPORTED ${x.reports}</span>` : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>"), false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
@@ -968,12 +966,7 @@ async function drawAdmin(b) {
         else { rb.textContent = was; toast(j.error || "Couldn't create it"); } }
       catch (x) { rb.textContent = was; toast("Couldn't create it. Try again."); }
     }; });
-    const sw = $("#appsite"); if (sw) sw.onclick = () => { location.href = (location.host.startsWith("uat.") ? "https://sidelinestandings.com/" : "https://uat.sidelinestandings.com/"); };
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
-    if ($("#gatetoggle")) $("#gatetoggle").onclick = async () => {
-      try { const r = await api("PUT", "/api/admin/config", {gate: !gateOn}); GATE = r.gate; store.set("gateCache", GATE ? "on" : "off"); toast(GATE ? "Sign-in required" : "Site open; sign-in optional"); refreshPage(); }
-      catch (x) { toast("Couldn't change it. Try again."); }
-    };
   } catch (x) { if (pageIs("admin")) b.innerHTML = "<div class='pgin'><p class='mut'>Couldn't load the admin data.</p></div>"; }
 }
 const ADM_OPEN = {};
