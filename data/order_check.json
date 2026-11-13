@@ -26880,6 +26880,37 @@
   ]
  },
  {
+  "conf": "u19g-4272-40610",
+  "name": "ECNL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 129337,
+    "team": "Challenge SC",
+    "ours": [
+     12,
+     18
+    ],
+    "ecnl": [
+     13,
+     19
+    ]
+   },
+   {
+    "id": 94982,
+    "team": "Colorado Rush",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     10,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19g-4296-40754",
   "name": "ECNL RL Girls Carolinas",
   "ours": [
