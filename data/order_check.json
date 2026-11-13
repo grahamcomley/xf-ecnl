@@ -2673,8 +2673,8 @@
    106833
   ],
   "ecnl": [
-   133530,
    134997,
+   133530,
    115315,
    133967,
    133080,
@@ -2690,15 +2690,15 @@
   "kind": "points",
   "teams": [
    {
-    "id": 133530,
-    "team": "Plymouth Reign Pre-ECNL B2014/15",
+    "id": 134997,
+    "team": "Royal Oak FC Pre-ECNL GMA B2014/2015 Green",
     "ours": [
-     4,
-     9
+     5,
+     12
     ],
     "ecnl": [
-     3,
-     9
+     6,
+     15
     ]
    },
    {
@@ -3038,77 +3038,15 @@
    114508,
    118001,
    117145,
-   117011,
    111638,
    135308,
+   117011,
    116958,
    114509,
    113924,
    114652,
    134846,
    134889
-  ]
- },
- {
-  "conf": "u12b-4364-40818",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 114508,
-    "team": "SUSA FC Pre-ECNL B2014/15 ACADEMY",
-    "ours": [
-     11,
-     31
-    ],
-    "ecnl": [
-     10,
-     28
-    ]
-   },
-   {
-    "id": 117011,
-    "team": "AC Connecticut Pre-ECNL B2014/15 I",
-    "ours": [
-     8,
-     10
-    ],
-    "ecnl": [
-     7,
-     10
-    ]
-   }
-  ]
- },
- {
-  "conf": "u12b-4364-40820",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133939,
-    "team": "SUSA FC Pre-ECNL B2014/15 ACADEMY ll",
-    "ours": [
-     11,
-     13
-    ],
-    "ecnl": [
-     10,
-     13
-    ]
-   },
-   {
-    "id": 117012,
-    "team": "AC Connecticut Pre-ECNL B2014/15 II",
-    "ours": [
-     9,
-     7
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   }
   ]
  },
  {
