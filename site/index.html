@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.19">
+<meta name="app-version" content="v1.20">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1857,6 +1857,24 @@ function pkDefaultName() {
   const l = u && u.lastName ? " " + u.lastName[0].toUpperCase() + "." : "";
   return ((f ? f[0].toUpperCase() + f.slice(1) : "Player") + l).slice(0, 20);
 }
+// After a pick saves: update the leaderboards and the Picked count in place (no redraw, so open inputs stay put).
+let PK_RT = null;
+function pkRefreshBoards() {
+  clearTimeout(PK_RT); PK_RT = setTimeout(async () => {
+    if (!PK || !PK.data || !CTX) return;
+    const fk = CTX.D.__fk, [from, to] = PK.sel || pkWeekend(0);
+    try {
+      const r = await api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${from}&to=${to}`);
+      if (!PK || PK.fk !== fk) return;
+      Object.assign(PK.data, {week: r.week, season: r.season, seen: r.seen, hiddenCount: r.hiddenCount});
+      const w = $("#pkwk"), se = $("#pkse"), pc = $("#pkpicked");
+      if (w) w.innerHTML = pkBoard(r.week, "wk", "wkx", "No picks yet this weekend. Make yours below.");
+      if (se) se.innerHTML = pkBoard(r.season, "se", "sex", "No picks yet.");
+      if (pc) { const gs = CTX.D.games.filter(g => g.date >= from && g.date <= to && g.home_id && g.away_id && !g.bad); pc.textContent = `${gs.filter(g => PK.data.picks[g.id]).length}/${gs.length}`; }
+      document.querySelectorAll("#pickem .pkmore").forEach(b => b.onclick = () => pkReportSheet(b.dataset.pid, b.dataset.n, fk));
+    } catch (e) {}
+  }, 1200);
+}
 async function loadPickem(force) {
   const box = $("#pickem"); if (!box || !CTX) return;
   const {D} = CTX, fk = D.__fk;
@@ -1917,14 +1935,14 @@ function drawPickem() {
   box.innerHTML = `
   <div class="card pkhero">${past ? `<button class="reset" id="pkback" style="float:none;padding:0 0 6px">‹ Back to ${done ? "this" : "the current"} weekend</button>` : ""}<div class="pkh1">Pick'em · ${fmtDate(from)} – ${fmtDate(to)}</div>
     <div class="mut" style="font-size:13px">${past ? "Final scores, your picks and everyone's picks." : `Pick the score of every league game in ${esc(D.conf_name)}. 3 pts exact score · 1 pt right result · each game locks at kickoff.`}</div>
-    <div class="admtiles"><div class="stat"><div class="v">${picked}/${games.length}</div><div class="k">Picked</div></div>
+    <div class="admtiles"><div class="stat"><div class="v" id="pkpicked">${picked}/${games.length}</div><div class="k">Picked</div></div>
       <div class="stat"><div class="v">${me ? me.wk : 0}</div><div class="k">Points${me ? ` · ${ord(me.rank)}` : ""}</div></div>
       <div class="stat"><div class="v">${ms ? ms.se : 0}</div><div class="k">Season points${ms ? ` · ${ord(ms.rank)}` : ""}</div></div></div>
     ${past ? "" : `<div class="pkname" id="pkname">Playing as <b>${esc(name)}</b> · <button class="reset" id="pknamebtn">Change</button></div>`}</div>
-  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's leaderboard`, "", pkBoard(d.week, "wk", "wkx", "No picks yet this weekend. Make yours below."), "pk2")}
-  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's games`, games.length ? (done ? "Final scores" : open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pk1")}
-  ${fris.length ? sec("div", "Pick'em", "Earlier weekends", "", `<div class="glist" id="pkpast">${pastRows}</div>`, "pk3", false) : ""}
-  ${sec("div", "Pick'em", "Season leaderboard", "", pkBoard(d.season, "se", "sex", "No picks yet."), "pk4")}
+  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's leaderboard`, "", `<div id="pkwk">${pkBoard(d.week, "wk", "wkx", "No picks yet this weekend. Make yours below.")}</div>`, "pkw-board")}
+  ${sec("div", "Pick'em", `${past ? "That" : "This"} weekend's games`, games.length ? (done ? "Final scores" : open ? `${open} still open` : "All games locked") : "", games.length ? `<div id="pkgames">${games.map(g => pkGameRow(D, g, tz, d.picks[g.id], d.seen[g.id], now >= pkKick(g, tz))).join("")}</div>` : "<div class='mut'>No league games this weekend.</div>", "pkw-games")}
+  ${fris.length ? sec("div", "Pick'em", "Earlier weekends", "", `<div class="glist" id="pkpast">${pastRows}</div>`, "pkw-past", false) : ""}
+  ${sec("div", "Pick'em", "Season leaderboard", "", `<div id="pkse">${pkBoard(d.season, "se", "sex", "No picks yet.")}</div>`, "pkw-season")}
   ${d.hiddenCount ? `<div class="mut" style="font-size:12px;margin:6px 2px">${d.hiddenCount} player${d.hiddenCount > 1 ? "s" : ""} hidden · <button class="reset" id="pkunhide">Show them again</button></div>` : ""}`;
   const bk = $("#pkback"); if (bk) bk.onclick = () => { PK.sel = null; PK.view = "week"; PK.data = null; loadPickem(); };
   const pp = $("#pkpast"); if (pp) pp.onclick = e => { const r = e.target.closest("[data-wk]"); if (!r) return; PK.sel = [r.dataset.wk, addDays(r.dataset.wk, 2)]; PK.view = "week"; PK.data = null; loadPickem(); $("#scroller").scrollTop = $("#pickem").offsetTop - 60; };
@@ -1949,7 +1967,7 @@ function drawPickem() {
     row.querySelectorAll(".pkstep b").forEach((el, i) => el.textContent = cur[i]);
     const note = row.querySelector(".pksave"); note.textContent = " · saving…";
     clearTimeout(row._t); row._t = setTimeout(async () => {
-      try { const r = await api("PUT", "/api/pickem", {fk: D.__fk, g: id, h: cur[0], a: cur[1], name: pkDefaultName()}); d.picks[id] = [cur[0], cur[1], Date.now()]; if (!d.name) d.name = r.name; note.textContent = " · Pick saved"; note.classList.add("ok"); }
+      try { const r = await api("PUT", "/api/pickem", {fk: D.__fk, g: id, h: cur[0], a: cur[1], name: pkDefaultName()}); d.picks[id] = [cur[0], cur[1], Date.now()]; if (!d.name) d.name = r.name; note.textContent = " · Pick saved"; note.classList.add("ok"); pkRefreshBoards(); }
       catch (x) { note.textContent = String(x.message).includes("409") ? " · locked" : " · couldn't save, try again"; note.classList.remove("ok"); }
     }, 700);
   };
