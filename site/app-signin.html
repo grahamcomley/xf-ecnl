@@ -71,8 +71,10 @@ sc.onload = async () => {
       document.getElementById("contbtn").onclick = () => handBack();
       document.getElementById("otherbtn").onclick = async () => {
         document.getElementById("already").style.display = "none"; msg("Signing out…");
-        try { await window.Clerk.signOut(); slog("signedout", window.Clerk.user ? "still-user" : "ok"); } catch (x) { slog("signout-error", x && x.message); }
-        opts.style.display = ""; em.style.display = ""; msg("");   // straight to the choices, no reload
+        // Clerk's sign-out goes to the site's home page unless told otherwise; stay on this sign-in page
+        // (going to the home page left people signing in to the website inside the sheet, not the app)
+        slog("signout", "start");
+        try { await window.Clerk.signOut({redirectUrl: location.origin + "/app-signin.html" + location.search}); } catch (x) { slog("signout-error", x && x.message); opts.style.display = ""; em.style.display = ""; msg(""); }
       };
       msg(""); return;
     }
