@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.17">
+<meta name="app-version" content="v1.18">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -133,7 +133,7 @@ body.ddopen #scroller,body.ddopen #tabbar{filter:brightness(.4);transition:filte
 .pkrow{display:flex;align-items:center;gap:10px;padding:3px 0}.pkt{flex:1;min-width:0;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pkstep{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:var(--card2)}.pkstep button{background:none;border:0;color:var(--ink);font:inherit;font-size:18px;width:32px;height:34px;cursor:pointer}.pkstep button:disabled{color:var(--line2);cursor:default}.pkstep b{min-width:20px;text-align:center;font-size:17px}
 .pkfoot{font-size:12px;color:var(--mut);margin-top:4px}.pkfinal{min-width:34px;text-align:center;font-size:18px;font-weight:800}.pksave.ok{color:var(--up)}.pkpts{font-weight:800}.pkpts.p3{color:var(--up)}.pkpts.p1{color:#86c99a}.pkpts.p0{color:var(--mut)}
-.pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#delgo:disabled{opacity:.45;cursor:default}#delsheet{z-index:90;align-items:center;padding:16px}#delsheet .sheet-card{border-radius:14px}.pkmore{background:none;border:0;color:var(--mut);font:inherit;font-size:15px;padding:0 4px;cursor:pointer;line-height:1}
+.pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wklist{margin-top:2px}.wkgrp>summary{padding:12px}.wkbody{padding:0 12px 10px}.wkbody .day:first-child{margin-top:4px}.wkone{padding-top:2px}#delgo:disabled{opacity:.45;cursor:default}#delsheet{z-index:90;align-items:center;padding:16px}#delsheet .sheet-card{border-radius:14px}.pkmore{background:none;border:0;color:var(--mut);font:inherit;font-size:15px;padding:0 4px;cursor:pointer;line-height:1}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -1058,6 +1058,9 @@ function alertsBlocker() {
 }
 function aseg(name, opts, val) { return `<span class="seg" data-seg="${name}">${opts.map(([v, l]) => `<button data-v="${v}" class="${v === val ? "on" : ""}">${l}</button>`).join("")}</span>`; }
 const AOPEN = new Set();
+// Predict › Remaining games: weekends opened / closed by hand (the first weekend starts open)
+const PWOPEN = new Set(), PWSHUT = new Set();
+document.addEventListener("toggle", e => { const dt = e.target; if (!dt.matches || !dt.matches("details.wkgrp")) return; const k = dt.dataset.wk; if (dt.open) { PWOPEN.add(k); PWSHUT.delete(k); } else { PWOPEN.delete(k); PWSHUT.add(k); } }, true);
 const hm12 = s => { const [h, m] = s.split(":").map(Number); return `${(h % 12) || 12}${m ? ":" + String(m).padStart(2, "0") : ""} ${h < 12 ? "AM" : "PM"}`; };
 // This device: one drop-down row like the others (closed by default): alerts On / Off, and a test alert when on.
 const alertsMaster = on => `<div class="seth">This device</div><div class="glist"><details class="arow" data-team="__dev" ${AOPEN.has("__dev") ? "open" : ""}><summary><span>Alerts on this device<span class="ddsub" id="atestsub">${on ? "On · turn off or send a test alert" : "Off · get your team's scores the moment they're posted"}</span></span>${icon("chev")}</summary>
@@ -1652,9 +1655,18 @@ function renderTeam(D, fid, key) {
     + (missed.length ? blk("New date not set", missed.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
   const seasonRes = played.filter(g => g.date < wStart).sort((a, b) => byTime(b, a));
   const seasonHtml = byDay(seasonRes, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
-  // Remaining games for the predictor, grouped by date, each with its three pick buttons.
-  const predHtml = byDay(scheduled, g => gameRow(D, M, g, {focus: fid, picks: true, left: shortTime(g.time)}))
-    + (missed.length ? blk("New date not set", missed.map(g => gameRow(D, M, g, {focus: fid, picks: true, left: "TBD"})).join("")) : "");
+  // Remaining games for the predictor, one closed row per weekend (Mon–Sun); the next weekend with games
+  // starts open. Every game still counts in the predicted table, open or not.
+  const prow = g => gameRow(D, M, g, {focus: fid, picks: true, left: shortTime(g.time)});
+  const wkOf = d => { const x = new Date(d + "T12:00:00"); return addDays(d, -((x.getDay() + 6) % 7)); };
+  const wks = [...new Set(scheduled.map(g => wkOf(g.date)))].sort();
+  const wkRow = (key, title, list, body, first) => `<details class="arow wkgrp" data-wk="${key}" ${PWOPEN.has(key) || (first && !PWSHUT.has(key)) ? "open" : ""}><summary><span>${title}<span class="ddsub">${list.length} game${list.length > 1 ? "s" : ""}</span></span>${icon("chev")}</summary><div class="wkbody">${body}</div></details>`;
+  const predHtml = (wks.length || missed.length) ? `<div class="glist wklist">` + wks.map((w, i) => {
+      const list = scheduled.filter(g => wkOf(g.date) === w), ds = [...new Set(list.map(g => g.date))].sort();
+      const title = ds.length > 1 ? `${fmtDate(ds[0])} – ${fmtDate(ds[ds.length - 1])}` : fmtDate(ds[0]);
+      return wkRow(w, title, list, ds.length > 1 ? byDay(list, prow) : `<div class="wkone">${list.map(prow).join("")}</div>`, i === 0);   // one date: no repeat of it inside
+    }).join("")
+    + (missed.length ? wkRow("tbd", "New date not set", missed, missed.map(g => gameRow(D, M, g, {focus: fid, picks: true, left: "TBD"})).join(""), false) : "") + `</div>` : "";
   // How we did: every finished game we have a pre-game prediction for.
   const PG = D.pregame || {};
   const graded = played.filter(g => PG[g.id]).sort((a, b) => byTime(b, a)).map(g => {
