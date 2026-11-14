@@ -1170,6 +1170,37 @@
   ]
  },
  {
+  "conf": "u11b-4364-40819",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 127267,
+    "team": "FC Stars Pre-ECNL B2015/16 White",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   },
+   {
+    "id": 135311,
+    "team": "Oakwood Soccer Club Pre White",
+    "ours": [
+     9,
+     1
+    ],
+    "ecnl": [
+     8,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4365-41498",
   "name": "Pre-ECNL Boys Northeast - North",
   "ours": [
