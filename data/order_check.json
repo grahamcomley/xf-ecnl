@@ -3915,6 +3915,37 @@
   ]
  },
  {
+  "conf": "u12b-4385-41167",
+  "name": "Pre-ECNL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131341,
+    "team": "PacNW SC Pre-ECNL B2014/15",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
+    "id": 93625,
+    "team": "XF Pre-ECNL B2014/15 2",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4387-40809",
   "name": "Pre-ECNL Boys Colorado",
   "ours": [
@@ -12992,6 +13023,30 @@
   "name": "ECNL RL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 91077,
+    "team": "Kaptiva Sports Academy TX ECNL RL STXCL B2008/09",
+    "ours": [
+     11,
+     26
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
+    "id": 50861,
+    "team": "MAFC ECNL RL STXCL B2008/09 Red",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
    {
     "id": 121120,
     "team": "Dynamos ECNL RL STXCL B2008/09",
