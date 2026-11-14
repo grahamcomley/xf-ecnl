@@ -334,8 +334,8 @@
    97417,
    129697,
    131324,
-   124688,
    132286,
+   124688,
    129516,
    117163,
    116916
@@ -356,18 +356,6 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
-   {
-    "id": 133789,
-    "team": "MAFC Pre-ECNL STXCL B2015/16",
-    "ours": [
-     7,
-     21
-    ],
-    "ecnl": [
-     8,
-     24
-    ]
-   },
    {
     "id": 88092,
     "team": "Imperial SC Pre-ECNL STXCL B2015/16",
@@ -396,7 +384,7 @@
     "id": 87775,
     "team": "AHFC East Pre-ECNL STXCL B2015/16",
     "ours": [
-     7,
+     8,
      9
     ],
     "ecnl": [
@@ -432,8 +420,8 @@
     "id": 131324,
     "team": "RISE SC Pre-ECNL STXCL B2015/16 Navy",
     "ours": [
-     6,
-     3
+     7,
+     4
     ],
     "ecnl": [
      7,
@@ -444,8 +432,8 @@
     "id": 132286,
     "team": "Cavalry Pre-ECNL STXCL B2015/16",
     "ours": [
-     7,
-     3
+     8,
+     4
     ],
     "ecnl": [
      8,
@@ -2143,6 +2131,65 @@
   ]
  },
  {
+  "conf": "u12b-4254-41774",
+  "name": "Pre-ECNL Boys Ohio Valley",
+  "ours": [
+   82469,
+   111872,
+   130583,
+   132802,
+   132243,
+   130427,
+   82562,
+   111888,
+   132826,
+   130470
+  ],
+  "ecnl": [
+   82469,
+   132802,
+   111872,
+   130583,
+   132243,
+   130427,
+   82562,
+   111888,
+   132826,
+   130470
+  ]
+ },
+ {
+  "conf": "u12b-4254-41774",
+  "name": "Pre-ECNL Boys Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 82469,
+    "team": "Pittsburgh Riverhounds Pre-ECNL RL B2014/15",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     22
+    ]
+   },
+   {
+    "id": 132802,
+    "team": "TCFC North Pre-ECNL B2014/15",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4254-41782",
   "name": "Pre-ECNL Boys Ohio Valley",
   "ours": [
@@ -2354,8 +2401,8 @@
     "id": 129406,
     "team": "Challenge United Pre-ECNL B2014/15",
     "ours": [
-     5,
-     8
+     6,
+     9
     ],
     "ecnl": [
      8,
@@ -2366,8 +2413,8 @@
     "id": 131283,
     "team": "RISE SC Pre-ECNL STXCL B2014/15 Vivid",
     "ours": [
-     5,
-     10
+     6,
+     11
     ],
     "ecnl": [
      8,
@@ -2546,10 +2593,10 @@
    75142,
    118553,
    80138,
+   132285,
    131287,
    97206,
    126453,
-   132285,
    131288,
    117162,
    92769,
@@ -2637,7 +2684,7 @@
     "id": 131288,
     "team": "RISE SC Pre-ECNL STXCL B2014/15 Magenta",
     "ours": [
-     7,
+     8,
      4
     ],
     "ecnl": [
@@ -2649,8 +2696,8 @@
     "id": 132285,
     "team": "Cavalry Pre-ECNL STXCL B2014/15",
     "ours": [
-     7,
-     6
+     8,
+     9
     ],
     "ecnl": [
      9,
@@ -2673,8 +2720,8 @@
     "id": 132285,
     "team": "Cavalry Pre-ECNL STXCL B2014/15",
     "ours": [
-     7,
-     6
+     8,
+     9
     ],
     "ecnl": [
      0,
@@ -2692,11 +2739,11 @@
    133222,
    131278,
    133747,
-   131196,
    132709,
    129645,
    128327,
    129398,
+   131196,
    131661,
    131197,
    132663,
@@ -2720,6 +2767,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133221,
+    "team": "Lonestar ATX NE Pre-ECNL STXCL B2014/15 Red A",
+    "ours": [
+     8,
+     22
+    ],
+    "ecnl": [
+     7,
+     19
+    ]
+   },
+   {
     "id": 133222,
     "team": "Lonestar ATX NE Pre-ECNL STXCL B2014/15 Red B",
     "ours": [
@@ -2735,7 +2794,7 @@
     "id": 131196,
     "team": "FC Westlake Pre-ECNL STXCL B2014/15 Blue",
     "ours": [
-     7,
+     8,
      11
     ],
     "ecnl": [
@@ -3662,9 +3721,9 @@
    134249,
    135335,
    135004,
+   129554,
    133364,
    133135,
-   129554,
    131026,
    132135,
    112980,
@@ -3684,6 +3743,37 @@
    134944,
    135335,
    133135
+  ]
+ },
+ {
+  "conf": "u12b-4366-40821",
+  "name": "Pre-ECNL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 129554,
+    "team": "Delaware FC New Castle Pre-ECNL B2014/2015",
+    "ours": [
+     11,
+     20
+    ],
+    "ecnl": [
+     10,
+     17
+    ]
+   },
+   {
+    "id": 131026,
+    "team": "Baltimore Celtic Pre-ECNL B2014/15",
+    "ours": [
+     7,
+     5
+    ],
+    "ecnl": [
+     6,
+     5
+    ]
+   }
   ]
  },
  {
@@ -5122,6 +5212,37 @@
    118806,
    133966,
    131449
+  ]
+ },
+ {
+  "conf": "u13b-4338-42355",
+  "name": "ECNL RL Boys GMA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135269,
+    "team": "Michigan Rangers FC ECNL RL BU13",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
+    "id": 133081,
+    "team": "Legends FC (MI)",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   }
   ]
  },
  {
@@ -12808,6 +12929,18 @@
     ]
    },
    {
+    "id": 135576,
+    "team": "Chattanooga Red Wolves SC",
+    "ours": [
+     17,
+     41
+    ],
+    "ecnl": [
+     16,
+     38
+    ]
+   },
+   {
     "id": 131969,
     "team": "Coastal Rush",
     "ours": [
@@ -12817,6 +12950,18 @@
     "ecnl": [
      13,
      18
+    ]
+   },
+   {
+    "id": 135526,
+    "team": "Lobos Rush",
+    "ours": [
+     14,
+     10
+    ],
+    "ecnl": [
+     13,
+     10
     ]
    }
   ]
@@ -14531,8 +14676,8 @@
    134338,
    133421,
    132309,
-   128434,
    84110,
+   128434,
    129241,
    133535,
    134297
@@ -14551,6 +14696,37 @@
    134297,
    134337,
    133535
+  ]
+ },
+ {
+  "conf": "u11g-4374-41527",
+  "name": "Pre-ECNL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134338,
+    "team": "Rockford Raptors FC Pre II",
+    "ours": [
+     11,
+     20
+    ],
+    "ecnl": [
+     10,
+     17
+    ]
+   },
+   {
+    "id": 128434,
+    "team": "Chicago Inter Pre-ECNL G2015/16 Blue",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -15503,6 +15679,71 @@
    114518,
    132736,
    131932
+  ]
+ },
+ {
+  "conf": "u12g-4374-41528",
+  "name": "Pre-ECNL Girls Lake Michigan",
+  "ours": [
+   136043,
+   128192,
+   133722,
+   133536,
+   83783,
+   134339,
+   136044,
+   134340,
+   112581,
+   132310,
+   128193,
+   129240,
+   114883
+  ],
+  "ecnl": [
+   136043,
+   128192,
+   133722,
+   133536,
+   134339,
+   83783,
+   136044,
+   134340,
+   112581,
+   132310,
+   128193,
+   129240,
+   114883
+  ]
+ },
+ {
+  "conf": "u12g-4374-41528",
+  "name": "Pre-ECNL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 128192,
+    "team": "Chicago Inter Pre-ECNL G2014/15 Red",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     21
+    ]
+   },
+   {
+    "id": 134339,
+    "team": "Rockford Raptors FC Pre",
+    "ours": [
+     11,
+     18
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   }
   ]
  },
  {
@@ -19083,11 +19324,11 @@
   "ours": [
    134371,
    95340,
-   82176,
    70655,
+   82176,
    114091,
-   64207,
    134816,
+   64207,
    94742,
    81913
   ],
@@ -19109,6 +19350,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 82176,
+    "team": "FSA FC",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
     "id": 114091,
     "team": "Connecticut FC United",
     "ours": [
@@ -19118,6 +19371,18 @@
     "ecnl": [
      6,
      9
+    ]
+   },
+   {
+    "id": 134816,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     7
     ]
    },
    {
@@ -20311,6 +20576,37 @@
   ]
  },
  {
+  "conf": "u14g-4308-41399",
+  "name": "ECNL RL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134831,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
+    "id": 82177,
+    "team": "FSA FC",
+    "ours": [
+     7,
+     1
+    ],
+    "ecnl": [
+     6,
+     1
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14g-4309-41462",
   "name": "ECNL RL Girls North Atlantic",
   "ours": [
@@ -20373,8 +20669,8 @@
   "conf": "u14g-4310-41919",
   "name": "ECNL RL Girls Northeast",
   "ours": [
-   68050,
    97863,
+   68050,
    95284,
    97112,
    134399,
@@ -20385,8 +20681,8 @@
    134020,
    136454,
    104886,
-   117928,
-   94744
+   94744,
+   117928
   ],
   "ecnl": [
    68050,
@@ -20420,8 +20716,8 @@
     "id": 97863,
     "team": "Long Island Slammers",
     "ours": [
-     4,
-     10
+     5,
+     13
     ],
     "ecnl": [
      6,
@@ -20492,7 +20788,7 @@
     "id": 117928,
     "team": "Eastern FC",
     "ours": [
-     2,
+     3,
      0
     ],
     "ecnl": [
@@ -30989,28 +31285,6 @@
    7375,
    7244,
    7240
-  ]
- },
- {
-  "conf": "n19b-67-67",
-  "name": "MLS NEXT Central (Pro Player Pathway)",
-  "ours": [
-   7226,
-   7198,
-   7230,
-   7204,
-   5851,
-   6130,
-   5671
-  ],
-  "ecnl": [
-   7226,
-   7198,
-   7204,
-   7230,
-   5851,
-   6130,
-   5671
   ]
  },
  {
