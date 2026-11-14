@@ -3256,9 +3256,9 @@
    132708,
    131358,
    117748,
-   114760,
    132397,
    117722,
+   114760,
    136354,
    134511,
    137153,
@@ -3285,6 +3285,30 @@
   "name": "Pre-ECNL Boys Heartland",
   "kind": "points",
   "teams": [
+   {
+    "id": 131673,
+    "team": "Gretna Elite Academy Pre-ECNL B2014/15 I",
+    "ours": [
+     4,
+     10
+    ],
+    "ecnl": [
+     3,
+     7
+    ]
+   },
+   {
+    "id": 114760,
+    "team": "Missouri Rush Pre-ECNL B2014/15 Blue",
+    "ours": [
+     3,
+     4
+    ],
+    "ecnl": [
+     2,
+     4
+    ]
+   },
    {
     "id": 136354,
     "team": "Union KC Soccer Club Navy Pre-ECNL B2014/15",
@@ -3323,9 +3347,9 @@
    137153,
    134514,
    136413,
+   131232,
    133995,
-   131946,
-   131232
+   131946
   ],
   "ecnl": [
    132341,
@@ -3359,15 +3383,51 @@
     ]
    },
    {
-    "id": 137153,
-    "team": "Sporting Iowa Central II Pre-ECNL 2014/15",
+    "id": 134514,
+    "team": "Kansas City Surf White Pre-ECNL B2014/15",
     "ours": [
-     2,
+     4,
      3
     ],
     "ecnl": [
      3,
      3
+    ]
+   },
+   {
+    "id": 137153,
+    "team": "Sporting Iowa Central II Pre-ECNL 2014/15",
+    "ours": [
+     3,
+     6
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": 136413,
+    "team": "FC Wichita Navy Pre-ECNL B2014/15",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": 131232,
+    "team": "VSA Rush II Pre-ECNL B2014/15",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     0
     ]
    }
   ]
@@ -4097,6 +4157,37 @@
     "ecnl": [
      3,
      0
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u12b-4380-41012",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 113633,
+    "team": "Sporting SA JAX Pre-ECNL B2014/15",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
+    "id": 132094,
+    "team": "Sporting SA GNV Pre-ECNL B2014/15",
+    "ours": [
+     5,
+     1
+    ],
+    "ecnl": [
+     4,
+     1
     ]
    }
   ]
@@ -5192,6 +5283,37 @@
   ]
  },
  {
+  "conf": "u13b-4341-42027",
+  "name": "ECNL RL Boys Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114951,
+    "team": "STA MOSC",
+    "ours": [
+     10,
+     27
+    ],
+    "ecnl": [
+     9,
+     24
+    ]
+   },
+   {
+    "id": 131966,
+    "team": "Quickstrike FC",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4342-40683",
   "name": "ECNL RL Boys North Atlantic",
   "ours": [
@@ -5664,14 +5786,14 @@
   "ours": [
    134336,
    129648,
-   131251,
    131353,
+   131251,
    132248,
    129416,
    131352,
-   131483,
    111246,
    118781,
+   131483,
    131179,
    69770,
    133273,
@@ -5696,6 +5818,37 @@
    131483,
    69770,
    133273
+  ]
+ },
+ {
+  "conf": "u13b-4356-40743",
+  "name": "ECNL RL Boys Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131353,
+    "team": "HTX S",
+    "ours": [
+     11,
+     21
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 131483,
+    "team": "RISE SC",
+    "ours": [
+     10,
+     14
+    ],
+    "ecnl": [
+     9,
+     14
+    ]
+   }
   ]
  },
  {
@@ -6243,6 +6396,37 @@
    113900,
    116956,
    114494
+  ]
+ },
+ {
+  "conf": "u14b-4281-41758",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115173,
+    "team": "East Coast Surf SC",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
+    "id": 114494,
+    "team": "SUSA FC",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -12607,6 +12791,37 @@
   ]
  },
  {
+  "conf": "u19b-4276-40472",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134780,
+    "team": "Tennessee SC",
+    "ours": [
+     15,
+     40
+    ],
+    "ecnl": [
+     14,
+     37
+    ]
+   },
+   {
+    "id": 131969,
+    "team": "Coastal Rush",
+    "ours": [
+     14,
+     18
+    ],
+    "ecnl": [
+     13,
+     18
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4277-40466",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
@@ -12937,10 +13152,10 @@
    133092,
    59851,
    46793,
-   58597,
    130567,
-   131250,
    131310,
+   131250,
+   58597,
    58707,
    131163,
    46865,
@@ -12971,6 +13186,37 @@
    60698,
    58707,
    134025
+  ]
+ },
+ {
+  "conf": "u19b-4288-40550",
+  "name": "ECNL Boys Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 58597,
+    "team": "HTX",
+    "ours": [
+     12,
+     17
+    ],
+    "ecnl": [
+     11,
+     17
+    ]
+   },
+   {
+    "id": 131310,
+    "team": "RISE SC",
+    "ours": [
+     11,
+     16
+    ],
+    "ecnl": [
+     10,
+     13
+    ]
+   }
   ]
  },
  {
@@ -15295,8 +15541,8 @@
    131571,
    133399,
    128275,
-   79423,
    133365,
+   79423,
    128075,
    135358,
    135178,
@@ -15313,6 +15559,37 @@
    111869,
    131571,
    133399
+  ]
+ },
+ {
+  "conf": "u12g-4375-41062",
+  "name": "Pre-ECNL Girls North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 79423,
+    "team": "Pipeline SC Pre-ECNL G2014/15 ll",
+    "ours": [
+     9,
+     13
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
+    "id": 133365,
+    "team": "Penn Fusion Soccer Academy Pre-ECNL G2014/15 ll",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   }
   ]
  },
  {
@@ -17163,6 +17440,37 @@
    116946,
    94542,
    94552
+  ]
+ },
+ {
+  "conf": "u13g-4308-41398",
+  "name": "ECNL RL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 75445,
+    "team": "World Class FC",
+    "ours": [
+     7,
+     19
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
+    "id": 134376,
+    "team": "Select South",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   }
   ]
  },
  {
