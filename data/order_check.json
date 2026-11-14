@@ -1430,6 +1430,37 @@
   ]
  },
  {
+  "conf": "u11b-4365-41498",
+  "name": "Pre-ECNL Boys Northeast - North",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136543,
+    "team": "PSA North Pre",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
+    "id": 134457,
+    "team": "Fox Soccer Academy Premier Pre-ECNL 2015/16",
+    "ours": [
+     6,
+     3
+    ],
+    "ecnl": [
+     5,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4366-41040",
   "name": "Pre-ECNL Boys North Atlantic",
   "ours": [
@@ -6912,11 +6943,11 @@
    134583,
    135285,
    132992,
+   135619,
    133693,
    136494,
    132408,
    95184,
-   135619,
    131949,
    133699,
    133628,
@@ -6987,6 +7018,30 @@
     "ecnl": [
      8,
      15
+    ]
+   },
+   {
+    "id": 135619,
+    "team": "Sporting California USA ECNL RL S. Cal 2013/14",
+    "ours": [
+     8,
+     15
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   },
+   {
+    "id": 131021,
+    "team": "Pateadores ECNL RL SoCal B2013/14",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
     ]
    },
    {
@@ -8540,8 +8595,8 @@
   "name": "ECNL RL Boys New England",
   "ours": [
    134884,
-   117484,
    95343,
+   117484,
    113902,
    82174,
    94752,
@@ -8572,6 +8627,30 @@
   "name": "ECNL RL Boys New England",
   "kind": "points",
   "teams": [
+   {
+    "id": 117484,
+    "team": "East Coast Surf SC",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
+   {
+    "id": 95343,
+    "team": "SUSA FC",
+    "ours": [
+     8,
+     19
+    ],
+    "ecnl": [
+     7,
+     16
+    ]
+   },
    {
     "id": 113902,
     "team": "Manhattan SC",
@@ -8625,6 +8704,38 @@
  {
   "conf": "u14b-4341-42028",
   "name": "ECNL RL Boys Northeast",
+  "ours": [
+   133946,
+   111795,
+   96591,
+   114952,
+   134450,
+   133336,
+   133732,
+   134224,
+   115156,
+   137869,
+   134079,
+   136446
+  ],
+  "ecnl": [
+   133946,
+   111795,
+   96591,
+   114952,
+   134450,
+   133732,
+   133336,
+   115156,
+   137869,
+   134224,
+   134079,
+   136446
+  ]
+ },
+ {
+  "conf": "u14b-4341-42028",
+  "name": "ECNL RL Boys Northeast",
   "kind": "points",
   "teams": [
    {
@@ -8664,6 +8775,18 @@
     ]
    },
    {
+    "id": 133732,
+    "team": "FC Dutchmen Surf",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   },
+   {
     "id": 115156,
     "team": "Quickstrike FC",
     "ours": [
@@ -8673,6 +8796,18 @@
     "ecnl": [
      10,
      9
+    ]
+   },
+   {
+    "id": 134224,
+    "team": "Long Island Slammers",
+    "ours": [
+     11,
+     10
+    ],
+    "ecnl": [
+     10,
+     7
     ]
    },
    {
@@ -10350,37 +10485,6 @@
   ]
  },
  {
-  "conf": "u15b-4284-40523",
-  "name": "ECNL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 71813,
-    "team": "Seattle United",
-    "ours": [
-     8,
-     22
-    ],
-    "ecnl": [
-     7,
-     19
-    ]
-   },
-   {
-    "id": 92522,
-    "team": "XF 2",
-    "ours": [
-     9,
-     4
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   }
-  ]
- },
- {
   "conf": "u15b-4285-40529",
   "name": "ECNL Boys Ohio Valley",
   "ours": [
@@ -11317,6 +11421,18 @@
     ]
    },
    {
+    "id": 107393,
+    "team": "West Side Alliance",
+    "ours": [
+     14,
+     31
+    ],
+    "ecnl": [
+     13,
+     28
+    ]
+   },
+   {
     "id": 131364,
     "team": "FC Tulsa Academy",
     "ours": [
@@ -11326,6 +11442,18 @@
     "ecnl": [
      12,
      14
+    ]
+   },
+   {
+    "id": 97465,
+    "team": "Kernow Storm FC",
+    "ours": [
+     13,
+     0
+    ],
+    "ecnl": [
+     12,
+     0
     ]
    }
   ]
@@ -13049,14 +13177,14 @@
    131312,
    69608,
    134028,
+   48117,
    80547,
    133280,
-   48117,
    69605,
    81511,
    131171,
-   131248,
    81111,
+   131248,
    81106,
    130561,
    134123,
@@ -13116,6 +13244,18 @@
     ]
    },
    {
+    "id": 48117,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     13,
+     21
+    ],
+    "ecnl": [
+     12,
+     18
+    ]
+   },
+   {
     "id": 133280,
     "team": "Lonestar ATX Red",
     "ours": [
@@ -13125,6 +13265,18 @@
     "ecnl": [
      13,
      18
+    ]
+   },
+   {
+    "id": 131248,
+    "team": "FC Westlake",
+    "ours": [
+     12,
+     15
+    ],
+    "ecnl": [
+     11,
+     15
     ]
    },
    {
@@ -18616,6 +18768,30 @@
     "ecnl": [
      9,
      24
+    ]
+   },
+   {
+    "id": 117679,
+    "team": "COSC",
+    "ours": [
+     7,
+     18
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 131742,
+    "team": "Los Gatos United Soccer Club",
+    "ours": [
+     9,
+     11
+    ],
+    "ecnl": [
+     8,
+     11
     ]
    },
    {
@@ -27350,10 +27526,10 @@
    64402,
    115278,
    80686,
+   133778,
    106386,
    94198,
    133468,
-   133778,
    134002,
    82457,
    82474,
@@ -27449,6 +27625,18 @@
     "ecnl": [
      10,
      7
+    ]
+   },
+   {
+    "id": 132999,
+    "team": "Racing Louisville Academy",
+    "ours": [
+     10,
+     1
+    ],
+    "ecnl": [
+     9,
+     1
     ]
    }
   ]
