@@ -263,7 +263,8 @@ export function compose(d, items, overnight) {
     if (!g.our.length && !g.lg.length) continue;   // big moments never go out on their own
     const mo = [...new Set(g.mo)].map(x => "Big moment: " + x);
     const team = d.teams.find(t => t.k === k) || {k, n: ""};
-    const conf = (g.lg[0] || g.our[0] || {}).cn || "the league";
+    const age = (/^[a-z](\d+)[bg]/.exec(k) || [])[1];   // "U13 ECNL RL Girls Northwest": the age, in case of several teams in one league type
+    const conf = (age ? `U${age} ` : "") + ((g.lg[0] || g.our[0] || {}).cn || "league");
     const also = g.lg.length ? `${plural(g.lg.length, "new result")} in ${conf}` : "";
     if (g.our.length === 1) {
       const o = ourLine(g.our[0], k);
@@ -275,7 +276,7 @@ export function compose(d, items, overnight) {
       notes.push({t: `${team.n || ourLine(g.our[0], k).us}: ${plural(g.our.length, "new result")}`, b: lines.concat(mo, also ? ["Also " + also] : []).join("\n"), x, u: `/#t=${k}&g=${g.our.map(c => c.g).join(",")}&v=games`, tag: "t" + k});
     } else {
       const shown = g.lg.slice(0, 3).map(resLine), more = g.lg.length - shown.length;
-      notes.push({t: `${plural(g.lg.length, "new result")} in ${conf}`, b: mo.concat(shown).join("\n") + (more > 0 ? `\n+${more} more` : ""), x: mo.concat(g.lg.map(resLine)), u: `/#t=${k}&g=${g.lg.map(c => c.g).join(",")}&v=league`, tag: "l" + k});
+      notes.push({t: `${conf}: ${plural(g.lg.length, "new result")}`, b: mo.concat(shown).join("\n") + (more > 0 ? `\n+${more} more` : ""), x: mo.concat(g.lg.map(resLine)), u: `/#t=${k}&g=${g.lg.map(c => c.g).join(",")}&v=league`, tag: "l" + k});
     }
   }
   if (overnight && notes.length > 1) {   // morning summary: one notification for everything held overnight
