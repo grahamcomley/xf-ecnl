@@ -1085,8 +1085,8 @@
    133926,
    117692,
    134847,
-   133185,
    117008,
+   133185,
    132345,
    135310,
    111639
@@ -1136,11 +1136,47 @@
     ]
    },
    {
+    "id": 117692,
+    "team": "Scorpions SC PRE-ECNL B2015/16",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   },
+   {
+    "id": 134847,
+    "team": "East Meadow Soccer Club Pre-ECNL B2015/16",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   },
+   {
+    "id": 133185,
+    "team": "Manhattan SC Pre-ECNL B2015/16 Red",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   },
+   {
     "id": 117008,
     "team": "AC Connecticut Pre-ECNL B2015/16 I",
     "ours": [
-     9,
-     8
+     10,
+     11
     ],
     "ecnl": [
      8,
@@ -1657,8 +1693,8 @@
    133922,
    132924,
    137020,
-   136473,
    136438,
+   136473,
    133923,
    113232,
    131732,
@@ -1683,15 +1719,46 @@
   ]
  },
  {
+  "conf": "u11b-4380-41015",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132449,
+    "team": "Wellington SC Pre-ECNL B2015/16",
+    "ours": [
+     6,
+     14
+    ],
+    "ecnl": [
+     5,
+     13
+    ]
+   },
+   {
+    "id": 136473,
+    "team": "Doral Soccer Club Pre-ECNL B2015/16",
+    "ours": [
+     5,
+     7
+    ],
+    "ecnl": [
+     4,
+     6
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4380-41013",
   "name": "Pre-ECNL Boys Florida",
   "ours": [
    114814,
    132105,
    135942,
-   137382,
    136827,
    132103,
+   137382,
    111266,
    114813,
    132095
@@ -1706,6 +1773,37 @@
    111266,
    132095,
    114813
+  ]
+ },
+ {
+  "conf": "u11b-4380-41013",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114814,
+    "team": "Florida Kraze Krush Pre-ECNL B2015/16 Black",
+    "ours": [
+     7,
+     19
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   },
+   {
+    "id": 137382,
+    "team": "Ormond Beach Soccer Club PRE-ECNL B2015/2016 Red",
+    "ours": [
+     5,
+     6
+    ],
+    "ecnl": [
+     4,
+     6
+    ]
+   }
   ]
  },
  {
@@ -13741,8 +13839,8 @@
     "id": 133159,
     "team": "Keystone Athletic Pre-ECNL G2015/16",
     "ours": [
-     6,
-     13
+     7,
+     16
     ],
     "ecnl": [
      8,
@@ -13783,18 +13881,6 @@
     "ecnl": [
      5,
      3
-    ]
-   },
-   {
-    "id": 132365,
-    "team": "Match Fit Surf Pre-ECNL G2015/16 Blue",
-    "ours": [
-     7,
-     2
-    ],
-    "ecnl": [
-     8,
-     2
     ]
    },
    {
@@ -18230,6 +18316,37 @@
    94742,
    82176,
    114091
+  ]
+ },
+ {
+  "conf": "u14g-4265-40564",
+  "name": "ECNL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134371,
+    "team": "Select",
+    "ours": [
+     7,
+     18
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 64207,
+    "team": "World Class FC",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   }
   ]
  },
  {
