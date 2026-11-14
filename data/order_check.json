@@ -26713,6 +26713,37 @@
   ]
  },
  {
+  "conf": "u19g-4260-41142",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 96606,
+    "team": "Force FC ECNL RL STXCL G2008/09",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
+    "id": 133617,
+    "team": "Lonestar ATX ECNL RL STXCL G2008/09 White",
+    "ours": [
+     7,
+     1
+    ],
+    "ecnl": [
+     6,
+     1
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19g-4263-40556",
   "name": "ECNL Girls Mid-Atlantic",
   "ours": [
