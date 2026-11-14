@@ -12,7 +12,7 @@ Arguments are full URLs or shorthands:
   gotsport:<event id>/<group id> that event's schedule + standings for one group (age/division)
   sportsaffinity:<tournament guid>  Sports Affinity (WYS) accepted-teams list for that tournament
 Saved files go to data/probe/ (public repo: only public pages, never anything behind a login)."""
-import os, re, sys, time, urllib.request, urllib.robotparser
+import os, re, sys, time, urllib.error, urllib.request, urllib.robotparser
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
@@ -51,15 +51,24 @@ def main(args):
                 txt = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", "ignore")
                 open(os.path.join(OUT, p.netloc + "_robots.txt"), "w").write(txt)
                 rp.parse(txt.splitlines())
-            except Exception as e:   # no robots.txt (404) = no rules; anything else = be careful, treat as unknown
+            except urllib.error.HTTPError as e:
+                # standard reading: 401/403 on robots.txt = the site blocks robots entirely; 404 = no rules
                 print("robots fetch failed", host, e)
-                rp = None
+                if e.code in (401, 403):
+                    rp.parse(["User-agent: *", "Disallow: /"])
+                elif e.code >= 500:
+                    rp.parse(["User-agent: *", "Disallow: /"])   # can't tell: be careful
+                else:
+                    rp = None
+            except Exception as e:   # network trouble: can't tell, so don't fetch
+                print("robots fetch failed", host, e)
+                rp.parse(["User-agent: *", "Disallow: /"])
             robots[host] = rp
             delays[host] = max(MIN_DELAY, int((rp and rp.crawl_delay(UA)) or 0))
         rp = robots[host]
         if rp is not None and not rp.can_fetch(UA, url):
             print("DISALLOWED by robots.txt:", url)
-            rows.append((url, "NO (robots.txt)", "", "", "", ""))
+            rows.append((url, "NO (robots.txt blocks it, or the site refuses robots.txt)", "", "", "", ""))
             continue
         wait = delays[host] - (time.time() - last)
         if last and wait > 0:
