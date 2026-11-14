@@ -1695,11 +1695,11 @@
    133123,
    133595,
    134465,
+   133548,
    131520,
    109007,
    119985,
    133215,
-   133548,
    131040,
    135622,
    132234,
@@ -1739,6 +1739,18 @@
     ]
    },
    {
+    "id": 134465,
+    "team": "West Coast FC Pre-ECNL B2015/16 White II",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
     "id": 133215,
     "team": "Legends FC (CA) PRE Black II",
     "ours": [
@@ -1754,8 +1766,8 @@
     "id": 133548,
     "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 Black II",
     "ours": [
-     5,
-     7
+     6,
+     10
     ],
     "ecnl": [
      7,
@@ -2061,37 +2073,6 @@
    133133,
    133635,
    131916
-  ]
- },
- {
-  "conf": "u11b-4385-41168",
-  "name": "Pre-ECNL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 90639,
-    "team": "Eastside FC Pre-ECNL B2015/16 I",
-    "ours": [
-     10,
-     30
-    ],
-    "ecnl": [
-     9,
-     27
-    ]
-   },
-   {
-    "id": 131475,
-    "team": "Valor Soccer - Pre-ECNL B2015/16",
-    "ours": [
-     7,
-     0
-    ],
-    "ecnl": [
-     6,
-     0
-    ]
-   }
   ]
  },
  {
@@ -5617,6 +5598,30 @@
   "name": "ECNL Boys Northwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 104617,
+    "team": "XF 1",
+    "ours": [
+     8,
+     20
+    ],
+    "ecnl": [
+     7,
+     19
+    ]
+   },
+   {
+    "id": 90858,
+    "team": "Eastside FC",
+    "ours": [
+     8,
+     14
+    ],
+    "ecnl": [
+     7,
+     13
+    ]
+   },
    {
     "id": 101929,
     "team": "Columbia Premier",
@@ -12415,37 +12420,6 @@
   ]
  },
  {
-  "conf": "u15b-4353-40715",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132050,
-    "team": "Whatcom FC Rangers -",
-    "ours": [
-     13,
-     28
-    ],
-    "ecnl": [
-     12,
-     25
-    ]
-   },
-   {
-    "id": 94931,
-    "team": "XF",
-    "ours": [
-     11,
-     7
-    ],
-    "ecnl": [
-     10,
-     7
-    ]
-   }
-  ]
- },
- {
   "conf": "u15b-4354-41630",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
@@ -12914,6 +12888,37 @@
    94647,
    134410,
    131035
+  ]
+ },
+ {
+  "conf": "u15b-4358-40733",
+  "name": "ECNL RL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130993,
+    "team": "Pateadores IRV Blue",
+    "ours": [
+     9,
+     13
+    ],
+    "ecnl": [
+     8,
+     10
+    ]
+   },
+   {
+    "id": 135602,
+    "team": "Sporting California USA NAVY",
+    "ours": [
+     7,
+     1
+    ],
+    "ecnl": [
+     6,
+     1
+    ]
+   }
   ]
  },
  {
@@ -13854,8 +13859,8 @@
    80547,
    133280,
    69605,
-   81511,
    131171,
+   81511,
    81111,
    131248,
    81106,
@@ -13929,6 +13934,18 @@
     ]
    },
    {
+    "id": 81511,
+    "team": "SAFC",
+    "ours": [
+     10,
+     14
+    ],
+    "ecnl": [
+     9,
+     13
+    ]
+   },
+   {
     "id": 133280,
     "team": "Lonestar ATX Red",
     "ours": [
@@ -13962,6 +13979,18 @@
     "ecnl": [
      11,
      2
+    ]
+   },
+   {
+    "id": 133281,
+    "team": "Lonestar ATX Royal",
+    "ours": [
+     14,
+     1
+    ],
+    "ecnl": [
+     13,
+     0
     ]
    }
   ]
@@ -14583,8 +14612,8 @@
    131363,
    130562,
    135555,
-   114847,
    55422,
+   114847,
    134712,
    135757,
    78319,
@@ -14602,6 +14631,37 @@
    135725,
    62776,
    55422
+  ]
+ },
+ {
+  "conf": "u16b-4347-40632",
+  "name": "ECNL RL Boys Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131363,
+    "team": "FC Tulsa Academy",
+    "ours": [
+     13,
+     39
+    ],
+    "ecnl": [
+     12,
+     36
+    ]
+   },
+   {
+    "id": 114847,
+    "team": "OK Energy FC Frontier",
+    "ours": [
+     12,
+     18
+    ],
+    "ecnl": [
+     11,
+     18
+    ]
+   }
   ]
  },
  {
@@ -15517,11 +15577,11 @@
    131036,
    94966,
    132976,
+   130994,
    133118,
    80520,
    133566,
    132484,
-   130994,
    133753,
    132978,
    135600,
@@ -15546,6 +15606,37 @@
    132491,
    132978,
    134439
+  ]
+ },
+ {
+  "conf": "u16b-4358-40734",
+  "name": "ECNL RL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130994,
+    "team": "Pateadores IRV Blue",
+    "ours": [
+     8,
+     11
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   },
+   {
+    "id": 135600,
+    "team": "Sporting California USA NAVY",
+    "ours": [
+     7,
+     3
+    ],
+    "ecnl": [
+     6,
+     3
+    ]
+   }
   ]
  },
  {
@@ -27775,6 +27866,37 @@
   ]
  },
  {
+  "conf": "u14g-4303-40780",
+  "name": "ECNL RL Girls Gulf Coast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 112540,
+    "team": "Alabama FC Huntsville",
+    "ours": [
+     13,
+     31
+    ],
+    "ecnl": [
+     12,
+     28
+    ]
+   },
+   {
+    "id": 116313,
+    "team": "Union 10",
+    "ours": [
+     14,
+     15
+    ],
+    "ecnl": [
+     13,
+     15
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14g-4304-40792",
   "name": "ECNL RL Girls Heartland",
   "ours": [
@@ -36187,13 +36309,13 @@
   "name": "ECNL RL Girls Mid-America",
   "ours": [
    133997,
+   133910,
    132273,
    133193,
-   133910,
    134654,
-   135780,
    68479,
    94935,
+   135780,
    134087
   ],
   "ecnl": [
@@ -36206,6 +36328,37 @@
    133910,
    132273,
    134087
+  ]
+ },
+ {
+  "conf": "u17g-4305-40801",
+  "name": "ECNL RL Girls Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135780,
+    "team": "Chattanooga Red Wolves",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 133910,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
