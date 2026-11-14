@@ -1203,6 +1203,18 @@
     ]
    },
    {
+    "id": 132807,
+    "team": "Toca Fusion Elite Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     10
+    ],
+    "ecnl": [
+     3,
+     7
+    ]
+   },
+   {
     "id": 133998,
     "team": "Kansas City Athletics Pre-ECNL B2015/16",
     "ours": [
@@ -1247,6 +1259,18 @@
     ],
     "ecnl": [
      3,
+     3
+    ]
+   },
+   {
+    "id": 132396,
+    "team": "Sporting Iowa Central Pre-ECNL B2015/16",
+    "ours": [
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
      3
     ]
    },
@@ -3420,15 +3444,15 @@
    131673,
    132708,
    131358,
-   117748,
    114760,
+   117748,
    132397,
    117722,
    136354,
    131230,
    134511,
-   137153,
-   136412
+   136412,
+   137153
   ],
   "ecnl": [
    137305,
@@ -3451,6 +3475,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 131673,
+    "team": "Gretna Elite Academy Pre-ECNL B2014/15 I",
+    "ours": [
+     5,
+     13
+    ],
+    "ecnl": [
+     4,
+     10
+    ]
+   },
+   {
     "id": 132708,
     "team": "Toca Fusion Elite Pre-ECNL RL B2014/15",
     "ours": [
@@ -3463,11 +3499,23 @@
     ]
    },
    {
+    "id": 117748,
+    "team": "Kansas City Athletics Navy Pre-ECNL B2014/15",
+    "ours": [
+     3,
+     4
+    ],
+    "ecnl": [
+     2,
+     4
+    ]
+   },
+   {
     "id": 132397,
     "team": "Sporting Iowa Central Pre-ECNL B2014/15",
     "ours": [
-     4,
-     4
+     5,
+     5
     ],
     "ecnl": [
      3,
@@ -3514,8 +3562,8 @@
     "id": 136412,
     "team": "FC Wichita Red Pre-ECNL B2014/15",
     "ours": [
-     3,
-     0
+     4,
+     1
     ],
     "ecnl": [
      2,
@@ -7698,13 +7746,13 @@
    112303,
    80655,
    115029,
-   133302,
-   133301,
-   130099,
    129713,
+   80709,
+   133302,
+   130099,
+   133301,
    131494,
    131200,
-   80709,
    75505,
    86928
   ],
@@ -7769,6 +7817,18 @@
     ]
    },
    {
+    "id": 133301,
+    "team": "Lonestar ATX NTH ECNL RL STXCL B2012/13 Gold",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   },
+   {
     "id": 130099,
     "team": "Dynamos ECNL RL STXCL B2012/13",
     "ours": [
@@ -7778,6 +7838,18 @@
     "ecnl": [
      7,
      8
+    ]
+   },
+   {
+    "id": 129713,
+    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2012/13",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     7
     ]
    },
    {
@@ -7802,6 +7874,30 @@
     "ecnl": [
      8,
      7
+    ]
+   },
+   {
+    "id": 80709,
+    "team": "AHFC East ECNL RL STXCL B2012/13",
+    "ours": [
+     4,
+     5
+    ],
+    "ecnl": [
+     3,
+     2
+    ]
+   },
+   {
+    "id": 131200,
+    "team": "FC Westlake ECNL RL STXCL B2012/13",
+    "ours": [
+     7,
+     4
+    ],
+    "ecnl": [
+     6,
+     4
     ]
    },
    {
@@ -8441,11 +8537,11 @@
   "ours": [
    84928,
    90869,
-   94668,
    82883,
+   94668,
    135010,
-   94525,
    98188,
+   94525,
    92619,
    131398
   ],
@@ -8459,6 +8555,37 @@
    92619,
    131398,
    98188
+  ]
+ },
+ {
+  "conf": "u14b-4284-40522",
+  "name": "ECNL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94668,
+    "team": "Columbia Premier",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   },
+   {
+    "id": 98188,
+    "team": "WA Premier",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   }
   ]
  },
  {
@@ -8496,8 +8623,8 @@
    133677,
    134468,
    132945,
-   78582,
    113383,
+   78582,
    78674,
    133557,
    131410,
@@ -8539,6 +8666,18 @@
     ]
    },
    {
+    "id": 113383,
+    "team": "Rebels SC",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   },
+   {
     "id": 131410,
     "team": "SDSC Surf",
     "ours": [
@@ -8548,6 +8687,18 @@
     "ecnl": [
      9,
      12
+    ]
+   },
+   {
+    "id": 110876,
+    "team": "LV Heat Surf SC",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    }
   ]
@@ -9603,6 +9754,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 117682,
+    "team": "COSC",
+    "ours": [
+     10,
+     23
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
     "id": 131407,
     "team": "MVLA",
     "ours": [
@@ -9624,6 +9787,18 @@
     "ecnl": [
      9,
      17
+    ]
+   },
+   {
+    "id": 131734,
+    "team": "Los Gatos United Soccer Club",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     11
     ]
    }
   ]
@@ -10378,14 +10553,14 @@
    59635,
    132288,
    112103,
-   69237,
    133300,
+   69237,
    129716,
    131493,
    95203,
    133241,
-   115030,
    129845,
+   115030,
    131201
   ],
   "ecnl": [
@@ -10425,6 +10600,18 @@
     ]
    },
    {
+    "id": 128353,
+    "team": "SG1 ECNL RL STXCL B2011/12",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
     "id": 120894,
     "team": "Lions FC ECNL RL STXCL B2011/12 Red",
     "ours": [
@@ -10446,6 +10633,30 @@
     "ecnl": [
      9,
      17
+    ]
+   },
+   {
+    "id": 133299,
+    "team": "Lonestar ATX NTH ECNL RL STXCL B2011/12 Gold",
+    "ours": [
+     10,
+     20
+    ],
+    "ecnl": [
+     9,
+     17
+    ]
+   },
+   {
+    "id": 69237,
+    "team": "AHFC CENTRAL ECNL RL STXCL B2011/12",
+    "ours": [
+     10,
+     14
+    ],
+    "ecnl": [
+     9,
+     14
     ]
    },
    {
@@ -10482,6 +10693,18 @@
     "ecnl": [
      9,
      11
+    ]
+   },
+   {
+    "id": 115030,
+    "team": "Barca Academy Austin ECNL RL STXCL B2011/12 Blue",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
     ]
    }
   ]
@@ -11149,9 +11372,9 @@
    132944,
    130986,
    133675,
+   134469,
    69638,
    132455,
-   134469,
    133556,
    94646,
    132185,
@@ -11194,6 +11417,18 @@
     ]
    },
    {
+    "id": 134469,
+    "team": "Sporting California USA",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
     "id": 132185,
     "team": "Beach Futbol Club (CA)",
     "ours": [
@@ -11203,6 +11438,18 @@
     "ecnl": [
      8,
      13
+    ]
+   },
+   {
+    "id": 131409,
+    "team": "SDSC Surf",
+    "ours": [
+     10,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
     ]
    }
   ]
@@ -12100,8 +12347,8 @@
    109239,
    110991,
    112201,
-   135969,
    105063,
+   135969,
    110957,
    115652,
    105292,
@@ -12120,6 +12367,37 @@
    110957,
    115652,
    112201
+  ]
+ },
+ {
+  "conf": "u15b-4348-41596",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 109239,
+    "team": "Placer United",
+    "ours": [
+     10,
+     23
+    ],
+    "ecnl": [
+     9,
+     20
+    ]
+   },
+   {
+    "id": 135969,
+    "team": "Mustang Soccer ECNL-RL B2011/12",
+    "ours": [
+     10,
+     14
+    ],
+    "ecnl": [
+     9,
+     14
+    ]
+   }
   ]
  },
  {
@@ -12420,6 +12698,37 @@
   ]
  },
  {
+  "conf": "u15b-4353-40715",
+  "name": "ECNL RL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132525,
+    "team": "Wenatchee FA ECNL-RL B11/12 Black",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     22
+    ]
+   },
+   {
+    "id": 73759,
+    "team": "Columbia Premier",
+    "ours": [
+     12,
+     2
+    ],
+    "ecnl": [
+     11,
+     2
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u15b-4354-41630",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
@@ -12479,6 +12788,18 @@
     ]
    },
    {
+    "id": 134588,
+    "team": "Rebels SC ECNL RL SoCal B2011/12 White",
+    "ours": [
+     8,
+     19
+    ],
+    "ecnl": [
+     7,
+     16
+    ]
+   },
+   {
     "id": 135617,
     "team": "Sporting California USA ECNL RL S. Cal 2011/12",
     "ours": [
@@ -12488,6 +12809,18 @@
     "ecnl": [
      6,
      4
+    ]
+   },
+   {
+    "id": 133691,
+    "team": "LAFC So Cal ECNL RL S.Cal B2011/12 GOLD",
+    "ours": [
+     10,
+     1
+    ],
+    "ecnl": [
+     9,
+     1
     ]
    }
   ]
@@ -13223,6 +13556,37 @@
    134706,
    131216,
    136137
+  ]
+ },
+ {
+  "conf": "u16b-4275-40458",
+  "name": "ECNL Boys Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131216,
+    "team": "VSA Rush",
+    "ours": [
+     10,
+     17
+    ],
+    "ecnl": [
+     9,
+     16
+    ]
+   },
+   {
+    "id": 132391,
+    "team": "Sporting Iowa Central",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     14
+    ]
+   }
   ]
  },
  {
@@ -14843,8 +15207,8 @@
    133338,
    94941,
    134012,
-   133895,
    134647,
+   133895,
    134108
   ],
   "ecnl": [
@@ -14865,6 +15229,18 @@
   "name": "ECNL RL Boys Mid-America",
   "kind": "points",
   "teams": [
+   {
+    "id": 81752,
+    "team": "Alabama FC",
+    "ours": [
+     14,
+     38
+    ],
+    "ecnl": [
+     13,
+     35
+    ]
+   },
    {
     "id": 134792,
     "team": "Tennessee SC",
@@ -14923,6 +15299,18 @@
     "ecnl": [
      11,
      10
+    ]
+   },
+   {
+    "id": 133895,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     15,
+     12
+    ],
+    "ecnl": [
+     14,
+     12
     ]
    },
    {
@@ -15397,8 +15785,8 @@
   "name": "ECNL RL Boys Texas",
   "ours": [
    50719,
-   131254,
    80407,
+   131254,
    80326,
    133270,
    80763,
@@ -15407,8 +15795,8 @@
    61742,
    81108,
    95198,
-   129733,
    82093,
+   129733,
    134329,
    132368,
    131638
@@ -15462,6 +15850,18 @@
     ]
    },
    {
+    "id": 131254,
+    "team": "FC Westlake",
+    "ours": [
+     10,
+     20
+    ],
+    "ecnl": [
+     9,
+     20
+    ]
+   },
+   {
     "id": 80326,
     "team": "HTX S",
     "ours": [
@@ -15495,6 +15895,18 @@
     "ecnl": [
      8,
      13
+    ]
+   },
+   {
+    "id": 82093,
+    "team": "FC Dallas Youth",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     10
     ]
    },
    {
@@ -18620,6 +19032,18 @@
     ]
    },
    {
+    "id": 58878,
+    "team": "Alabama FC",
+    "ours": [
+     16,
+     29
+    ],
+    "ecnl": [
+     15,
+     26
+    ]
+   },
+   {
     "id": 131969,
     "team": "Coastal Rush",
     "ours": [
@@ -18629,6 +19053,18 @@
     "ecnl": [
      13,
      18
+    ]
+   },
+   {
+    "id": 132271,
+    "team": "Tennessee United SC",
+    "ours": [
+     15,
+     13
+    ],
+    "ecnl": [
+     14,
+     13
     ]
    },
    {
@@ -20487,6 +20923,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134162,
+    "team": "Dallas Texans",
+    "ours": [
+     12,
+     28
+    ],
+    "ecnl": [
+     11,
+     25
+    ]
+   },
+   {
     "id": 80328,
     "team": "HTX S",
     "ours": [
@@ -20508,6 +20956,18 @@
     "ecnl": [
      9,
      12
+    ]
+   },
+   {
+    "id": 133268,
+    "team": "Lonestar ATX White",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     8,
+     4
     ]
    }
   ]
@@ -22750,10 +23210,10 @@
   "ours": [
    134956,
    68054,
+   132373,
    136465,
    113926,
    134029,
-   132373,
    134459,
    136452,
    133857
@@ -22768,6 +23228,37 @@
    136452,
    133857,
    132373
+  ]
+ },
+ {
+  "conf": "u12g-4379-42031",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132373,
+    "team": "SUSA FC Pre-ECNL G2014/15 Northeast",
+    "ours": [
+     2,
+     4
+    ],
+    "ecnl": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": 134459,
+    "team": "Force FC Pre-ECNL G2014/15",
+    "ours": [
+     7,
+     4
+    ],
+    "ecnl": [
+     6,
+     4
+    ]
+   }
   ]
  },
  {
@@ -27260,6 +27751,30 @@
      9,
      22
     ]
+   },
+   {
+    "id": 132947,
+    "team": "Capital FC",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
+    "id": 133501,
+    "team": "Eastside Timbers",
+    "ours": [
+     10,
+     4
+    ],
+    "ecnl": [
+     9,
+     4
+    ]
    }
   ]
  },
@@ -28946,6 +29461,61 @@
   ]
  },
  {
+  "conf": "u14g-4311-41484",
+  "name": "ECNL RL Girls Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 90883,
+    "team": "Eastside FC",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
+    "id": 131382,
+    "team": "Snohomish United",
+    "ours": [
+     11,
+     15
+    ],
+    "ecnl": [
+     10,
+     12
+    ]
+   },
+   {
+    "id": 135845,
+    "team": "Central Washington Sounders",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
+    "id": 130049,
+    "team": "Oregon Surf",
+    "ours": [
+     10,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14g-4312-41176",
   "name": "ECNL RL Girls North Texas",
   "ours": [
@@ -29328,6 +29898,30 @@
     "ecnl": [
      6,
      6
+    ]
+   },
+   {
+    "id": 94705,
+    "team": "CESA Liberty",
+    "ours": [
+     6,
+     6
+    ],
+    "ecnl": [
+     5,
+     5
+    ]
+   },
+   {
+    "id": 116939,
+    "team": "Atlanta Fire United",
+    "ours": [
+     6,
+     4
+    ],
+    "ecnl": [
+     5,
+     3
     ]
    }
   ]
@@ -36858,6 +37452,18 @@
     ]
    },
    {
+    "id": 60121,
+    "team": "CESA Liberty",
+    "ours": [
+     14,
+     33
+    ],
+    "ecnl": [
+     13,
+     30
+    ]
+   },
+   {
     "id": 131503,
     "team": "GSA",
     "ours": [
@@ -36915,6 +37521,18 @@
     "ecnl": [
      13,
      8
+    ]
+   },
+   {
+    "id": 67129,
+    "team": "Atlanta Fire United",
+    "ours": [
+     14,
+     5
+    ],
+    "ecnl": [
+     13,
+     5
     ]
    }
   ]
@@ -38597,13 +39215,13 @@
   "name": "ECNL RL Girls Mid-America",
   "ours": [
    133999,
+   135781,
    132272,
    133194,
-   133906,
-   135781,
    68481,
    94934,
-   134081
+   134081,
+   133906
   ],
   "ecnl": [
    133999,
@@ -38615,6 +39233,37 @@
    133906,
    132272,
    134081
+  ]
+ },
+ {
+  "conf": "u19g-4305-40802",
+  "name": "ECNL RL Girls Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135781,
+    "team": "Chattanooga Red Wolves",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 133906,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -42381,36 +43030,6 @@
    9426,
    9456,
    10984
-  ]
- },
- {
-  "conf": "a19b-588-588",
-  "name": "MLS NEXT Academy Virginia",
-  "ours": [
-   10924,
-   8804,
-   8786,
-   8780,
-   8774,
-   8792,
-   11073,
-   10930,
-   8798,
-   9138,
-   9132
-  ],
-  "ecnl": [
-   10924,
-   8804,
-   8786,
-   8780,
-   8792,
-   8774,
-   11073,
-   10930,
-   8798,
-   9138,
-   9132
   ]
  },
  {
