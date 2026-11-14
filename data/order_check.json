@@ -4148,6 +4148,30 @@
      8,
      7
     ]
+   },
+   {
+    "id": 134945,
+    "team": "Match Fit Surf Pre-ECNL B2014/2015 II",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     1
+    ]
+   },
+   {
+    "id": 126583,
+    "team": "PSA Monmouth Pre-ECNL B2014/15 ll",
+    "ours": [
+     8,
+     0
+    ],
+    "ecnl": [
+     7,
+     0
+    ]
    }
   ]
  },
@@ -8768,10 +8792,10 @@
    57176,
    76665,
    133286,
+   134125,
    133098,
    131245,
    131315,
-   134125,
    80818,
    111255,
    131621
@@ -8853,6 +8877,18 @@
     ]
    },
    {
+    "id": 134125,
+    "team": "Dallas Texans",
+    "ours": [
+     14,
+     13
+    ],
+    "ecnl": [
+     13,
+     10
+    ]
+   },
+   {
     "id": 131245,
     "team": "FC Westlake",
     "ours": [
@@ -8862,6 +8898,18 @@
     "ecnl": [
      11,
      7
+    ]
+   },
+   {
+    "id": 111255,
+    "team": "Colorado Storm",
+    "ours": [
+     11,
+     6
+    ],
+    "ecnl": [
+     10,
+     6
     ]
    },
    {
@@ -17914,6 +17962,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 112660,
+    "team": "San Francisco Elite Academy",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
     "id": 114292,
     "team": "Marin FC",
     "ours": [
@@ -17935,6 +17995,18 @@
     "ecnl": [
      9,
      7
+    ]
+   },
+   {
+    "id": 109078,
+    "team": "El Camino FC Salinas -",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    }
   ]
@@ -20690,6 +20762,37 @@
   ]
  },
  {
+  "conf": "u19b-4348-41599",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 107702,
+    "team": "Placer United",
+    "ours": [
+     10,
+     27
+    ],
+    "ecnl": [
+     9,
+     24
+    ]
+   },
+   {
+    "id": 135974,
+    "team": "Mustang Soccer ECNL-RL B2008/09",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4350-40664",
   "name": "ECNL RL Boys Mid-America",
   "ours": [
@@ -21812,6 +21915,37 @@
    131417,
    114759,
    136878
+  ]
+ },
+ {
+  "conf": "u11g-4373-41055",
+  "name": "Pre-ECNL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135144,
+    "team": "SLSG Navy Academy I Pre-ECNL G2015/16",
+    "ours": [
+     8,
+     24
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
+    "id": 113548,
+    "team": "Sporting Iowa Pre-ECNL G2015/16",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -39152,12 +39286,12 @@
    135876,
    132675,
    134728,
+   135882,
    135548,
    78757,
    114857,
    136391,
    59746,
-   135882,
    132717,
    135729,
    91927
@@ -39242,7 +39376,7 @@
     "id": 91927,
     "team": "Oklahoma Cosmos",
     "ours": [
-     7,
+     8,
      0
     ],
     "ecnl": [
