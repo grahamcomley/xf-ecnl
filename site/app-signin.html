@@ -81,7 +81,7 @@ sc.onload = async () => {
     msg("");
     document.addEventListener("click", async e => {
       const o = e.target.closest("[data-oauth]");
-      if (o) { o.disabled = true; pick(); try { await window.Clerk.client.signIn.authenticateWithRedirect({strategy: o.dataset.oauth, redirectUrl: location.origin + "/sso-callback.html", redirectUrlComplete: location.href}); } catch (x) { o.disabled = false; msg("Couldn't open that. Try email instead."); } }
+      if (o) { o.disabled = true; pick(); try { sessionStorage.setItem("ssBack", location.href); } catch (x) {} try { await window.Clerk.client.signIn.authenticateWithRedirect({strategy: o.dataset.oauth, redirectUrl: location.origin + "/sso-callback.html", redirectUrlComplete: location.href}); } catch (x) { o.disabled = false; msg("Couldn't open that. Try email instead."); } }
       if (e.target.closest("[data-email]")) {
         pick();   // buttons stay behind the window, so closing it leaves the choices
         // Clerk's own sign-in window (the embedded form needs a page route of its own and showed blank here)

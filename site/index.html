@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.20">
+<meta name="app-version" content="v1.21">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -133,7 +133,7 @@ body.ddopen #scroller,body.ddopen #tabbar{filter:brightness(.4);transition:filte
 .pkrow{display:flex;align-items:center;gap:10px;padding:3px 0}.pkt{flex:1;min-width:0;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pkstep{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:var(--card2)}.pkstep button{background:none;border:0;color:var(--ink);font:inherit;font-size:18px;width:32px;height:34px;cursor:pointer}.pkstep button:disabled{color:var(--line2);cursor:default}.pkstep b{min-width:20px;text-align:center;font-size:17px}
 .pkfoot{font-size:12px;color:var(--mut);margin-top:4px}.pkfinal{min-width:34px;text-align:center;font-size:18px;font-weight:800}.pksave.ok{color:var(--up)}.pkpts{font-weight:800}.pkpts.p3{color:var(--up)}.pkpts.p1{color:#86c99a}.pkpts.p0{color:var(--mut)}
-.pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wklist{margin-top:2px}.wkgrp>summary{padding:12px}.wkbody{padding:0 12px 10px}.wkbody .day:first-child{margin-top:4px}.wkone{padding-top:2px}#delgo:disabled{opacity:.45;cursor:default}#delsheet{z-index:90;align-items:center;padding:16px}#delsheet .sheet-card{border-radius:14px}.pkmore{background:none;border:0;color:var(--mut);font:inherit;font-size:15px;padding:0 4px;cursor:pointer;line-height:1}
+.pkwho{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-top:1px solid var(--line)}.pkwho.me{font-weight:700}.pkboard td.t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wklist{margin-top:2px}.wkgrp>summary{padding:12px}.wkbody{padding:0 12px 10px}.wkbody .day:first-child{margin-top:4px}.wkone{padding-top:2px}.followbtn{flex:none;display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:17px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;margin-right:4px}.followbtn .ic{width:16px;height:16px}.followbtn.starred{color:#fde047;border-color:#a16207;background:transparent}.followbtn.starred span{color:var(--ink)}#delgo:disabled{opacity:.45;cursor:default}#delsheet{z-index:90;align-items:center;padding:16px}#delsheet .sheet-card{border-radius:14px}.pkmore{background:none;border:0;color:var(--mut);font:inherit;font-size:15px;padding:0 4px;cursor:pointer;line-height:1}
 .sheet-card p{margin:10px 0;color:var(--ink)}.sheet-head{display:flex;justify-content:space-between;align-items:center;font-size:16px}
 .checked.stale{color:var(--warnink);font-weight:700}
 .checked{font-size:12px;color:var(--mut);margin-top:6px}.checked:empty{display:none}
@@ -661,6 +661,7 @@ async function appSignIn() {
 }
 // Apple / Google straight to the provider (Clerk handles the return on /sso-callback.html).
 async function oauthGo(strategy, back) {
+  try { sessionStorage.setItem("ssBack", back); } catch (e) {}   // sso-callback returns here, new account or not
   try { await window.Clerk.client.signIn.authenticateWithRedirect({strategy, redirectUrl: location.origin + "/sso-callback.html", redirectUrlComplete: back}); }
   catch (e) { console.warn(e); toast("Couldn't open sign-in. Try email instead."); document.querySelectorAll("[data-oauth]").forEach(b => b.disabled = false); }
 }
@@ -682,7 +683,9 @@ function signIn() {
 }
 const recheck = () => { if (CLERK_READY) onAuth(); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden) recheck(); });
-function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = icon("star", on); }
+// The follow button in the team header: a labelled pill (the bare star wasn't noticed).
+const followHtml = on => `${icon("star", on)}<span>${on ? "Following" : "Follow"}</span>`;
+function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = followHtml(on); }
 async function onAuth() {
   const u = window.Clerk && window.Clerk.user;
   if (!u) { ME = null; applyGate(); return; }
@@ -1735,9 +1738,9 @@ function renderTeam(D, fid, key) {
   document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   $("#teamhead").innerHTML = `<div class="th"><div class="thl">
       <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)}</span></span>${icon("search")}</button></div>
-    <div class="thr"><button class="ibtn ${starred ? "starred" : ""}" id="starbtn" aria-label="Favorite">${icon("star", starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
+    <div class="thr"><button class="followbtn ${starred ? "starred" : ""}" id="starbtn" aria-label="${starred ? "Following" : "Follow"} this team">${followHtml(starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
   $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); document.body.classList.toggle("ddopen", !m.hidden); };
-  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = icon("star", on); toast(on ? "Saved to favorites" : "Removed from favorites");
+  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = followHtml(on); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
     if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
     else if (on) maybeOfferAlerts(key); };
   $("#sharebtn").onclick = async () => {

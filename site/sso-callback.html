@@ -10,7 +10,12 @@ const sc = document.createElement("script");
 sc.src = "https://clerk.sidelinestandings.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js";
 sc.async = true; sc.crossOrigin = "anonymous"; sc.setAttribute("data-clerk-publishable-key", "pk_live_Y2xlcmsuc2lkZWxpbmVzdGFuZGluZ3MuY29tJA");
 sc.onload = async () => {
-  try { await window.Clerk.load(); await window.Clerk.handleRedirectCallback({signInFallbackRedirectUrl: "/", signUpFallbackRedirectUrl: "/"}); }
+  // Go back to the page sign-in started from, for existing AND brand-new accounts. (Before, a new account
+  // went to "/", so inside the app's sign-in sheet it landed on the website and the app was never told.)
+  let back = "/"; try { const b = sessionStorage.getItem("ssBack"); if (b && b.startsWith(location.origin + "/")) back = b; } catch (e) {}
+  const lg = w => { try { fetch("/api/log/app/sheet-callback/" + encodeURIComponent(w), {method: "POST", keepalive: true}); } catch (e) {} };
+  lg(back.includes("app-signin") ? "to-app" : "to-site");
+  try { await window.Clerk.load(); await window.Clerk.handleRedirectCallback({signInFallbackRedirectUrl: back, signUpFallbackRedirectUrl: back, signInForceRedirectUrl: back, signUpForceRedirectUrl: back}); }
   catch (e) { document.getElementById("m").innerHTML = 'That didn\'t finish. <a href="/">Back to Sideline Standings</a>'; }
 };
 document.head.appendChild(sc);
