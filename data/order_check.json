@@ -5156,6 +5156,18 @@
     ]
    },
    {
+    "id": 112981,
+    "team": "PSA Monmouth",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   },
+   {
     "id": 131025,
     "team": "Baltimore Celtic",
     "ours": [
@@ -5164,6 +5176,18 @@
     ],
     "ecnl": [
      7,
+     4
+    ]
+   },
+   {
+    "id": 134943,
+    "team": "Match Fit Surf",
+    "ours": [
+     10,
+     4
+    ],
+    "ecnl": [
+     9,
      4
     ]
    },
@@ -5221,6 +5245,37 @@
    132006,
    109540,
    114289
+  ]
+ },
+ {
+  "conf": "u13b-4283-40509",
+  "name": "ECNL Boys Northern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 109540,
+    "team": "Placer United",
+    "ours": [
+     10,
+     24
+    ],
+    "ecnl": [
+     9,
+     21
+    ]
+   },
+   {
+    "id": 131240,
+    "team": "San Francisco Elite Academy",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   }
   ]
  },
  {
@@ -6273,6 +6328,30 @@
     "ecnl": [
      9,
      22
+    ]
+   },
+   {
+    "id": 111042,
+    "team": "MVLA",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 116966,
+    "team": "Marin FC",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     12
     ]
    },
    {
@@ -7869,8 +7948,8 @@
    133082,
    114578,
    81153,
-   115339,
-   115357
+   115357,
+   115339
   ],
   "ecnl": [
    111079,
@@ -7885,6 +7964,37 @@
    81153,
    115339,
    115357
+  ]
+ },
+ {
+  "conf": "u14b-4338-42356",
+  "name": "ECNL RL Boys GMA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 112069,
+    "team": "TKO Premier SC",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
+    "id": 115339,
+    "team": "Nationals SC-CA GMA",
+    "ours": [
+     11,
+     1
+    ],
+    "ecnl": [
+     10,
+     1
+    ]
+   }
   ]
  },
  {
@@ -8587,45 +8697,14 @@
    94527,
    94796,
    133797,
+   111216,
    135852,
    115709,
    93841,
-   111216,
    80505,
    113337,
    134862,
    94670
-  ]
- },
- {
-  "conf": "u14b-4353-40714",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133797,
-    "team": "Whatcom FC Rangers -",
-    "ours": [
-     10,
-     14
-    ],
-    "ecnl": [
-     9,
-     14
-    ]
-   },
-   {
-    "id": 111216,
-    "team": "XF",
-    "ours": [
-     9,
-     12
-    ],
-    "ecnl": [
-     8,
-     9
-    ]
-   }
   ]
  },
  {
@@ -9689,6 +9768,30 @@
     "ecnl": [
      10,
      9
+    ]
+   },
+   {
+    "id": 131803,
+    "team": "GSA",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     8
+    ]
+   },
+   {
+    "id": 94987,
+    "team": "South Carolina United",
+    "ours": [
+     12,
+     9
+    ],
+    "ecnl": [
+     11,
+     8
     ]
    }
   ]
@@ -11756,9 +11859,9 @@
    39821,
    81675,
    81051,
-   71821,
    80637,
    82111,
+   71821,
    132650,
    131737,
    71814,
@@ -11783,6 +11886,37 @@
    71303,
    81188,
    79980
+  ]
+ },
+ {
+  "conf": "u16b-4283-40512",
+  "name": "ECNL Boys Northern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 81188,
+    "team": "Davis Legacy",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     16
+    ]
+   },
+   {
+    "id": 71821,
+    "team": "Marin FC",
+    "ours": [
+     10,
+     11
+    ],
+    "ecnl": [
+     9,
+     11
+    ]
+   }
   ]
  },
  {
@@ -12901,9 +13035,9 @@
   "name": "ECNL RL Boys NorCal",
   "ours": [
    132793,
-   117917,
    132814,
    110344,
+   117917,
    131529,
    132294,
    89849,
@@ -12950,6 +13084,37 @@
    89849,
    131774,
    112421
+  ]
+ },
+ {
+  "conf": "u16b-4351-41154",
+  "name": "ECNL RL Boys NorCal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132793,
+    "team": "Reno APEX Soccer Club",
+    "ours": [
+     11,
+     29
+    ],
+    "ecnl": [
+     10,
+     26
+    ]
+   },
+   {
+    "id": 117917,
+    "team": "Albany Berkeley Soccer Club",
+    "ours": [
+     11,
+     23
+    ],
+    "ecnl": [
+     10,
+     23
+    ]
+   }
   ]
  },
  {
@@ -13529,12 +13694,12 @@
    131491,
    128363,
    80705,
+   93727,
    131203,
    75519,
-   93727,
-   50712,
    133293,
    87681,
+   50712,
    133295,
    113587,
    131206,
@@ -13557,6 +13722,61 @@
    131206,
    95205,
    75519
+  ]
+ },
+ {
+  "conf": "u17b-4261-41137",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 93727,
+    "team": "JSAFC ECNL RL STXCL B2009/10",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   },
+   {
+    "id": 50712,
+    "team": "Houstonians FC ECNL RL STXCL B2009/10",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     10
+    ]
+   },
+   {
+    "id": 87681,
+    "team": "Imperial SC ECNL RL STXCL B2009/10",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   },
+   {
+    "id": 95205,
+    "team": "SAFC ECNL RL STXCL B2009/10",
+    "ours": [
+     10,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
+    ]
+   }
   ]
  },
  {
@@ -14906,6 +15126,30 @@
      13,
      26
     ]
+   },
+   {
+    "id": 134648,
+    "team": "FC Alliance TN",
+    "ours": [
+     13,
+     10
+    ],
+    "ecnl": [
+     12,
+     10
+    ]
+   },
+   {
+    "id": 94940,
+    "team": "Germantown Legends",
+    "ours": [
+     13,
+     7
+    ],
+    "ecnl": [
+     12,
+     4
+    ]
    }
   ]
  },
@@ -15057,8 +15301,8 @@
    135281,
    133639,
    68853,
-   135615,
    132402,
+   135615,
    133562,
    133689,
    110507,
@@ -15096,6 +15340,30 @@
   "name": "ECNL RL Boys Southern Cal",
   "kind": "points",
   "teams": [
+   {
+    "id": 131024,
+    "team": "Pateadores ECNL RL SoCal B2009/10",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 135615,
+    "team": "Sporting California USA ECNL RL S. Cal B2009/10",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
    {
     "id": 132402,
     "team": "Beach Futbol Club (CA) Black",
@@ -15206,6 +15474,66 @@
   "kind": "points",
   "teams": [
    {
+    "id": 131903,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     15,
+     40
+    ],
+    "ecnl": [
+     14,
+     37
+    ]
+   },
+   {
+    "id": 134179,
+    "team": "NTH NASA",
+    "ours": [
+     15,
+     28
+    ],
+    "ecnl": [
+     14,
+     27
+    ]
+   },
+   {
+    "id": 131807,
+    "team": "GSA",
+    "ours": [
+     14,
+     24
+    ],
+    "ecnl": [
+     13,
+     23
+    ]
+   },
+   {
+    "id": 57740,
+    "team": "United Futbol Academy",
+    "ours": [
+     15,
+     23
+    ],
+    "ecnl": [
+     14,
+     23
+    ]
+   },
+   {
+    "id": 69848,
+    "team": "South Carolina United",
+    "ours": [
+     16,
+     15
+    ],
+    "ecnl": [
+     15,
+     14
+    ]
+   },
+   {
     "id": 129034,
     "team": "South Carolina Surf",
     "ours": [
@@ -15223,6 +15551,18 @@
     "ours": [
      14,
      7
+    ],
+    "ecnl": [
+     13,
+     7
+    ]
+   },
+   {
+    "id": 131458,
+    "team": "CESA Triumph Surge",
+    "ours": [
+     14,
+     8
     ],
     "ecnl": [
      13,
@@ -16064,9 +16404,9 @@
    59253,
    129027,
    134149,
-   52497,
    35806,
    60031,
+   52497,
    46038,
    131800,
    59237
@@ -16081,6 +16421,37 @@
    46038,
    59237,
    131800
+  ]
+ },
+ {
+  "conf": "u19b-4286-40538",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 52497,
+    "team": "South Carolina United",
+    "ours": [
+     12,
+     14
+    ],
+    "ecnl": [
+     11,
+     14
+    ]
+   },
+   {
+    "id": 131800,
+    "team": "GSA",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   }
   ]
  },
  {
@@ -16783,6 +17154,37 @@
   ]
  },
  {
+  "conf": "u19b-4350-40664",
+  "name": "ECNL RL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 112527,
+    "team": "Alabama FC Huntsville",
+    "ours": [
+     12,
+     27
+    ],
+    "ecnl": [
+     11,
+     24
+    ]
+   },
+   {
+    "id": 134795,
+    "team": "Tennessee SC",
+    "ours": [
+     13,
+     24
+    ],
+    "ecnl": [
+     12,
+     24
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4351-41156",
   "name": "ECNL RL Boys NorCal",
   "ours": [
@@ -16990,6 +17392,37 @@
    113071,
    134584,
    132400
+  ]
+ },
+ {
+  "conf": "u19b-4354-41633",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135614,
+    "team": "Sporting California USA ECNL RL S. Cal B2008/09",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 131020,
+    "team": "Pateadores ECNL RL SoCal B2008/09",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
   ]
  },
  {
@@ -24618,11 +25051,11 @@
   "conf": "u14g-4308-41399",
   "name": "ECNL RL Girls New England",
   "ours": [
-   88646,
    95346,
+   88646,
    134378,
-   94743,
    81914,
+   94743,
    134831,
    81915,
    114092,
@@ -24646,6 +25079,42 @@
   "kind": "points",
   "teams": [
    {
+    "id": 88646,
+    "team": "World Class FC",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 134378,
+    "team": "Select South",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
+    "id": 94743,
+    "team": "Scorpions SC",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     11
+    ]
+   },
+   {
     "id": 134831,
     "team": "East Meadow Soccer Club",
     "ours": [
@@ -24655,6 +25124,18 @@
     "ecnl": [
      8,
      9
+    ]
+   },
+   {
+    "id": 114092,
+    "team": "Connecticut FC United",
+    "ours": [
+     7,
+     5
+    ],
+    "ecnl": [
+     6,
+     4
     ]
    },
    {
@@ -32008,6 +32489,7 @@
   "ours": [
    132926,
    133178,
+   97353,
    81507,
    132118,
    132909,
@@ -32021,7 +32503,6 @@
    132870,
    134915,
    135592,
-   97353,
    94496,
    97021,
    133674
@@ -32074,6 +32555,30 @@
     ],
     "ecnl": [
      0,
+     0
+    ]
+   },
+   {
+    "id": 97353,
+    "team": "Idaho Rush",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 97021,
+    "team": "Avalanche",
+    "ours": [
+     2,
+     0
+    ],
+    "ecnl": [
+     1,
      0
     ]
    }
@@ -32532,8 +33037,8 @@
    132477,
    135898,
    89528,
-   131726,
    133584,
+   131726,
    129892,
    132175,
    131031,
@@ -32556,6 +33061,37 @@
    97426,
    131031,
    113056
+  ]
+ },
+ {
+  "conf": "u17g-4315-41751",
+  "name": "ECNL RL Girls Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131726,
+    "team": "Legends FC - Del Mar ECNL RL S.Cal G2009/10",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 132175,
+    "team": "Beach Futbol Club (CA) Black",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     5
+    ]
+   }
   ]
  },
  {
@@ -34142,6 +34678,7 @@
   "ours": [
    97020,
    132927,
+   97354,
    133045,
    132908,
    94984,
@@ -34154,9 +34691,8 @@
    133179,
    134916,
    135593,
-   97354,
-   98483,
    133676,
+   98483,
    131537
   ],
   "ecnl": [
@@ -34182,6 +34718,37 @@
   ]
  },
  {
+  "conf": "u19g-4306-40808",
+  "name": "ECNL RL Girls Mountain",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 97354,
+    "team": "Idaho Rush",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 98483,
+    "team": "Avalanche",
+    "ours": [
+     3,
+     0
+    ],
+    "ecnl": [
+     2,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19g-4307-41213",
   "name": "ECNL RL Girls NorCal",
   "ours": [
@@ -34203,8 +34770,8 @@
    133528,
    67910,
    108490,
-   117918,
    132606,
+   117918,
    132968,
    133415,
    132298,
@@ -34266,12 +34833,24 @@
     "id": 132606,
     "team": "Napa United",
     "ours": [
-     9,
-     8
+     10,
+     11
     ],
     "ecnl": [
      8,
      7
+    ]
+   },
+   {
+    "id": 113386,
+    "team": "Cal Magic",
+    "ours": [
+     8,
+     2
+    ],
+    "ecnl": [
+     7,
+     2
     ]
    }
   ]
