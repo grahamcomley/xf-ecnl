@@ -104,8 +104,8 @@
    131321,
    129646,
    133743,
-   95189,
    129396,
+   95189,
    128222,
    131194,
    131658,
@@ -149,8 +149,8 @@
     "id": 97207,
     "team": "AHFC Pre-ECNL STXCL B2015/16",
     "ours": [
-     5,
-     13
+     6,
+     16
     ],
     "ecnl": [
      8,
@@ -173,7 +173,7 @@
     "id": 95189,
     "team": "Cedar Stars Rush Houston Pre-ECNL STXCL B2015/16",
     "ours": [
-     5,
+     6,
      4
     ],
     "ecnl": [
@@ -611,8 +611,8 @@
    133234,
    97207,
    131658,
-   131194,
    132330,
+   131194,
    128222,
    129646,
    131659,
@@ -640,15 +640,15 @@
   "kind": "points",
   "teams": [
    {
-    "id": 133229,
-    "team": "Lonestar ATX Pre-ECNL STXCL B2015/16 Red",
+    "id": 131194,
+    "team": "FC Westlake Pre-ECNL STXCL B2015/16 Blue",
     "ours": [
-     6,
-     18
+     8,
+     11
     ],
     "ecnl": [
      7,
-     21
+     11
     ]
    },
    {
@@ -676,13 +676,13 @@
    128222,
    133236,
    131322,
-   133232,
    133744,
+   133232,
    132706,
    118229,
+   131186,
    131659,
    132331,
-   131186,
    131658,
    128319
   ],
@@ -701,18 +701,6 @@
   "kind": "points",
   "teams": [
    {
-    "id": 133232,
-    "team": "Lonestar ATX NTH Pre-ECNL STXCL B2015/16 Red A",
-    "ours": [
-     6,
-     10
-    ],
-    "ecnl": [
-     7,
-     10
-    ]
-   },
-   {
     "id": 132331,
     "team": "Barca Academy Austin Pre-ECNL STXCL B2015/16 Black",
     "ours": [
@@ -728,8 +716,8 @@
     "id": 131186,
     "team": "TC Premier SC Pre-ECNL STXCL B2015/16",
     "ours": [
-     7,
-     4
+     8,
+     7
     ],
     "ecnl": [
      8,
@@ -989,15 +977,15 @@
   "conf": "u11b-4361-41036",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
-   133998,
    131672,
    132807,
+   133998,
    136352,
    137089,
    137306,
+   134516,
    131947,
    131229,
-   134516,
    131237,
    132396,
    136415,
@@ -1018,6 +1006,85 @@
    136415,
    128295,
    136353
+  ]
+ },
+ {
+  "conf": "u11b-4361-41036",
+  "name": "Pre-ECNL Boys Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133998,
+    "team": "Kansas City Athletics Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     9
+    ],
+    "ecnl": [
+     3,
+     9
+    ]
+   },
+   {
+    "id": 131672,
+    "team": "Gretna Elite Academy Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     12
+    ],
+    "ecnl": [
+     3,
+     9
+    ]
+   },
+   {
+    "id": 134516,
+    "team": "Kansas City Surf Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     6
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": 132396,
+    "team": "Sporting Iowa Central Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     0
+    ]
+   },
+   {
+    "id": 136415,
+    "team": "FC Wichita Navy Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     0
+    ],
+    "ecnl": [
+     3,
+     0
+    ]
+   },
+   {
+    "id": 128295,
+    "team": "Kansas Rush Pre-ECNL B2015/16",
+    "ours": [
+     4,
+     0
+    ],
+    "ecnl": [
+     3,
+     0
+    ]
+   }
   ]
  },
  {
@@ -1181,6 +1248,30 @@
     "ecnl": [
      8,
      8
+    ]
+   },
+   {
+    "id": 135310,
+    "team": "Oakwood Soccer Club Pre Blue",
+    "ours": [
+     9,
+     5
+    ],
+    "ecnl": [
+     8,
+     2
+    ]
+   },
+   {
+    "id": 111639,
+    "team": "FC Stars Pre-ECNL B2015/16 Blue",
+    "ours": [
+     8,
+     0
+    ],
+    "ecnl": [
+     7,
+     0
     ]
    }
   ]
@@ -1989,9 +2080,9 @@
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
    133748,
-   133747,
    127569,
    128327,
+   133747,
    131278,
    129645,
    131283,
@@ -2025,7 +2116,7 @@
     "id": 133747,
     "team": "HTX N Pre-ECNL STXCL B2014/15 I",
     "ours": [
-     4,
+     5,
      10
     ],
     "ecnl": [
@@ -2061,8 +2152,8 @@
     "id": 131278,
     "team": "RISE SC Pre-ECNL STXCL B2014/15 Volt",
     "ours": [
-     5,
-     5
+     6,
+     8
     ],
     "ecnl": [
      8,
@@ -2215,8 +2306,8 @@
    131288,
    133749,
    131286,
-   128328,
    97206,
+   128328,
    75142,
    129699,
    92769,
@@ -2283,8 +2374,8 @@
     "id": 97206,
     "team": "AHFC West Pre-ECNL STXCL B2014/15",
     "ours": [
-     7,
-     12
+     8,
+     15
     ],
     "ecnl": [
      8,
@@ -2319,7 +2410,7 @@
     "id": 126453,
     "team": "Real Greens Soccer Academy Pre-ECNL STXCL B2014/15",
     "ours": [
-     7,
+     8,
      3
     ],
     "ecnl": [
@@ -4100,6 +4191,37 @@
   ]
  },
  {
+  "conf": "u13b-4261-41132",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 61891,
+    "team": "Imperial SC ECNL RL STXCL B2013/14",
+    "ours": [
+     11,
+     19
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 87503,
+    "team": "AHFC CENTRAL ECNL RL STXCL B2013/14",
+    "ours": [
+     12,
+     13
+    ],
+    "ecnl": [
+     11,
+     12
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4261-41130",
   "name": "ECNL RL Boys STXCL",
   "ours": [
@@ -5622,6 +5744,37 @@
    136407,
    132388,
    134704
+  ]
+ },
+ {
+  "conf": "u14b-4276-40468",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134633,
+    "team": "FC Alliance TN",
+    "ours": [
+     15,
+     21
+    ],
+    "ecnl": [
+     14,
+     18
+    ]
+   },
+   {
+    "id": 98519,
+    "team": "Germantown Legends",
+    "ours": [
+     14,
+     15
+    ],
+    "ecnl": [
+     13,
+     15
+    ]
+   }
   ]
  },
  {
@@ -7511,15 +7664,15 @@
   "conf": "u15b-4324-41503",
   "name": "ECNL RL Boys GLA",
   "ours": [
-   130904,
+   95825,
    131872,
    59146,
    82472,
    95231,
    95367,
-   95825,
    96225,
-   97280
+   97280,
+   130904
   ],
   "ecnl": [
    59146,
@@ -7531,6 +7684,37 @@
    131872,
    95825,
    96225
+  ]
+ },
+ {
+  "conf": "u15b-4324-41503",
+  "name": "ECNL RL Boys GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130904,
+    "team": "Rochester NY FC",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 95825,
+    "team": "WNY Flash",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -7940,8 +8124,8 @@
    113731,
    132919,
    94371,
-   94334,
    95636,
+   94334,
    67791,
    133916,
    134357,
@@ -7959,6 +8143,37 @@
    95103,
    80134,
    94371
+  ]
+ },
+ {
+  "conf": "u15b-4346-41008",
+  "name": "ECNL RL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94371,
+    "team": "Wellington SC",
+    "ours": [
+     8,
+     16
+    ],
+    "ecnl": [
+     7,
+     16
+    ]
+   },
+   {
+    "id": 95636,
+    "team": "Doral Soccer Club",
+    "ours": [
+     6,
+     11
+    ],
+    "ecnl": [
+     5,
+     8
+    ]
+   }
   ]
  },
  {
@@ -8125,6 +8340,37 @@
    94942,
    133761,
    133311
+  ]
+ },
+ {
+  "conf": "u15b-4350-40661",
+  "name": "ECNL RL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134646,
+    "team": "FC Alliance TN",
+    "ours": [
+     12,
+     8
+    ],
+    "ecnl": [
+     11,
+     5
+    ]
+   },
+   {
+    "id": 94942,
+    "team": "Germantown Legends",
+    "ours": [
+     12,
+     3
+    ],
+    "ecnl": [
+     11,
+     3
+    ]
+   }
   ]
  },
  {
@@ -8983,11 +9229,11 @@
   "ours": [
    71649,
    79892,
-   69002,
    81338,
+   69002,
    81342,
-   134164,
    82200,
+   134164,
    131802,
    129029
   ],
@@ -11744,8 +11990,8 @@
   "ours": [
    129725,
    91077,
-   50861,
    115222,
+   50861,
    132289,
    121120,
    131490,
@@ -11758,6 +12004,7 @@
   "ecnl": [
    129725,
    91077,
+   115222,
    132289,
    121120,
    131490,
@@ -11766,8 +12013,7 @@
    48343,
    52777,
    59642,
-   50861,
-   115222
+   50861
   ]
  },
  {
@@ -13543,11 +13789,11 @@
    114759,
    131577,
    117747,
-   131815,
    135145,
+   131815,
    135146,
-   136265,
    113548,
+   136265,
    132737,
    131417
   ],
@@ -13564,6 +13810,37 @@
    131417,
    114759,
    136878
+  ]
+ },
+ {
+  "conf": "u11g-4373-41055",
+  "name": "Pre-ECNL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135145,
+    "team": "SLSG Green Academy I Pre-ECNL G2015/16",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   },
+   {
+    "id": 136265,
+    "team": "FC United (Iowa) Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     7
+    ]
+   }
   ]
  },
  {
@@ -22003,37 +22280,6 @@
   ]
  },
  {
-  "conf": "u15g-4314-41411",
-  "name": "ECNL RL Girls Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 95360,
-    "team": "Concorde Fire Platinum",
-    "ours": [
-     12,
-     27
-    ],
-    "ecnl": [
-     13,
-     30
-    ]
-   },
-   {
-    "id": 131505,
-    "team": "GSA",
-    "ours": [
-     13,
-     6
-    ],
-    "ecnl": [
-     14,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u15g-4315-41749",
   "name": "ECNL RL Girls Southern Cal",
   "ours": [
@@ -24806,8 +25052,8 @@
   "name": "ECNL RL Girls STXCL",
   "ours": [
    129938,
-   133012,
    52252,
+   133012,
    129638,
    119509,
    59649,
@@ -24845,6 +25091,42 @@
   "kind": "points",
   "teams": [
    {
+    "id": 129938,
+    "team": "Dynamos ECNL RL STXCL G2009/10",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 133012,
+    "team": "Lonestar RGV ECNL RL STXCL G2009/10",
+    "ours": [
+     7,
+     16
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   },
+   {
+    "id": 52252,
+    "team": "Sting CC ECNL RL STXCL G2009/10 Hennessy",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
     "id": 59649,
     "team": "Imperial SC ECNL RL STXCL G2009/10",
     "ours": [
@@ -24866,6 +25148,18 @@
     "ecnl": [
      6,
      6
+    ]
+   },
+   {
+    "id": 49353,
+    "team": "AHFC NW ECNL RL STXCL G2009/10",
+    "ours": [
+     8,
+     0
+    ],
+    "ecnl": [
+     7,
+     0
     ]
    }
   ]
@@ -26289,6 +26583,37 @@
    68798,
    67129,
    68838
+  ]
+ },
+ {
+  "conf": "u17g-4314-41413",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 68838,
+    "team": "United Futbol Academy",
+    "ours": [
+     14,
+     37
+    ],
+    "ecnl": [
+     13,
+     34
+    ]
+   },
+   {
+    "id": 69856,
+    "team": "South Carolina United",
+    "ours": [
+     14,
+     12
+    ],
+    "ecnl": [
+     13,
+     12
+    ]
+   }
   ]
  },
  {
@@ -28269,6 +28594,37 @@
    131878,
    57570,
    57582
+  ]
+ },
+ {
+  "conf": "u19g-4314-41414",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 60000,
+    "team": "South Carolina United",
+    "ours": [
+     14,
+     30
+    ],
+    "ecnl": [
+     13,
+     27
+    ]
+   },
+   {
+    "id": 57582,
+    "team": "United Futbol Academy",
+    "ours": [
+     14,
+     21
+    ],
+    "ecnl": [
+     13,
+     21
+    ]
+   }
   ]
  },
  {
