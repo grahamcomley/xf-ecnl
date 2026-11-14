@@ -6327,8 +6327,8 @@
   "name": "ECNL RL Boys Golden State",
   "ours": [
    113203,
-   109255,
    115642,
+   109255,
    133454,
    110983,
    110956,
@@ -6349,6 +6349,37 @@
    110956,
    135966,
    113203
+  ]
+ },
+ {
+  "conf": "u14b-4348-41595",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115642,
+    "team": "San Juan SC",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
+    "id": 110983,
+    "team": "Davis Legacy",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   }
   ]
  },
  {
