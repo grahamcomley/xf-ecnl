@@ -2064,6 +2064,37 @@
   ]
  },
  {
+  "conf": "u11b-4385-41168",
+  "name": "Pre-ECNL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 90639,
+    "team": "Eastside FC Pre-ECNL B2015/16 I",
+    "ours": [
+     10,
+     30
+    ],
+    "ecnl": [
+     9,
+     27
+    ]
+   },
+   {
+    "id": 131475,
+    "team": "Valor Soccer - Pre-ECNL B2015/16",
+    "ours": [
+     7,
+     0
+    ],
+    "ecnl": [
+     6,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4387-41885",
   "name": "Pre-ECNL Boys Colorado",
   "ours": [
@@ -2978,11 +3009,11 @@
    133609,
    132591,
    132158,
-   133513,
    131233,
+   133513,
    133056,
-   102713,
-   132711
+   132711,
+   102713
   ],
   "ecnl": [
    133513,
@@ -3017,7 +3048,7 @@
     "id": 133513,
     "team": "Premier Futbol Academy Pre-ECNL STXCL B2014/15",
     "ours": [
-     6,
+     7,
      7
     ],
     "ecnl": [
@@ -3089,8 +3120,8 @@
     "id": 132711,
     "team": "San Antonio FC Pre-ECNL STXCL B2014/15 Red",
     "ours": [
-     7,
-     4
+     8,
+     7
     ],
     "ecnl": [
      9,
@@ -22560,6 +22591,37 @@
    132120,
    135934,
    112276
+  ]
+ },
+ {
+  "conf": "u12g-4382-41882",
+  "name": "Pre-ECNL Girls Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132950,
+    "team": "Capital FC Pre-ECNL G14/15 I",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     21
+    ]
+   },
+   {
+    "id": 133497,
+    "team": "Eastside Timbers Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   }
   ]
  },
  {
