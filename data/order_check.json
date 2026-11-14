@@ -26603,6 +26603,30 @@
     ]
    },
    {
+    "id": 131503,
+    "team": "GSA",
+    "ours": [
+     14,
+     27
+    ],
+    "ecnl": [
+     13,
+     24
+    ]
+   },
+   {
+    "id": 68803,
+    "team": "Concorde Fire Platinum",
+    "ours": [
+     14,
+     21
+    ],
+    "ecnl": [
+     13,
+     21
+    ]
+   },
+   {
     "id": 69856,
     "team": "South Carolina United",
     "ours": [
