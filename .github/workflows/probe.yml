@@ -1,9 +1,9 @@
-name: Probe sample pages (one-time, manual)
+name: Probe sample pages (source check, manual)
 on:
   workflow_dispatch:
     inputs:
       urls:
-        description: "Space-separated URLs"
+        description: "Space-separated URLs or shorthands (gotsport:<event>[/<group>], sportsaffinity:<guid>). See scripts/probe.py"
         required: true
 permissions:
   contents: write
@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: python scripts/probe.py ${{ github.event.inputs.urls }}
+      - run: cat data/probe/REPORT.md >> $GITHUB_STEP_SUMMARY
       - run: |
           git config user.name "xf-ecnl-bot"; git config user.email "actions@users.noreply.github.com"
-          git add data/probe && (git diff --cached --quiet || (git commit -m "Probe pages" && git pull --rebase && git push))
+          git add data/probe && (git diff --cached --quiet || (git commit -m "Source check (probe)" && git pull --rebase && git push))
