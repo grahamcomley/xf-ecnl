@@ -223,9 +223,9 @@ MLS_OFFICIAL = {}   # pool key -> {(event id, flight id): official table} for ML
 def build_pool(name, pc, cfg):
     """Return (games, team_conf, team_names, conf_names, club_conf)."""
     if pc.get("source") == "mlsnext":   # MLS NEXT: its own public data file (scripts/mlsnext.py)
-        games, team_conf, names, conf_names, official = mlsnext.pool(pc["mls_age"])
+        games, team_conf, names, conf_names, official = mlsnext.pool(pc["mls_age"], pc.get("mls_season", mlsnext.SEASON))
         MLS_OFFICIAL[pc["key"]] = official
-        print(f"  mlsnext {pc['mls_age']}: {len(games)} games, {len(names)} teams, {len(conf_names)} brackets")
+        print(f"  mlsnext {pc.get('mls_season', 'homegrown')} {pc['mls_age']}: {len(games)} games, {len(names)} teams, {len(conf_names)} brackets")
         return games, team_conf, names, conf_names
     games, team_conf, names, conf_names = [], {}, {}, {}
     club_conf = {}
@@ -526,8 +526,10 @@ def league_type(name):
     n = (name or "").lower()
     if "mls next flex" in n:
         return "MLS NEXT Flex"
+    if "mls next academy" in n:
+        return "MLS NEXT Academy"
     if "mls next" in n:
-        return "MLS NEXT"
+        return "MLS NEXT Homegrown"
     rl = "rl" in n.split() or "regional league" in n
     girls = "girls" in n
     if "pre-ecnl" in n or "pre ecnl" in n:

@@ -732,7 +732,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U13 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U13 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u13": {
+   "key": "a13b",
+   "label": "U13 Boys (2013/14)",
+   "source": "mlsnext",
+   "mls_age": "U13",
+   "age_rules": {
+    "gender": "B",
+    "age": 13,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U13 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   },
   "mlsnext-u14": {
    "key": "n14b",
@@ -746,7 +761,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U14 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U14 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u14": {
+   "key": "a14b",
+   "label": "U14 Boys (2012/13)",
+   "source": "mlsnext",
+   "mls_age": "U14",
+   "age_rules": {
+    "gender": "B",
+    "age": 14,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U14 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   },
   "mlsnext-u15": {
    "key": "n15b",
@@ -760,7 +790,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U15 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U15 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u15": {
+   "key": "a15b",
+   "label": "U15 Boys (2011/12)",
+   "source": "mlsnext",
+   "mls_age": "U15",
+   "age_rules": {
+    "gender": "B",
+    "age": 15,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U15 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   },
   "mlsnext-u16": {
    "key": "n16b",
@@ -774,7 +819,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U16 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U16 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u16": {
+   "key": "a16b",
+   "label": "U16 Boys (2010/11)",
+   "source": "mlsnext",
+   "mls_age": "U16",
+   "age_rules": {
+    "gender": "B",
+    "age": 16,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U16 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   },
   "mlsnext-u17": {
    "key": "n17b",
@@ -788,7 +848,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U17 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U17 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u17": {
+   "key": "a17b",
+   "label": "U17 Boys (2009/10)",
+   "source": "mlsnext",
+   "mls_age": "U17",
+   "age_rules": {
+    "gender": "B",
+    "age": 17,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U17 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   },
   "mlsnext-u19": {
    "key": "n19b",
@@ -802,7 +877,22 @@
     "since": "2026-08-01",
     "new_age_from": "2026-08-01"
    },
-   "_help": "MLS NEXT U19 (Homegrown + Academy divisions, Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+   "_help": "MLS NEXT U19 Homegrown Division (with Pro Player Pathway and Flex): games and official tables from MLS NEXT's public data file (scripts/mlsnext.py)."
+  },
+  "mlsacad-u19": {
+   "key": "a19b",
+   "label": "U19 Boys (2007/08)",
+   "source": "mlsnext",
+   "mls_age": "U19",
+   "age_rules": {
+    "gender": "B",
+    "age": 19,
+    "explicit": [],
+    "since": "2026-08-01",
+    "new_age_from": "2026-08-01"
+   },
+   "_help": "MLS NEXT U19 Academy Division (second tier; 20 regional conferences incl. Pacific Northwest): same public data file format (scripts/mlsnext.py).",
+   "mls_season": "mls-next-2-academy-division-26-27"
   }
  },
  "model": {

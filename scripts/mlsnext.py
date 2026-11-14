@@ -17,38 +17,44 @@ import urllib.request
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
+# Two seasons files: the Homegrown Division (top tier, with Pro Player Pathway and Flex) and the
+# Academy Division (second tier, 20 regional conferences, e.g. Pacific Northwest), same format.
 SEASON = "mls-next-league-26-27"
-URL = f"https://mls-assist.theintelligenceplatform.com/data/standings/{SEASON}.json"
-CACHE = os.path.join(os.path.dirname(__file__), "..", "data", "cache", "mlsnext_standings.json")
+ACADEMY = "mls-next-2-academy-division-26-27"
+URL = "https://mls-assist.theintelligenceplatform.com/data/standings/{}.json"
+CACHE_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "cache")
 UA = "xf-ecnl-standings/1.0 (+https://sidelinestandings.com)"
 MAX_AGE = 30 * 60
-STAGE_NAME = {"League": "MLS NEXT", "Flex": "MLS NEXT Flex"}
-_data = None
+STAGE_NAME = {"League": "MLS NEXT Homegrown", "Flex": "MLS NEXT Flex", "Academy": "MLS NEXT Academy"}
+LEAGUE_STAGES = {"League", "Academy"}   # a team's regular league table (not Flex / Pro Player Pathway)
+# Homegrown "Northwest" is Northern California clubs (Pacific Northwest clubs are in Academy Pacific Northwest)
+BRACKET_NAME = {("League", "Northwest"): "Northwest (NorCal)"}
+_data = {}
 
 
-def load():
-    """The season file (cached; a failed fetch falls back to the last copy)."""
-    global _data
-    if _data is not None:
-        return _data
+def load(season=SEASON):
+    """One season file (cached; a failed fetch falls back to the last copy)."""
+    if season in _data:
+        return _data[season]
+    CACHE = os.path.join(CACHE_DIR, "mlsnext_standings.json" if season == SEASON else f"mlsnext_{season}.json")
     fresh = os.path.exists(CACHE) and time.time() - os.path.getmtime(CACHE) < MAX_AGE
     if not fresh:
         try:
-            req = urllib.request.Request(URL, headers={"User-Agent": UA, "Accept": "application/json"})
+            req = urllib.request.Request(URL.format(season), headers={"User-Agent": UA, "Accept": "application/json"})
             raw = urllib.request.urlopen(req, timeout=60).read()
             json.loads(raw)   # only keep it if it parses
             os.makedirs(os.path.dirname(CACHE), exist_ok=True)
             with open(CACHE, "wb") as f:
                 f.write(raw)
-            print(f"  mlsnext: fetched {len(raw) // 1024} KB")
+            print(f"  mlsnext {season}: fetched {len(raw) // 1024} KB")
         except Exception as e:
-            print(f"::warning::MLS NEXT fetch failed ({e}); using the last copy")
+            print(f"::warning::MLS NEXT fetch failed ({season}: {e}); using the last copy")
     if not os.path.exists(CACHE):
-        _data = {}
-        return _data
+        _data[season] = {}
+        return _data[season]
     with open(CACHE) as f:
-        _data = json.load(f).get("competition_season") or {}
-    return _data
+        _data[season] = json.load(f).get("competition_season") or {}
+    return _data[season]
 
 
 def _local(start, tz):
@@ -59,12 +65,12 @@ def _local(start, tz):
     return t.strftime("%Y-%m-%d"), t.strftime("%H:%M")
 
 
-def pool(age):
+def pool(age, season=SEASON):
     """Games for one age group ("U16"), in update.py's game format, plus official tables.
 
     Returns (games, team_conf, names, conf_names, official) where official is
     {(bracket id, bracket id): [{"id", "gp", "pts", "rank"}]} for brackets with a points table."""
-    S = load()
+    S = load(season)
     if not S:
         return [], {}, {}, {}, {}
     ages = {a["id"]: a["name"] for a in S.get("age_groups", [])}
@@ -75,7 +81,7 @@ def pool(age):
         for b in st.get("competition_brackets", []):
             if ages.get(b.get("age_group_id")) != age:
                 continue
-            brackets[b["id"]] = (st.get("name"), b.get("name"), b.get("standings") or [])
+            brackets[b["id"]] = (st.get("name"), BRACKET_NAME.get((st.get("name"), b.get("name")), b.get("name")), b.get("standings") or [])
             for r in b.get("standings") or []:
                 member.setdefault(r["squad_id"], set()).add(b["id"])
     for e in S.get("events", []):
@@ -91,11 +97,14 @@ def pool(age):
     for e in S.get("events", []):
         for side in ("home", "away"):
             sq_name[e[f"{side}_squad_id"]] = (e.get(f"{side}_organisation_id"), e.get(f"{side}_squad_name") or "")
+    # Academy squads are named "U16 AD" and club second teams have their own name ("Seattle Celtic Green"):
+    # take the table's team name there. Homegrown keeps its naming (club name, "II" for a B team).
+    row_name = {r["squad_id"]: r.get("name") for st, _, rows in brackets.values() for r in rows if r.get("name")} if season != SEASON else {}
     for e in S.get("events", []):
-        if e.get("home_squad_name") != age and e.get("away_squad_name") != age:
+        bid = e.get("competition_bracket_id")
+        if bid not in brackets and e.get("home_squad_name") != age and e.get("away_squad_name") != age:
             continue
         h, a = e["home_squad_id"], e["away_squad_id"]
-        bid = e.get("competition_bracket_id")
         if bid not in brackets:   # no bracket on the game: the one bracket both teams share in that competition
             common = [b for b in (member.get(h, set()) & member.get(a, set())) if comp_of.get(b) in (None, e.get("competition_id"))]
             bid = common[0] if len(common) == 1 else None
@@ -106,7 +115,8 @@ def pool(age):
         for sid in (h, a):
             org, sn = sq_name.get(sid, (None, ""))
             base = orgs.get(org, "Team")
-            names.setdefault(sid, base + (" II" if sn.upper().endswith("B") else ""))
+            names.setdefault(sid, (row_name.get(sid) or base + (" II" if sn.upper().endswith("B") else ""))
+                             + (" (inactive)" if "inactive" in sn.lower() else ""))
         g = {"id": e["id"], "num": None, "event_id": bid, "flight": None,
              "type": {1606: "Pro Player Pathway", 1607: "Flex"}.get(e.get("competition_id"), "League"),
              "date": date, "time": tm, "home_id": h, "away_id": a,
@@ -126,12 +136,12 @@ def pool(age):
     for bid, (stage, _, rows) in brackets.items():
         for r in rows:
             sid = r["squad_id"]
-            if stage == "League" or sid not in team_conf:
+            if stage in LEAGUE_STAGES or sid not in team_conf:
                 team_conf[sid] = f"ev{bid}"
             names.setdefault(sid, r.get("name") or "Team")
     official = {}
     for bid, (stage, _, rows) in brackets.items():
-        if stage != "League":   # Flex tables also count games outside the bracket: not comparable game by game
+        if stage not in LEAGUE_STAGES:   # Flex tables also count games outside the bracket: not comparable game by game
             continue
         tab = []
         for r in rows:
