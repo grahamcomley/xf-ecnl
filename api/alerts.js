@@ -408,6 +408,16 @@ async function driftAlert(env, st, now) {
   return 0;
 }
 
+// "In 2 hours" when the reminder goes out on time; the real time left when quiet hours held it back
+// (e.g. "In 1 hour", "In 1 hr 20 min", "In 45 minutes"). Rounded to 5 minutes.
+export function timeLeft(ms) {
+  const m = Math.max(1, Math.round(ms / 60000));
+  if (m >= 110) return "In 2 hours";
+  const v = m < 5 ? m : Math.round(m / 5) * 5, h = Math.floor(v / 60), mm = v % 60;
+  if (!h) return `In ${v} minute${v === 1 ? "" : "s"}`;
+  return mm ? `In ${h} hr ${mm} min` : `In ${h} hour${h > 1 ? "s" : ""}`;
+}
+
 // Game-day reminders: "morning of" (8 AM, or when quiet hours end) or 2 hours before kickoff.
 // Game times are the field's local time; we read them in the phone's time zone.
 async function reminders(env, st, up, now) {
@@ -433,7 +443,7 @@ async function reminders(env, st, up, now) {
         const target = t.rem === "2h" && timed ? kick - 2 * HOUR : zonedMs(g[6], "08:00", tz);
         if (now < target || now >= kick || quiet(d, now)) continue;
         const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
-        const title = (t.rem === "2h" && timed ? "In 2 hours: " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
+        const title = (t.rem === "2h" && timed ? timeLeft(kick - now) + ": " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
         const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}&g=${g[0]}&v=games`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
         st.rem[key] = now;
         if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); break; }
