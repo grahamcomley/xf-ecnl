@@ -1282,13 +1282,13 @@
   "ours": [
    134892,
    133927,
-   132346,
    135096,
+   132346,
    136440,
    133945,
    135958,
-   133186,
    134695,
+   133186,
    117010,
    127267,
    135311
@@ -1313,6 +1313,54 @@
   "name": "Pre-ECNL Boys New England",
   "kind": "points",
   "teams": [
+   {
+    "id": 133927,
+    "team": "SUSA FC Pre-ECNL B2015/16 ll",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
+    "id": 135096,
+    "team": "East Meadow Soccer Club Pre-ECNL B2015/16 II",
+    "ours": [
+     8,
+     16
+    ],
+    "ecnl": [
+     7,
+     13
+    ]
+   },
+   {
+    "id": 136440,
+    "team": "East Coast Surf Pre- ll",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     6,
+     10
+    ]
+   },
+   {
+    "id": 133186,
+    "team": "Manhattan SC Pre-ECNL B2015/16 White",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   },
    {
     "id": 127267,
     "team": "FC Stars Pre-ECNL B2015/16 White",
@@ -4367,6 +4415,37 @@
   ]
  },
  {
+  "conf": "u13b-4276-40467",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133189,
+    "team": "Lobos Rush",
+    "ours": [
+     14,
+     22
+    ],
+    "ecnl": [
+     13,
+     19
+    ]
+   },
+   {
+    "id": 135571,
+    "team": "Chattanooga Red Wolves SC",
+    "ours": [
+     14,
+     0
+    ],
+    "ecnl": [
+     13,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4279-40473",
   "name": "ECNL Boys Midwest",
   "ours": [
@@ -4582,6 +4661,37 @@
    134992,
    134194,
    113141
+  ]
+ },
+ {
+  "conf": "u13b-4282-40503",
+  "name": "ECNL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 91703,
+    "team": "Pipeline SC",
+    "ours": [
+     11,
+     30
+    ],
+    "ecnl": [
+     10,
+     27
+    ]
+   },
+   {
+    "id": 134992,
+    "team": "Philadelphia Ukrainian Nationals",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     3
+    ]
+   }
   ]
  },
  {
@@ -4917,8 +5027,8 @@
    117144,
    116992,
    126415,
-   135073,
    94545,
+   135073,
    114503,
    113919,
    133862,
@@ -4958,6 +5068,18 @@
     ]
    },
    {
+    "id": 94545,
+    "team": "FC Stars",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   },
+   {
     "id": 113919,
     "team": "Manhattan SC",
     "ours": [
@@ -4966,6 +5088,18 @@
     ],
     "ecnl": [
      7,
+     3
+    ]
+   },
+   {
+    "id": 135321,
+    "team": "Oakwood Soccer Club",
+    "ours": [
+     10,
+     3
+    ],
+    "ecnl": [
+     9,
      3
     ]
    }
@@ -5016,8 +5150,8 @@
    135002,
    131023,
    115027,
-   131791,
    126585,
+   131791,
    135476,
    134955
   ],
@@ -5036,6 +5170,37 @@
    134955,
    133261,
    126585
+  ]
+ },
+ {
+  "conf": "u13b-4342-40683",
+  "name": "ECNL RL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135002,
+    "team": "Philadelphia Ukrainian Nationals",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   },
+   {
+    "id": 131791,
+    "team": "PDA",
+    "ours": [
+     9,
+     5
+    ],
+    "ecnl": [
+     8,
+     5
+    ]
+   }
   ]
  },
  {
@@ -15726,41 +15891,10 @@
    134968,
    135477,
    128277,
-   82349,
    135171,
+   82349,
    131588,
    110326
-  ]
- },
- {
-  "conf": "u13g-4266-40569",
-  "name": "ECNL Girls North Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 128076,
-    "team": "PDA Blue",
-    "ours": [
-     9,
-     24
-    ],
-    "ecnl": [
-     8,
-     21
-    ]
-   },
-   {
-    "id": 82349,
-    "team": "Maryland United FC",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   }
   ]
  },
  {
@@ -16798,96 +16932,6 @@
   ]
  },
  {
-  "conf": "u13g-4308-41398",
-  "name": "ECNL RL Girls New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134832,
-    "team": "East Meadow Soccer Club",
-    "ours": [
-     9,
-     7
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   },
-   {
-    "id": 117148,
-    "team": "FSA FC",
-    "ours": [
-     7,
-     2
-    ],
-    "ecnl": [
-     6,
-     2
-    ]
-   }
-  ]
- },
- {
-  "conf": "u13g-4309-41461",
-  "name": "ECNL RL Girls North Atlantic",
-  "ours": [
-   135478,
-   128278,
-   105801,
-   128077,
-   134977,
-   111868,
-   117219,
-   135197,
-   135179,
-   131602
-  ],
-  "ecnl": [
-   135478,
-   128278,
-   105801,
-   134977,
-   111868,
-   128077,
-   117219,
-   135197,
-   135179,
-   131602
-  ]
- },
- {
-  "conf": "u13g-4309-41461",
-  "name": "ECNL RL Girls North Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 128077,
-    "team": "PDA Blue",
-    "ours": [
-     9,
-     16
-    ],
-    "ecnl": [
-     8,
-     13
-    ]
-   },
-   {
-    "id": 135197,
-    "team": "Maryland United FC",
-    "ours": [
-     8,
-     5
-    ],
-    "ecnl": [
-     7,
-     5
-    ]
-   }
-  ]
- },
- {
   "conf": "u13g-4310-41918",
   "name": "ECNL RL Girls Northeast",
   "ours": [
@@ -17671,10 +17715,10 @@
    132068,
    134022,
    111016,
+   131884,
    133418,
    133455,
    133815,
-   131884,
    132216
   ],
   "ecnl": [
@@ -17682,10 +17726,10 @@
    132068,
    134022,
    111016,
-   133418,
-   133815,
    131884,
+   133815,
    132216,
+   133418,
    133455
   ]
  },
@@ -19639,8 +19683,8 @@
    134976,
    128280,
    135482,
-   131605,
    115684,
+   131605,
    111512,
    111866,
    135193,
@@ -19657,6 +19701,37 @@
    91741,
    135482,
    111866
+  ]
+ },
+ {
+  "conf": "u14g-4309-41462",
+  "name": "ECNL RL Girls North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 128079,
+    "team": "PDA Blue",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 115684,
+    "team": "Maryland United FC",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   }
   ]
  },
  {
