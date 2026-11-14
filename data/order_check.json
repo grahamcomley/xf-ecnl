@@ -1350,6 +1350,18 @@
     ]
    },
    {
+    "id": 134695,
+    "team": "Scorpions SC PRE-ECNL B2015/16 ll",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   },
+   {
     "id": 133186,
     "team": "Manhattan SC Pre-ECNL B2015/16 White",
     "ours": [
@@ -1359,6 +1371,18 @@
     "ecnl": [
      7,
      7
+    ]
+   },
+   {
+    "id": 117010,
+    "team": "AC Connecticut Pre-ECNL B2015/16 II",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    },
    {
@@ -2773,8 +2797,8 @@
     "id": 133251,
     "team": "LTFC Pre-ECNL STXCL B2014/15",
     "ours": [
-     6,
-     16
+     7,
+     19
     ],
     "ecnl": [
      7,
@@ -2803,18 +2827,6 @@
     "ecnl": [
      7,
      13
-    ]
-   },
-   {
-    "id": 132713,
-    "team": "San Antonio FC Pre-ECNL STXCL B2014/15 Black",
-    "ours": [
-     5,
-     3
-    ],
-    "ecnl": [
-     6,
-     3
     ]
    }
   ]
@@ -3423,9 +3435,9 @@
    117145,
    134846,
    111638,
+   116958,
    114509,
    135308,
-   116958,
    117011,
    134889,
    113924,
@@ -3455,12 +3467,24 @@
     "id": 117011,
     "team": "AC Connecticut Pre-ECNL B2014/15 I",
     "ours": [
-     9,
+     10,
      10
     ],
     "ecnl": [
      8,
      10
+    ]
+   },
+   {
+    "id": 116958,
+    "team": "Scorpions SC PRE-ECNL B2014/15",
+    "ours": [
+     8,
+     11
+    ],
+    "ecnl": [
+     7,
+     8
     ]
    },
    {
@@ -4330,6 +4354,37 @@
    133305,
    102695,
    112171
+  ]
+ },
+ {
+  "conf": "u13b-4261-41130",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132497,
+    "team": "TC Premier SC ECNL RL STXCL B2013/14",
+    "ours": [
+     8,
+     17
+    ],
+    "ecnl": [
+     7,
+     16
+    ]
+   },
+   {
+    "id": 133305,
+    "team": "Lonestar ATX STH ECNL RL STXCL B2013/14 Gold",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     2
+    ]
+   }
   ]
  },
  {
@@ -6010,6 +6065,30 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134785,
+    "team": "Tennessee SC",
+    "ours": [
+     13,
+     32
+    ],
+    "ecnl": [
+     12,
+     32
+    ]
+   },
+   {
+    "id": 131973,
+    "team": "Coastal Rush",
+    "ours": [
+     13,
+     23
+    ],
+    "ecnl": [
+     12,
+     20
+    ]
+   },
+   {
     "id": 134633,
     "team": "FC Alliance TN",
     "ours": [
@@ -7127,10 +7206,10 @@
    111043,
    129727,
    110028,
-   95937,
    70751,
    96481,
    111933,
+   95937,
    111934,
    114024,
    57175,
@@ -7158,6 +7237,37 @@
    131627,
    70751,
    96481
+  ]
+ },
+ {
+  "conf": "u14b-4356-40744",
+  "name": "ECNL RL Boys Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95937,
+    "team": "RISE SC",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
+    "id": 111934,
+    "team": "HTX S",
+    "ours": [
+     11,
+     20
+    ],
+    "ecnl": [
+     10,
+     17
+    ]
+   }
   ]
  },
  {
@@ -8782,10 +8892,10 @@
    134184,
    81900,
    95359,
-   95349,
    131456,
-   79917,
+   95349,
    129036,
+   79917,
    94989,
    131905
   ],
@@ -8801,6 +8911,37 @@
    131905,
    95359,
    79917
+  ]
+ },
+ {
+  "conf": "u15b-4355-40721",
+  "name": "ECNL RL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95349,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     14,
+     17
+    ],
+    "ecnl": [
+     13,
+     17
+    ]
+   },
+   {
+    "id": 129036,
+    "team": "South Carolina Surf",
+    "ours": [
+     13,
+     15
+    ],
+    "ecnl": [
+     12,
+     12
+    ]
+   }
   ]
  },
  {
@@ -10413,6 +10554,37 @@
    129035,
    81339,
    82201
+  ]
+ },
+ {
+  "conf": "u16b-4355-40722",
+  "name": "ECNL RL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 81343,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     14,
+     21
+    ],
+    "ecnl": [
+     13,
+     20
+    ]
+   },
+   {
+    "id": 129035,
+    "team": "South Carolina Surf",
+    "ours": [
+     12,
+     10
+    ],
+    "ecnl": [
+     11,
+     9
+    ]
+   }
   ]
  },
  {
@@ -14462,6 +14634,37 @@
   ]
  },
  {
+  "conf": "u11g-4379-42032",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135567,
+    "team": "New England Surf Pre",
+    "ours": [
+     8,
+     22
+    ],
+    "ecnl": [
+     7,
+     19
+    ]
+   },
+   {
+    "id": 133979,
+    "team": "Vale Rush United Pre-ECNL G2015/16",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11g-4381-41018",
   "name": "Pre-ECNL Girls Florida",
   "ours": [
@@ -15415,6 +15618,37 @@
    133980,
    132536,
    111645
+  ]
+ },
+ {
+  "conf": "u12g-4379-42033",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 107940,
+    "team": "New England Surf Pre",
+    "ours": [
+     8,
+     24
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
+    "id": 133980,
+    "team": "Vale Rush United Pre-ECNL G2014/15",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -18546,8 +18780,8 @@
    114091,
    64207,
    134816,
-   81913,
-   94742
+   94742,
+   81913
   ],
   "ecnl": [
    134371,
@@ -18559,6 +18793,37 @@
    94742,
    82176,
    114091
+  ]
+ },
+ {
+  "conf": "u14g-4265-40564",
+  "name": "ECNL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114091,
+    "team": "Connecticut FC United",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     9
+    ]
+   },
+   {
+    "id": 94742,
+    "team": "Scorpions SC",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     3
+    ]
+   }
   ]
  },
  {
@@ -18587,6 +18852,37 @@
    79385,
    135481,
    134967
+  ]
+ },
+ {
+  "conf": "u14g-4266-40570",
+  "name": "ECNL Girls North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 128078,
+    "team": "PDA Blue",
+    "ours": [
+     9,
+     20
+    ],
+    "ecnl": [
+     8,
+     17
+    ]
+   },
+   {
+    "id": 95035,
+    "team": "Maryland United FC",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   }
   ]
  },
  {
@@ -19250,8 +19546,8 @@
    131865,
    131438,
    115345,
-   115351,
    133074,
+   115351,
    131646,
    135271,
    114575,
@@ -19273,6 +19569,37 @@
    111949,
    112796,
    115793
+  ]
+ },
+ {
+  "conf": "u14g-4302-42348",
+  "name": "ECNL RL Girls GMA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115345,
+    "team": "Nationals SC-CA GMA",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 115351,
+    "team": "Nationals SC-Union GMA",
+    "ours": [
+     11,
+     17
+    ],
+    "ecnl": [
+     10,
+     17
+    ]
+   }
   ]
  },
  {
@@ -19746,11 +20073,11 @@
    94538,
    117003,
    95380,
-   134020,
    133983,
+   134020,
+   136454,
    104886,
    117928,
-   136454,
    94744
   ],
   "ecnl": [
@@ -19821,7 +20148,7 @@
     "id": 134020,
     "team": "PDA SCP",
     "ours": [
-     5,
+     6,
      4
     ],
     "ecnl": [
@@ -19845,8 +20172,8 @@
     "id": 136454,
     "team": "PSA North",
     "ours": [
-     4,
-     0
+     5,
+     3
     ],
     "ecnl": [
      8,
@@ -20493,11 +20820,11 @@
    113284,
    118019,
    112314,
-   131506,
    112315,
+   131506,
    112318,
-   131883,
    94705,
+   131883,
    116939
   ],
   "ecnl": [
@@ -20510,6 +20837,37 @@
    94705,
    116939,
    113284
+  ]
+ },
+ {
+  "conf": "u14g-4314-41410",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 112315,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     7,
+     11
+    ],
+    "ecnl": [
+     6,
+     8
+    ]
+   },
+   {
+    "id": 131883,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   }
   ]
  },
  {
@@ -29793,30 +30151,6 @@
    5932,
    9710,
    6306
-  ]
- },
- {
-  "conf": "n16b-113-113",
-  "name": "MLS NEXT Southeast (Pro Player Pathway)",
-  "ours": [
-   7236,
-   7264,
-   7242,
-   2627,
-   7356,
-   5702,
-   5808,
-   7351
-  ],
-  "ecnl": [
-   7236,
-   7264,
-   7242,
-   2627,
-   5702,
-   7356,
-   5808,
-   7351
   ]
  },
  {
