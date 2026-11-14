@@ -4474,6 +4474,30 @@
      11,
      18
     ]
+   },
+   {
+    "id": 132509,
+    "team": "United PDX",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   },
+   {
+    "id": 112351,
+    "team": "Eugene Metro FC",
+    "ours": [
+     10,
+     0
+    ],
+    "ecnl": [
+     9,
+     0
+    ]
    }
   ]
  },
@@ -5940,6 +5964,37 @@
    125782,
    132291,
    131753
+  ]
+ },
+ {
+  "conf": "u13b-4348-41600",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131317,
+    "team": "El Camino FC Salinas -",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 125782,
+    "team": "San Francisco Elite Academy",
+    "ours": [
+     10,
+     11
+    ],
+    "ecnl": [
+     9,
+     11
+    ]
+   }
   ]
  },
  {
@@ -8353,6 +8408,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 110028,
+    "team": "Houstonians FC",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
     "id": 95937,
     "team": "RISE SC",
     "ours": [
@@ -8386,6 +8453,18 @@
     "ecnl": [
      10,
      17
+    ]
+   },
+   {
+    "id": 57175,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     10
     ]
    },
    {
@@ -16952,6 +17031,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 135144,
+    "team": "SLSG Navy Academy I Pre-ECNL G2015/16",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
     "id": 135145,
     "team": "SLSG Green Academy I Pre-ECNL G2015/16",
     "ours": [
@@ -16967,7 +17058,7 @@
     "id": 136265,
     "team": "FC United (Iowa) Pre-ECNL G2015/16",
     "ours": [
-     9,
+     10,
      7
     ],
     "ecnl": [
@@ -17445,6 +17536,37 @@
     "ecnl": [
      7,
      4
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u11g-4379-42030",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136451,
+    "team": "PSA North Pre-ECNL G2015/16",
+    "ours": [
+     6,
+     9
+    ],
+    "ecnl": [
+     5,
+     6
+    ]
+   },
+   {
+    "id": 134030,
+    "team": "PDA SCP Pre-ECNL G2015/16",
+    "ours": [
+     5,
+     1
+    ],
+    "ecnl": [
+     4,
+     1
     ]
    }
   ]
@@ -19497,6 +19619,37 @@
   ]
  },
  {
+  "conf": "u13g-4266-40569",
+  "name": "ECNL Girls North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135477,
+    "team": "Penn Fusion Soccer Academy",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   },
+   {
+    "id": 110326,
+    "team": "Pipeline SC",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     8,
+     4
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4267-40575",
   "name": "ECNL Girls Northern Cal",
   "ours": [
@@ -21246,11 +21399,11 @@
    135996,
    133472,
    82473,
+   133777,
    110408,
    79055,
    115277,
    93979,
-   133777,
    112575,
    134000,
    136007,
@@ -21334,6 +21487,18 @@
     "ecnl": [
      11,
      14
+    ]
+   },
+   {
+    "id": 132997,
+    "team": "Racing Louisville Academy",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
     ]
    },
    {
@@ -21517,6 +21682,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134022,
+    "team": "United Futbol Academy",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
     "id": 111016,
     "team": "CESA Liberty",
     "ours": [
@@ -21538,6 +21715,18 @@
     "ecnl": [
      5,
      4
+    ]
+   },
+   {
+    "id": 132216,
+    "team": "South Carolina United",
+    "ours": [
+     6,
+     1
+    ],
+    "ecnl": [
+     5,
+     1
     ]
    }
   ]
@@ -24492,6 +24681,18 @@
      9,
      13
     ]
+   },
+   {
+    "id": 81503,
+    "team": "FC Pride Elite",
+    "ours": [
+     11,
+     7
+    ],
+    "ecnl": [
+     10,
+     7
+    ]
    }
   ]
  },
@@ -25237,6 +25438,79 @@
    130048,
    83471,
    88412
+  ]
+ },
+ {
+  "conf": "u15g-4260-41144",
+  "name": "ECNL RL Girls STXCL",
+  "ours": [
+   57527,
+   133620,
+   129371,
+   69209,
+   130122,
+   130090,
+   132743,
+   132757,
+   112305,
+   72197,
+   131209,
+   129433,
+   95036,
+   97738,
+   133013,
+   69419,
+   121231
+  ],
+  "ecnl": [
+   57527,
+   133620,
+   69209,
+   129371,
+   130122,
+   130090,
+   132743,
+   132757,
+   112305,
+   72197,
+   131209,
+   129433,
+   95036,
+   97738,
+   133013,
+   69419,
+   121231
+  ]
+ },
+ {
+  "conf": "u15g-4260-41144",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 69209,
+    "team": "AHFC CENTRAL ECNL RL STXCL G2011/12 I",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
+   {
+    "id": 72197,
+    "team": "Sting CC ECNL RL STXCL G2011/12 Hennessy",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   }
   ]
  },
  {
@@ -32643,6 +32917,30 @@
     "ecnl": [
      14,
      36
+    ]
+   },
+   {
+    "id": 134728,
+    "team": "Arkansas Comets FC",
+    "ours": [
+     12,
+     21
+    ],
+    "ecnl": [
+     11,
+     18
+    ]
+   },
+   {
+    "id": 135548,
+    "team": "Arkansas Rising",
+    "ours": [
+     12,
+     16
+    ],
+    "ecnl": [
+     11,
+     16
     ]
    },
    {
