@@ -7934,6 +7934,37 @@
   ]
  },
  {
+  "conf": "u15b-4348-41596",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 110991,
+    "team": "Davis Legacy",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
+    "id": 115652,
+    "team": "San Juan SC",
+    "ours": [
+     10,
+     2
+    ],
+    "ecnl": [
+     9,
+     2
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u15b-4349-40643",
   "name": "ECNL RL Boys Gulf Coast",
   "ours": [
