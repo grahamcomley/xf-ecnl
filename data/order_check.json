@@ -1227,8 +1227,8 @@
    133701,
    133700,
    108482,
-   107128,
    133546,
+   107128,
    119666,
    133212,
    134061,
@@ -1269,11 +1269,23 @@
     ]
    },
    {
-    "id": 133546,
-    "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 Gold I",
+    "id": 107128,
+    "team": "West Coast FC Pre-ECNL B2015/16 Navy I",
     "ours": [
      6,
      9
+    ],
+    "ecnl": [
+     5,
+     9
+    ]
+   },
+   {
+    "id": 133546,
+    "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 Gold I",
+    "ours": [
+     7,
+     12
     ],
     "ecnl": [
      7,
@@ -1630,6 +1642,37 @@
    136473,
    133923,
    131732
+  ]
+ },
+ {
+  "conf": "u11b-4380-41015",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133923,
+    "team": "Fort Lauderdale United FC Pre-ECNL B2015/16 RL",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   },
+   {
+    "id": 131732,
+    "team": "Davie United SC - Pre",
+    "ours": [
+     4,
+     4
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   }
   ]
  },
  {
@@ -2893,6 +2936,67 @@
   ]
  },
  {
+  "conf": "u12b-4360-40811",
+  "name": "Pre-ECNL Boys Frontier",
+  "ours": [
+   114833,
+   131368,
+   134701,
+   130550,
+   135735,
+   75636,
+   131369,
+   135399,
+   135559,
+   134702,
+   131472
+  ],
+  "ecnl": [
+   114833,
+   131368,
+   134701,
+   130550,
+   135735,
+   131369,
+   75636,
+   135399,
+   135559,
+   134702,
+   131472
+  ]
+ },
+ {
+  "conf": "u12b-4360-40811",
+  "name": "Pre-ECNL Boys Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131369,
+    "team": "FC Tulsa Academy Pre-ECNL B2014/15 II",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     12
+    ]
+   },
+   {
+    "id": 135399,
+    "team": "OK Energy FC Frontier Pre-ECNL B2014/15 White",
+    "ours": [
+     11,
+     11
+    ],
+    "ecnl": [
+     10,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4361-40812",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
@@ -3159,6 +3263,37 @@
   ]
  },
  {
+  "conf": "u12b-4365-41497",
+  "name": "Pre-ECNL Boys Northeast - North",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133948,
+    "team": "Western United Pioneers FC Pre-ECNL B2014/15",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 131009,
+    "team": "Brentwood SC Pre-ECNL B2014/15",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4366-40821",
   "name": "Pre-ECNL Boys North Atlantic",
   "ours": [
@@ -3169,9 +3304,9 @@
    129554,
    133364,
    133135,
+   112980,
    131026,
    132135,
-   112980,
    126351,
    134944
   ],
@@ -3188,6 +3323,61 @@
    134944,
    135335,
    133135
+  ]
+ },
+ {
+  "conf": "u12b-4366-40821",
+  "name": "Pre-ECNL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 55365,
+    "team": "Pipeline SC Pre",
+    "ours": [
+     10,
+     26
+    ],
+    "ecnl": [
+     9,
+     23
+    ]
+   },
+   {
+    "id": 135004,
+    "team": "PUNSC Pre-ECNL B2014/15",
+    "ours": [
+     9,
+     17
+    ],
+    "ecnl": [
+     8,
+     17
+    ]
+   },
+   {
+    "id": 112980,
+    "team": "PSA Monmouth Pre-ECNL B2014/15 l",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   },
+   {
+    "id": 134944,
+    "team": "Match Fit Surf Pre-ECNL B2014/2015 I",
+    "ours": [
+     9,
+     0
+    ],
+    "ecnl": [
+     8,
+     0
+    ]
+   }
   ]
  },
  {
@@ -6000,9 +6190,9 @@
    95342,
    115173,
    97125,
+   116956,
    113900,
    134844,
-   116956,
    94543,
    134878,
    114494,
@@ -6039,6 +6229,30 @@
     "ecnl": [
      10,
      22
+    ]
+   },
+   {
+    "id": 97125,
+    "team": "AC Connecticut",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   },
+   {
+    "id": 116956,
+    "team": "Scorpions SC",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
     ]
    },
    {
@@ -6498,9 +6712,9 @@
    113902,
    82174,
    94752,
+   81912,
    135070,
    116993,
-   81912,
    133861,
    96818,
    135320
@@ -6547,6 +6761,30 @@
     "ecnl": [
      7,
      9
+    ]
+   },
+   {
+    "id": 81912,
+    "team": "FC Stars",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   },
+   {
+    "id": 135320,
+    "team": "Oakwood Soccer Club",
+    "ours": [
+     10,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
     ]
    }
   ]
@@ -15006,9 +15244,9 @@
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
    132364,
-   136931,
    129972,
    134073,
+   136931,
    134133,
    128377,
    133053,
@@ -15040,8 +15278,8 @@
     "id": 132364,
     "team": "Match Fit Surf Pre-ECNL G2015/16 White",
     "ours": [
-     5,
-     15
+     6,
+     18
     ],
     "ecnl": [
      9,
@@ -15088,7 +15326,7 @@
     "id": 136931,
     "team": "Cherry Hill FC Pre-ECNL G2015/16",
     "ours": [
-     4,
+     5,
      9
     ],
     "ecnl": [
@@ -15245,6 +15483,37 @@
    133130,
    130069,
    133493
+  ]
+ },
+ {
+  "conf": "u11g-4384-41165",
+  "name": "Pre-ECNL Girls Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 90630,
+    "team": "Eastside FC Pre-ECNL G2015/16 I",
+    "ours": [
+     7,
+     18
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 131340,
+    "team": "PacNW SC Pre-ECNL G2015/16",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   }
   ]
  },
  {
@@ -15439,8 +15708,8 @@
    136388,
    134716,
    135869,
-   97877,
    135463,
+   97877,
    136398,
    114843,
    133071,
@@ -15462,6 +15731,37 @@
    135403,
    135870,
    136398
+  ]
+ },
+ {
+  "conf": "u12g-4371-41754",
+  "name": "Pre-ECNL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135463,
+    "team": "Sporting Springfield Pre-ECNL G2014/15",
+    "ours": [
+     12,
+     18
+    ],
+    "ecnl": [
+     11,
+     15
+    ]
+   },
+   {
+    "id": 135870,
+    "team": "Kansas City Surf Pre-ECNL G2014/15",
+    "ours": [
+     8,
+     0
+    ],
+    "ecnl": [
+     7,
+     0
+    ]
+   }
   ]
  },
  {
@@ -16627,6 +16927,37 @@
     "ecnl": [
      9,
      2
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u13g-4263-40551",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135364,
+    "team": "Fairfax Virginia Union",
+    "ours": [
+     7,
+     8
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   },
+   {
+    "id": 135516,
+    "team": "Beach FC (VA)",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     6
     ]
    }
   ]
@@ -17959,10 +18290,10 @@
    94539,
    136453,
    116772,
+   134019,
    133981,
    127258,
    116947,
-   134019,
    135812
   ],
   "ecnl": [
@@ -18033,8 +18364,8 @@
     "id": 136453,
     "team": "PSA North",
     "ours": [
-     4,
-     5
+     5,
+     6
     ],
     "ecnl": [
      8,
@@ -18045,8 +18376,8 @@
     "id": 134019,
     "team": "PDA SCP",
     "ours": [
-     5,
-     1
+     6,
+     2
     ],
     "ecnl": [
      7,
@@ -26721,12 +27052,12 @@
    119509,
    59649,
    131350,
+   130077,
    64558,
    133294,
-   132738,
    133618,
+   132738,
    70338,
-   130077,
    95134,
    49353
   ],
@@ -26802,6 +27133,18 @@
     ]
    },
    {
+    "id": 132738,
+    "team": "Lonestar ATX NTH ECNL RL STXCL G2009/10 Gold",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   },
+   {
     "id": 70338,
     "team": "Lonestar SAT ECNL RL STXCL G2009/10",
     "ours": [
@@ -26823,6 +27166,18 @@
     "ecnl": [
      8,
      7
+    ]
+   },
+   {
+    "id": 130077,
+    "team": "Houstonians FC ECNL RL STXCL G2009/10",
+    "ours": [
+     6,
+     7
+    ],
+    "ecnl": [
+     5,
+     4
     ]
    },
    {
@@ -30334,6 +30689,71 @@
     "ecnl": [
      13,
      21
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u19g-4315-41752",
+  "name": "ECNL RL Girls Southern Cal",
+  "ours": [
+   134176,
+   133708,
+   97469,
+   133725,
+   129891,
+   133585,
+   89530,
+   135901,
+   131729,
+   131032,
+   132174,
+   104078,
+   132476
+  ],
+  "ecnl": [
+   134176,
+   133708,
+   97469,
+   133725,
+   129891,
+   133585,
+   89530,
+   135901,
+   132174,
+   131032,
+   131729,
+   104078,
+   132476
+  ]
+ },
+ {
+  "conf": "u19g-4315-41752",
+  "name": "ECNL RL Girls Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132174,
+    "team": "Beach Futbol Club (CA) Black",
+    "ours": [
+     7,
+     5
+    ],
+    "ecnl": [
+     6,
+     5
+    ]
+   },
+   {
+    "id": 131729,
+    "team": "Legends FC - Del Mar ECNL RL S.Cal G2008/09",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     3
     ]
    }
   ]
