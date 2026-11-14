@@ -2949,10 +2949,10 @@
    132397,
    117722,
    136354,
+   134511,
    137153,
    131230,
-   136412,
-   134511
+   136412
   ],
   "ecnl": [
    137305,
@@ -2967,6 +2967,37 @@
    131230,
    136412,
    134511
+  ]
+ },
+ {
+  "conf": "u12b-4361-40812",
+  "name": "Pre-ECNL Boys Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136354,
+    "team": "Union KC Soccer Club Navy Pre-ECNL B2014/15",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   },
+   {
+    "id": 134511,
+    "team": "Kansas City Surf Blue Pre-ECNL B2014/15",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     0
+    ]
+   }
   ]
  },
  {
