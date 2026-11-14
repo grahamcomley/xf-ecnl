@@ -5995,6 +5995,18 @@
     ]
    },
    {
+    "id": 111796,
+    "team": "Brentwood SC",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
     "id": 136445,
     "team": "PSA North",
     "ours": [
@@ -6028,6 +6040,18 @@
     "ecnl": [
      8,
      3
+    ]
+   },
+   {
+    "id": 134086,
+    "team": "BWP Football Academy",
+    "ours": [
+     8,
+     0
+    ],
+    "ecnl": [
+     7,
+     0
     ]
    }
   ]
