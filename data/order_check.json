@@ -1079,10 +1079,10 @@
   "name": "Pre-ECNL Boys New England",
   "ours": [
    135952,
-   133926,
-   133925,
    136441,
+   133925,
    134891,
+   133926,
    117692,
    134847,
    133185,
@@ -1114,6 +1114,18 @@
    {
     "id": 133926,
     "team": "SUSA FC Pre-ECNL B2015/16 l",
+    "ours": [
+     8,
+     15
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
+    "id": 136441,
+    "team": "East Coast Surf Pre-ECNL B2015/16",
     "ours": [
      7,
      15
@@ -13601,6 +13613,37 @@
    133361,
    134970,
    79416
+  ]
+ },
+ {
+  "conf": "u11g-4376-41059",
+  "name": "Pre-ECNL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135965,
+    "team": "FSA FC Pre-ECNL G2015/16",
+    "ours": [
+     6,
+     8
+    ],
+    "ecnl": [
+     5,
+     7
+    ]
+   },
+   {
+    "id": 134820,
+    "team": "East Meadow Soccer Club Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     8
+    ],
+    "ecnl": [
+     8,
+     7
+    ]
+   }
   ]
  },
  {
