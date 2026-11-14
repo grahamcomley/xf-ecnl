@@ -4185,8 +4185,8 @@
    94546,
    117143,
    116991,
-   133784,
    114496,
+   133784,
    114495,
    94751,
    135307,
@@ -4205,6 +4205,37 @@
    135307,
    114650,
    117143
+  ]
+ },
+ {
+  "conf": "u13b-4281-41757",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115176,
+    "team": "East Coast Surf SC",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
+   {
+    "id": 114496,
+    "team": "SUSA FC",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -16482,6 +16513,37 @@
   ]
  },
  {
+  "conf": "u13g-4308-41398",
+  "name": "ECNL RL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134832,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
+     4
+    ]
+   },
+   {
+    "id": 117148,
+    "team": "FSA FC",
+    "ours": [
+     7,
+     2
+    ],
+    "ecnl": [
+     6,
+     2
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4309-41461",
   "name": "ECNL RL Girls North Atlantic",
   "ours": [
@@ -26960,37 +27022,6 @@
    133617,
    43957,
    113187
-  ]
- },
- {
-  "conf": "u19g-4260-41142",
-  "name": "ECNL RL Girls STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 96606,
-    "team": "Force FC ECNL RL STXCL G2008/09",
-    "ours": [
-     7,
-     21
-    ],
-    "ecnl": [
-     6,
-     18
-    ]
-   },
-   {
-    "id": 133617,
-    "team": "Lonestar ATX ECNL RL STXCL G2008/09 White",
-    "ours": [
-     7,
-     1
-    ],
-    "ecnl": [
-     6,
-     1
-    ]
-   }
   ]
  },
  {
