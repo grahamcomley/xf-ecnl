@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.21">
+<meta name="app-version" content="v1.22">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -702,6 +702,7 @@ async function onAuth() {
     SYNCING = true; setFavs(next); SYNCING = false; refreshStar();
     // a fresh device (new phone, the app) has no teams until the account sends them: show them now
     if (!CUR && next.filter(teamByKey).length) { closeFinder(); route(); }
+    else if (!CUR && $(".land")) drawLanding();   // a new account on the welcome page: drop the sign-in parts
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
     alertsSync(); seenPing();
