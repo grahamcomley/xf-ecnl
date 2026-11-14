@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.23">
+<meta name="app-version" content="v1.24">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1665,14 +1665,15 @@ function renderTeam(D, fid, key) {
   const evIdx = (D.team_events || {})[String(fid)] || [];
   const events = evIdx.map(i => D.events[i]);
   const mon = addDays(today, -((new Date(today + "T12:00:00").getDay() + 6) % 7));   // this week's Monday
-  // "This week" = last weekend (from Friday) through this coming Sunday; moves on each Monday.
-  const yest = addDays(today, -1), wStart = addDays(mon, -3), wEnd = addDays(mon, 6), nowMs = Date.now();
+  // Game weekend (Fri–Sun): only this weekend. Mon–Thu: last weekend's results + next weekend's games.
+  const dow = new Date(today + "T12:00:00").getDay(), wkend = dow === 5 || dow === 6 || dow === 0;
+  const yest = addDays(today, -1), wStart = addDays(mon, wkend ? 4 : -3), wEnd = addDays(mon, 6), nowMs = Date.now();
   const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > new Date(`${g.date}T${g.time}:00`).getTime() + 2 * 3600e3);
   const inWin = valid.filter(g => g.date >= wStart && g.date <= wEnd && !g.pending);
   const dayLabel = d => (d === yest ? "Yesterday · " : d === today ? "Today · " : "") + fmtDate(d);
   const byTime = (a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || ""));
   const isDone = g => g.hs != null && g.as != null;
-  const finW = inWin.filter(isDone).sort((a, b) => byTime(b, a));
+  const finW = inWin.filter(isDone).sort(byTime);   // in the order they were played
   const waitW = inWin.filter(g => !isDone(g) && kickPassed(g)).sort(byTime);
   const upW = inWin.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime);
   const dayShort = d => d === yest ? "Yest" : d === today ? "Today" : shortDate(d);
@@ -1751,7 +1752,7 @@ function renderTeam(D, fid, key) {
   ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
       events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="league">
-  ${sec("div", "League", "This week's results", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
+  ${sec("div", "League", wkend ? "This weekend" : "Last weekend & coming up", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
 </div><div class="pane" data-tab="predict">
