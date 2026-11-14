@@ -4172,8 +4172,8 @@
    131039,
    133214,
    134447,
-   114466,
    119664,
+   114466,
    133126,
    131521,
    113770,
@@ -4204,8 +4204,8 @@
     "id": 133547,
     "team": "Beach Futbol Club (CA) Pre-ECNL B2014/15 Black II",
     "ours": [
-     5,
-     15
+     6,
+     18
     ],
     "ecnl": [
      7,
@@ -4258,6 +4258,18 @@
     "ecnl": [
      7,
      6
+    ]
+   },
+   {
+    "id": 114466,
+    "team": "West Coast FC Pre-ECNL B2014/15 White II",
+    "ours": [
+     6,
+     4
+    ],
+    "ecnl": [
+     5,
+     4
     ]
    },
    {
@@ -8016,44 +8028,13 @@
   "ecnl": [
    84928,
    90869,
-   82883,
    94668,
+   82883,
    135010,
    94525,
    92619,
    131398,
    98188
-  ]
- },
- {
-  "conf": "u14b-4284-40522",
-  "name": "ECNL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 90869,
-    "team": "Eastside FC",
-    "ours": [
-     8,
-     20
-    ],
-    "ecnl": [
-     7,
-     17
-    ]
-   },
-   {
-    "id": 82883,
-    "team": "XF 1",
-    "ours": [
-     8,
-     13
-    ],
-    "ecnl": [
-     7,
-     13
-    ]
-   }
   ]
  },
  {
@@ -8478,6 +8459,30 @@
     "ecnl": [
      10,
      25
+    ]
+   },
+   {
+    "id": 135268,
+    "team": "Michigan Rangers FC ECNL RL BU14",
+    "ours": [
+     11,
+     19
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
+    "id": 133082,
+    "team": "Legends FC (MI)",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     11
     ]
    },
    {
@@ -9250,44 +9255,13 @@
    94796,
    133797,
    111216,
-   135852,
    115709,
+   135852,
    93841,
    80505,
    113337,
    134862,
    94670
-  ]
- },
- {
-  "conf": "u14b-4353-40714",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 90879,
-    "team": "Eastside FC",
-    "ours": [
-     10,
-     28
-    ],
-    "ecnl": [
-     9,
-     25
-    ]
-   },
-   {
-    "id": 135852,
-    "team": "Central Washington Sounders",
-    "ours": [
-     11,
-     13
-    ],
-    "ecnl": [
-     10,
-     13
-    ]
-   }
   ]
  },
  {
@@ -9302,9 +9276,9 @@
    135618,
    132407,
    133692,
-   131961,
    136493,
    66150,
+   131961,
    134590,
    133571,
    105506,
@@ -9340,6 +9314,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 132523,
+    "team": "San Diego Surf ECNL RL S.Cal B2012/13",
+    "ours": [
+     6,
+     15
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
+   {
     "id": 132989,
     "team": "Legends FC (CA) ECNL RL S.Cal B2012/13",
     "ours": [
@@ -9349,6 +9335,18 @@
     "ecnl": [
      7,
      15
+    ]
+   },
+   {
+    "id": 131961,
+    "team": "FC Long Beach",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     12
     ]
    },
    {
@@ -16244,8 +16242,8 @@
   "name": "ECNL RL Boys Golden State",
   "ours": [
    107703,
-   135973,
    116027,
+   135973,
    113201,
    110954,
    105197,
@@ -16266,6 +16264,37 @@
    105197,
    107703,
    110990
+  ]
+ },
+ {
+  "conf": "u17b-4348-41598",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 107703,
+    "team": "Placer United",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
+    "id": 135973,
+    "team": "Mustang Soccer ECNL-RL B2009/10",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     13
+    ]
+   }
   ]
  },
  {
@@ -17991,15 +18020,15 @@
   "conf": "u19b-4324-41506",
   "name": "ECNL RL Boys GLA",
   "ours": [
-   114227,
+   97341,
    130908,
+   114227,
    131869,
-   50423,
    59134,
    70057,
-   71453,
    95228,
-   97341
+   50423,
+   71453
   ],
   "ecnl": [
    59134,
@@ -18011,6 +18040,61 @@
    131869,
    50423,
    71453
+  ]
+ },
+ {
+  "conf": "u19b-4324-41506",
+  "name": "ECNL RL Boys GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 97341,
+    "team": "Croatia Juniors",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 130908,
+    "team": "Rochester NY FC",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 50423,
+    "team": "WNY Flash",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 71453,
+    "team": "WNY Flash Rochester",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -18515,6 +18599,37 @@
    114171,
    117679,
    112659
+  ]
+ },
+ {
+  "conf": "u19b-4348-41605",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 109077,
+    "team": "El Camino FC Salinas -",
+    "ours": [
+     10,
+     27
+    ],
+    "ecnl": [
+     9,
+     24
+    ]
+   },
+   {
+    "id": 112659,
+    "team": "San Francisco Elite Academy",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
   ]
  },
  {
@@ -19893,6 +20008,61 @@
   ]
  },
  {
+  "conf": "u11g-4379-42030",
+  "name": "Pre-ECNL Girls Northeast",
+  "ours": [
+   132382,
+   134957,
+   134460,
+   133208,
+   136451,
+   133859,
+   136466,
+   134030
+  ],
+  "ecnl": [
+   134957,
+   134460,
+   133208,
+   136451,
+   133859,
+   136466,
+   134030,
+   132382
+  ]
+ },
+ {
+  "conf": "u11g-4379-42030",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134460,
+    "team": "Force FC Pre-ECNL G2015/16",
+    "ours": [
+     6,
+     12
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
+   {
+    "id": 132382,
+    "team": "SUSA FC Pre-ECNL G2015/16 Northeast",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11g-4381-41018",
   "name": "Pre-ECNL Girls Florida",
   "ours": [
@@ -19960,37 +20130,6 @@
    133130,
    130069,
    133493
-  ]
- },
- {
-  "conf": "u11g-4384-41165",
-  "name": "Pre-ECNL Girls Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 111918,
-    "team": "Northwest United PreECNL G2016/15",
-    "ours": [
-     7,
-     11
-    ],
-    "ecnl": [
-     6,
-     8
-    ]
-   },
-   {
-    "id": 136720,
-    "team": "Seattle United Pre Copa",
-    "ours": [
-     6,
-     3
-    ],
-    "ecnl": [
-     5,
-     3
-    ]
-   }
   ]
  },
  {
@@ -20597,8 +20736,8 @@
    134001,
    131818,
    135151,
-   131932,
    135150,
+   131932,
    131847,
    114518,
    132736
@@ -20637,12 +20776,24 @@
     "id": 131847,
     "team": "Sporting Iowa Pre-ECNL G2014/15 II",
     "ours": [
-     8,
+     9,
      9
     ],
     "ecnl": [
      7,
      9
+    ]
+   },
+   {
+    "id": 135150,
+    "team": "SLSG Green Academy II Pre-",
+    "ours": [
+     8,
+     11
+    ],
+    "ecnl": [
+     7,
+     8
     ]
    }
   ]
