@@ -1175,6 +1175,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 136273,
+    "team": "Chicago Magic Soccer Club Pre-ECNL B2015/16",
+    "ours": [
+     11,
+     27
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
+   {
     "id": 128625,
     "team": "Chicago Inter Pre-ECNL B2015/16",
     "ours": [
@@ -1184,6 +1196,18 @@
     "ecnl": [
      11,
      15
+    ]
+   },
+   {
+    "id": 133602,
+    "team": "NWI Lions United Pre-ECNL B2015/16",
+    "ours": [
+     12,
+     11
+    ],
+    "ecnl": [
+     11,
+     11
     ]
    },
    {
@@ -1997,8 +2021,8 @@
    131480,
    133631,
    126258,
-   131915,
    126734,
+   131915,
    131635,
    133491,
    133132
@@ -2031,6 +2055,30 @@
     "ecnl": [
      8,
      15
+    ]
+   },
+   {
+    "id": 126258,
+    "team": "Columbia Premier SC Pre-ECNL B2015/16 I",
+    "ours": [
+     8,
+     15
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   },
+   {
+    "id": 131915,
+    "team": "Eugene Metro FC Pre-ECNL B2015/16 Prem 1",
+    "ours": [
+     8,
+     9
+    ],
+    "ecnl": [
+     7,
+     9
     ]
    },
    {
@@ -2339,6 +2387,37 @@
    130407,
    131555,
    80934
+  ]
+ },
+ {
+  "conf": "u12b-4254-41774",
+  "name": "Pre-ECNL Boys Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132802,
+    "team": "TCFC North Pre-ECNL B2014/15",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   },
+   {
+    "id": 111888,
+    "team": "WNY Flash Pre-ECNL II B2014/15",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   }
   ]
  },
  {
@@ -3485,6 +3564,18 @@
     ]
    },
    {
+    "id": 131673,
+    "team": "Gretna Elite Academy Pre-ECNL B2014/15 I",
+    "ours": [
+     6,
+     16
+    ],
+    "ecnl": [
+     5,
+     13
+    ]
+   },
+   {
     "id": 132708,
     "team": "Toca Fusion Elite Pre-ECNL RL B2014/15",
     "ours": [
@@ -3554,6 +3645,18 @@
     "ecnl": [
      4,
      3
+    ]
+   },
+   {
+    "id": 136412,
+    "team": "FC Wichita Red Pre-ECNL B2014/15",
+    "ours": [
+     5,
+     1
+    ],
+    "ecnl": [
+     4,
+     1
     ]
    }
   ]
@@ -6080,6 +6183,18 @@
     ]
    },
    {
+    "id": 134280,
+    "team": "FC Europa",
+    "ours": [
+     7,
+     18
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
     "id": 129985,
     "team": "PA Rush",
     "ours": [
@@ -6089,6 +6204,18 @@
     "ecnl": [
      6,
      13
+    ]
+   },
+   {
+    "id": 133320,
+    "team": "Lancaster FC",
+    "ours": [
+     7,
+     1
+    ],
+    "ecnl": [
+     6,
+     1
     ]
    }
   ]
@@ -14197,14 +14324,14 @@
   "name": "ECNL RL Boys GLA",
   "ours": [
    71452,
-   69191,
+   97339,
    130907,
+   69191,
    131870,
    59142,
    70056,
    95229,
-   95347,
-   97339
+   95347
   ],
   "ecnl": [
    130907,
@@ -14246,6 +14373,30 @@
      1,
      1
     ]
+   },
+   {
+    "id": 69191,
+    "team": "WNY Flash",
+    "ours": [
+     2,
+     1
+    ],
+    "ecnl": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": 97339,
+    "team": "Croatia Juniors",
+    "ours": [
+     2,
+     3
+    ],
+    "ecnl": [
+     1,
+     0
+    ]
    }
   ]
  },
@@ -14256,12 +14407,12 @@
    130402,
    130476,
    130578,
-   133887,
    136431,
    70532,
    81005,
    83052,
-   96317
+   96317,
+   133887
   ],
   "ecnl": [
    130578,
@@ -14273,6 +14424,37 @@
    70532,
    130402,
    136431
+  ]
+ },
+ {
+  "conf": "u17b-4324-41510",
+  "name": "ECNL RL Boys GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133887,
+    "team": "Liverpool FC IA Michigan Central",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 130402,
+    "team": "Pacesetter Soccer Club",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -19602,6 +19784,18 @@
     ]
    },
    {
+    "id": 135737,
+    "team": "Colorado Storm South Pre-ECNL G2014/15",
+    "ours": [
+     4,
+     10
+    ],
+    "ecnl": [
+     3,
+     7
+    ]
+   },
+   {
     "id": 131422,
     "team": "Colorado Storm Pre-ECNL G2014/15 North",
     "ours": [
@@ -19611,6 +19805,18 @@
     "ecnl": [
      3,
      6
+    ]
+   },
+   {
+    "id": 132113,
+    "team": "Arsenal Colorado Pre-ECNL G2014/15 Gold",
+    "ours": [
+     3,
+     0
+    ],
+    "ecnl": [
+     2,
+     0
     ]
    }
   ]
@@ -21240,8 +21446,8 @@
    134376,
    104045,
    94542,
-   114666,
    94552,
+   114666,
    134832,
    117148,
    116946
@@ -21276,6 +21482,18 @@
     ]
    },
    {
+    "id": 134376,
+    "team": "Select South",
+    "ours": [
+     8,
+     20
+    ],
+    "ecnl": [
+     7,
+     17
+    ]
+   },
+   {
     "id": 104045,
     "team": "SUSA FC",
     "ours": [
@@ -21285,6 +21503,18 @@
     "ecnl": [
      8,
      18
+    ]
+   },
+   {
+    "id": 114666,
+    "team": "Connecticut FC United",
+    "ours": [
+     8,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
     ]
    },
    {
