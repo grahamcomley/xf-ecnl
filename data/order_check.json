@@ -4097,6 +4097,37 @@
   ]
  },
  {
+  "conf": "u13b-4276-40467",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133864,
+    "team": "Germantown Legends",
+    "ours": [
+     15,
+     9
+    ],
+    "ecnl": [
+     14,
+     6
+    ]
+   },
+   {
+    "id": 135571,
+    "team": "Chattanooga Red Wolves SC",
+    "ours": [
+     15,
+     0
+    ],
+    "ecnl": [
+     14,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4279-40473",
   "name": "ECNL Boys Midwest",
   "ours": [
@@ -9051,13 +9082,13 @@
   "name": "ECNL RL Boys GLA",
   "ours": [
    61874,
-   97279,
    131871,
+   97279,
    61855,
-   82282,
    95230,
    95364,
    81615,
+   82282,
    130906
   ],
   "ecnl": [
@@ -9070,6 +9101,37 @@
    95364,
    95230,
    131871
+  ]
+ },
+ {
+  "conf": "u16b-4324-41504",
+  "name": "ECNL RL Boys GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 82282,
+    "team": "Pittsburgh Riverhounds",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 131871,
+    "team": "Upper 90 FC",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -11490,6 +11552,37 @@
   ]
  },
  {
+  "conf": "u17b-4355-40723",
+  "name": "ECNL RL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134179,
+    "team": "NTH NASA",
+    "ours": [
+     16,
+     29
+    ],
+    "ecnl": [
+     15,
+     28
+    ]
+   },
+   {
+    "id": 60119,
+    "team": "CESA Triumph Summit",
+    "ours": [
+     16,
+     19
+    ],
+    "ecnl": [
+     15,
+     18
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17b-4356-40747",
   "name": "ECNL RL Boys Texas",
   "ours": [
@@ -13004,8 +13097,8 @@
    57703,
    52300,
    57697,
-   47518,
    131902,
+   47518,
    131806,
    131459,
    129033,
@@ -13023,6 +13116,37 @@
    57710,
    52300,
    129033
+  ]
+ },
+ {
+  "conf": "u19b-4355-40724",
+  "name": "ECNL RL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134177,
+    "team": "NTH NASA",
+    "ours": [
+     16,
+     35
+    ],
+    "ecnl": [
+     15,
+     32
+    ]
+   },
+   {
+    "id": 47518,
+    "team": "CESA Triumph Summit",
+    "ours": [
+     16,
+     21
+    ],
+    "ecnl": [
+     15,
+     21
+    ]
+   }
   ]
  },
  {
@@ -17187,11 +17311,11 @@
    135996,
    133472,
    82473,
+   93979,
    133777,
    110408,
    79055,
    115277,
-   93979,
    112575,
    134000,
    136007,
@@ -17254,6 +17378,18 @@
     ]
    },
    {
+    "id": 136007,
+    "team": "Indy Eleven",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   },
+   {
     "id": 112575,
     "team": "Ohio Galaxies FC",
     "ours": [
@@ -17263,6 +17399,18 @@
     "ecnl": [
      11,
      14
+    ]
+   },
+   {
+    "id": 132997,
+    "team": "Racing Louisville Academy",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     10
     ]
    }
   ]
@@ -17426,6 +17574,37 @@
    132216,
    133418,
    133455
+  ]
+ },
+ {
+  "conf": "u13g-4314-41409",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134022,
+    "team": "United Futbol Academy",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 111016,
+    "team": "CESA Liberty",
+    "ours": [
+     7,
+     10
+    ],
+    "ecnl": [
+     6,
+     10
+    ]
+   }
   ]
  },
  {
