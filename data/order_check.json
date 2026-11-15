@@ -1098,8 +1098,8 @@
    135397,
    133640,
    134700,
-   131371,
    135777,
+   131371,
    135560,
    130547,
    84212,
@@ -1140,8 +1140,8 @@
     "id": 133640,
     "team": "OK Energy FC Frontier Pre-ECNL B2015/16",
     "ours": [
-     10,
-     20
+     11,
+     21
     ],
     "ecnl": [
      9,
@@ -1164,8 +1164,8 @@
     "id": 131371,
     "team": "FC Tulsa Academy Pre-ECNL B2015/16 II",
     "ours": [
-     11,
-     19
+     12,
+     20
     ],
     "ecnl": [
      10,
@@ -1184,8 +1184,8 @@
    136352,
    137306,
    133998,
-   131229,
    131947,
+   131229,
    134516,
    131237,
    132396,
@@ -1275,6 +1275,18 @@
     ]
    },
    {
+    "id": 131947,
+    "team": "Missouri Rush Pre-ECNL B2015/16 Blue",
+    "ours": [
+     4,
+     7
+    ],
+    "ecnl": [
+     3,
+     4
+    ]
+   },
+   {
     "id": 131229,
     "team": "VSA Rush Pre-ECNL B2015/16",
     "ours": [
@@ -1301,6 +1313,18 @@
    {
     "id": 136415,
     "team": "FC Wichita Navy Pre-ECNL B2015/16",
+    "ours": [
+     5,
+     0
+    ],
+    "ecnl": [
+     4,
+     0
+    ]
+   },
+   {
+    "id": 128295,
+    "team": "Kansas Rush Pre-ECNL B2015/16",
     "ours": [
      5,
      0
@@ -3589,15 +3613,15 @@
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
    131238,
-   132341,
    132712,
    136355,
+   132341,
    131359,
    137153,
-   134514,
-   136413,
    131232,
    133995,
+   134514,
+   136413,
    131946
   ],
   "ecnl": [
@@ -3620,6 +3644,30 @@
   "kind": "points",
   "teams": [
    {
+    "id": 132341,
+    "team": "Gretna Elite Academy Pre-ECNL B2014/15 II",
+    "ours": [
+     3,
+     6
+    ],
+    "ecnl": [
+     2,
+     6
+    ]
+   },
+   {
+    "id": 132712,
+    "team": "Toca Fusion Premier Pre-ECNL B2014/15",
+    "ours": [
+     3,
+     9
+    ],
+    "ecnl": [
+     2,
+     6
+    ]
+   },
+   {
     "id": 136355,
     "team": "Union KC Soccer Club Red Pre-ECNL B2014/15",
     "ours": [
@@ -3632,15 +3680,39 @@
     ]
    },
    {
-    "id": 137153,
-    "team": "Sporting Iowa Central II Pre-ECNL 2014/15",
+    "id": 136413,
+    "team": "FC Wichita Navy Pre-ECNL B2014/15",
     "ours": [
-     3,
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
+     3
+    ]
+   },
+   {
+    "id": 131232,
+    "team": "VSA Rush II Pre-ECNL B2014/15",
+    "ours": [
+     5,
      6
     ],
     "ecnl": [
      4,
-     6
+     3
+    ]
+   },
+   {
+    "id": 133995,
+    "team": "Kansas City Athletics Royal Pre-ECNL B2014/15",
+    "ours": [
+     3,
+     3
+    ],
+    "ecnl": [
+     2,
+     0
     ]
    }
   ]
@@ -4771,37 +4843,6 @@
    131341,
    133959,
    135628
-  ]
- },
- {
-  "conf": "u12b-4385-41167",
-  "name": "Pre-ECNL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 91264,
-    "team": "Eastside FC Pre-ECNL B2014/15 I",
-    "ours": [
-     9,
-     17
-    ],
-    "ecnl": [
-     8,
-     14
-    ]
-   },
-   {
-    "id": 134860,
-    "team": "Valor Soccer - Pre-ECNL B2014/15",
-    "ours": [
-     9,
-     3
-    ],
-    "ecnl": [
-     8,
-     3
-    ]
-   }
   ]
  },
  {
@@ -13071,6 +13112,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133568,
+    "team": "CDA Slammers FC Black",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
     "id": 131018,
     "team": "Pateadores ECNL RL SoCal B2011/12",
     "ours": [
@@ -13104,6 +13157,18 @@
     "ecnl": [
      5,
      11
+    ]
+   },
+   {
+    "id": 132987,
+    "team": "Legends FC (CA) ECNL RL S.Cal B2011/12",
+    "ours": [
+     8,
+     9
+    ],
+    "ecnl": [
+     7,
+     9
     ]
    },
    {
@@ -15929,6 +15994,18 @@
     ]
    },
    {
+    "id": 133690,
+    "team": "LAFC So Cal ECNL RL S.Cal B2010/11 GOLD",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
     "id": 133565,
     "team": "CDA Slammers FC Black",
     "ours": [
@@ -15950,6 +16027,18 @@
     "ecnl": [
      8,
      12
+    ]
+   },
+   {
+    "id": 134586,
+    "team": "Rebels SC ECNL RL SoCal B2010/11 White",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     9
     ]
    },
    {
