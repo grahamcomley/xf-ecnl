@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.45">
+<meta name="app-version" content="v1.46">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -721,7 +721,10 @@ let SIGNIN_T = null;
 // a one-time pass that signs the app in. Returns false when this app build can't do it (older build).
 // App problems go to the server log as the address itself (the log keeps the path), so they can be
 // read with no steps on the phone: /api/log/app/<what>/<detail>.
-function appLog(what, detail) { try { navigator.sendBeacon("/api/log/app/" + what + "/" + encodeURIComponent(String(detail || "").slice(0, 160)).replace(/%/g, "~")); } catch (e) {} }
+function appLog(what, detail) {   // carries the visitor id like every other request, so each line can be matched to a person
+  const u = "/api/log/app/" + what + "/" + encodeURIComponent(String(detail || "").slice(0, 160)).replace(/%/g, "~");
+  try { fetch(u, {method: "POST", keepalive: true, headers: {"x-sv": visitorId()}}).catch(() => {}); } catch (e) { try { navigator.sendBeacon(u); } catch (x) {} }
+}
 async function appSignIn() {
   let r;
   try { r = await SA().signIn({url: location.origin + "/app-signin.html", scheme: "sideline"}); }
@@ -1925,7 +1928,7 @@ function renderTeam(D, fid, key) {
   const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
   const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
   const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
-  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}${k === key ? ": team options" : ""}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
+  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
   const drawHead = () => {
     const fl = (favs() || []).filter(teamByKey);
     const keys = [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); });
@@ -1947,7 +1950,7 @@ function renderTeam(D, fid, key) {
     else if (cur && cur.offsetLeft + cur.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = cur.offsetLeft + cur.offsetWidth - ts.clientWidth + 8;
     fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
     // another team: switch (keeps your tab) · the team you're on: its team sheet
-    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return teamSheet(true); KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
     $("#tsearch").onclick = () => $("#finder").classList.contains("open") ? closeFinder() : openFinder();
     const follow = () => { toggleFav(key); const on = (favs() || []).includes(key); drawHead(); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
       if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
