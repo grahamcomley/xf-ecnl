@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.37">
+<meta name="app-version" content="v1.38">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -289,7 +289,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 .ttc{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);display:grid;place-items:center}.ttc .ic{width:16px;height:16px;color:#0b0d12;margin:0;transition:transform .15s}
 .ttl[aria-expanded="true"] .ttc .ic{transform:rotate(180deg)}
 .topline.hasteam .appname{flex:none;margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font-size:10px;line-height:1.1;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
-.topline.hasteam .subline{display:none}
+.topline .subline{display:none!important}
 body.tpopen header{z-index:40}
 .ibtn.plain{border:0;background:none;width:40px;height:40px;color:var(--mut)}.ibtn.plain .ic{width:20px;height:20px}
 #teamwrap{flex:none;padding:0;max-width:none;margin:0;width:100%;box-sizing:border-box;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
@@ -1947,8 +1947,7 @@ function renderTeam(D, fid, key) {
             <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
             <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
             <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div></div>`;
-      const upd = $("#checked").textContent;
-      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}${upd ? ` · ${/^Paused/.test(upd) ? "Updates paused" + esc(upd.slice(6)) : "Updated " + esc(upd)}` : ""}</span></div>${alertsHtml}
+      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}
         <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
       TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
