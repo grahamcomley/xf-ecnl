@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.28">
+<meta name="app-version" content="v1.29">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -67,6 +67,10 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .teamdd .ic{width:18px;height:18px;color:var(--mut);flex:none;transition:transform .15s}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
 .teamdd{border:0;background:none;padding:2px 4px 2px 0;border-radius:8px}.ddn{display:inline-flex;align-items:center;gap:6px;min-width:0}.ddl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tstrip{position:relative;display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 1px 2px;margin:0}.tstrip.tfade{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.tstrip::-webkit-scrollbar{display:none}
+.trow{display:flex;align-items:center;gap:6px;padding:0 12px}.trow .tstrip{flex:1;min-width:0;padding:2px 1px}
+.tsearch{width:32px;padding:0!important;display:grid;place-items:center;flex:none}.tsearch .ic{width:16px;height:16px}
+.tpill.tmp{border-style:dashed}
+.tmeta{display:flex;align-items:center;gap:8px;margin-top:8px;padding:0 12px 2px}.tlg{flex:1;min-width:0;font-size:13px;font-weight:500;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tpill{flex:none;height:32px;padding:0 13px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;position:relative}.tpill::after{content:"";position:absolute;inset:-6px -2px}.tpill.on{color:var(--ink);border-color:var(--ink)}
 .th .thsub:first-of-type{margin-top:8px}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
 .ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
@@ -1794,34 +1798,39 @@ function renderTeam(D, fid, key) {
   document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   // Header: team name + chevron (tap: your teams / find a team), age · league below. Following 2+ teams:
   // one sliding row of them under it (current first, then most recently opened); a tap keeps the tab.
-  const fl = (favs() || []).filter(teamByKey);
+  // Header = your teams as pills (youngest to oldest; tapping one keeps your tab), search pinned first.
+  // A team you don't follow shows as a dashed pill at the front with a Follow button.
+  // Below: the league, Following, Share.
   const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
-  // fixed order (youngest to oldest, then name) so pills don't move when you tap through them
   const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
-  const stripKeys = fl.length >= 2 ? [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); }) : [];
   const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
-  $("#teamhead").innerHTML = `<div class="th"><div class="thl">
-      <button class="teamdd" id="teamdd" aria-haspopup="true" aria-label="${me}: change team"><span class="ddt"><span class="ddn">${me}${CHEV}</span><span class="ddl">${esc(D.age_label.split(" (")[0])} · ${esc(D.conf_name)}</span></span></button></div>
-    <div class="thr"><button class="followbtn ${starred ? "starred" : ""}" id="starbtn" aria-label="${starred ? "Following" : "Follow"} this team">${followHtml(starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`
-    + (stripKeys.length ? `<div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${stripKeys.map(k => { const t = teamByKey(k); return `<button class="tpill ${k === key ? "on" : ""}" data-k="${k}" role="tab" aria-selected="${k === key}">${esc(t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; }).join("")}</div>` : "");
-  const ts = $("#tstrip");
-  if (ts) {
+  const pill = (k, cls) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}">${esc(t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
+  const drawHead = () => {
+    const fl = (favs() || []).filter(teamByKey);
+    const keys = [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); });
+    const on = fl.includes(key);
+    $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="Find a team">${icon("search")}</button>
+      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : pill(key, "on tmp")}${keys.map(k => pill(k, k === key ? "on" : "")).join("")}</div></div>
+      <div class="tmeta"><span class="tlg">${esc(D.conf_name)}</span><button class="followbtn ${on ? "starred" : ""}" id="starbtn" aria-label="${on ? "Following" : "Follow"} this team">${followHtml(on)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div>`;
+    const ts = $("#tstrip");
     const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2);
-    // keep the row where you left it; scroll only if the current team is off-screen
-    const x = +(store.get("stripX") || 0); ts.scrollLeft = x;
-    const on = ts.querySelector(".tpill.on");
-    if (on && on.offsetLeft < ts.scrollLeft) ts.scrollLeft = Math.max(0, on.offsetLeft - 8);   // just enough to show it
-    else if (on && on.offsetLeft + on.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = on.offsetLeft + on.offsetWidth - ts.clientWidth + 8;
+    // keep the row where you left it; scroll only as far as needed to show the current team
+    ts.scrollLeft = +(store.get("stripX") || 0);
+    const cur = ts.querySelector(".tpill.on");
+    if (cur && cur.offsetLeft < ts.scrollLeft) ts.scrollLeft = Math.max(0, cur.offsetLeft - 8);
+    else if (cur && cur.offsetLeft + cur.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = cur.offsetLeft + cur.offsetWidth - ts.clientWidth + 8;
     fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
-  }
-  if (ts) ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b || b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b || b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    $("#tsearch").onclick = () => openFinder();
+    $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); drawHead(); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
+      if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
+      else if (on) maybeOfferAlerts(key); };
+    $("#sharebtn").onclick = share;
+  };
+  drawHead();
   try { store.set("recentTeams", [key].concat(recent.filter(k => k !== key)).slice(0, 30).join(",")); } catch (e) {}
   if ($("#gviews")) $("#gviews").onclick = e => { const b = e.target.closest("button[data-gv]"); if (b) setGv(b.dataset.gv); };
-  $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); document.body.classList.toggle("ddopen", !m.hidden); };
-  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = followHtml(on); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
-    if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
-    else if (on) maybeOfferAlerts(key); };
-  $("#sharebtn").onclick = async () => {
+  async function share() {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
     try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (e) { prompt("Copy this link:", url); }
