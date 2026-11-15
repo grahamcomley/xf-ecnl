@@ -2962,8 +2962,8 @@
    133226,
    133227,
    133224,
-   133609,
    131228,
+   133609,
    133223,
    133228,
    131198,
@@ -3017,6 +3017,18 @@
     ]
    },
    {
+    "id": 131228,
+    "team": "FC Westlake Pre-ECNL STXCL B2014/15 North",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   },
+   {
     "id": 133223,
     "team": "Lonestar ATX NE Pre-ECNL STXCL B2014/15 Red C",
     "ours": [
@@ -3026,6 +3038,18 @@
     "ecnl": [
      7,
      9
+    ]
+   },
+   {
+    "id": 133228,
+    "team": "Lonestar ATX STH Pre-ECNL STXCL B2014/15 Red B",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
     ]
    },
    {
@@ -5020,6 +5044,18 @@
     ]
    },
    {
+    "id": 130101,
+    "team": "Dynamos ECNL RL STXCL B2013/14",
+    "ours": [
+     12,
+     18
+    ],
+    "ecnl": [
+     11,
+     17
+    ]
+   },
+   {
     "id": 67156,
     "team": "Houstonians FC ECNL RL STXCL B2013/14",
     "ours": [
@@ -5041,6 +5077,18 @@
     "ecnl": [
      10,
      14
+    ]
+   },
+   {
+    "id": 133969,
+    "team": "HTX North ECNL RL STXCL B2013/14",
+    "ours": [
+     12,
+     14
+    ],
+    "ecnl": [
+     11,
+     13
     ]
    },
    {
@@ -8361,6 +8409,37 @@
   ]
  },
  {
+  "conf": "u14b-4279-40474",
+  "name": "ECNL Boys Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136277,
+    "team": "Chicago Magic Soccer Club",
+    "ours": [
+     8,
+     14
+    ],
+    "ecnl": [
+     7,
+     11
+    ]
+   },
+   {
+    "id": 134418,
+    "team": "MN Thunder Academy",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4280-40486",
   "name": "ECNL Boys Mountain",
   "ours": [
@@ -8761,10 +8840,10 @@
    84928,
    90869,
    82883,
+   94525,
    94668,
    135010,
    98188,
-   94525,
    92619,
    131398
   ],
@@ -8772,9 +8851,9 @@
    84928,
    90869,
    82883,
+   94525,
    94668,
    135010,
-   94525,
    92619,
    131398,
    98188
@@ -9272,8 +9351,8 @@
    133082,
    114578,
    81153,
-   115357,
-   115339
+   115339,
+   115357
   ],
   "ecnl": [
    111079,
@@ -9332,8 +9411,32 @@
     ]
    },
    {
+    "id": 81153,
+    "team": "Liverpool FC IA MI Ann Arbor",
+    "ours": [
+     11,
+     8
+    ],
+    "ecnl": [
+     10,
+     5
+    ]
+   },
+   {
     "id": 115339,
     "team": "Nationals SC-CA GMA",
+    "ours": [
+     11,
+     1
+    ],
+    "ecnl": [
+     10,
+     1
+    ]
+   },
+   {
+    "id": 115357,
+    "team": "Nationals SC-Union GMA",
     "ours": [
      11,
      1
@@ -11046,6 +11149,18 @@
     ]
    },
    {
+    "id": 129716,
+    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2011/12",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
     "id": 131493,
     "team": "RISE SC ECNL RL STXCL B2011/12",
     "ours": [
@@ -11103,6 +11218,18 @@
     "ecnl": [
      9,
      5
+    ]
+   },
+   {
+    "id": 131201,
+    "team": "FC Westlake ECNL RL STXCL B2011/12",
+    "ours": [
+     9,
+     2
+    ],
+    "ecnl": [
+     8,
+     1
     ]
    }
   ]
@@ -11862,8 +11989,8 @@
    133282,
    90777,
    133097,
-   81412,
    134033,
+   81412,
    134124,
    81510,
    60621,
@@ -11930,6 +12057,18 @@
     ]
    },
    {
+    "id": 81412,
+    "team": "Colorado Storm",
+    "ours": [
+     13,
+     23
+    ],
+    "ecnl": [
+     12,
+     22
+    ]
+   },
+   {
     "id": 90777,
     "team": "HTX",
     "ours": [
@@ -11951,6 +12090,18 @@
     "ecnl": [
      12,
      21
+    ]
+   },
+   {
+    "id": 134124,
+    "team": "Dallas Texans",
+    "ours": [
+     14,
+     23
+    ],
+    "ecnl": [
+     13,
+     22
     ]
    },
    {
@@ -12722,6 +12873,30 @@
     "ecnl": [
      9,
      24
+    ]
+   },
+   {
+    "id": 131736,
+    "team": "Los Gatos United Soccer Club",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
+    "id": 64530,
+    "team": "COSC",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     18
     ]
    },
    {
@@ -13784,8 +13959,8 @@
    131202,
    129718,
    56879,
-   133296,
    133297,
+   133296,
    115220,
    128358,
    112940,
@@ -13867,6 +14042,30 @@
     "ecnl": [
      8,
      16
+    ]
+   },
+   {
+    "id": 56879,
+    "team": "AHFC NW ECNL RL STXCL B2010/11",
+    "ours": [
+     9,
+     18
+    ],
+    "ecnl": [
+     8,
+     15
+    ]
+   },
+   {
+    "id": 133296,
+    "team": "Lonestar ATX NTH ECNL RL STXCL B2010/11 Gold A",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     13
     ]
    },
    {
@@ -16657,9 +16856,9 @@
    80705,
    75519,
    133295,
-   133293,
    87681,
    50712,
+   133293,
    113587,
    131206,
    95205
@@ -16688,6 +16887,18 @@
   "name": "ECNL RL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 95357,
+    "team": "MAFC ECNL RL STXCL B2009/10",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     22
+    ]
+   },
    {
     "id": 133250,
     "team": "LTFC ECNL RL STXCL B2009/10",
@@ -16763,6 +16974,18 @@
    {
     "id": 50712,
     "team": "Houstonians FC ECNL RL STXCL B2009/10",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     10
+    ]
+   },
+   {
+    "id": 133293,
+    "team": "Lonestar ATX NTH ECNL RL STXCL B2009/10 Gold",
     "ours": [
      9,
      10
@@ -23864,8 +24087,8 @@
   "name": "Pre-ECNL Girls North Atlantic",
   "ours": [
    129166,
-   134969,
    74142,
+   134969,
    133397,
    135357,
    135472,
@@ -23892,6 +24115,30 @@
   "name": "Pre-ECNL Girls North Atlantic",
   "kind": "points",
   "teams": [
+   {
+    "id": 129166,
+    "team": "PDA White Pre-ECNL G2014/15 Mon l",
+    "ours": [
+     8,
+     20
+    ],
+    "ecnl": [
+     7,
+     17
+    ]
+   },
+   {
+    "id": 134969,
+    "team": "PUNSC Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
    {
     "id": 135357,
     "team": "Maryland United FC Pre-ECNL G2014/15",
@@ -25591,6 +25838,30 @@
     "ecnl": [
      8,
      24
+    ]
+   },
+   {
+    "id": 132948,
+    "team": "Capital FC",
+    "ours": [
+     11,
+     30
+    ],
+    "ecnl": [
+     10,
+     27
+    ]
+   },
+   {
+    "id": 133499,
+    "team": "Eastside Timbers",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
     ]
    },
    {
