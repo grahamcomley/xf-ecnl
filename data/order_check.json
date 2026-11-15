@@ -21800,9 +21800,9 @@
   "name": "Pre-ECNL Girls Ohio Valley",
   "ours": [
    132570,
-   94259,
    88131,
    81293,
+   94259,
    112579,
    130960
   ],
@@ -21813,6 +21813,37 @@
    112579,
    130960,
    132570
+  ]
+ },
+ {
+  "conf": "u12g-4253-41801",
+  "name": "Pre-ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94259,
+    "team": "Sporting Columbus G2014/15",
+    "ours": [
+     10,
+     16
+    ],
+    "ecnl": [
+     8,
+     15
+    ]
+   },
+   {
+    "id": 81293,
+    "team": "FC Pride Elite Pre-ECNL G2014/15",
+    "ours": [
+     10,
+     17
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   }
   ]
  },
  {
