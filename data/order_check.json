@@ -7540,37 +7540,6 @@
   ]
  },
  {
-  "conf": "u13b-4353-40713",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134576,
-    "team": "WA Premier",
-    "ours": [
-     8,
-     13
-    ],
-    "ecnl": [
-     7,
-     10
-    ]
-   },
-   {
-    "id": 133796,
-    "team": "Whatcom FC Rangers -",
-    "ours": [
-     12,
-     8
-    ],
-    "ecnl": [
-     11,
-     8
-    ]
-   }
-  ]
- },
- {
   "conf": "u13b-4354-41628",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
@@ -19748,37 +19717,6 @@
   ]
  },
  {
-  "conf": "u19b-4353-40718",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 119468,
-    "team": "Spokane Shadow",
-    "ours": [
-     13,
-     25
-    ],
-    "ecnl": [
-     12,
-     22
-    ]
-   },
-   {
-    "id": 93858,
-    "team": "Northwest United",
-    "ours": [
-     12,
-     19
-    ],
-    "ecnl": [
-     11,
-     19
-    ]
-   }
-  ]
- },
- {
   "conf": "u19b-4354-41633",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
@@ -20131,15 +20069,15 @@
    130996,
    132488,
    134368,
-   94968,
    133561,
+   94968,
    132188,
+   132994,
    135596,
    59764,
    133560,
    132993,
    133120,
-   132994,
    135597,
    133752,
    131038,
@@ -20196,6 +20134,18 @@
     ]
    },
    {
+    "id": 94968,
+    "team": "Rebels SC/09",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     13
+    ]
+   },
+   {
     "id": 134368,
     "team": "Eagles SC",
     "ours": [
@@ -20217,6 +20167,18 @@
     "ecnl": [
      7,
      10
+    ]
+   },
+   {
+    "id": 132994,
+    "team": "Legends FC (CA) Black",
+    "ours": [
+     6,
+     9
+    ],
+    "ecnl": [
+     5,
+     6
     ]
    },
    {
@@ -23762,6 +23724,37 @@
    131485,
    132362,
    111406
+  ]
+ },
+ {
+  "conf": "u13g-4298-40755",
+  "name": "ECNL RL Girls Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133499,
+    "team": "Eastside Timbers",
+    "ours": [
+     12,
+     16
+    ],
+    "ecnl": [
+     11,
+     13
+    ]
+   },
+   {
+    "id": 131485,
+    "team": "FC Portland",
+    "ours": [
+     11,
+     8
+    ],
+    "ecnl": [
+     10,
+     8
+    ]
+   }
   ]
  },
  {
@@ -42352,10 +42345,10 @@
   "conf": "a19b-528-528",
   "name": "MLS NEXT Academy North",
   "ours": [
-   8174,
-   8127,
    8115,
+   8174,
    8186,
+   8127,
    8233,
    10966,
    8162,
@@ -42370,9 +42363,9 @@
   ],
   "ecnl": [
    8174,
-   8127,
    8115,
    8186,
+   8127,
    8233,
    9294,
    8381,
