@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.27">
+<meta name="app-version" content="v1.28">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -66,7 +66,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .ddt{display:flex;flex-direction:column;min-width:0}.ddl{font-size:13px;font-weight:500;color:var(--mut);margin-top:1px}
 .teamdd .ic{width:18px;height:18px;color:var(--mut);flex:none;transition:transform .15s}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
 .teamdd{border:0;background:none;padding:2px 4px 2px 0;border-radius:8px}.ddn{display:inline-flex;align-items:center;gap:6px;min-width:0}.ddl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tstrip{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 1px 2px;margin:0}.tstrip.tfade{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.tstrip::-webkit-scrollbar{display:none}
+.tstrip{position:relative;display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 1px 2px;margin:0}.tstrip.tfade{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.tstrip::-webkit-scrollbar{display:none}
 .tpill{flex:none;height:32px;padding:0 13px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;position:relative}.tpill::after{content:"";position:absolute;inset:-6px -2px}.tpill.on{color:var(--ink);border-color:var(--ink)}
 .th .thsub:first-of-type{margin-top:8px}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
 .ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
@@ -358,10 +358,10 @@ const ICON = {
   sliders: '<path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>',
 };
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
-// Games and League are one tab now (All league | My team inside it); old links and saved tabs still work.
+// Games and League are one tab now (All teams | My team inside it); old links and saved tabs still work.
 const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["predict", "sliders", "Predict"]];
 let TAB = (() => { try { const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
-// Games tab: All league | My team (remembered)
+// Games tab: All teams | My team (remembered)
 function setGv(v, save = true) {
   if (save) store.set("gview", v);
   document.querySelectorAll("#gviews button").forEach(b => b.classList.toggle("on", b.dataset.gv === v));
@@ -1294,7 +1294,7 @@ async function showNote(gids, view, item) {
     + `<div class="nlines">${lines.map(row).join("")}</div>`
     + `<button class="btn-main" id="ngo">${gids.length ? (gids.length > 1 ? "Show these games" : "Show this game") : "Open"}</button>`;
   $("#nsheet").hidden = false;
-  if (view && !item) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));   // "league" = Games · All league
+  if (view && !item) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));   // "league" = Games · All teams
   $("#ngo").onclick = () => { $("#nsheet").hidden = true; TEAM_READY.then(() => focusGames(gids, view)); };
 }
 function focusGames(gids, view) {
@@ -1306,7 +1306,7 @@ function focusGames(gids, view) {
     const pick = all.find(shown) || all.find(x => x.closest(".pane") && !x.closest(".pane").hidden) || all[0];
     if (!pick) continue;
     const pane = pick.closest(".pane"); if (pane && pane.hidden) showTab(pane.dataset.tab, false);
-    const gv = pick.closest(".gv"); if (gv && gv.hidden) setGv(gv.dataset.gv, false);   // e.g. another team's result: All league
+    const gv = pick.closest(".gv"); if (gv && gv.hidden) setGv(gv.dataset.gv, false);   // e.g. another team's result: All teams
     let d = pick.closest("details"); while (d) { d.open = true; d = d.parentElement && d.parentElement.closest("details"); }
     const later = pick.closest("#later"); if (later) later.hidden = false;
     pick.classList.remove("flash"); void pick.offsetWidth; pick.classList.add("flash");
@@ -1710,7 +1710,7 @@ function renderTeam(D, fid, key) {
   const restHtmlM = byDay(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}))
     + (missedM.length ? blk("New date not set", missedM.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
   const seasonHtmlM = byDay(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
-  // All league | My team: your last choice; otherwise My team for a team you follow
+  // All teams | My team: your last choice; otherwise My team for a team you follow
   const gview = store.get("gview") || (starred ? "mine" : "all");
   // Remaining games for the predictor, one closed row per weekend (Mon–Sun); the next weekend with games
   // starts open. Every game still counts in the predicted table, open or not.
@@ -1767,7 +1767,7 @@ function renderTeam(D, fid, key) {
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
-  <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All league</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
+  <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
   <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
   ${sec("div", "League", wkend ? "This weekend" : "Last weekend & coming up", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
@@ -1796,14 +1796,24 @@ function renderTeam(D, fid, key) {
   // one sliding row of them under it (current first, then most recently opened); a tap keeps the tab.
   const fl = (favs() || []).filter(teamByKey);
   const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
-  const stripKeys = fl.length >= 2 ? [key].concat(fl.filter(k => k !== key).sort((a, b) => ((recent.indexOf(a) + 1) || 999) - ((recent.indexOf(b) + 1) || 999))) : [];
+  // fixed order (youngest to oldest, then name) so pills don't move when you tap through them
+  const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
+  const stripKeys = fl.length >= 2 ? [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); }) : [];
   const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
   $("#teamhead").innerHTML = `<div class="th"><div class="thl">
       <button class="teamdd" id="teamdd" aria-haspopup="true" aria-label="${me}: change team"><span class="ddt"><span class="ddn">${me}${CHEV}</span><span class="ddl">${esc(D.age_label.split(" (")[0])} · ${esc(D.conf_name)}</span></span></button></div>
     <div class="thr"><button class="followbtn ${starred ? "starred" : ""}" id="starbtn" aria-label="${starred ? "Following" : "Follow"} this team">${followHtml(starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`
     + (stripKeys.length ? `<div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${stripKeys.map(k => { const t = teamByKey(k); return `<button class="tpill ${k === key ? "on" : ""}" data-k="${k}" role="tab" aria-selected="${k === key}">${esc(t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; }).join("")}</div>` : "");
   const ts = $("#tstrip");
-  if (ts) { const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2); fade(); ts.onscroll = fade; }
+  if (ts) {
+    const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2);
+    // keep the row where you left it; scroll only if the current team is off-screen
+    const x = +(store.get("stripX") || 0); ts.scrollLeft = x;
+    const on = ts.querySelector(".tpill.on");
+    if (on && on.offsetLeft < ts.scrollLeft) ts.scrollLeft = Math.max(0, on.offsetLeft - 8);   // just enough to show it
+    else if (on && on.offsetLeft + on.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = on.offsetLeft + on.offsetWidth - ts.clientWidth + 8;
+    fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
+  }
   if (ts) ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b || b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
   try { store.set("recentTeams", [key].concat(recent.filter(k => k !== key)).slice(0, 30).join(",")); } catch (e) {}
   if ($("#gviews")) $("#gviews").onclick = e => { const b = e.target.closest("button[data-gv]"); if (b) setGv(b.dataset.gv); };
