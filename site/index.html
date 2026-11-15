@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.32">
+<meta name="app-version" content="v1.33">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -71,7 +71,8 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tsearch{width:32px;padding:0!important;display:grid;place-items:center;flex:none}.tsearch .ic{width:16px;height:16px}
 .tpill.tmp{border-style:dashed}
 .tpill .ic.chev{width:13px;height:13px;margin:0 -3px 0 4px;vertical-align:-2px;color:var(--mut)}
-.tfollow{display:inline-flex;align-items:center;gap:4px;color:var(--ink);border-color:var(--ink)}.tfollow .ic{width:14px;height:14px}
+.tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
+.tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
 .tshlg{font-size:13px;color:var(--mut);margin:-4px 0 8px}
 .tsr{display:flex;align-items:center;gap:12px;width:100%;padding:13px 2px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer}
 .tsr .ic{width:19px;height:19px;color:var(--mut);flex:none}.tsr span{flex:1}.tsr small{font-size:13px;font-weight:500;color:var(--mut)}.tsr.dng,.tsr.dng .ic{color:var(--red)}
@@ -1869,7 +1870,7 @@ function renderTeam(D, fid, key) {
     for (const k of [key, ...keys]) { const t = teamByKey(k); lbl[k] = pillName(t.s); const id = lbl[k] + "|" + ageTag(t); (seen[id] = seen[id] || new Set()).add(k); }
     for (const ks of Object.values(seen)) if (ks.size > 1) for (const k of ks) lbl[k] = teamByKey(k).s;
     $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="Find a team">${icon("search")}</button>
-      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : pill(key, "on tmp", lbl) + `<button class="tpill tfollow" id="starbtn" aria-label="Follow ${esc(focus.short)}">${icon("plus")}Follow</button>`}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>`;
+      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : `<span class="tvisit">${pill(key, "on tmp", lbl)}<button class="tpill tfollow" id="starbtn" aria-label="Follow ${esc(focus.short)}">${icon("star")}Follow</button></span>`}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>`;
     const ts = $("#tstrip");
     const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2);
     // keep the row where you left it; scroll only as far as needed to show the current team
