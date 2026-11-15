@@ -1016,8 +1016,8 @@
    131672,
    132807,
    137089,
-   136352,
    137306,
+   136352,
    133998,
    131947,
    131229,
@@ -1042,6 +1042,37 @@
    128295,
    137306,
    136353
+  ]
+ },
+ {
+  "conf": "u11b-4361-41036",
+  "name": "Pre-ECNL Boys Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 137306,
+    "team": "Sporting Nebraska FC Pre-ECNL 2015/16",
+    "ours": [
+     4,
+     9
+    ],
+    "ecnl": [
+     3,
+     6
+    ]
+   },
+   {
+    "id": 128295,
+    "team": "Kansas Rush Pre-ECNL B2015/16",
+    "ours": [
+     6,
+     0
+    ],
+    "ecnl": [
+     5,
+     0
+    ]
+   }
   ]
  },
  {
@@ -1107,8 +1138,8 @@
    133925,
    134891,
    133926,
-   117692,
    134847,
+   117692,
    117008,
    133185,
    132345,
@@ -1128,6 +1159,37 @@
    136441,
    134891,
    117008
+  ]
+ },
+ {
+  "conf": "u11b-4364-40817",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 117692,
+    "team": "Scorpions SC PRE-ECNL B2015/16",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   },
+   {
+    "id": 135310,
+    "team": "Oakwood Soccer Club Pre Blue",
+    "ours": [
+     10,
+     8
+    ],
+    "ecnl": [
+     9,
+     5
+    ]
+   }
   ]
  },
  {
@@ -2928,17 +2990,17 @@
   "conf": "u12b-4361-40812",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
-   137305,
    136355,
    131673,
    132708,
+   137305,
    114760,
    131358,
    117748,
+   131230,
    132397,
    117722,
    136354,
-   131230,
    134511,
    136412,
    137153
@@ -2959,18 +3021,49 @@
   ]
  },
  {
+  "conf": "u12b-4361-40812",
+  "name": "Pre-ECNL Boys Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 137305,
+    "team": "Sporting Nebraska FC Pre-ECNL 2014/15",
+    "ours": [
+     4,
+     9
+    ],
+    "ecnl": [
+     3,
+     9
+    ]
+   },
+   {
+    "id": 131230,
+    "team": "VSA Rush I Pre-ECNL B2014/15",
+    "ours": [
+     5,
+     6
+    ],
+    "ecnl": [
+     4,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4361-41045",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
    131238,
    132712,
-   136355,
    132341,
-   131359,
+   136355,
    137153,
+   131359,
    131232,
-   133995,
    131946,
+   133995,
    134514,
    136413
   ],
@@ -2997,7 +3090,7 @@
     "id": 136355,
     "team": "Union KC Soccer Club Red Pre-ECNL B2014/15",
     "ours": [
-     4,
+     5,
      9
     ],
     "ecnl": [
@@ -3009,12 +3102,36 @@
     "id": 137153,
     "team": "Sporting Iowa Central II Pre-ECNL 2014/15",
     "ours": [
-     4,
-     6
+     5,
+     9
     ],
     "ecnl": [
      5,
      6
+    ]
+   },
+   {
+    "id": 133995,
+    "team": "Kansas City Athletics Royal Pre-ECNL B2014/15",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": 131946,
+    "team": "Missouri Rush Pre-ECNL B2014/15 White",
+    "ours": [
+     5,
+     6
+    ],
+    "ecnl": [
+     4,
+     3
     ]
    }
   ]
@@ -3103,6 +3220,37 @@
    114652,
    134846,
    117011
+  ]
+ },
+ {
+  "conf": "u12b-4364-40820",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 116959,
+    "team": "Scorpions SC PRE-ECNL B2014/15 ll",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
+    "id": 135309,
+    "team": "Oakwood Soccer Club Pre White",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     3
+    ]
+   }
   ]
  },
  {
@@ -19182,8 +19330,8 @@
   "conf": "u14g-4308-41399",
   "name": "ECNL RL Girls New England",
   "ours": [
-   95346,
    88646,
+   95346,
    134378,
    81914,
    94743,
@@ -19202,6 +19350,37 @@
    88646,
    94743,
    134831
+  ]
+ },
+ {
+  "conf": "u14g-4308-41399",
+  "name": "ECNL RL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 88646,
+    "team": "World Class FC",
+    "ours": [
+     8,
+     17
+    ],
+    "ecnl": [
+     7,
+     14
+    ]
+   },
+   {
+    "id": 94743,
+    "team": "Scorpions SC",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   }
   ]
  },
  {
