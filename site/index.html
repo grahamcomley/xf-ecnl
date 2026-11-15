@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.34">
+<meta name="app-version" content="v1.35">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -73,7 +73,13 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tpill .ic.chev{width:13px;height:13px;margin:0 -3px 0 4px;vertical-align:-2px;color:var(--mut)}
 .tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
 .tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
-.tshlg{font-size:13px;color:var(--mut);margin:-4px 0 8px}
+#teamhead{position:relative;z-index:2;background:var(--card)}
+#tpanel{position:absolute;left:0;right:0;top:100%;z-index:1}
+.tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
+.tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
+.tphead{display:flex;flex-direction:column;padding:6px 0 8px}.tphead b{font-size:16px}.tphead span{font-size:13px;color:var(--mut)}
+.tpsub{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:8px 0 2px}.tpsub:empty{margin:4px 0 0}
+.tpal .opt{padding:9px 0}.tsr small.tpon{color:var(--ink);border:1px solid var(--line2);border-radius:14px;padding:4px 10px}
 .tsr{display:flex;align-items:center;gap:12px;width:100%;padding:13px 2px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer}
 .tsr .ic{width:19px;height:19px;color:var(--mut);flex:none}.tsr span{flex:1}.tsr small{font-size:13px;font-weight:500;color:var(--mut)}.tsr.dng,.tsr.dng .ic{color:var(--red)}
 .h2lg{font-size:13px;font-weight:500;color:var(--mut);margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
@@ -282,7 +288,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
     <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
-<div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
+<div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div><div id="tpanel" hidden><div class="tpdim" id="tpdim"></div><div class="tpcard" id="tpbody"></div></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
 <div id="finder">
@@ -302,7 +308,6 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <button class="btn-sec" id="pkrepreport">Report this name</button>
   <button class="btn-sec" id="pkrephide">Hide this player</button>
 </div></div>
-<div id="tsheet" class="sheet" hidden><div class="sheet-card"><div class="sheet-head"><b id="tshname"></b><button class="icon-btn" id="tshclose">Close</button></div><div id="tshbody"></div></div></div>
 <div id="anudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b id="anudgetitle">Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
@@ -1043,7 +1048,9 @@ function appRegister() {
 const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
-const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
+const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h"}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
+const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off";
+const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder"].filter(Boolean).join(" · ") || "No alerts";
 const alertsOn = () => !!store.get("alertsOn");
 // Alerts on/off is remembered per account on this phone, so signing out (or someone else signing in and
 // out) and back in puts yours back the way they were.
@@ -1146,23 +1153,20 @@ async function drawAlertsPage(b) {
     return;
   }
   const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
-  const sum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.mo && "Big moments", tc.rem === "2h" ? "2-hour reminder" : tc.rem === "am" && "Morning reminder", tc.wr && "Wrap-up"].filter(Boolean).join(" · ") || "No alerts";
-  b.innerHTML = `<div class="pgin">${alertsMaster(true)}<div class="seth">Teams</div><div class="glist">`
-    + list.map(t => { const tc = tcfg(c, t.k); return `<details class="arow" data-team="${t.k}" ${AOPEN.has(t.k) ? "open" : ""}><summary><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${sum(tc)}</span></span>${icon("chev")}</summary>
-      <div class="aopts"><div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
-      <div class="opt"><span>Other games in ${esc(t.c)}</span>${aseg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
-      <div class="opt"><span>Big moments<span class="ddsub">Into 1st, playoff line, clinched</span></span>${aseg("mo", [["1", "On"], ["0", "Off"]], tc.mo ? "1" : "0")}</div>
-      <div class="opt"><span>Game-day reminder</span>${aseg("rem", [["am", "Morning"], ["2h", "2 hrs"], ["off", "Off"]], tc.rem)}</div>
-      <div class="opt"><span>Sunday wrap-up<span class="ddsub">7 PM, if you haven&#39;t seen the results</span></span>${aseg("wr", [["1", "On"], ["0", "Off"]], tc.wr ? "1" : "0")}</div></div></details>`; }).join("")
+  b.innerHTML = `<div class="pgin">${alertsMaster(true)}<div class="seth">Your teams</div><div class="glist">`
+    + list.map(t => `<button class="arow arteam" data-open="${t.k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${alertSum(tcfg(c, t.k))}</span></span>${icon("chev")}</button>`).join("")
+    + (list.length ? "" : `<div class="mut" style="padding:12px">Follow a team to get its alerts.</div>`)
     + `</div><div class="seth">Options</div><div class="glist">
       <details class="arow" data-team="__quiet" ${AOPEN.has("__quiet") ? "open" : ""}><summary><span>Quiet hours<span class="ddsub">${c.q.on ? `${hm12(c.q.s)}–${hm12(c.q.e)} · alerts wait, then arrive as one summary` : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Quiet hours</span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
         ${c.q.on ? `<div class="qt"><input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}</div></details>
       <details class="arow" data-team="__badge" ${AOPEN.has("__badge") ? "open" : ""}><summary><span>App icon alert<span class="ddsub">${c.badge ? "On · red number for alerts you haven't opened" : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Red number on the app icon</span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div></details></div>
-    <p class="mut pgfoot">Scores arrive about 15 minutes after the ECNL posts them. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
+    <p class="mut pgfoot">Choose each team's alerts on that team: tap a team above, or tap the team you're on at the top. Scores arrive about 15 minutes after they're posted. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
   b.querySelectorAll("details.arow").forEach(dt => dt.addEventListener("toggle", () => { dt.open ? AOPEN.add(dt.dataset.team) : AOPEN.delete(dt.dataset.team); }));
   b.onclick = e => {
+    const op = e.target.closest("[data-open]");
+    if (op) { closePages(); OPEN_SHEET = true; KEEP_TAB = true; if (op.dataset.open === CUR) { teamSheet(); OPEN_SHEET = false; } else location.hash = "t=" + op.dataset.open; return; }
     const btn = e.target.closest(".seg button"); if (!btn) return;
     e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
@@ -1247,7 +1251,10 @@ function maybeOfferAlerts(k) {
   $("#anudgego").onclick = async () => { $("#anudge").hidden = true; if (bl) openA2hs(); else await enableAlerts(); };
 }
 $("#anudgeclose").onclick = () => $("#anudge").hidden = true;
-$("#tshclose").onclick = () => $("#tsheet").hidden = true;
+// team sheet drop-down: closes on the dimmed area or when the page scrolls
+const closeTeamSheet = () => { TP_OPEN = false; $("#tpanel").hidden = true; const p = document.querySelector("#tstrip .tpill.on"); if (p) p.setAttribute("aria-expanded", "false"); };
+$("#tpdim").onclick = closeTeamSheet;
+$("#scroller").addEventListener("scroll", () => { if (TP_OPEN) closeTeamSheet(); }, {passive: true});
 $("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
 // Opening the app clears the red number.
 var APP_NOTE = null;
@@ -1330,7 +1337,7 @@ function route() {
 // away (iPhone cuts long alerts short); "Show this game" then jumps to the exact game(s).
 let TEAM_READY = Promise.resolve();
 let KEEP_TAB = false;
-let teamSheet = () => {}, REDRAW_HEAD = null;
+let teamSheet = () => {}, REDRAW_HEAD = null, TP_OPEN = false, OPEN_SHEET = false;
 function deepLink(h, key) {
   closeFinder(); closePages();   // a tapped alert goes to the game, not whatever was left open (search, Settings)
   const q = new URLSearchParams(h), gids = (q.get("g") || "").split(",").filter(Boolean), view = q.get("v");
@@ -1880,29 +1887,42 @@ function renderTeam(D, fid, key) {
     else if (cur && cur.offsetLeft + cur.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = cur.offsetLeft + cur.offsetWidth - ts.clientWidth + 8;
     fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
     // another team: switch (keeps your tab) · the team you're on: its team sheet
-    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return teamSheet(); KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return teamSheet(true); KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
     $("#tsearch").onclick = () => openFinder();
     const follow = () => { toggleFav(key); const on = (favs() || []).includes(key); drawHead(); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
       if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
       else if (on) maybeOfferAlerts(key); };
     if ($("#starbtn")) $("#starbtn").onclick = follow;
-    // Team sheet: share, this team's alerts, unfollow (room later for team links)
-    teamSheet = () => {
-      const on = (favs() || []).includes(key), t = teamByKey(key) || {};
-      const aon = alertsOn() && on, tc = tcfg(acfg(), key), teamOn = tc.our || tc.lg !== "off" || tc.mo || tc.rem !== "off" || tc.wr;
-      $("#tshname").textContent = `${focus.short} · ${D.age_label.split(" (")[0]}`;
-      $("#tshbody").innerHTML = `<div class="tshlg">${esc(D.conf_name)}</div>
-        <button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
-        ${on ? `<button class="tsr" data-a="alerts">${icon("bell")}<span>Alerts for this team</span><small>${!ME ? "Sign in" : !alertsOn() ? "Off on this phone" : teamOn ? "On" : "Off"}</small></button>` : ""}
+    // Team sheet: drops down under the team row (over the page). Tapping another team while it's open
+    // switches team and shows that team's sheet. League, this team's alerts, share, unfollow.
+    teamSheet = (toggle) => {
+      if (toggle && TP_OPEN) return closeTeamSheet();
+      const on = (favs() || []).includes(key), nm = focus.short, c = acfg(), tc = tcfg(c, key);
+      const seg = (n, opts, v) => `<span class="seg" data-seg="${n}">${opts.map(([x, l]) => `<button data-v="${x}" class="${x === v ? "on" : ""}">${l}</button>`).join("")}</span>`;
+      const alertsHtml = !on ? "" : !ME ? `<div class="tpsub">Alerts</div><button class="tsr" data-a="signin">${icon("bell")}<span>Sign in to get alerts</span></button>`
+        : !alertsOn() ? `<div class="tpsub">Alerts</div><button class="tsr" data-a="alertson">${icon("bell")}<span>Alerts are off on this phone</span><small class="tpon">Turn on</small></button>`
+        : `<div class="tpsub">Alerts</div><div class="aopts tpal">
+            <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
+            <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
+            <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div></div>`;
+      $("#tpbody").innerHTML = `<div class="tphead"><b>${esc((teamByKey(key) || {}).s || nm)} · ${esc(D.age_label.split(" (")[0])}</b><span>${esc(D.conf_name)}</span></div>${alertsHtml}
+        <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
-      $("#tsheet").hidden = false;
-      $("#tshbody").onclick = e => { const b = e.target.closest("button[data-a]"); if (!b) return; $("#tsheet").hidden = true;
-        if (b.dataset.a === "share") share();
-        else if (b.dataset.a === "follow") follow();
-        else if (b.dataset.a === "alerts") { if (!ME) return signIn(); AOPEN.add(key); openPage("alerts", true); } };
+      TP_OPEN = true; $("#tpanel").hidden = false;
+      const p = document.querySelector("#tstrip .tpill.on"); if (p) p.setAttribute("aria-expanded", "true");
+      $("#tpbody").onclick = async e => {
+        const sb = e.target.closest(".seg button");
+        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : {rem: v}); setAcfg(cc); teamSheet(); return; }
+        const b = e.target.closest("button[data-a]"); if (!b) return;
+        if (b.dataset.a === "share") { closeTeamSheet(); share(); }
+        else if (b.dataset.a === "follow") { closeTeamSheet(); follow(); }
+        else if (b.dataset.a === "signin") { closeTeamSheet(); signIn(); }
+        else if (b.dataset.a === "alertson") { await enableAlerts(); if (TP_OPEN) teamSheet(); }
+      };
     };
   };
   drawHead(); REDRAW_HEAD = drawHead;
+  if (TP_OPEN || OPEN_SHEET) { OPEN_SHEET = false; teamSheet(); }   // sheet open while flipping teams: show this team's
   try { store.set("recentTeams", [key].concat(recent.filter(k => k !== key)).slice(0, 30).join(",")); } catch (e) {}
   if ($("#gviews")) $("#gviews").onclick = e => { const b = e.target.closest("button[data-gv]"); if (b) setGv(b.dataset.gv); };
   async function share() {
