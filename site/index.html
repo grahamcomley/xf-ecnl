@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.26">
+<meta name="app-version" content="v1.44">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -64,7 +64,30 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .th{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--red);border-radius:12px;padding:12px 12px 12px 14px}.thl{flex:1;min-width:0}.thr{display:flex;flex-direction:row;gap:6px}
 .teamdd{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line2);background:var(--card2);color:var(--ink);font:inherit;font-size:20px;font-weight:800;padding:6px 12px 6px 14px;border-radius:18px;cursor:pointer;text-align:left;max-width:100%}
 .ddt{display:flex;flex-direction:column;min-width:0}.ddl{font-size:13px;font-weight:500;color:var(--mut);margin-top:1px}
-.teamdd .ic{width:18px;height:18px;color:var(--ink);flex:none}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
+.teamdd .ic{width:18px;height:18px;color:var(--mut);flex:none;transition:transform .15s}.teamdd[aria-expanded="true"] .ic{transform:rotate(180deg)}
+.teamdd{border:0;background:none;padding:2px 4px 2px 0;border-radius:8px}.ddn{display:inline-flex;align-items:center;gap:6px;min-width:0}.ddl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tstrip{position:relative;display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 1px 2px;margin:0}.tstrip.tfade{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}.tstrip::-webkit-scrollbar{display:none}
+.trow{display:flex;align-items:center;gap:6px;padding:0 12px}.trow .tstrip{flex:1;min-width:0;padding:2px 1px}
+.tsearch{width:32px;padding:0!important;display:grid;place-items:center;flex:none}.tsearch .ic{width:16px;height:16px}
+.tpill.tmp{border-style:dashed}
+.tpx{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin:0 -7px 0 6px;border-radius:50%;vertical-align:middle}
+.tpill.on:not(.tmp){background:var(--ink);color:#0b0d12;border-color:var(--ink)}.tpill.on:not(.tmp) .tpx{background:#0b0d12}.tpill.on:not(.tmp) .tpx .ic{width:13px;height:13px;color:var(--ink)}
+.tpill.tmp .tpx .ic{width:13px;height:13px;color:var(--mut)}
+.tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
+.tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
+#teamhead{position:relative;z-index:2;background:var(--card)}
+#tpanel{position:absolute;left:0;right:0;top:0;z-index:3}
+.tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
+.tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
+.tphead{display:flex;flex-direction:column;padding:6px 0 8px}.tphead b{font-size:16px}.tphead span{font-size:13px;color:var(--mut)}
+.tpsub{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:8px 0 2px}.tpsub:empty{margin:4px 0 0}
+.tpal .opt{padding:9px 0}.tsr small.tpon{color:var(--ink);border:1px solid var(--line2);border-radius:14px;padding:4px 10px}
+.tsr{display:flex;align-items:center;gap:12px;width:100%;padding:13px 2px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:15px;font-weight:600;text-align:left;cursor:pointer}
+.tsr .ic{width:19px;height:19px;color:var(--mut);flex:none}.tsr span{flex:1}.tsr small{font-size:13px;font-weight:500;color:var(--mut)}.tsr.dng,.tsr.dng .ic{color:var(--red)}
+.h2lg{font-size:13px;font-weight:500;color:var(--mut);margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.sec h2{display:flex;align-items:baseline;min-width:0;white-space:nowrap}
+.tmeta{display:flex;align-items:center;gap:8px;margin-top:8px;padding:0 12px 2px}.tlg{flex:1;min-width:0;font-size:13px;font-weight:500;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tpill{flex:none;height:32px;padding:0 13px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;position:relative}.tpill::after{content:"";position:absolute;inset:-6px -2px}.tpill.on{color:var(--ink);border-color:var(--ink)}
 .th .thsub:first-of-type{margin-top:8px}.thsub{font-size:13px;color:var(--mut);margin-top:2px}
 .ddmenu{position:absolute;left:14px;right:14px;top:100%;margin-top:6px;background:var(--card);border:1px solid var(--line2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5);padding:6px;z-index:40;max-height:60vh;overflow-y:auto}
 .ddmenu[hidden]{display:none}.ddh{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--mut);padding:6px 10px}
@@ -86,7 +109,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#a2hs,#anudge,#nudge,#nsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
+#a2hs,#anudge,#nudge,#nsheet,#tsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
 .inrow{display:flex;gap:10px;align-items:flex-start;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;text-align:left;padding:11px 12px;cursor:pointer}.inrow:first-child{border-top:0}.inrow .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:transparent}.inrow.unread .dot{background:var(--red)}.inrow>span{flex:1;min-width:0}.inrow b{display:block;font-size:14px}.inrow.unread b{font-weight:800}.inrow .ddsub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.inrow .when{flex:none;font-size:11px;color:var(--mut);margin-top:2px}
 .ntitle{font-size:17px;font-weight:800;margin:8px 0 8px}.nlines{font-size:14px;line-height:1.45;margin-bottom:4px}.nsp{height:10px}
 .nhero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:10px 0 10px;font-size:17px;font-weight:700}.nhero span:first-child{text-align:right}.nhero b{font-size:26px;font-weight:800}
@@ -128,7 +151,7 @@ body.ddopen #scroller,body.ddopen #tabbar{filter:brightness(.4);transition:filte
 .tname{font-weight:700;font-size:14px;margin-top:4px}.tname .ddsub{display:block}
 .qt{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--mut)}.qt input{background:var(--card);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font:inherit;font-size:13px;color-scheme:dark}
 .pchg{grid-column:1/-1;font-size:12px;color:#d4a72c;margin-top:4px}.pchg .reset{margin-left:4px}.yoursum{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:9px 12px;margin-bottom:10px}
-.pviews,.pkviews{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:0 0 10px}.pviews button,.pkviews button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer}.pviews button.on,.pkviews button.on{background:var(--red);color:#fff}.pkviews button{font-size:12px;padding:6px}
+.pviews,.pkviews{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:0 0 10px}.pviews button,.pkviews button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer}.pviews button.on,.pkviews button.on{background:var(--me);color:#fff;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}.pkviews button{font-size:12px;padding:6px}
 .pkhero{padding:12px 14px}.pkh1{font-size:17px;font-weight:800;margin-bottom:4px}.pkname{font-size:13px;margin-top:10px;color:var(--mut)}.pkname b{color:var(--ink)}.pkname .reset{float:none}.pkname input{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:6px 8px;font:inherit;font-size:14px;width:60%}.pkerr{color:var(--dn);font-size:12px;margin-top:4px}
 .pkg{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--card);padding:8px 10px}.pkg.ours{border-color:#5b2330;background:var(--me)}.pkhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .pkrow{display:flex;align-items:center;gap:10px;padding:3px 0}.pkt{flex:1;min-width:0;font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -156,7 +179,7 @@ details.sec>summary::-webkit-details-marker{display:none}
 details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}details.sec>summary .chev{width:18px;height:18px}details.sec:not([open])>summary .chev{transform:rotate(-90deg)}
 .sechead{padding:12px 14px;display:flex;align-items:center;gap:8px}
 .pane[hidden]{display:none}
-#tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+#tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
 #tabbar[hidden]{display:none}
 #tabbar button{background:none;border:0;color:var(--mut);font:inherit;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 #tabbar button .ic{width:24px;height:24px}
@@ -236,7 +259,20 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 .scroll{overflow-x:auto}
 /* finder */
 #finder{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
-#finder.open{display:block}
+#finder.open{display:block}.fdim{display:none}
+#finder.drop{position:absolute;inset:auto;left:0;right:0;top:100%;z-index:1;background:none;overflow:visible;padding:0}
+#finder.drop .fdim{display:block;position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
+#finder.drop .fcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;max-height:65vh;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 14px 28px rgba(0,0,0,.45)}
+#finder.drop .f-head{position:sticky;top:0;z-index:1;background:var(--card);padding:10px 14px 8px;border-bottom:0}#finder.drop #fclose{display:none}
+#finder.drop .f-body{padding:0 14px 12px}
+.fseg{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:2px 0 8px}.fseg button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:7px;border-radius:8px;cursor:pointer}.fseg button.on{background:var(--me);color:#fff;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
+.fages{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}.fages::-webkit-scrollbar{display:none}.fages button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.fages button.on{background:var(--me);color:#fff;border-color:transparent;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
+.fgrp{display:flex;width:100%;align-items:center;justify-content:space-between;background:none;border:0;border-bottom:1px solid var(--line2);color:var(--ink);font:inherit;font-size:15px;font-weight:600;text-align:left;padding:12px 2px;cursor:pointer}.fgrp small{display:block;font-size:12px;font-weight:500;color:var(--mut);margin-top:2px}.fgrp .ic{width:18px;height:18px;color:var(--mut);flex:none;transition:transform .15s}.fgrp[aria-expanded="true"] .ic{transform:rotate(180deg)}.fgbody{padding-left:10px;border-bottom:1px solid var(--line2)}
+.fcount{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mut);padding:4px 2px 0}.fclear{background:none;border:0;color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:4px 0;cursor:pointer}
+body.fopen #tstrip{opacity:.35;pointer-events:none}body.fopen #tstrip .tpill.on{background:var(--card2);color:var(--mut);border-color:var(--line2)}
+.flg{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:10px 0 2px}
+.fback{display:inline-flex;align-items:center;gap:4px;background:none;border:0;color:var(--mut);font:inherit;font-size:13px;font-weight:600;padding:6px 0;cursor:pointer}
+.ffol{flex:none;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;border-radius:15px;border:1px solid var(--line2);background:transparent;color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.ffol .ic{width:14px;height:14px}.ffol.on{color:#fde047;border-color:#a16207}
 .f-head{position:sticky;top:0;background:#07090c;border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;display:flex;gap:8px;align-items:center}
 .f-head input{flex:1;background:var(--card2);border:1px solid var(--line2);color:var(--ink);border-radius:8px;padding:9px 10px;font:inherit;font-size:16px}
 .f-body{max-width:760px;margin:0 auto;padding:12px}
@@ -251,6 +287,14 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 .topline .appname{flex:1;min-width:0;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subline{flex:none;white-space:nowrap}
 .logo{width:22px;height:22px;border-radius:6px;gap:2px;padding:0 5px}.logo i{height:2px}
+.ttl{flex:0 1 auto;min-width:0;display:flex;align-items:center;gap:8px;background:none;border:0;color:var(--ink);font:inherit;font-size:17px;font-weight:800;padding:4px 0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.ttl .ttn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ttc{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);display:grid;place-items:center}.ttc .ic{width:16px;height:16px;color:#0b0d12;margin:0;transition:transform .15s}
+.ttl[aria-expanded="true"] .ttc .ic{transform:rotate(180deg)}
+.topline.hasteam .appname{flex:none;margin-left:0;display:flex;flex-direction:column;align-items:flex-start;font-size:10px;line-height:1.15;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff}.topline.hasteam .appname span:last-child{color:var(--red)}
+.topline .subline{display:none!important}
+.topline.hasteam .ttl{margin-right:auto;padding-left:10px;border-left:1px solid var(--line2);border-radius:0}
+body.tpopen header{z-index:40}
 .ibtn.plain{border:0;background:none;width:40px;height:40px;color:var(--mut)}.ibtn.plain .ic{width:20px;height:20px}
 #teamwrap{flex:none;padding:0;max-width:none;margin:0;width:100%;box-sizing:border-box;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
 #teamwrap .th{border:0;border-radius:0;background:none;box-shadow:inset 3px 0 0 var(--red);padding:6px calc(6px + env(safe-area-inset-right,0px)) 6px calc(12px + env(safe-area-inset-left,0px));align-items:center;gap:4px}
@@ -264,16 +308,17 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 </head>
 <body>
 <header>
-  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname"><span>Sideline</span> <span>Standings</span></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"><svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
     <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
-<div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div></div>
+<script>try{var _t=localStorage.getItem("ttlText"),_l=localStorage.getItem("lastTeam"),_m=/(?:^#|&)t=([^,&]+)/.exec(location.hash);if(_t&&_l&&(!_m||_m[1]===_l)){var _b=document.getElementById("ttl");_b.querySelector(".ttn").textContent=_t;_b.hidden=false;document.querySelector(".topline").classList.add("hasteam")}}catch(e){}</script>
+<div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div><div id="tpanel" hidden><div class="tpdim" id="tpdim"></div><div class="tpcard" id="tpbody"></div></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
-<div id="finder">
-  <div class="f-head"><input id="fq" type="search" placeholder="Search a club (e.g. XF) or team" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
+<div id="finder"><div class="fdim" id="fdim"></div><div class="fcard">
+  <div class="f-head"><input id="fq" type="search" placeholder="Club or team name" autocomplete="off"><button class="icon-btn" id="fclose">Close</button></div>
   <div class="f-body" id="fbody"></div>
-</div>
+</div></div>
 <div id="delsheet" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Delete your account?</b><button class="icon-btn" id="delclose">Cancel</button></div>
   <p>This permanently deletes your account, your followed teams and your alerts. It can't be undone.</p>
@@ -288,7 +333,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <button class="btn-sec" id="pkrephide">Hide this player</button>
 </div></div>
 <div id="anudge" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
+  <div class="sheet-head"><b id="anudgetitle">Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
 </div></div>
 <div id="authsheet" class="sheet" hidden><div class="sheet-card" style="text-align:center">
@@ -333,6 +378,8 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 const $ = (s, e = document) => e.querySelector(s);
 // Line icons (outline, 1.75 stroke), drawn inline so they stay crisp and match the text color.
 const ICON = {
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
   refresh: '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
   star: '<path d="M12 3.6l2.55 5.17 5.7.83-4.13 4.02.98 5.68L12 16.6l-5.1 2.7.98-5.68L3.75 9.6l5.7-.83z"/>',
@@ -355,9 +402,33 @@ const ICON = {
   sliders: '<path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/>',
 };
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
-const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["league", "grid", "League"], ["predict", "sliders", "Predict"]];
-let TAB = (() => { try { return localStorage.getItem("tab") || "team"; } catch (e) { return "team"; } })();
+// Games and League are one tab now (All teams | My team inside it); old links and saved tabs still work.
+const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["predict", "sliders", "Predict"]];
+let TAB = (() => { try { const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
+// Short team names for the header pills (search, tables and games keep the full name).
+// Sure rules only: drop filler words (FC, SC, Soccer Club, Youth...), league/birth-year tags, state names -> WA, OR...
+// A few Northwest names that are still long get a reviewed short form; anything else keeps its (rule-trimmed) name.
+const PILL_NAME = {"Central Washington Sounders": "CWS", "Sacramento Republic FC": "Sac Republic", "Seattle Celtic Green": "Celtic Green",
+  "Vancouver Whitecaps FC": "Whitecaps", "Westside Metros FC South": "Metros South", "Atletico Santa Rosa": "Atl. Santa Rosa",
+  "Modesto Ajax United": "Modesto Ajax", "San Francisco Glens SC": "SF Glens", "San Jose Earthquakes": "Earthquakes", "Sacramento United": "Sac United"};
+const PILL_FILL = new Set(["-", "association", "assn", "ecnl", "rl", "ecnl-rl", "pre-ecnl", "stxcl", "fc", "sc", "cf", "s.c.", "f.c.", "soccer", "club", "football", "futbol", "fútbol", "youth", "sa", "fa", "ysc", "ysa"]);
+const STATE_AB = {Washington: "WA", Oregon: "OR", California: "CA", Idaho: "ID", Montana: "MT", Texas: "TX", Arizona: "AZ", Colorado: "CO", Utah: "UT", Nevada: "NV", Florida: "FL", Georgia: "GA", Virginia: "VA", Ohio: "OH", Michigan: "MI", Illinois: "IL", Indiana: "IN", Minnesota: "MN", Missouri: "MO", Kansas: "KS", Oklahoma: "OK", Tennessee: "TN", Kentucky: "KY", Alabama: "AL", Louisiana: "LA", Arkansas: "AR", Iowa: "IA", Nebraska: "NE", Wisconsin: "WI", Pennsylvania: "PA", Maryland: "MD", Delaware: "DE", Massachusetts: "MA", Connecticut: "CT", Hawaii: "HI", Alaska: "AK", Mississippi: "MS", Wyoming: "WY"};
+function pillName(full) {
+  if (PILL_NAME[full]) return PILL_NAME[full];
+  const w = String(full || "").split(/\s+/).filter(Boolean);
+  let t = w.filter(x => !PILL_FILL.has(x.toLowerCase().replace(/[.,]$/, "")) && !/^(?:[BG]?(?:20)?\d\d(?:\/(?:20)?\d\d)?)$/i.test(x));
+  if (!t.length) t = w;
+  if (t.length > 1 && t[t.length - 1].toLowerCase() === "academy") t.pop();
+  return t.map(x => STATE_AB[x] || x).join(" ");
+}
+// Games tab: All teams | My team (remembered)
+function setGv(v, save = true) {
+  if (save) store.set("gview", v);
+  document.querySelectorAll("#gviews button").forEach(b => b.classList.toggle("on", b.dataset.gv === v));
+  document.querySelectorAll(".gv").forEach(x => x.hidden = x.dataset.gv !== v);
+}
 function showTab(t, scroll = true) {
+  if (t === "league") { t = "games"; setGv("all", false); }
   if (t !== "team" && LOCKED()) t = "team";
   TAB = t; try { localStorage.setItem("tab", t); } catch (e) {}
   document.querySelectorAll("#app .pane").forEach(p => p.hidden = p.dataset.tab !== t);
@@ -543,6 +614,7 @@ async function boot() {
   fetch("data/status.json", {cache: "no-store"}).then(r => r.ok ? r.json() : null).then(s => { STATUS = s; const el = $("#checked"); if (el && s) el.innerHTML = checkedTxt(); }).catch(() => {});
   window.addEventListener("hashchange", route);
   $("#fclose").onclick = closeFinder;
+  $("#fdim").onclick = closeFinder;
   $("#settop").innerHTML = icon("gear");
   document.addEventListener("click", e => { const m = $("#ddmenu"); if (!m.hidden && !e.target.closest("#ddmenu, #teamdd")) { m.hidden = true; const t = $("#teamdd"); if (t) t.setAttribute("aria-expanded", "false"); } });
   new MutationObserver(() => document.body.classList.toggle("ddopen", !$("#ddmenu").hidden)).observe($("#ddmenu"), {attributes: true, attributeFilter: ["hidden"]});
@@ -687,7 +759,7 @@ const recheck = () => { if (CLERK_READY) onAuth(); };
 document.addEventListener("visibilitychange", () => { if (!document.hidden) recheck(); });
 // The follow button in the team header: a labelled pill (the bare star wasn't noticed).
 const followHtml = on => `${icon("star", on)}<span>${on ? "Following" : "Follow"}</span>`;
-function refreshStar() { const b = $("#starbtn"); if (!b || !CUR) return; const on = (favs() || []).includes(CUR); b.classList.toggle("starred", on); b.innerHTML = followHtml(on); }
+function refreshStar() { if (CUR && REDRAW_HEAD) REDRAW_HEAD(); }
 async function onAuth() {
   const u = window.Clerk && window.Clerk.user;
   if (!u) { ME = null; applyGate(); return; }
@@ -707,7 +779,10 @@ async function onAuth() {
     else if (!CUR && $(".land")) drawLanding();   // a new account on the welcome page: drop the sign-in parts
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
-    alertsSync(); seenPing();
+    const was = store.get("alertsOn:" + u.id);
+    if (was === "1" && !alertsOn() && PUSH_OK() && !permDenied()) store.set("alertsOn", "1");   // yours were on: back on
+    else if (was === "0" && alertsOn()) store.set("alertsOn", "");                           // yours were off: stay off
+    alertsSync(true); seenPing();
     showAlertPrompt(); runPending();
     if (CUR && $("#pickem")) loadPickem(true);
     if (IS_APP) { clearBadge(); loadInbox(); }
@@ -850,7 +925,7 @@ function drawAccount(b) {
     <button class="btn-sec danger" id="acctdel">Delete account</button>
     <p class="mut" style="font-size:12px">Deleting removes your account, saved teams and alerts. The site keeps working without an account.</p></div>`;
   // Signing out starts the phone fresh (welcome page); the account keeps the teams for the next sign-in.
-  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
+  $("#acctout").onclick = async () => { rememberAlerts(); await alertsPause(); await window.Clerk.signOut(); store.set("alertsOn", ""); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
   $("#acctdel").onclick = () => {
     const sh = $("#delsheet"), inp = $("#delin"), go = $("#delgo");
     inp.value = ""; go.disabled = true; sh.hidden = false; setTimeout(() => inp.focus(), 50);
@@ -860,6 +935,8 @@ function drawAccount(b) {
   };
   async function acctDelete(btn) {
     btn.textContent = "Deleting…";
+    try { await alertsPause(); } catch (x) {}
+    if (ME && ME.id) store.set("alertsOn:" + ME.id, "");
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
@@ -997,8 +1074,13 @@ function appRegister() {
 const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
-const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
+const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h"}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
+const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off";
+const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder"].filter(Boolean).join(" · ") || "No alerts";
 const alertsOn = () => !!store.get("alertsOn");
+// Alerts on/off is remembered per account on this phone, so signing out (or someone else signing in and
+// out) and back in puts yours back the way they were.
+const rememberAlerts = () => { if (ME && ME.id) store.set("alertsOn:" + ME.id, alertsOn() ? "1" : "0"); };
 async function pushSub() {
   if (IS_APP) return APNS_TOK ? {endpoint: "apns:" + APNS_TOK, toJSON: () => Object.assign({endpoint: "apns:" + APNS_TOK, apns: APNS_TOK}, APP_ID ? {topic: APP_ID} : {}),
     unsubscribe: async () => { try { await PN().unregister(); } catch (e) {} APNS_TOK = ""; store.set("apnsTok", ""); }} : null;
@@ -1006,6 +1088,7 @@ async function pushSub() {
 }
 let ASYNC_T = null;
 function alertsSync(soon) {
+  rememberAlerts();
   if (!alertsOn() || !ME || !PUSH_OK()) return;
   clearTimeout(ASYNC_T);
   ASYNC_T = setTimeout(async () => {
@@ -1015,6 +1098,14 @@ function alertsSync(soon) {
     let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
     try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
   }, soon ? 400 : 1200);
+}
+// Signed out / deleted: this phone stops getting that account's alerts (no teams), but keeps its alert token.
+async function alertsPause() {
+  if (!alertsOn() || !ME || !PUSH_OK()) return;
+  clearTimeout(ASYNC_T);
+  const sub = await pushSub(); if (!sub) return;
+  const c = acfg();
+  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge}); } catch (e) {}
 }
 const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
 async function enableAlerts() {
@@ -1043,7 +1134,7 @@ async function enableAlerts() {
 async function disableAlerts() {
   const sub = await pushSub();
   if (sub) { try { await api("DELETE", "/api/push", {endpoint: sub.endpoint}); } catch (e) {} try { await sub.unsubscribe(); } catch (e) {} }
-  store.set("alertsOn", ""); toast("Alerts are off on this device"); drawAlerts();
+  store.set("alertsOn", ""); rememberAlerts(); toast("Alerts are off on this device"); drawAlerts();
 }
 // Why alerts can't be turned on here (or "" when they can).
 function alertsBlocker() {
@@ -1088,23 +1179,20 @@ async function drawAlertsPage(b) {
     return;
   }
   const c = acfg(), list = (favs() || []).map(teamByKey).filter(Boolean);
-  const sum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.mo && "Big moments", tc.rem === "2h" ? "2-hour reminder" : tc.rem === "am" && "Morning reminder", tc.wr && "Wrap-up"].filter(Boolean).join(" · ") || "No alerts";
-  b.innerHTML = `<div class="pgin">${alertsMaster(true)}<div class="seth">Teams</div><div class="glist">`
-    + list.map(t => { const tc = tcfg(c, t.k); return `<details class="arow" data-team="${t.k}" ${AOPEN.has(t.k) ? "open" : ""}><summary><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${sum(tc)}</span></span>${icon("chev")}</summary>
-      <div class="aopts"><div class="opt"><span>Our final score</span>${aseg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
-      <div class="opt"><span>Other games in ${esc(t.c)}</span>${aseg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
-      <div class="opt"><span>Big moments<span class="ddsub">Into 1st, playoff line, clinched</span></span>${aseg("mo", [["1", "On"], ["0", "Off"]], tc.mo ? "1" : "0")}</div>
-      <div class="opt"><span>Game-day reminder</span>${aseg("rem", [["am", "Morning"], ["2h", "2 hrs"], ["off", "Off"]], tc.rem)}</div>
-      <div class="opt"><span>Sunday wrap-up<span class="ddsub">7 PM, if you haven&#39;t seen the results</span></span>${aseg("wr", [["1", "On"], ["0", "Off"]], tc.wr ? "1" : "0")}</div></div></details>`; }).join("")
+  b.innerHTML = `<div class="pgin">${alertsMaster(true)}<div class="seth">Your teams</div><div class="glist">`
+    + list.map(t => `<button class="arow arteam" data-open="${t.k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}<span class="ddsub">${alertSum(tcfg(c, t.k))}</span></span>${icon("chev")}</button>`).join("")
+    + (list.length ? "" : `<div class="mut" style="padding:12px">Follow a team to get its alerts.</div>`)
     + `</div><div class="seth">Options</div><div class="glist">
       <details class="arow" data-team="__quiet" ${AOPEN.has("__quiet") ? "open" : ""}><summary><span>Quiet hours<span class="ddsub">${c.q.on ? `${hm12(c.q.s)}–${hm12(c.q.e)} · alerts wait, then arrive as one summary` : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Quiet hours</span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
         ${c.q.on ? `<div class="qt"><input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}</div></details>
       <details class="arow" data-team="__badge" ${AOPEN.has("__badge") ? "open" : ""}><summary><span>App icon alert<span class="ddsub">${c.badge ? "On · red number for alerts you haven't opened" : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Red number on the app icon</span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div></details></div>
-    <p class="mut pgfoot">Scores arrive about 15 minutes after the ECNL posts them. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
+    <p class="mut pgfoot">Choose each team's alerts on that team: tap a team above, or tap the team you're on at the top. Scores arrive about 15 minutes after they're posted. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
   b.querySelectorAll("details.arow").forEach(dt => dt.addEventListener("toggle", () => { dt.open ? AOPEN.add(dt.dataset.team) : AOPEN.delete(dt.dataset.team); }));
   b.onclick = e => {
+    const op = e.target.closest("[data-open]");
+    if (op) { closePages(); OPEN_SHEET = true; KEEP_TAB = true; if (op.dataset.open === CUR) { teamSheet(); OPEN_SHEET = false; } else location.hash = "t=" + op.dataset.open; return; }
     const btn = e.target.closest(".seg button"); if (!btn) return;
     e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
@@ -1167,17 +1255,32 @@ document.addEventListener("click", async e => {
 });
 // Right after someone stars a team: offer alerts once (on iPhone in Safari, that means the Home Screen first).
 function maybeOfferAlerts(k) {
-  if (alertsOn() || store.get("alertsOffered")) return;
-  const t = teamByKey(k), b = $("#anudgebody");
+  const t = teamByKey(k), b = $("#anudgebody"), nm = t ? `${pillName(t.s)}${/U\d+/.test(t.a || "") ? " · " + (/U\d+/.exec(t.a)[0]) + (/Girls/.test(t.a) ? "G" : "") : ""}` : "this team";
+  // Alerts already on: ask about this team only. "Not this team" turns off just this one.
+  if (alertsOn()) {
+    $("#anudgetitle").textContent = `Alerts for ${nm}?`;
+    b.innerHTML = `<p>Final scores, other results in the league and a game-day reminder for ${esc(nm)}. Your other teams don't change.</p><button class="btn-main" id="anudgego">Yes, get alerts</button><button class="btn-sec" id="anudgeno" style="margin-top:8px;width:100%">Not this team</button>`;
+    setTimeout(() => { $("#anudge").hidden = false; }, 500);
+    $("#anudgego").onclick = () => { $("#anudge").hidden = true; const c = acfg(); delete c.teams[k]; setAcfg(c); toast(`Alerts on for ${nm}`); };
+    $("#anudgeno").onclick = () => { $("#anudge").hidden = true; const c = acfg(); c.teams[k] = {our: false, lg: "off", mo: false, rem: "off", wr: false}; setAcfg(c); toast(`No alerts for ${nm}. Your other teams are unchanged.`); };
+    return;
+  }
+  // Alerts off on this phone: offered once, worded for the whole phone.
+  if (store.get("alertsOffered")) return;
   const bl = alertsBlocker();
   if (bl && !(IS_IOS && !STANDALONE() && !INAPP)) return;   // only nudge when the next step is clear
   store.set("alertsOffered", "1");
-  if (bl) b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score on your phone as soon as it's posted. On iPhone, alerts work from the Home Screen app: add it first, open it from your Home Screen, then turn on alerts in Settings.</p><button class="btn-main" id="anudgego">Add to Home Screen</button>`;
-  else b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score, and other results in your league, as soon as they're posted. You can change what you get in Settings.</p><button class="btn-main" id="anudgego">Turn on alerts</button>`;
+  $("#anudgetitle").textContent = "Alerts are off on this phone";
+  if (bl) b.innerHTML = `<p>Get your teams' final scores on your phone as soon as they're posted. On iPhone, alerts work from the Home Screen app: add it first, open it from your Home Screen, then turn on alerts in Settings.</p><button class="btn-main" id="anudgego">Add to Home Screen</button>`;
+  else b.innerHTML = `<p>Turn them on to get final scores for all your teams, including ${esc(nm)}, as soon as they're posted. You can choose per team in Settings.</p><button class="btn-main" id="anudgego">Turn on alerts</button>`;
   setTimeout(() => { $("#anudge").hidden = false; }, 700);
   $("#anudgego").onclick = async () => { $("#anudge").hidden = true; if (bl) openA2hs(); else await enableAlerts(); };
 }
 $("#anudgeclose").onclick = () => $("#anudge").hidden = true;
+// team sheet drop-down: closes on the dimmed area or when the page scrolls
+const closeTeamSheet = () => { TP_OPEN = false; $("#tpanel").hidden = true; document.body.classList.remove("tpopen"); $("#ttl").setAttribute("aria-expanded", "false"); };
+$("#tpdim").onclick = closeTeamSheet;
+$("#scroller").addEventListener("scroll", () => { if (TP_OPEN) closeTeamSheet(); }, {passive: true});
 $("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
 // Opening the app clears the red number.
 var APP_NOTE = null;
@@ -1238,13 +1341,23 @@ loadClerk(); applyGate(); loadGate();
 
 $("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
+function setTitle(k) {   // top-bar team name: set once per team, cleared only on the welcome page
+  const b = $("#ttl"), tl = $(".topline"), t = k && teamByKey(k);
+  if (!t) { b.hidden = true; tl.classList.remove("hasteam"); return; }
+  const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""), txt = `${t.s}${m ? ` · U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""}`, n = b.querySelector(".ttn");
+  if (n.textContent !== txt) n.textContent = txt;
+  b.setAttribute("aria-label", `${t.s} ${t.a || ""}: team options`); b.hidden = false; tl.classList.add("hasteam");
+  store.set("ttlText", txt);
+}
+$("#ttl").onclick = () => teamSheet(true);
 function route() {
   let h = location.hash.slice(1);
   if (INDEX.legacy && INDEX.legacy[h]) { h = "t=" + INDEX.legacy[h]; history.replaceState(null, "", "#" + h); }
   const keys = (new URLSearchParams(h).get("t") || "").split(",").filter(k => teamByKey(k));
   let f = favs();
   if (keys.length) {
-    if (keys[0] !== store.get("lastTeam")) TAB = "team";   // a link to a different team opens on Team
+    if (keys[0] !== store.get("lastTeam") && !KEEP_TAB) TAB = "team";   // a shared link to a different team opens on Standings; switching teams in the app keeps your tab
+    KEEP_TAB = false;
     if (f === null && !LOCKED()) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite (signed out: the star asks to sign in)
     deepLink(h, keys[0]);
   } else if (f && f.length) {
@@ -1258,6 +1371,8 @@ function route() {
 // Links from alerts: #t=<team>&g=<game ids>&v=<tab>&n=<tapped>. A tapped alert shows in full right
 // away (iPhone cuts long alerts short); "Show this game" then jumps to the exact game(s).
 let TEAM_READY = Promise.resolve();
+let KEEP_TAB = false;
+let teamSheet = () => {}, REDRAW_HEAD = null, TP_OPEN = false, OPEN_SHEET = false;
 function deepLink(h, key) {
   closeFinder(); closePages();   // a tapped alert goes to the game, not whatever was left open (search, Settings)
   const q = new URLSearchParams(h), gids = (q.get("g") || "").split(",").filter(Boolean), view = q.get("v");
@@ -1281,17 +1396,19 @@ async function showNote(gids, view, item) {
     + `<div class="nlines">${lines.map(row).join("")}</div>`
     + `<button class="btn-main" id="ngo">${gids.length ? (gids.length > 1 ? "Show these games" : "Show this game") : "Open"}</button>`;
   $("#nsheet").hidden = false;
-  if (view && !item) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));
+  if (view && !item) TEAM_READY.then(() => showTab(view === "league" ? "league" : "games", false));   // "league" = Games · All teams
   $("#ngo").onclick = () => { $("#nsheet").hidden = true; TEAM_READY.then(() => focusGames(gids, view)); };
 }
 function focusGames(gids, view) {
   let el = null;
   if (view) showTab(view === "league" ? "league" : view === "games" ? "games" : view, false);
+  const shown = x => x.closest(".pane") && !x.closest(".pane").hidden && !(x.closest(".gv") && x.closest(".gv").hidden);
   for (const id of gids) {
     const all = [...document.querySelectorAll(`#app [data-gid="${id}"]`)];
-    const pick = all.find(x => x.closest(".pane") && !x.closest(".pane").hidden) || all[0];
+    const pick = all.find(shown) || all.find(x => x.closest(".pane") && !x.closest(".pane").hidden) || all[0];
     if (!pick) continue;
     const pane = pick.closest(".pane"); if (pane && pane.hidden) showTab(pane.dataset.tab, false);
+    const gv = pick.closest(".gv"); if (gv && gv.hidden) setGv(gv.dataset.gv, false);   // e.g. another team's result: All teams
     let d = pick.closest("details"); while (d) { d.open = true; d = d.parentElement && d.parentElement.closest("details"); }
     const later = pick.closest("#later"); if (later) later.hidden = false;
     pick.classList.remove("flash"); void pick.offsetWidth; pick.classList.add("flash");
@@ -1349,13 +1466,13 @@ $("#belltop").onclick = () => openPage("inbox", true);
 // Team dropdown (replaces the pills): favorites, then "Find another team".
 function drawPills() {
   const f = (favs() || []).filter(teamByKey), m = $("#ddmenu");
-  m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Find a team</span></button>`
+  m.innerHTML = `<button class="ddi ddfind" data-find="1">${icon("search")}<span>Add a team</span></button>`
     + (f.length ? `<div class="ddh">Favorites</div>` : "")
     + f.map(k => { const t = teamByKey(k); return `<button class="ddi ${k === CUR ? "on" : ""}" data-k="${k}"><span>${esc(t.a.split(" (")[0])} · ${esc(t.s)}</span><span class="ddsub">${esc(t.c)}</span></button>`; }).join("")
     + (canSuggestHome() ? `<button class="ddi ddfind ddacct" data-home="1">${icon("phone")}<span>${INSTALL_EVT ? "Install the app" : "Add to Home Screen"}</span></button>` : "")
     + (ME ? `<button class="ddi ddfind ddacct" data-acct="1">${icon("user")}<span>Your account<span class="ddsub"> · ${esc(ME.email || "signed in")}</span></span></button>`
        : CLERK_READY ? `<button class="ddi ddfind ddacct" data-signin="1">${icon("user")}<span>${store.get("signedInOnce") ? "Sign in again to keep your teams in sync" : "Sign in to save your teams"}</span></button>` : "");
-  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); if (b.dataset.home) return openA2hs(); location.hash = "t=" + b.dataset.k; };
+  m.onclick = e => { const b = e.target.closest("button"); if (!b) return; m.hidden = true; if (b.dataset.find) return openFinder(); if (b.dataset.signin) return signIn(); if (b.dataset.acct) return openAcct(); if (b.dataset.home) return openA2hs(); KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
 }
 function toggleFav(k) {
   let f = favs() || [];
@@ -1367,7 +1484,7 @@ function toggleFav(k) {
 let FSTATE = {};
 // First screen with no team yet: what Sideline is, search, browse, and what a free account adds.
 function drawLanding() {
-  CUR = null; closeFinder();
+  CUR = null; closeFinder(); setTitle(null);
   $("#teamhead").innerHTML = ""; $("#tabbar").hidden = true;
   $("#app").innerHTML = `<div class="land">
     <span class="logo land-logo" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -1385,7 +1502,7 @@ function drawLanding() {
     <button class="land-sign" id="landsign">Already have an account? <b>Sign in</b></button>`}
   </div>`;
   $("#landq").onclick = () => openFinder();
-  document.querySelectorAll("[data-lg]").forEach(b => b.onclick = () => { openFinder(); FSTATE = {g: b.dataset.lg}; drawFinder(); });
+  document.querySelectorAll(".land-browse [data-lg]").forEach(b => b.onclick = () => { openFinder(); FSTATE = {g: b.dataset.lg}; drawFinder(); });
   const s = $("#landsign"); if (s) s.onclick = signIn;
 }
 function finderNote() {
@@ -1393,53 +1510,74 @@ function finderNote() {
   $("#fbody").insertAdjacentHTML("beforebegin", `<div id="fnote" class="fnote" hidden>${icon("star")}<span>Sign in to save teams and switch between them. Free.</span><button id="fnotego">Sign in</button></div>`);
   $("#fnotego").onclick = () => { closeFinder(); signIn(); };
 }
-function openFinder() { finderNote(); FSTATE = {}; $("#fq").value = ""; $("#finder").classList.add("open"); drawFinder(); setTimeout(() => $("#fq").focus(), 50); }
-function closeFinder() { $("#finder").classList.remove("open"); }
-function teamRow(t) {
+function openFinder() {
+  finderNote(); $("#fq").value = "";
+  const f = $("#finder"), drop = !!CUR;
+  if (drop && f.parentElement !== $("#teamwrap")) $("#teamwrap").appendChild(f);   // drop-down under the team row
+  if (!drop && f.parentElement !== document.body) document.body.appendChild(f);     // welcome page: full screen
+  f.classList.toggle("drop", drop);
+  if (drop && TP_OPEN) closeTeamSheet();
+  const t = CUR && teamByKey(CUR);   // browse starts at the team you're on (boys/girls, age)
+  FSTATE = t ? {g: /Girls/.test(t.a) ? "Girls" : "Boys", a: t.a} : {};
+  f.classList.add("open"); document.body.classList.toggle("fopen", drop); drawFinder();
+  const sb = $("#tsearch"); if (sb) { sb.innerHTML = icon("x"); sb.setAttribute("aria-label", "Close search"); }
+  if (!drop) setTimeout(() => $("#fq").focus(), 50);
+}
+function closeFinder() {
+  $("#finder").classList.remove("open"); document.body.classList.remove("fopen");
+  const sb = $("#tsearch"); if (sb) { sb.innerHTML = icon("search"); sb.setAttribute("aria-label", "Find a team"); }
+}
+function teamRow(t, showAge) {
   const on = (favs() || []).includes(t.k);
-  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.n)}<div>${esc(t.a)} · ${esc(t.c)}</div></div><button class="star ${on ? "on" : ""}" data-star="${t.k}" aria-label="Favorite">${icon("star", on)}</button></div>`;
+  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.s || t.n)}${showAge ? `<div>${esc(t.a.split(" (")[0])}</div>` : ""}</div><button class="ffol ${on ? "on" : ""}" data-star="${t.k}" aria-label="${on ? "Following" : "Follow"} ${esc(t.n)}">${icon("star", on)}${on ? "Following" : "Follow"}</button></div>`;
 }
 function drawFinder() {
+  // Search = filters (Boys|Girls, age, league) + optional name; results are teams grouped by conference (yours/Northwest first)
   const q = $("#fq").value.trim().toLowerCase(), body = $("#fbody");
   const note = $("#fnote");
   if (note) { note.hidden = !LOCKED(); }
   const gOf = t => (/Girls/.test(t.a) ? "Girls" : "Boys");
-  if (q.length >= 2) {
-    const toks = q.split(/\s+/);
-    const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
-    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0) + (/Girls/.test(x) ? 100 : 0);
-    const all = TEAMS.filter(t => toks.every(x => words(t).some(w => w.startsWith(x))))
-      .sort((x, y) => ageNum(x.a) - ageNum(y.a) || x.l.localeCompare(y.l) || x.n.localeCompare(y.n));
-    const hits = all.slice(0, 150);
-    let html = `<div class="mut" style="margin-bottom:6px">${all.length > hits.length ? `First ${hits.length} of ${all.length} matches. Add a word to narrow it` : all.length + " matches"}</div>`, last = "";
-    for (const t of hits) { if (t.a !== last) { html += `<h3>${esc(t.a)}</h3>`; last = t.a; } html += teamRow(t); }
-    body.innerHTML = html;
+  const uniq = arr => [...new Set(arr)];
+  const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
+  const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : /^MLS NEXT Flex/.test(x) ? 5 : /^MLS NEXT Academy/.test(x) ? 4 : /^MLS NEXT/.test(x) ? 3 : 6);
+  const lgShort = x => x === "MLS NEXT Homegrown" ? "MLS NEXT" : x === "MLS NEXT Academy" ? "Academy" : x === "MLS NEXT Flex" ? "Flex" : x === "Other leagues" ? "Other" : x.replace(/\s+(Boys|Girls)$/, "");
+  const ageShort = x => x.replace(/\s+(Boys|Girls)/, "").split(" (")[0];
+  const {a, l} = FSTATE, g = FSTATE.g || "Boys";
+  const inG = TEAMS.filter(t => gOf(t) === g);
+  const ages = uniq(inG.map(t => t.a)).sort((x, y) => ageNum(x) - ageNum(y));
+  const lgs = uniq(inG.filter(t => !a || t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y));
+  const chip = (attr, v, label, on) => `<button ${attr}="${esc(v)}" class="${on ? "on" : ""}">${esc(label)}</button>`;
+  let html = `<div class="fseg" role="tablist">${["Boys", "Girls"].map(x => chip("data-g", x, x, x === g)).join("")}</div>
+    <div class="fages">${ages.map(x => chip("data-a", x, ageShort(x), x === a)).join("")}</div>
+    <div class="fages">${chip("data-l", "", "All", !l)}${lgs.map(x => chip("data-l", x, lgShort(x), x === l)).join("")}</div>`;
+  if (!a && q.length < 2) {
+    html += `<div class="mut" style="padding:8px 2px">Pick an age group, or type a club or team name above.</div>`;
   } else {
-    const {g, a, l, c} = FSTATE;
-    const uniq = arr => [...new Set(arr)];
-    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
-    const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : /^MLS NEXT Flex/.test(x) ? 5 : /^MLS NEXT Academy/.test(x) ? 4 : /^MLS NEXT/.test(x) ? 3 : 6);
-    const ageShort = x => x.replace(/\s+(Boys|Girls)/, "");
-    const crumbs = [g, a && ageShort(a), l, c].filter(Boolean);
-    let html = `<div class="crumbs">${crumbs.map((x, i) => `<button class="pill-btn" data-up="${i}">${esc(x)} ✕</button>`).join("")}</div>`;
-    const row = (k, v, label) => `<div class="f-row" data-${k}="${esc(v)}"><div class="nm">${esc(label || v)}</div>›</div>`;
-    if (!g) html += `<h3>Boys or girls</h3>` + ["Boys", "Girls"].map(x => row("g", x)).join("");
-    else if (!a) html += `<h3>Age group</h3>` + uniq(TEAMS.filter(t => gOf(t) === g).map(t => t.a)).sort((x, y) => ageNum(x) - ageNum(y)).map(x => row("a", x, ageShort(x))).join("");
-    else if (!l) html += `<h3>League</h3>` + uniq(TEAMS.filter(t => t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y)).map(x => row("l", x)).join("");
-    else if (!c) html += `<h3>Conference</h3>` + uniq(TEAMS.filter(t => t.a === a && t.l === l).map(t => t.c)).sort().map(x => row("c", x)).join("");
-    else html += `<h3>Team</h3>` + TEAMS.filter(t => t.a === a && t.l === l && t.c === c).map(teamRow).join("");
-    body.innerHTML = html;
+    const toks = q.length >= 2 ? q.split(/\s+/) : [];
+    const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
+    const all = inG.filter(t => (!a || t.a === a) && (!l || t.l === l) && toks.every(x => words(t).some(w => w.startsWith(x))))
+      .sort((x, y) => x.c.localeCompare(y.c) || ageNum(x.a) - ageNum(y.a) || (x.s || x.n).localeCompare(y.s || y.n));   // divisions A–Z, teams A–Z
+    const what = [a ? ageShort(a) : "", g, l ? lgShort(l) : ""].filter(Boolean).join(" ");
+    html += `<div class="fcount"><span>${all.length} team${all.length === 1 ? "" : "s"} · ${esc(what)}</span>${l || q || (a && !(CUR && (teamByKey(CUR) || {}).a === a)) ? `<button class="fclear" data-clear="1">Clear</button>` : ""}</div>`;
+    if (!all.length) html += `<div class="mut" style="padding:8px 2px">No teams match. Try All leagues, another age, or Clear.</div>`;
+    // divisions: closed by default (typing a name opens them all); teams drawn only when open
+    const groups = new Map(); for (const t of all) { if (!groups.has(t.c)) groups.set(t.c, []); groups.get(t.c).push(t); }
+    const open = FSTATE.open || (FSTATE.open = new Set()), showAll = toks.length > 0;
+    for (const [c, ts] of groups) {
+      const sh = l ? c.replace(ts[0].l + " ", "").replace(/^(Boys|Girls) /, "") || c : c, isOpen = showAll !== open.has(c);   // tap flips it either way
+      html += `<button class="fgrp" data-grp="${esc(c)}" aria-expanded="${isOpen}"><span>${esc(sh)}<small>${ts.length} team${ts.length === 1 ? "" : "s"}</small></span>${CHEV}</button>`;
+      if (isOpen) html += `<div class="fgbody">${ts.map(t => teamRow(t, !a)).join("")}</div>`;
+    }
   }
+  body.innerHTML = html;
   body.onclick = e => {
-    const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); const on = st.classList.toggle("on"); st.innerHTML = icon("star", on); return; }
-    const up = e.target.closest("[data-up]");
-    if (up) { const keep = ["g", "a", "l", "c"].slice(0, +up.dataset.up); FSTATE = Object.fromEntries(keep.map(k => [k, FSTATE[k]])); return drawFinder(); }
-    const r = e.target.closest(".f-row"); if (!r) return;
-    if (r.dataset.g) { FSTATE = {g: r.dataset.g}; return drawFinder(); }
-    if (r.dataset.a) { FSTATE.a = r.dataset.a; return drawFinder(); }
-    if (r.dataset.l) { FSTATE.l = r.dataset.l; return drawFinder(); }
-    if (r.dataset.c) { FSTATE.c = r.dataset.c; return drawFinder(); }
-    if (r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
+    const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); const on = (favs() || []).includes(st.dataset.star); st.classList.toggle("on", on); st.innerHTML = icon("star", on) + (on ? "Following" : "Follow"); if (REDRAW_HEAD) REDRAW_HEAD(); return; }
+    const sg = e.target.closest("[data-g]"); if (sg) { FSTATE = {g: sg.dataset.g, a: FSTATE.a && FSTATE.a.replace(/Boys|Girls/, sg.dataset.g)}; if (!TEAMS.some(t => t.a === FSTATE.a)) delete FSTATE.a; return drawFinder(); }
+    const sa = e.target.closest("[data-a]"); if (sa) { FSTATE = {g, a: sa.dataset.a === a ? undefined : sa.dataset.a, l}; if (FSTATE.l && !TEAMS.some(t => t.l === FSTATE.l && (!FSTATE.a || t.a === FSTATE.a))) delete FSTATE.l; return drawFinder(); }
+    const sl = e.target.closest("[data-l]"); if (sl) { FSTATE = {g, a, l: sl.dataset.l || undefined}; return drawFinder(); }
+    const gp = e.target.closest("[data-grp]"); if (gp) { const o = FSTATE.open || (FSTATE.open = new Set()), c = gp.dataset.grp; o.has(c) ? o.delete(c) : o.add(c); return drawFinder(); }
+    if (e.target.closest("[data-clear]")) { const t = CUR && teamByKey(CUR); FSTATE = t ? {g: gOf(t), a: t.a} : {g}; $("#fq").value = ""; return drawFinder(); }   // back to where search opened
+    const r = e.target.closest(".f-row"); if (r && r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
   };
 }
 
@@ -1470,7 +1608,7 @@ async function refreshConf(k) {
   finally { if (--REFRESHING <= 0) { REFRESHING = 0; document.body.classList.remove("refreshing"); } }
 }
 async function openTeam(k) {
-  CUR = k; closeFinder(); drawPills();
+  CUR = k; closeFinder(); setTitle(k); drawPills();
   const t = teamByKey(k);
   if (!CONF_CACHE[t.f]) { const txt = await fetch(`data/conf/${t.f}.json`, {cache: "no-store"}).then(r => r.text()); CONF_CACHE[t.f] = JSON.parse(txt); CONF_TXT[t.f] = txt; CONF_AT[t.f] = Date.now(); }
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
@@ -1679,16 +1817,24 @@ function renderTeam(D, fid, key) {
   const upW = inWin.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime);
   const dayShort = d => d === yest ? "Yest" : d === today ? "Today" : shortDate(d);
   const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
-  const sec4 = (finW.length ? blk("Completed", finW.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: shortDate(g.date)})).join("")) : "")
-    + (waitW.length ? blk("Waiting for score", waitW.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : shortDate(g.date)})).join("")) : "")
-    + [...new Set(upW.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
-        upW.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
+  const winHtml = (fin, wait, up) => (fin.length ? blk("Completed", fin.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: shortDate(g.date)})).join("")) : "")
+    + (wait.length ? blk("Waiting for score", wait.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : shortDate(g.date)})).join("")) : "")
+    + [...new Set(up.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
+        up.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
+  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe));
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
   const restS = scheduled.filter(g => g.date > wEnd);
   const restHtml = byDay(restS, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}))
     + (missed.length ? blk("New date not set", missed.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
   const seasonRes = played.filter(g => g.date < wStart).sort((a, b) => byTime(b, a));
   const seasonHtml = byDay(seasonRes, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
+  // My team: the same sections, only this team's games
+  const restM = restS.filter(isMe), missedM = missed.filter(isMe), seasonM = seasonRes.filter(isMe);
+  const restHtmlM = byDay(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}))
+    + (missedM.length ? blk("New date not set", missedM.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
+  const seasonHtmlM = byDay(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
+  // All teams | My team: your last choice; otherwise My team for a team you follow
+  const gview = store.get("gview") || (starred ? "mine" : "all");
   // Remaining games for the predictor, one closed row per weekend (Mon–Sun); the next weekend with games
   // starts open. Every game still counts in the predicted table, open or not.
   const prow = g => gameRow(D, M, g, {focus: fid, picks: true, left: shortTime(g.time)});
@@ -1731,7 +1877,7 @@ function renderTeam(D, fid, key) {
 
 <div class="pane" data-tab="team">
   ${alertCard()}
-  ${sec("us", chipMe, "Where we stand", "", `
+  ${sec("us", chipMe, `Where we stand<span class="h2lg">${esc(D.conf_name)}</span>`, "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
       <div class="stat"><div class="v">${pct(atOrAbove(base, fid, 0))}</div><div class="k">Chance to finish 1st</div></div>
@@ -1744,22 +1890,23 @@ function renderTeam(D, fid, key) {
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
-  ${sec("us", chipMe, "Upcoming", "",
-    (nextOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("") || "<div class='mut'>No more league games scheduled.</div>")
-    + (laterOurs.length ? `<div id="later" hidden>${laterOurs.map(g => fixtureCard(D, M, g, {focus: fid, stake: true})).join("")}</div><button class="more" id="morebtn">＋ Show rest of season (${laterOurs.length})</button>` : "")
-    , "s2")}
-  ${sec("us", chipMe, "Results", "", (ours.slice(0, 5).map(g => resultRow(D, g, fid)).join("") || "<div class='mut'>No results yet.</div>")
-    + (ours.length > 5 ? `<details class="inner"><summary>Older results (${ours.length - 5})</summary>${ours.slice(5).map(g => resultRow(D, g, fid)).join("")}</details>` : ""), "s3", false)}
-  ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
-      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
-</div><div class="pane" data-tab="league">
-  ${sec("div", "League", wkend ? "This weekend" : "Last weekend & coming up", `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
+  <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
+  <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
+  ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
+  </div>
+  <div class="gv" data-gv="mine" ${gview === "mine" ? "" : "hidden"}>
+  ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, secM || `<div class='mut'>No league game for ${me} in this window.</div>`, "m4")}
+  ${sec("div", "League", `Rest of season${restM.length + missedM.length ? ` · ${restM.length + missedM.length}` : ""}`, "", restHtmlM || "<div class='mut'>No more games scheduled.</div>", "m4b", true)}
+  ${sec("div", "League", `Season results${seasonM.length ? ` · ${seasonM.length}` : ""}`, "", seasonHtmlM || "<div class='mut'>No earlier results.</div>", "m4c", false)}
+  </div>
+  ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
+      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="predict">
   ${pkShown() ? `<div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>` : ""}
   <div data-pv="season" class="pv">
-  ${sec("div", "Predict", "Predicted final table", "", `<div class="picksbar" id="picksbar" hidden></div><div id="predtable"></div>`, "s5")}
+  ${sec("div", "Predict", `Predicted final table<span class="h2lg">${esc(D.conf_name)}</span>`, "", `<div class="picksbar" id="picksbar" hidden></div><div id="predtable"></div>`, "s5")}
   ${sec("div", "Predict", "Remaining games", "Gray = our pick. Tap a result to change it.", `<div id="predgames" class="pcards">${predHtml || "<div class='mut'>No games left.</div>"}</div>`, "s5b")}
   ${sec("div", "Predict", "How we did", "", howHtml, "s5c")}
   </div>${pkShown() ? `<div data-pv="pickem" class="pv" hidden><div id="pickem"></div></div>` : ""}
@@ -1768,14 +1915,74 @@ function renderTeam(D, fid, key) {
 
   showTab(TAB, false); $("#tabbar").hidden = false;
   document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
-  $("#teamhead").innerHTML = `<div class="th"><div class="thl">
-      <button class="teamdd" id="teamdd" aria-haspopup="true"><span class="ddt"><span>${esc(D.age_label.split(" (")[0])} · ${me}</span><span class="ddl">${esc(D.conf_name)}</span></span>${icon("search")}</button></div>
-    <div class="thr"><button class="followbtn ${starred ? "starred" : ""}" id="starbtn" aria-label="${starred ? "Following" : "Follow"} this team">${followHtml(starred)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div></div>`;
-  $("#teamdd").onclick = () => { recheck(); const m = $("#ddmenu"); m.hidden = !m.hidden; $("#teamdd").setAttribute("aria-expanded", String(!m.hidden)); document.body.classList.toggle("ddopen", !m.hidden); };
-  $("#starbtn").onclick = () => { toggleFav(key); const on = (favs() || []).includes(key); $("#starbtn").classList.toggle("starred", on); $("#starbtn").innerHTML = followHtml(on); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
-    if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
-    else if (on) maybeOfferAlerts(key); };
-  $("#sharebtn").onclick = async () => {
+  // Header: team name + chevron (tap: your teams / find a team), age · league below. Following 2+ teams:
+  // one sliding row of them under it (current first, then most recently opened); a tap keeps the tab.
+  // Header = your teams as pills (youngest to oldest; tapping one keeps your tab), search pinned first.
+  // A team you don't follow shows as a dashed pill at the front with a Follow button.
+  // Below: the league, Following, Share.
+  const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
+  const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
+  const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
+  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}${k === key ? ": team options" : ""}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
+  const drawHead = () => {
+    const fl = (favs() || []).filter(teamByKey);
+    const keys = [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); });
+    const on = fl.includes(key);
+    // short pill names; two of yours that would look the same keep their full names
+    const lbl = {}, seen = {};
+    for (const k of [key, ...keys]) { const t = teamByKey(k); lbl[k] = pillName(t.s); const id = lbl[k] + "|" + ageTag(t); (seen[id] = seen[id] || new Set()).add(k); }
+    for (const ks of Object.values(seen)) if (ks.size > 1) for (const k of ks) lbl[k] = teamByKey(k).s;
+    const fo = $("#finder").classList.contains("open");
+    setTitle(key);
+    $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="${fo ? "Close search" : "Find a team"}">${icon(fo ? "x" : "search")}</button>
+      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : `<span class="tvisit">${pill(key, "on tmp", lbl)}<button class="tpill tfollow" id="starbtn" aria-label="Follow ${esc(focus.short)}">${icon("star")}Follow</button></span>`}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>`;
+    const ts = $("#tstrip");
+    const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2);
+    // keep the row where you left it; scroll only as far as needed to show the current team
+    ts.scrollLeft = +(store.get("stripX") || 0);
+    const cur = ts.querySelector(".tpill.on");
+    if (cur && cur.offsetLeft < ts.scrollLeft) ts.scrollLeft = Math.max(0, cur.offsetLeft - 8);
+    else if (cur && cur.offsetLeft + cur.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = cur.offsetLeft + cur.offsetWidth - ts.clientWidth + 8;
+    fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
+    // another team: switch (keeps your tab) · the team you're on: its team sheet
+    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return teamSheet(true); KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    $("#tsearch").onclick = () => $("#finder").classList.contains("open") ? closeFinder() : openFinder();
+    const follow = () => { toggleFav(key); const on = (favs() || []).includes(key); drawHead(); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
+      if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
+      else if (on) maybeOfferAlerts(key); };
+    if ($("#starbtn")) $("#starbtn").onclick = follow;
+    // Team sheet: drops down under the team row (over the page). Tapping another team while it's open
+    // switches team and shows that team's sheet. League, this team's alerts, share, unfollow.
+    teamSheet = (toggle) => {
+      if (toggle && TP_OPEN) return closeTeamSheet();
+      const on = (favs() || []).includes(key), nm = focus.short, c = acfg(), tc = tcfg(c, key);
+      const seg = (n, opts, v) => `<span class="seg" data-seg="${n}">${opts.map(([x, l]) => `<button data-v="${x}" class="${x === v ? "on" : ""}">${l}</button>`).join("")}</span>`;
+      const alertsHtml = !on ? "" : !ME ? `<div class="tpsub">Alerts</div><button class="tsr" data-a="signin">${icon("bell")}<span>Sign in to get alerts</span></button>`
+        : !alertsOn() ? `<div class="tpsub">Alerts</div><button class="tsr" data-a="alertson">${icon("bell")}<span>Alerts are off on this phone</span><small class="tpon">Turn on</small></button>`
+        : `<div class="tpsub">Alerts</div><div class="aopts tpal">
+            <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
+            <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
+            <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div></div>`;
+      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}
+        <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
+        <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
+      TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
+      $("#tpbody").onclick = async e => {
+        const sb = e.target.closest(".seg button");
+        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : {rem: v}); setAcfg(cc); teamSheet(); return; }
+        const b = e.target.closest("button[data-a]"); if (!b) return;
+        if (b.dataset.a === "share") { closeTeamSheet(); share(); }
+        else if (b.dataset.a === "follow") { closeTeamSheet(); follow(); }
+        else if (b.dataset.a === "signin") { closeTeamSheet(); signIn(); }
+        else if (b.dataset.a === "alertson") { await enableAlerts(); if (TP_OPEN) teamSheet(); }
+      };
+    };
+  };
+  drawHead(); REDRAW_HEAD = drawHead;
+  if (TP_OPEN || OPEN_SHEET) { OPEN_SHEET = false; teamSheet(); }   // sheet open while flipping teams: show this team's
+  try { store.set("recentTeams", [key].concat(recent.filter(k => k !== key)).slice(0, 30).join(",")); } catch (e) {}
+  if ($("#gviews")) $("#gviews").onclick = e => { const b = e.target.closest("button[data-gv]"); if (b) setGv(b.dataset.gv); };
+  async function share() {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
     try { await navigator.clipboard.writeText(url); toast("Link copied"); } catch (e) { prompt("Copy this link:", url); }

@@ -66,8 +66,8 @@ function cleanDevice(b) {
   const teams = (Array.isArray(b.teams) ? b.teams : []).filter(t => t && /^[a-z0-9-]{3,40}$/.test(t.k)).slice(0, 60).map(t => ({
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
     n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
-    lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: t.mo !== false,
-    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: t.wr !== false}));
+    lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: false,   // big moments and the Sunday wrap-up are retired (Nov 2026)
+    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false}));
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
@@ -304,6 +304,7 @@ export function match(d, changes, moments = {}, pos = {}) {
   }
   // big moments ride along on that team's score alert only (never on their own)
   const has = new Set(items.map(i => i.t));
+  if (RETIRED) return items;   // big moments retired (Nov 2026); old saved settings may still say mo: true
   for (const t of d.teams) if (t.mo && moments[t.k] && has.has(t.k)) for (const text of moments[t.k]) items.push({t: t.k, kind: "mo", text});
   return items;
 }
@@ -457,7 +458,9 @@ async function reminders(env, st, up, now) {
 
 // Sunday-night wrap-up at 7 PM on the phone's clock: only if their teams played this weekend and the
 // person hasn't opened the app since the last of those results.
+const RETIRED = true;   // Sunday wrap-up and big moments: retired (Nov 2026)
 async function wrapups(env, st, wk, now) {
+  if (RETIRED) return 0;
   if (!Object.keys(wk).length) return 0;
   const u = new Date(now), day = u.getUTCDay(), h = u.getUTCHours();
   if (!((day === 0 && h >= 16) || (day === 1 && h < 10))) return 0;   // Sunday evening somewhere in the US
