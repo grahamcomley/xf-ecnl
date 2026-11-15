@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.43">
+<meta name="app-version" content="v1.44">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1555,9 +1555,8 @@ function drawFinder() {
   } else {
     const toks = q.length >= 2 ? q.split(/\s+/) : [];
     const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
-    const mine = CUR && (teamByKey(CUR) || {}).c, near = c => c === mine ? 0 : /Northwest|Pacific/.test(c) && !/NorCal/.test(c) ? 1 : 2;
     const all = inG.filter(t => (!a || t.a === a) && (!l || t.l === l) && toks.every(x => words(t).some(w => w.startsWith(x))))
-      .sort((x, y) => near(x.c) - near(y.c) || lgKey(x.l) - lgKey(y.l) || x.c.localeCompare(y.c) || ageNum(x.a) - ageNum(y.a) || x.n.localeCompare(y.n));
+      .sort((x, y) => x.c.localeCompare(y.c) || ageNum(x.a) - ageNum(y.a) || (x.s || x.n).localeCompare(y.s || y.n));   // divisions A–Z, teams A–Z
     const what = [a ? ageShort(a) : "", g, l ? lgShort(l) : ""].filter(Boolean).join(" ");
     html += `<div class="fcount"><span>${all.length} team${all.length === 1 ? "" : "s"} · ${esc(what)}</span>${l || q || (a && !(CUR && (teamByKey(CUR) || {}).a === a)) ? `<button class="fclear" data-clear="1">Clear</button>` : ""}</div>`;
     if (!all.length) html += `<div class="mut" style="padding:8px 2px">No teams match. Try All leagues, another age, or Clear.</div>`;
