@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.30">
+<meta name="app-version" content="v1.31">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -295,7 +295,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
   <button class="btn-sec" id="pkrephide">Hide this player</button>
 </div></div>
 <div id="anudge" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
+  <div class="sheet-head"><b id="anudgetitle">Get the score the moment it's posted</b><button class="icon-btn" id="anudgeclose">Not now</button></div>
   <div id="anudgebody"></div>
 </div></div>
 <div id="authsheet" class="sheet" hidden><div class="sheet-card" style="text-align:center">
@@ -738,7 +738,10 @@ async function onAuth() {
     else if (!CUR && $(".land")) drawLanding();   // a new account on the welcome page: drop the sign-in parts
     if (first || JSON.stringify(next) !== JSON.stringify(r.favs || [])) await pushFavs(true);
     if (first && local.length) toast("Your teams are saved to your account");
-    alertsSync(); seenPing();
+    const was = store.get("alertsOn:" + u.id);
+    if (was === "1" && !alertsOn() && PUSH_OK() && !permDenied()) store.set("alertsOn", "1");   // yours were on: back on
+    else if (was === "0" && alertsOn()) store.set("alertsOn", "");                           // yours were off: stay off
+    alertsSync(true); seenPing();
     showAlertPrompt(); runPending();
     if (CUR && $("#pickem")) loadPickem(true);
     if (IS_APP) { clearBadge(); loadInbox(); }
@@ -881,7 +884,7 @@ function drawAccount(b) {
     <button class="btn-sec danger" id="acctdel">Delete account</button>
     <p class="mut" style="font-size:12px">Deleting removes your account, saved teams and alerts. The site keeps working without an account.</p></div>`;
   // Signing out starts the phone fresh (welcome page); the account keeps the teams for the next sign-in.
-  $("#acctout").onclick = async () => { await window.Clerk.signOut(); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
+  $("#acctout").onclick = async () => { rememberAlerts(); await alertsPause(); await window.Clerk.signOut(); store.set("alertsOn", ""); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
   $("#acctdel").onclick = () => {
     const sh = $("#delsheet"), inp = $("#delin"), go = $("#delgo");
     inp.value = ""; go.disabled = true; sh.hidden = false; setTimeout(() => inp.focus(), 50);
@@ -891,6 +894,8 @@ function drawAccount(b) {
   };
   async function acctDelete(btn) {
     btn.textContent = "Deleting…";
+    try { await alertsPause(); } catch (x) {}
+    if (ME && ME.id) store.set("alertsOn:" + ME.id, "");
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
@@ -1030,6 +1035,9 @@ const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.g
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
 const tcfg = (c, k) => Object.assign({our: true, lg: "all", mo: true, rem: "2h", wr: true}, c.teams[k] || {});
 const alertsOn = () => !!store.get("alertsOn");
+// Alerts on/off is remembered per account on this phone, so signing out (or someone else signing in and
+// out) and back in puts yours back the way they were.
+const rememberAlerts = () => { if (ME && ME.id) store.set("alertsOn:" + ME.id, alertsOn() ? "1" : "0"); };
 async function pushSub() {
   if (IS_APP) return APNS_TOK ? {endpoint: "apns:" + APNS_TOK, toJSON: () => Object.assign({endpoint: "apns:" + APNS_TOK, apns: APNS_TOK}, APP_ID ? {topic: APP_ID} : {}),
     unsubscribe: async () => { try { await PN().unregister(); } catch (e) {} APNS_TOK = ""; store.set("apnsTok", ""); }} : null;
@@ -1037,6 +1045,7 @@ async function pushSub() {
 }
 let ASYNC_T = null;
 function alertsSync(soon) {
+  rememberAlerts();
   if (!alertsOn() || !ME || !PUSH_OK()) return;
   clearTimeout(ASYNC_T);
   ASYNC_T = setTimeout(async () => {
@@ -1046,6 +1055,14 @@ function alertsSync(soon) {
     let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
     try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
   }, soon ? 400 : 1200);
+}
+// Signed out / deleted: this phone stops getting that account's alerts (no teams), but keeps its alert token.
+async function alertsPause() {
+  if (!alertsOn() || !ME || !PUSH_OK()) return;
+  clearTimeout(ASYNC_T);
+  const sub = await pushSub(); if (!sub) return;
+  const c = acfg();
+  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge}); } catch (e) {}
 }
 const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
 async function enableAlerts() {
@@ -1074,7 +1091,7 @@ async function enableAlerts() {
 async function disableAlerts() {
   const sub = await pushSub();
   if (sub) { try { await api("DELETE", "/api/push", {endpoint: sub.endpoint}); } catch (e) {} try { await sub.unsubscribe(); } catch (e) {} }
-  store.set("alertsOn", ""); toast("Alerts are off on this device"); drawAlerts();
+  store.set("alertsOn", ""); rememberAlerts(); toast("Alerts are off on this device"); drawAlerts();
 }
 // Why alerts can't be turned on here (or "" when they can).
 function alertsBlocker() {
@@ -1198,13 +1215,24 @@ document.addEventListener("click", async e => {
 });
 // Right after someone stars a team: offer alerts once (on iPhone in Safari, that means the Home Screen first).
 function maybeOfferAlerts(k) {
-  if (alertsOn() || store.get("alertsOffered")) return;
-  const t = teamByKey(k), b = $("#anudgebody");
+  const t = teamByKey(k), b = $("#anudgebody"), nm = t ? `${pillName(t.s)}${/U\d+/.test(t.a || "") ? " · " + (/U\d+/.exec(t.a)[0]) + (/Girls/.test(t.a) ? "G" : "") : ""}` : "this team";
+  // Alerts already on: ask about this team only. "Not this team" turns off just this one.
+  if (alertsOn()) {
+    $("#anudgetitle").textContent = `Alerts for ${nm}?`;
+    b.innerHTML = `<p>Final scores, other results in the league and a game-day reminder for ${esc(nm)}. Your other teams don't change.</p><button class="btn-main" id="anudgego">Yes, get alerts</button><button class="btn-sec" id="anudgeno" style="margin-top:8px;width:100%">Not this team</button>`;
+    setTimeout(() => { $("#anudge").hidden = false; }, 500);
+    $("#anudgego").onclick = () => { $("#anudge").hidden = true; const c = acfg(); delete c.teams[k]; setAcfg(c); toast(`Alerts on for ${nm}`); };
+    $("#anudgeno").onclick = () => { $("#anudge").hidden = true; const c = acfg(); c.teams[k] = {our: false, lg: "off", mo: false, rem: "off", wr: false}; setAcfg(c); toast(`No alerts for ${nm}. Your other teams are unchanged.`); };
+    return;
+  }
+  // Alerts off on this phone: offered once, worded for the whole phone.
+  if (store.get("alertsOffered")) return;
   const bl = alertsBlocker();
   if (bl && !(IS_IOS && !STANDALONE() && !INAPP)) return;   // only nudge when the next step is clear
   store.set("alertsOffered", "1");
-  if (bl) b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score on your phone as soon as it's posted. On iPhone, alerts work from the Home Screen app: add it first, open it from your Home Screen, then turn on alerts in Settings.</p><button class="btn-main" id="anudgego">Add to Home Screen</button>`;
-  else b.innerHTML = `<p>Get ${esc(t ? t.s : "your team")}'s final score, and other results in your league, as soon as they're posted. You can change what you get in Settings.</p><button class="btn-main" id="anudgego">Turn on alerts</button>`;
+  $("#anudgetitle").textContent = "Alerts are off on this phone";
+  if (bl) b.innerHTML = `<p>Get your teams' final scores on your phone as soon as they're posted. On iPhone, alerts work from the Home Screen app: add it first, open it from your Home Screen, then turn on alerts in Settings.</p><button class="btn-main" id="anudgego">Add to Home Screen</button>`;
+  else b.innerHTML = `<p>Turn them on to get final scores for all your teams, including ${esc(nm)}, as soon as they're posted. You can choose per team in Settings.</p><button class="btn-main" id="anudgego">Turn on alerts</button>`;
   setTimeout(() => { $("#anudge").hidden = false; }, 700);
   $("#anudgego").onclick = async () => { $("#anudge").hidden = true; if (bl) openA2hs(); else await enableAlerts(); };
 }
