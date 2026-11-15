@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.29">
+<meta name="app-version" content="v1.30">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -365,6 +365,22 @@ const ICON = {
 // Games and League are one tab now (All teams | My team inside it); old links and saved tabs still work.
 const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["predict", "sliders", "Predict"]];
 let TAB = (() => { try { const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
+// Short team names for the header pills (search, tables and games keep the full name).
+// Sure rules only: drop filler words (FC, SC, Soccer Club, Youth...), league/birth-year tags, state names -> WA, OR...
+// A few Northwest names that are still long get a reviewed short form; anything else keeps its (rule-trimmed) name.
+const PILL_NAME = {"Central Washington Sounders": "CWS", "Sacramento Republic FC": "Sac Republic", "Seattle Celtic Green": "Celtic Green",
+  "Vancouver Whitecaps FC": "Whitecaps", "Westside Metros FC South": "Metros South", "Atletico Santa Rosa": "Atl. Santa Rosa",
+  "Modesto Ajax United": "Modesto Ajax", "San Francisco Glens SC": "SF Glens", "San Jose Earthquakes": "Earthquakes", "Sacramento United": "Sac United"};
+const PILL_FILL = new Set(["-", "association", "assn", "ecnl", "rl", "ecnl-rl", "pre-ecnl", "stxcl", "fc", "sc", "cf", "s.c.", "f.c.", "soccer", "club", "football", "futbol", "fútbol", "youth", "sa", "fa", "ysc", "ysa"]);
+const STATE_AB = {Washington: "WA", Oregon: "OR", California: "CA", Idaho: "ID", Montana: "MT", Texas: "TX", Arizona: "AZ", Colorado: "CO", Utah: "UT", Nevada: "NV", Florida: "FL", Georgia: "GA", Virginia: "VA", Ohio: "OH", Michigan: "MI", Illinois: "IL", Indiana: "IN", Minnesota: "MN", Missouri: "MO", Kansas: "KS", Oklahoma: "OK", Tennessee: "TN", Kentucky: "KY", Alabama: "AL", Louisiana: "LA", Arkansas: "AR", Iowa: "IA", Nebraska: "NE", Wisconsin: "WI", Pennsylvania: "PA", Maryland: "MD", Delaware: "DE", Massachusetts: "MA", Connecticut: "CT", Hawaii: "HI", Alaska: "AK", Mississippi: "MS", Wyoming: "WY"};
+function pillName(full) {
+  if (PILL_NAME[full]) return PILL_NAME[full];
+  const w = String(full || "").split(/\s+/).filter(Boolean);
+  let t = w.filter(x => !PILL_FILL.has(x.toLowerCase().replace(/[.,]$/, "")) && !/^(?:[BG]?(?:20)?\d\d(?:\/(?:20)?\d\d)?)$/i.test(x));
+  if (!t.length) t = w;
+  if (t.length > 1 && t[t.length - 1].toLowerCase() === "academy") t.pop();
+  return t.map(x => STATE_AB[x] || x).join(" ");
+}
 // Games tab: All teams | My team (remembered)
 function setGv(v, save = true) {
   if (save) store.set("gview", v);
@@ -1804,13 +1820,17 @@ function renderTeam(D, fid, key) {
   const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
   const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
   const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
-  const pill = (k, cls) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}">${esc(t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
+  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
   const drawHead = () => {
     const fl = (favs() || []).filter(teamByKey);
     const keys = [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); });
     const on = fl.includes(key);
+    // short pill names; two of yours that would look the same keep their full names
+    const lbl = {}, seen = {};
+    for (const k of [key, ...keys]) { const t = teamByKey(k); lbl[k] = pillName(t.s); const id = lbl[k] + "|" + ageTag(t); (seen[id] = seen[id] || new Set()).add(k); }
+    for (const ks of Object.values(seen)) if (ks.size > 1) for (const k of ks) lbl[k] = teamByKey(k).s;
     $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="Find a team">${icon("search")}</button>
-      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : pill(key, "on tmp")}${keys.map(k => pill(k, k === key ? "on" : "")).join("")}</div></div>
+      <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : pill(key, "on tmp", lbl)}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>
       <div class="tmeta"><span class="tlg">${esc(D.conf_name)}</span><button class="followbtn ${on ? "starred" : ""}" id="starbtn" aria-label="${on ? "Following" : "Follow"} this team">${followHtml(on)}</button><button class="ibtn" id="sharebtn" aria-label="Share">${icon("share")}</button></div>`;
     const ts = $("#tstrip");
     const fade = () => ts.classList.toggle("tfade", ts.scrollLeft + ts.clientWidth < ts.scrollWidth - 2);
