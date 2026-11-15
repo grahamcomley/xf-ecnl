@@ -3350,8 +3350,8 @@
   "conf": "u12b-4366-41039",
   "name": "Pre-ECNL Boys North Atlantic",
   "ours": [
-   135666,
    135473,
+   135666,
    132211,
    133143,
    132136,
@@ -3376,6 +3376,37 @@
    135132,
    126583,
    133143
+  ]
+ },
+ {
+  "conf": "u12b-4366-41039",
+  "name": "Pre-ECNL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135666,
+    "team": "Maryland United FC Pre-ECNL B2014/15 II",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
+   {
+    "id": 132211,
+    "team": "Pipeline SC Pre ll",
+    "ours": [
+     11,
+     23
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   }
   ]
  },
  {
@@ -4076,8 +4107,8 @@
    131974,
    131558,
    131461,
-   134057,
    133189,
+   134057,
    132266,
    133864,
    134632,
@@ -4102,11 +4133,35 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133189,
+    "team": "Lobos Rush",
+    "ours": [
+     15,
+     25
+    ],
+    "ecnl": [
+     14,
+     22
+    ]
+   },
+   {
     "id": 133864,
     "team": "Germantown Legends",
     "ours": [
      15,
      9
+    ],
+    "ecnl": [
+     14,
+     6
+    ]
+   },
+   {
+    "id": 134632,
+    "team": "FC Alliance TN",
+    "ours": [
+     15,
+     6
     ],
     "ecnl": [
      14,
@@ -5591,6 +5646,65 @@
    136407,
    132388,
    134704
+  ]
+ },
+ {
+  "conf": "u14b-4276-40468",
+  "name": "ECNL Boys Mid-America",
+  "ours": [
+   134785,
+   131559,
+   134059,
+   131973,
+   134633,
+   133190,
+   98519,
+   98515,
+   132267,
+   135572
+  ],
+  "ecnl": [
+   134785,
+   131559,
+   134059,
+   131973,
+   134633,
+   98519,
+   133190,
+   98515,
+   132267,
+   135572
+  ]
+ },
+ {
+  "conf": "u14b-4276-40468",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134633,
+    "team": "FC Alliance TN",
+    "ours": [
+     16,
+     21
+    ],
+    "ecnl": [
+     15,
+     21
+    ]
+   },
+   {
+    "id": 133190,
+    "team": "Lobos Rush",
+    "ours": [
+     15,
+     16
+    ],
+    "ecnl": [
+     14,
+     13
+    ]
+   }
   ]
  },
  {
@@ -7486,6 +7600,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134165,
+    "team": "NTH NASA",
+    "ours": [
+     13,
+     34
+    ],
+    "ecnl": [
+     12,
+     33
+    ]
+   },
+   {
     "id": 83908,
     "team": "Concorde Fire Platinum",
     "ours": [
@@ -7518,6 +7644,18 @@
     ],
     "ecnl": [
      11,
+     14
+    ]
+   },
+   {
+    "id": 83907,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     13,
+     15
+    ],
+    "ecnl": [
+     12,
      14
     ]
    },
@@ -10658,8 +10796,8 @@
    69019,
    131562,
    136522,
-   83075,
    132270,
+   83075,
    134075,
    134636
   ],
@@ -10674,6 +10812,37 @@
    134636,
    131970,
    69019
+  ]
+ },
+ {
+  "conf": "u17b-4276-40471",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136522,
+    "team": "Chattanooga Red Wolves SC",
+    "ours": [
+     18,
+     33
+    ],
+    "ecnl": [
+     17,
+     30
+    ]
+   },
+   {
+    "id": 83075,
+    "team": "Germantown Legends",
+    "ours": [
+     15,
+     10
+    ],
+    "ecnl": [
+     14,
+     10
+    ]
+   }
   ]
  },
  {
@@ -10959,6 +11128,37 @@
    70531,
    69455,
    134494
+  ]
+ },
+ {
+  "conf": "u17b-4286-40537",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 129028,
+    "team": "South Carolina Surf",
+    "ours": [
+     12,
+     18
+    ],
+    "ecnl": [
+     11,
+     15
+    ]
+   },
+   {
+    "id": 131801,
+    "team": "GSA",
+    "ours": [
+     11,
+     9
+    ],
+    "ecnl": [
+     10,
+     9
+    ]
+   }
   ]
  },
  {
@@ -11909,6 +12109,30 @@
   "kind": "points",
   "teams": [
    {
+    "id": 131903,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     16,
+     43
+    ],
+    "ecnl": [
+     15,
+     40
+    ]
+   },
+   {
+    "id": 67128,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     37
+    ],
+    "ecnl": [
+     14,
+     34
+    ]
+   },
+   {
     "id": 134179,
     "team": "NTH NASA",
     "ours": [
@@ -11921,6 +12145,30 @@
     ]
    },
    {
+    "id": 131807,
+    "team": "GSA",
+    "ours": [
+     15,
+     24
+    ],
+    "ecnl": [
+     14,
+     24
+    ]
+   },
+   {
+    "id": 68805,
+    "team": "Concorde Fire Platinum",
+    "ours": [
+     14,
+     19
+    ],
+    "ecnl": [
+     13,
+     18
+    ]
+   },
+   {
     "id": 60119,
     "team": "CESA Triumph Summit",
     "ours": [
@@ -11930,6 +12178,30 @@
     "ecnl": [
      15,
      18
+    ]
+   },
+   {
+    "id": 129034,
+    "team": "South Carolina Surf",
+    "ours": [
+     14,
+     12
+    ],
+    "ecnl": [
+     13,
+     11
+    ]
+   },
+   {
+    "id": 131458,
+    "team": "CESA Triumph Surge",
+    "ours": [
+     15,
+     8
+    ],
+    "ecnl": [
+     14,
+     8
     ]
    }
   ]
@@ -14435,12 +14707,24 @@
     "id": 134460,
     "team": "Force FC Pre-ECNL G2015/16",
     "ours": [
-     6,
-     12
+     7,
+     15
     ],
     "ecnl": [
      5,
      12
+    ]
+   },
+   {
+    "id": 133859,
+    "team": "Long Island Slammers Pre-ECNL G2015/16",
+    "ours": [
+     4,
+     3
+    ],
+    "ecnl": [
+     3,
+     3
     ]
    },
    {
@@ -26014,8 +26298,8 @@
   "ours": [
    129938,
    52252,
-   133012,
    129638,
+   133012,
    119509,
    131350,
    59649,
@@ -26023,9 +26307,9 @@
    64558,
    133294,
    132738,
-   133618,
    70338,
    95134,
+   133618,
    49353
   ],
   "ecnl": [
@@ -26064,6 +26348,30 @@
     ]
    },
    {
+    "id": 52252,
+    "team": "Sting CC ECNL RL STXCL G2009/10 Hennessy",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     21
+    ]
+   },
+   {
+    "id": 129638,
+    "team": "Challenge Aggieland ECNL RL STXCL G2009/10",
+    "ours": [
+     10,
+     24
+    ],
+    "ecnl": [
+     9,
+     21
+    ]
+   },
+   {
     "id": 133012,
     "team": "Lonestar RGV ECNL RL STXCL G2009/10",
     "ours": [
@@ -26088,6 +26396,42 @@
     ]
    },
    {
+    "id": 130077,
+    "team": "Houstonians FC ECNL RL STXCL G2009/10",
+    "ours": [
+     7,
+     10
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   },
+   {
+    "id": 64558,
+    "team": "AHFC CENTRAL ECNL RL STXCL G2009/10",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   },
+   {
+    "id": 132738,
+    "team": "Lonestar ATX NTH ECNL RL STXCL G2009/10 Gold",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   },
+   {
     "id": 70338,
     "team": "Lonestar SAT ECNL RL STXCL G2009/10",
     "ours": [
@@ -26096,6 +26440,18 @@
     ],
     "ecnl": [
      7,
+     6
+    ]
+   },
+   {
+    "id": 133618,
+    "team": "Lonestar ATX ECNL RL STXCL G2009/10 White",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
      6
     ]
    },
@@ -27574,6 +27930,37 @@
    68798,
    67129,
    68838
+  ]
+ },
+ {
+  "conf": "u17g-4314-41413",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 69856,
+    "team": "South Carolina United",
+    "ours": [
+     15,
+     13
+    ],
+    "ecnl": [
+     14,
+     12
+    ]
+   },
+   {
+    "id": 67129,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     6
+    ],
+    "ecnl": [
+     14,
+     5
+    ]
+   }
   ]
  },
  {
@@ -29615,6 +30002,37 @@
    131878,
    57570,
    57582
+  ]
+ },
+ {
+  "conf": "u19g-4314-41414",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 60000,
+    "team": "South Carolina United",
+    "ours": [
+     15,
+     33
+    ],
+    "ecnl": [
+     14,
+     30
+    ]
+   },
+   {
+    "id": 57556,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     29
+    ],
+    "ecnl": [
+     14,
+     29
+    ]
+   }
   ]
  },
  {
