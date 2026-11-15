@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.40">
+<meta name="app-version" content="v1.41">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -288,8 +288,9 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 .ttl .ttn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .ttc{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);display:grid;place-items:center}.ttc .ic{width:16px;height:16px;color:#0b0d12;margin:0;transition:transform .15s}
 .ttl[aria-expanded="true"] .ttc .ic{transform:rotate(180deg)}
-.topline.hasteam .appname{flex:none;margin-left:auto;display:flex;flex-direction:column;align-items:flex-start;font-size:10px;line-height:1.15;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff}.topline.hasteam .appname span:last-child{color:var(--red)}
+.topline.hasteam .appname{flex:none;margin-left:0;display:flex;flex-direction:column;align-items:flex-start;font-size:10px;line-height:1.15;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff}.topline.hasteam .appname span:last-child{color:var(--red)}
 .topline .subline{display:none!important}
+.topline.hasteam .ttl{margin-right:auto;padding-left:10px;border-left:1px solid var(--line2);border-radius:0}
 body.tpopen header{z-index:40}
 .ibtn.plain{border:0;background:none;width:40px;height:40px;color:var(--mut)}.ibtn.plain .ic{width:20px;height:20px}
 #teamwrap{flex:none;padding:0;max-width:none;margin:0;width:100%;box-sizing:border-box;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
@@ -304,7 +305,7 @@ body.tpopen header{z-index:40}
 </head>
 <body>
 <header>
-  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"><svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button><span class="appname"><span>Sideline</span> <span>Standings</span></span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname"><span>Sideline</span> <span>Standings</span></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"><svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
     <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
 <script>try{var _t=localStorage.getItem("ttlText"),_l=localStorage.getItem("lastTeam"),_m=/(?:^#|&)t=([^,&]+)/.exec(location.hash);if(_t&&_l&&(!_m||_m[1]===_l)){var _b=document.getElementById("ttl");_b.querySelector(".ttn").textContent=_t;_b.hidden=false;document.querySelector(".topline").classList.add("hasteam")}}catch(e){}</script>
