@@ -2160,6 +2160,61 @@
   ]
  },
  {
+  "conf": "u11b-4387-41037",
+  "name": "Pre-ECNL Boys Colorado",
+  "ours": [
+   137559,
+   131886,
+   135649,
+   135652,
+   132087,
+   130967,
+   135931,
+   137571
+  ],
+  "ecnl": [
+   137559,
+   131886,
+   135652,
+   132087,
+   135649,
+   130967,
+   135931,
+   137571
+  ]
+ },
+ {
+  "conf": "u11b-4387-41037",
+  "name": "Pre-ECNL Boys Colorado",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132087,
+    "team": "Arsenal Colorado Pre-ECNL B2015/16 Academy",
+    "ours": [
+     4,
+     6
+    ],
+    "ecnl": [
+     3,
+     6
+    ]
+   },
+   {
+    "id": 135649,
+    "team": "Real Colorado Pre-ECNL Academy B2015/16",
+    "ours": [
+     3,
+     6
+    ],
+    "ecnl": [
+     2,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4389-41851",
   "name": "Pre-ECNL Boys Northeast - South",
   "ours": [
@@ -14821,8 +14876,8 @@
   "conf": "u16b-4287-41625",
   "name": "ECNL Boys Southwest",
   "ours": [
-   133555,
    133673,
+   133555,
    130990,
    48236,
    131408,
@@ -14830,9 +14885,9 @@
    90067,
    132454,
    132184,
+   59706,
    131702,
    82178,
-   59706,
    132941
   ],
   "ecnl": [
@@ -14857,6 +14912,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133555,
+    "team": "CDA Slammers FC",
+    "ours": [
+     12,
+     26
+    ],
+    "ecnl": [
+     11,
+     26
+    ]
+   },
+   {
     "id": 131408,
     "team": "SDSC Surf",
     "ours": [
@@ -14878,6 +14945,18 @@
     "ecnl": [
      8,
      10
+    ]
+   },
+   {
+    "id": 59706,
+    "team": "West Coast FC",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     3
     ]
    }
   ]
@@ -24414,6 +24493,63 @@
   ]
  },
  {
+  "conf": "u12g-4376-41058",
+  "name": "Pre-ECNL Girls New England",
+  "ours": [
+   111643,
+   134405,
+   132372,
+   132532,
+   126894,
+   111644,
+   118411,
+   131796,
+   134835
+  ],
+  "ecnl": [
+   111643,
+   134405,
+   132372,
+   126894,
+   132532,
+   111644,
+   131796,
+   118411,
+   134835
+  ]
+ },
+ {
+  "conf": "u12g-4376-41058",
+  "name": "Pre-ECNL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132532,
+    "team": "Connecticut FC United Pre ll",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     6,
+     10
+    ]
+   },
+   {
+    "id": 131796,
+    "team": "Scorpions SC Pre-ECNL G2014/15 ll",
+    "ours": [
+     7,
+     5
+    ],
+    "ecnl": [
+     6,
+     5
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12g-4379-42037",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
@@ -31671,6 +31807,37 @@
    113060,
    131028,
    133031
+  ]
+ },
+ {
+  "conf": "u14g-4315-41748",
+  "name": "ECNL RL Girls Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132178,
+    "team": "Beach Futbol Club (CA) Black",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
+    "id": 131711,
+    "team": "Legends FC - Del Mar ECNL RL S.Cal G2012/13",
+    "ours": [
+     6,
+     1
+    ],
+    "ecnl": [
+     5,
+     1
+    ]
+   }
   ]
  },
  {
