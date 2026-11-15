@@ -4300,8 +4300,8 @@
    131009,
    114950,
    136444,
-   136467,
    134257,
+   136467,
    136470,
    133340,
    134456,
@@ -4349,6 +4349,30 @@
     "ecnl": [
      8,
      14
+    ]
+   },
+   {
+    "id": 136444,
+    "team": "PSA North Pre",
+    "ours": [
+     9,
+     17
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   },
+   {
+    "id": 136467,
+    "team": "Quickstrike FC Pre-ECNL B2014/15",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     12
     ]
    },
    {
@@ -9003,11 +9027,11 @@
    57176,
    76665,
    133286,
-   134125,
    131245,
-   131315,
+   134125,
    133098,
    80818,
+   131315,
    111255,
    131621
   ],
@@ -9085,6 +9109,30 @@
     "ecnl": [
      14,
      15
+    ]
+   },
+   {
+    "id": 131245,
+    "team": "FC Westlake",
+    "ours": [
+     13,
+     13
+    ],
+    "ecnl": [
+     12,
+     10
+    ]
+   },
+   {
+    "id": 131315,
+    "team": "RISE SC",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
     ]
    },
    {
@@ -10181,6 +10229,37 @@
   ]
  },
  {
+  "conf": "u14b-4353-40714",
+  "name": "ECNL RL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133797,
+    "team": "Whatcom FC Rangers -",
+    "ours": [
+     11,
+     17
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   },
+   {
+    "id": 80505,
+    "team": "WA Premier",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4354-41629",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
@@ -11233,8 +11312,8 @@
   "name": "ECNL Boys Northern Cal",
   "ours": [
    132472,
-   97487,
    40071,
+   97487,
    132649,
    131735,
    91719,
@@ -11275,6 +11354,30 @@
   "name": "ECNL Boys Northern Cal",
   "kind": "points",
   "teams": [
+   {
+    "id": 132472,
+    "team": "Mustang Soccer",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
+    "id": 97487,
+    "team": "COSC",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
    {
     "id": 93951,
     "team": "Association FC",
@@ -12813,61 +12916,6 @@
   ]
  },
  {
-  "conf": "u15b-4353-40715",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 101051,
-    "team": "Northwest United",
-    "ours": [
-     12,
-     27
-    ],
-    "ecnl": [
-     11,
-     24
-    ]
-   },
-   {
-    "id": 73759,
-    "team": "Columbia Premier",
-    "ours": [
-     13,
-     5
-    ],
-    "ecnl": [
-     12,
-     2
-    ]
-   },
-   {
-    "id": 95600,
-    "team": "Spokane Shadow",
-    "ours": [
-     14,
-     2
-    ],
-    "ecnl": [
-     13,
-     2
-    ]
-   },
-   {
-    "id": 134863,
-    "team": "Valor Soccer",
-    "ours": [
-     10,
-     0
-    ],
-    "ecnl": [
-     9,
-     0
-    ]
-   }
-  ]
- },
- {
   "conf": "u15b-4355-40721",
   "name": "ECNL RL Boys Southeast",
   "ours": [
@@ -13126,14 +13174,14 @@
   "name": "ECNL RL Boys Virginia",
   "ours": [
    134248,
-   133828,
    60207,
    94909,
+   133828,
    135532,
    66649,
    135100,
-   95182,
    94614,
+   95182,
    67564,
    134310
   ],
@@ -13154,6 +13202,18 @@
   "name": "ECNL RL Boys Virginia",
   "kind": "points",
   "teams": [
+   {
+    "id": 133828,
+    "team": "Richmond United Blue",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   },
    {
     "id": 134248,
     "team": "Arlington Soccer Association",
@@ -17482,6 +17542,37 @@
   ]
  },
  {
+  "conf": "u17b-4348-41604",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131740,
+    "team": "Los Gatos United Soccer Club",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
+    "id": 117680,
+    "team": "COSC",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17b-4348-41598",
   "name": "ECNL RL Boys Golden State",
   "ours": [
@@ -20231,8 +20322,8 @@
    135848,
    119468,
    81542,
-   81736,
    58164,
+   81736,
    93858,
    94123,
    132047,
@@ -20253,6 +20344,37 @@
    93858,
    131392,
    134866
+  ]
+ },
+ {
+  "conf": "u19b-4353-40718",
+  "name": "ECNL RL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 81736,
+    "team": "Eastside FC",
+    "ours": [
+     12,
+     19
+    ],
+    "ecnl": [
+     11,
+     19
+    ]
+   },
+   {
+    "id": 132047,
+    "team": "Whatcom FC Rangers -",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     3
+    ]
+   }
   ]
  },
  {
@@ -36512,8 +36634,8 @@
   "ours": [
    24895,
    81799,
-   81074,
    91780,
+   81074,
    94661,
    92839,
    103326,
@@ -36534,6 +36656,37 @@
    114297,
    91780,
    44311
+  ]
+ },
+ {
+  "conf": "u17g-4300-40777",
+  "name": "ECNL RL Girls Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 91780,
+    "team": "Davis Legacy",
+    "ours": [
+     13,
+     28
+    ],
+    "ecnl": [
+     12,
+     25
+    ]
+   },
+   {
+    "id": 103326,
+    "team": "Force (CA)",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
   ]
  },
  {
