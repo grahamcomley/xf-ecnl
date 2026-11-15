@@ -25595,6 +25595,30 @@
      8,
      9
     ]
+   },
+   {
+    "id": 131484,
+    "team": "FC Portland Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
+     5
+    ]
+   },
+   {
+    "id": 132516,
+    "team": "United PDX Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     1
+    ],
+    "ecnl": [
+     8,
+     0
+    ]
    }
   ]
  },
