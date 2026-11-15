@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.44">
+<meta name="app-version" content="v1.45">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1293,6 +1293,8 @@ clearBadge();
 // App: Apple push events. Token arrives after register(); a tap on an alert opens it like the web app
 // does (full alert card first, then "Show this game").
 if (IS_APP) appLog("start", bridgeInfo());
+// Every open logs the page version and where it runs (app / home-screen / web), so we can see who has updated.
+appLog("open", document.querySelector('meta[name="app-version"]').content + " " + (IS_APP ? "app" : (navigator.standalone || matchMedia("(display-mode: standalone)").matches) ? "home" : "web"));
 if (IS_APP && PN()) {
   const p = PN(), on = (ev, cb) => { try { p.addListener(ev, cb); } catch (e) { console.warn("listener", ev, e); } };
   on("registration", t => {
@@ -2353,7 +2355,7 @@ async function checkForUpdate() {
     if (v && LOADED_VER === null) LOADED_VER = v;
     if (stale && !(typeof pageIs === "function" && !$("#pg").hidden) && $("#nsheet").hidden) {
       const k = "reloaded:" + v, last = +(sessionStorage.getItem(k) || 0);
-      if (Date.now() - last > 600000) { sessionStorage.setItem(k, String(Date.now())); location.reload(); return; }
+      if (Date.now() - last > 600000) { sessionStorage.setItem(k, String(Date.now())); appLog("update", `${mine} to ${vnum || v}`); setTimeout(() => location.reload(), 150); return; }
     }
   } catch (e) {}
   if (Date.now() - LAST_DATA > 2 * 60000 && CUR) {
