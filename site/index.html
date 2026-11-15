@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.42">
+<meta name="app-version" content="v1.43">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -267,6 +267,7 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 #finder.drop .f-body{padding:0 14px 12px}
 .fseg{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:2px 0 8px}.fseg button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:7px;border-radius:8px;cursor:pointer}.fseg button.on{background:var(--me);color:#fff;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
 .fages{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}.fages::-webkit-scrollbar{display:none}.fages button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.fages button.on{background:var(--me);color:#fff;border-color:transparent;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
+.fgrp{display:flex;width:100%;align-items:center;justify-content:space-between;background:none;border:0;border-bottom:1px solid var(--line2);color:var(--ink);font:inherit;font-size:15px;font-weight:600;text-align:left;padding:12px 2px;cursor:pointer}.fgrp small{display:block;font-size:12px;font-weight:500;color:var(--mut);margin-top:2px}.fgrp .ic{width:18px;height:18px;color:var(--mut);flex:none;transition:transform .15s}.fgrp[aria-expanded="true"] .ic{transform:rotate(180deg)}.fgbody{padding-left:10px;border-bottom:1px solid var(--line2)}
 .fcount{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mut);padding:4px 2px 0}.fclear{background:none;border:0;color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:4px 0;cursor:pointer}
 body.fopen #tstrip{opacity:.35;pointer-events:none}body.fopen #tstrip .tpill.on{background:var(--card2);color:var(--mut);border-color:var(--line2)}
 .flg{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:10px 0 2px}
@@ -1557,14 +1558,16 @@ function drawFinder() {
     const mine = CUR && (teamByKey(CUR) || {}).c, near = c => c === mine ? 0 : /Northwest|Pacific/.test(c) && !/NorCal/.test(c) ? 1 : 2;
     const all = inG.filter(t => (!a || t.a === a) && (!l || t.l === l) && toks.every(x => words(t).some(w => w.startsWith(x))))
       .sort((x, y) => near(x.c) - near(y.c) || lgKey(x.l) - lgKey(y.l) || x.c.localeCompare(y.c) || ageNum(x.a) - ageNum(y.a) || x.n.localeCompare(y.n));
-    const MAX = 400, hits = all.slice(0, MAX);
     const what = [a ? ageShort(a) : "", g, l ? lgShort(l) : ""].filter(Boolean).join(" ");
-    html += `<div class="fcount"><span>${all.length > MAX ? `First ${MAX} of ${all.length} teams` : `${all.length} team${all.length === 1 ? "" : "s"}`} · ${esc(what)}</span>${l || q || (a && !(CUR && (teamByKey(CUR) || {}).a === a)) ? `<button class="fclear" data-clear="1">Clear</button>` : ""}</div>`;
+    html += `<div class="fcount"><span>${all.length} team${all.length === 1 ? "" : "s"} · ${esc(what)}</span>${l || q || (a && !(CUR && (teamByKey(CUR) || {}).a === a)) ? `<button class="fclear" data-clear="1">Clear</button>` : ""}</div>`;
     if (!all.length) html += `<div class="mut" style="padding:8px 2px">No teams match. Try All leagues, another age, or Clear.</div>`;
-    let last = "";
-    for (const t of hits) {
-      if (t.c !== last) { last = t.c; const sh = l ? t.c.replace(t.l + " ", "").replace(/^(Boys|Girls) /, "") || t.c : t.c; html += `<div class="flg">${esc(sh)}</div>`; }
-      html += teamRow(t, !a);
+    // divisions: closed by default (typing a name opens them all); teams drawn only when open
+    const groups = new Map(); for (const t of all) { if (!groups.has(t.c)) groups.set(t.c, []); groups.get(t.c).push(t); }
+    const open = FSTATE.open || (FSTATE.open = new Set()), showAll = toks.length > 0;
+    for (const [c, ts] of groups) {
+      const sh = l ? c.replace(ts[0].l + " ", "").replace(/^(Boys|Girls) /, "") || c : c, isOpen = showAll !== open.has(c);   // tap flips it either way
+      html += `<button class="fgrp" data-grp="${esc(c)}" aria-expanded="${isOpen}"><span>${esc(sh)}<small>${ts.length} team${ts.length === 1 ? "" : "s"}</small></span>${CHEV}</button>`;
+      if (isOpen) html += `<div class="fgbody">${ts.map(t => teamRow(t, !a)).join("")}</div>`;
     }
   }
   body.innerHTML = html;
@@ -1573,6 +1576,7 @@ function drawFinder() {
     const sg = e.target.closest("[data-g]"); if (sg) { FSTATE = {g: sg.dataset.g, a: FSTATE.a && FSTATE.a.replace(/Boys|Girls/, sg.dataset.g)}; if (!TEAMS.some(t => t.a === FSTATE.a)) delete FSTATE.a; return drawFinder(); }
     const sa = e.target.closest("[data-a]"); if (sa) { FSTATE = {g, a: sa.dataset.a === a ? undefined : sa.dataset.a, l}; if (FSTATE.l && !TEAMS.some(t => t.l === FSTATE.l && (!FSTATE.a || t.a === FSTATE.a))) delete FSTATE.l; return drawFinder(); }
     const sl = e.target.closest("[data-l]"); if (sl) { FSTATE = {g, a, l: sl.dataset.l || undefined}; return drawFinder(); }
+    const gp = e.target.closest("[data-grp]"); if (gp) { const o = FSTATE.open || (FSTATE.open = new Set()), c = gp.dataset.grp; o.has(c) ? o.delete(c) : o.add(c); return drawFinder(); }
     if (e.target.closest("[data-clear]")) { const t = CUR && teamByKey(CUR); FSTATE = t ? {g: gOf(t), a: t.a} : {g}; $("#fq").value = ""; return drawFinder(); }   // back to where search opened
     const r = e.target.closest(".f-row"); if (r && r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
   };
