@@ -2415,6 +2415,18 @@
     ]
    },
    {
+    "id": 131887,
+    "team": "Colorado EDGE Pre-ECNL B2015/16 United",
+    "ours": [
+     4,
+     9
+    ],
+    "ecnl": [
+     3,
+     6
+    ]
+   },
+   {
     "id": 130971,
     "team": "Pride SC Pre-ECNL B2015/16 Copa",
     "ours": [
@@ -2436,6 +2448,18 @@
     "ecnl": [
      3,
      4
+    ]
+   },
+   {
+    "id": 132778,
+    "team": "Real Colorado Pre-ECNL Olympico B2015/16",
+    "ours": [
+     2,
+     1
+    ],
+    "ecnl": [
+     1,
+     1
     ]
    },
    {
@@ -15648,8 +15672,8 @@
   "name": "ECNL RL Boys Southwest",
   "ours": [
    133684,
-   132491,
    135601,
+   132491,
    91204,
    132190,
    94966,
@@ -15701,6 +15725,30 @@
     "ecnl": [
      9,
      27
+    ]
+   },
+   {
+    "id": 132491,
+    "team": "San Diego Surf Blue",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 135601,
+    "team": "Sporting California USA RED",
+    "ours": [
+     7,
+     16
+    ],
+    "ecnl": [
+     6,
+     13
     ]
    },
    {
@@ -35639,6 +35687,37 @@
   ]
  },
  {
+  "conf": "u17g-4263-40555",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130285,
+    "team": "NCFC Youth NC Courage",
+    "ours": [
+     8,
+     14
+    ],
+    "ecnl": [
+     7,
+     13
+    ]
+   },
+   {
+    "id": 50566,
+    "team": "NC Fusion",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17g-4264-40561",
   "name": "ECNL Girls Midwest",
   "ours": [
@@ -39549,6 +39628,71 @@
     "ecnl": [
      10,
      2
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u19g-4315-41752",
+  "name": "ECNL RL Girls Southern Cal",
+  "ours": [
+   134176,
+   133708,
+   97469,
+   133725,
+   89530,
+   129891,
+   133585,
+   131032,
+   135901,
+   131729,
+   132174,
+   104078,
+   132476
+  ],
+  "ecnl": [
+   134176,
+   133708,
+   97469,
+   133725,
+   129891,
+   133585,
+   89530,
+   131032,
+   135901,
+   131729,
+   132174,
+   104078,
+   132476
+  ]
+ },
+ {
+  "conf": "u19g-4315-41752",
+  "name": "ECNL RL Girls Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 89530,
+    "team": "SLAMMERS FC ECNL RL S.Cal G2008/09",
+    "ours": [
+     4,
+     7
+    ],
+    "ecnl": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": 131032,
+    "team": "Pateadores ECNL RL SoCal G2008/09 NB",
+    "ours": [
+     6,
+     6
+    ],
+    "ecnl": [
+     5,
+     6
     ]
    }
   ]
