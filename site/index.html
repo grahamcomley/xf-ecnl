@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.41">
+<meta name="app-version" content="v1.42">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -266,7 +266,9 @@ footer{font-size:12px;color:var(--mut);text-align:center;margin-top:16px}
 #finder.drop .f-head{position:sticky;top:0;z-index:1;background:var(--card);padding:10px 14px 8px;border-bottom:0}#finder.drop #fclose{display:none}
 #finder.drop .f-body{padding:0 14px 12px}
 .fseg{display:flex;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:3px;margin:2px 0 8px}.fseg button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:14px;font-weight:700;padding:7px;border-radius:8px;cursor:pointer}.fseg button.on{background:var(--me);color:#fff;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
-.fages{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}.fages::-webkit-scrollbar{display:none}.fages button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.fages button.on{color:var(--ink);border-color:var(--ink)}
+.fages{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}.fages::-webkit-scrollbar{display:none}.fages button{flex:none;height:32px;padding:0 12px;border-radius:16px;border:1px solid var(--line2);background:var(--card2);color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.fages button.on{background:var(--me);color:#fff;border-color:transparent;box-shadow:inset 0 0 0 1px rgba(225,29,72,.55)}
+.fcount{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--mut);padding:4px 2px 0}.fclear{background:none;border:0;color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:4px 0;cursor:pointer}
+body.fopen #tstrip{opacity:.35;pointer-events:none}body.fopen #tstrip .tpill.on{background:var(--card2);color:var(--mut);border-color:var(--line2)}
 .flg{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:10px 0 2px}
 .fback{display:inline-flex;align-items:center;gap:4px;background:none;border:0;color:var(--mut);font:inherit;font-size:13px;font-weight:600;padding:6px 0;cursor:pointer}
 .ffol{flex:none;display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;border-radius:15px;border:1px solid var(--line2);background:transparent;color:var(--mut);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.ffol .ic{width:14px;height:14px}.ffol.on{color:#fde047;border-color:#a16207}
@@ -1516,62 +1518,63 @@ function openFinder() {
   if (drop && TP_OPEN) closeTeamSheet();
   const t = CUR && teamByKey(CUR);   // browse starts at the team you're on (boys/girls, age)
   FSTATE = t ? {g: /Girls/.test(t.a) ? "Girls" : "Boys", a: t.a} : {};
-  f.classList.add("open"); drawFinder();
+  f.classList.add("open"); document.body.classList.toggle("fopen", drop); drawFinder();
   const sb = $("#tsearch"); if (sb) { sb.innerHTML = icon("x"); sb.setAttribute("aria-label", "Close search"); }
   if (!drop) setTimeout(() => $("#fq").focus(), 50);
 }
 function closeFinder() {
-  $("#finder").classList.remove("open");
+  $("#finder").classList.remove("open"); document.body.classList.remove("fopen");
   const sb = $("#tsearch"); if (sb) { sb.innerHTML = icon("search"); sb.setAttribute("aria-label", "Find a team"); }
 }
-function teamRow(t) {
+function teamRow(t, showAge) {
   const on = (favs() || []).includes(t.k);
-  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.n)}<div>${esc(t.a.split(" (")[0])} · ${esc(t.c)}</div></div><button class="ffol ${on ? "on" : ""}" data-star="${t.k}" aria-label="${on ? "Following" : "Follow"} ${esc(t.n)}">${icon("star", on)}${on ? "Following" : "Follow"}</button></div>`;
+  return `<div class="f-row" data-k="${t.k}"><div class="nm">${esc(t.s || t.n)}${showAge ? `<div>${esc(t.a.split(" (")[0])}</div>` : ""}</div><button class="ffol ${on ? "on" : ""}" data-star="${t.k}" aria-label="${on ? "Following" : "Follow"} ${esc(t.n)}">${icon("star", on)}${on ? "Following" : "Follow"}</button></div>`;
 }
 function drawFinder() {
+  // Search = filters (Boys|Girls, age, league) + optional name; results are teams grouped by conference (yours/Northwest first)
   const q = $("#fq").value.trim().toLowerCase(), body = $("#fbody");
   const note = $("#fnote");
   if (note) { note.hidden = !LOCKED(); }
   const gOf = t => (/Girls/.test(t.a) ? "Girls" : "Boys");
-  if (q.length >= 2) {
-    const toks = q.split(/\s+/);
-    const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
-    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0) + (/Girls/.test(x) ? 100 : 0);
-    const all = TEAMS.filter(t => toks.every(x => words(t).some(w => w.startsWith(x))))
-      .sort((x, y) => ageNum(x.a) - ageNum(y.a) || x.l.localeCompare(y.l) || x.n.localeCompare(y.n));
-    const hits = all.slice(0, 150);
-    let html = `<div class="mut" style="margin-bottom:6px">${all.length > hits.length ? `First ${hits.length} of ${all.length} matches. Add a word to narrow it` : all.length + " matches"}</div>`, last = "";
-    for (const t of hits) { if (t.a !== last) { html += `<h3>${esc(t.a)}</h3>`; last = t.a; } html += teamRow(t); }
-    body.innerHTML = html;
+  const uniq = arr => [...new Set(arr)];
+  const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
+  const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : /^MLS NEXT Flex/.test(x) ? 5 : /^MLS NEXT Academy/.test(x) ? 4 : /^MLS NEXT/.test(x) ? 3 : 6);
+  const lgShort = x => x === "MLS NEXT Homegrown" ? "MLS NEXT" : x === "MLS NEXT Academy" ? "Academy" : x === "MLS NEXT Flex" ? "Flex" : x === "Other leagues" ? "Other" : x.replace(/\s+(Boys|Girls)$/, "");
+  const ageShort = x => x.replace(/\s+(Boys|Girls)/, "").split(" (")[0];
+  const {a, l} = FSTATE, g = FSTATE.g || "Boys";
+  const inG = TEAMS.filter(t => gOf(t) === g);
+  const ages = uniq(inG.map(t => t.a)).sort((x, y) => ageNum(x) - ageNum(y));
+  const lgs = uniq(inG.filter(t => !a || t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y));
+  const chip = (attr, v, label, on) => `<button ${attr}="${esc(v)}" class="${on ? "on" : ""}">${esc(label)}</button>`;
+  let html = `<div class="fseg" role="tablist">${["Boys", "Girls"].map(x => chip("data-g", x, x, x === g)).join("")}</div>
+    <div class="fages">${ages.map(x => chip("data-a", x, ageShort(x), x === a)).join("")}</div>
+    <div class="fages">${chip("data-l", "", "All", !l)}${lgs.map(x => chip("data-l", x, lgShort(x), x === l)).join("")}</div>`;
+  if (!a && q.length < 2) {
+    html += `<div class="mut" style="padding:8px 2px">Pick an age group, or type a club or team name above.</div>`;
   } else {
-    const {g, a, l, c} = FSTATE;
-    const uniq = arr => [...new Set(arr)];
-    const ageNum = x => +((/U(\d+)/.exec(x) || [])[1] || 0);
-    const lgKey = x => (/^ECNL RL/.test(x) ? 1 : /^ECNL/.test(x) ? 0 : /^Pre/.test(x) ? 2 : /^MLS NEXT Flex/.test(x) ? 5 : /^MLS NEXT Academy/.test(x) ? 4 : /^MLS NEXT/.test(x) ? 3 : 6);
-    const ageShort = x => x.replace(/\s+(Boys|Girls)/, "");
-    const gg = g || "Boys";
-    const ages = uniq(TEAMS.filter(t => gOf(t) === gg).map(t => t.a)).sort((x, y) => ageNum(x) - ageNum(y));
-    let html = `<div class="fseg" role="tablist">${["Boys", "Girls"].map(x => `<button data-g="${x}" class="${x === gg ? "on" : ""}">${x}</button>`).join("")}</div>
-      <div class="fages">${ages.map(x => `<button data-a="${esc(x)}" class="${x === a ? "on" : ""}">${esc(ageShort(x).split(" (")[0])}</button>`).join("")}</div>`;
-    const row = (attrs, label, sub) => `<div class="f-row" ${attrs}><div class="nm">${esc(label)}${sub ? `<div>${esc(sub)}</div>` : ""}</div>›</div>`;
-    if (!a) html += `<div class="mut" style="padding:8px 2px">Pick an age group, or type a club or team name above.</div>`;
-    else if (!c) {   // leagues for that age, each with its conferences and team counts
-      for (const lg of uniq(TEAMS.filter(t => t.a === a).map(t => t.l)).sort((x, y) => lgKey(x) - lgKey(y))) {
-        const mine = CUR && (teamByKey(CUR) || {}).c, near = x => x === mine ? 0 : /Northwest|Pacific/.test(x) && !/NorCal/.test(x) ? 1 : 2;   // yours and the Northwest first
-        const confs = uniq(TEAMS.filter(t => t.a === a && t.l === lg).map(t => t.c)).sort((x, y) => near(x) - near(y) || x.localeCompare(y));
-        html += `<div class="flg">${esc(lg)}</div>` + confs.map(cf => row(`data-l="${esc(lg)}" data-c="${esc(cf)}"`, cf.replace(lg + " ", "").replace(/^(Boys|Girls) /, "") || cf, `${TEAMS.filter(t => t.a === a && t.l === lg && t.c === cf).length} teams`)).join("");
-      }
-    } else html += `<button class="fback" data-back="1">‹ ${esc(ageShort(a).split(" (")[0])} leagues</button><div class="flg">${esc(c)}</div>` + TEAMS.filter(t => t.a === a && t.l === l && t.c === c).sort((x, y) => x.n.localeCompare(y.n)).map(teamRow).join("");
-    body.innerHTML = html;
+    const toks = q.length >= 2 ? q.split(/\s+/) : [];
+    const words = t => (t.__w = t.__w || `${t.n} ${t.c} ${t.l} ${t.a}`.toLowerCase().split(/[^a-z0-9/]+/));
+    const mine = CUR && (teamByKey(CUR) || {}).c, near = c => c === mine ? 0 : /Northwest|Pacific/.test(c) && !/NorCal/.test(c) ? 1 : 2;
+    const all = inG.filter(t => (!a || t.a === a) && (!l || t.l === l) && toks.every(x => words(t).some(w => w.startsWith(x))))
+      .sort((x, y) => near(x.c) - near(y.c) || lgKey(x.l) - lgKey(y.l) || x.c.localeCompare(y.c) || ageNum(x.a) - ageNum(y.a) || x.n.localeCompare(y.n));
+    const MAX = 400, hits = all.slice(0, MAX);
+    const what = [a ? ageShort(a) : "", g, l ? lgShort(l) : ""].filter(Boolean).join(" ");
+    html += `<div class="fcount"><span>${all.length > MAX ? `First ${MAX} of ${all.length} teams` : `${all.length} team${all.length === 1 ? "" : "s"}`} · ${esc(what)}</span>${l || q || (a && !(CUR && (teamByKey(CUR) || {}).a === a)) ? `<button class="fclear" data-clear="1">Clear</button>` : ""}</div>`;
+    if (!all.length) html += `<div class="mut" style="padding:8px 2px">No teams match. Try All leagues, another age, or Clear.</div>`;
+    let last = "";
+    for (const t of hits) {
+      if (t.c !== last) { last = t.c; const sh = l ? t.c.replace(t.l + " ", "").replace(/^(Boys|Girls) /, "") || t.c : t.c; html += `<div class="flg">${esc(sh)}</div>`; }
+      html += teamRow(t, !a);
+    }
   }
+  body.innerHTML = html;
   body.onclick = e => {
     const st = e.target.closest("[data-star]"); if (st) { toggleFav(st.dataset.star); const on = (favs() || []).includes(st.dataset.star); st.classList.toggle("on", on); st.innerHTML = icon("star", on) + (on ? "Following" : "Follow"); if (REDRAW_HEAD) REDRAW_HEAD(); return; }
-    const sg = e.target.closest(".fseg [data-g]"); if (sg) { FSTATE = {g: sg.dataset.g}; return drawFinder(); }
-    const sa = e.target.closest(".fages [data-a]"); if (sa) { FSTATE = {g: FSTATE.g || "Boys", a: sa.dataset.a}; return drawFinder(); }
-    if (e.target.closest("[data-back]")) { FSTATE = {g: FSTATE.g, a: FSTATE.a}; return drawFinder(); }
-    const r = e.target.closest(".f-row"); if (!r) return;
-    if (r.dataset.c) { FSTATE.l = r.dataset.l; FSTATE.c = r.dataset.c; return drawFinder(); }
-    if (r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
+    const sg = e.target.closest("[data-g]"); if (sg) { FSTATE = {g: sg.dataset.g, a: FSTATE.a && FSTATE.a.replace(/Boys|Girls/, sg.dataset.g)}; if (!TEAMS.some(t => t.a === FSTATE.a)) delete FSTATE.a; return drawFinder(); }
+    const sa = e.target.closest("[data-a]"); if (sa) { FSTATE = {g, a: sa.dataset.a === a ? undefined : sa.dataset.a, l}; if (FSTATE.l && !TEAMS.some(t => t.l === FSTATE.l && (!FSTATE.a || t.a === FSTATE.a))) delete FSTATE.l; return drawFinder(); }
+    const sl = e.target.closest("[data-l]"); if (sl) { FSTATE = {g, a, l: sl.dataset.l || undefined}; return drawFinder(); }
+    if (e.target.closest("[data-clear]")) { const t = CUR && teamByKey(CUR); FSTATE = t ? {g: gOf(t), a: t.a} : {g}; $("#fq").value = ""; return drawFinder(); }   // back to where search opened
+    const r = e.target.closest(".f-row"); if (r && r.dataset.k) { closeFinder(); location.hash = "t=" + r.dataset.k; }
   };
 }
 
