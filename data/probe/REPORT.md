@@ -1,14 +1,7 @@
-# Source check 2026-11-14 22:51 UTC
+# Source check 2026-11-15 23:10 UTC
 
-Crawl delay used per site: https://www.rclwashington.com 10s, https://wys.sportsaffinity.com 10s, https://system.gotsport.com 10s
+Crawl delay used per site: https://sidelinestandings.com 10s
 
 | Page | Allowed | Status | Size | Type | Saved as · title |
 |---|---|---|---|---|---|
-| https://www.rclwashington.com/regular-season | yes | 200 | 871 KB | text/html | 00_www.rclwashington.com.html · REGULAR SEASON &mdash; RCL |
-| https://wys.sportsaffinity.com/tour/public/info/accepted_list.asp?Tournamentguid=6DBB3AF6-DEC3-4341-8D25-2DC23F01177B | yes | failed: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.
-The last 30x error message was:
-Found |  |  |  |
-| https://system.gotsport.com/org_event/events/54035 | NO (robots.txt) |  |  |  |  |
-| https://system.gotsport.com/org_event/events/54035/schedules | NO (robots.txt) |  |  |  |  |
-| https://system.gotsport.com/org_event/events/54035/teams?showall=true | NO (robots.txt) |  |  |  |  |
-| https://system.gotsport.com/org_event/events/54035/clubs | NO (robots.txt) |  |  |  |  |
+| https://sidelinestandings.com/data/conf/u13g-4268-40581.json | yes | 200 | 34 KB | application/json | 00_sidelinestandings.com.json ·  |
