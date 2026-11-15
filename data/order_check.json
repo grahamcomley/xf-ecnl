@@ -1641,9 +1641,9 @@
    128440,
    114266,
    137376,
+   131557,
    133310,
    137413,
-   131557,
    134689,
    133328,
    134951
@@ -1658,6 +1658,37 @@
    134689,
    133328,
    134951
+  ]
+ },
+ {
+  "conf": "u11b-4380-41580",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131557,
+    "team": "SWFL PREMIER FC PRE-ECNL B2015/16",
+    "ours": [
+     4,
+     6
+    ],
+    "ecnl": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": 134689,
+    "team": "Lakeland Premier FC PRE-ECNL B2015/16",
+    "ours": [
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
+     3
+    ]
+   }
   ]
  },
  {
@@ -3940,9 +3971,9 @@
   "name": "Pre-ECNL Boys Northeast - South",
   "ours": [
    134279,
+   129987,
    133037,
    133152,
-   129987,
    133349,
    113953,
    131590
@@ -3955,6 +3986,37 @@
    131590,
    133037,
    133349
+  ]
+ },
+ {
+  "conf": "u12b-4389-41850",
+  "name": "Pre-ECNL Boys Northeast - South",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133152,
+    "team": "Keystone Athletic Pre",
+    "ours": [
+     6,
+     9
+    ],
+    "ecnl": [
+     5,
+     9
+    ]
+   },
+   {
+    "id": 129987,
+    "team": "PA Rush Pre-ECNL B2014/15",
+    "ours": [
+     6,
+     12
+    ],
+    "ecnl": [
+     5,
+     9
+    ]
+   }
   ]
  },
  {
@@ -4366,6 +4428,37 @@
    135307,
    114650,
    117143
+  ]
+ },
+ {
+  "conf": "u13b-4281-41757",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94546,
+    "team": "FC Stars",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   },
+   {
+    "id": 116991,
+    "team": "AC Connecticut",
+    "ours": [
+     11,
+     17
+    ],
+    "ecnl": [
+     10,
+     16
+    ]
+   }
   ]
  },
  {
@@ -6308,6 +6401,30 @@
   "name": "ECNL RL Boys Northeast",
   "kind": "points",
   "teams": [
+   {
+    "id": 96591,
+    "team": "Eastern FC",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 133336,
+    "team": "WNY Flash Binghamton",
+    "ours": [
+     12,
+     14
+    ],
+    "ecnl": [
+     11,
+     14
+    ]
+   },
    {
     "id": 134224,
     "team": "Long Island Slammers",
@@ -12835,6 +12952,37 @@
   ]
  },
  {
+  "conf": "u19b-4286-40538",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 129027,
+    "team": "South Carolina Surf",
+    "ours": [
+     12,
+     25
+    ],
+    "ecnl": [
+     11,
+     24
+    ]
+   },
+   {
+    "id": 131800,
+    "team": "GSA",
+    "ours": [
+     11,
+     11
+    ],
+    "ecnl": [
+     10,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4287-41627",
   "name": "ECNL Boys Southwest",
   "ours": [
@@ -14311,6 +14459,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 136041,
+    "team": "Eclipse Select Soccer Club I Pre-ECNL G2015/16",
+    "ours": [
+     11,
+     33
+    ],
+    "ecnl": [
+     10,
+     30
+    ]
+   },
+   {
     "id": 128433,
     "team": "Chicago Inter Pre-ECNL G2015/16 Red",
     "ours": [
@@ -14320,6 +14480,18 @@
     "ecnl": [
      8,
      19
+    ]
+   },
+   {
+    "id": 134337,
+    "team": "Rockford Raptors FC Pre",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     22
     ]
    },
    {
@@ -14373,8 +14545,8 @@
    134133,
    133159,
    129972,
-   134274,
    134073,
+   134274,
    128377,
    133053,
    133344,
@@ -14428,8 +14600,8 @@
     "id": 134073,
     "team": "West-Mont United Pre-ECNL G2015/16",
     "ours": [
-     5,
-     8
+     6,
+     11
     ],
     "ecnl": [
      8,
@@ -14464,7 +14636,7 @@
     "id": 133344,
     "team": "WNY Flash Binghamton Pre-ECNL G2015/16",
     "ours": [
-     3,
+     4,
      3
     ],
     "ecnl": [
@@ -15423,6 +15595,37 @@
    129240,
    114883,
    83783
+  ]
+ },
+ {
+  "conf": "u12g-4374-41528",
+  "name": "Pre-ECNL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136044,
+    "team": "Eclipse Select Soccer Club II Pre-ECNL G2014/15",
+    "ours": [
+     12,
+     16
+    ],
+    "ecnl": [
+     11,
+     15
+    ]
+   },
+   {
+    "id": 134340,
+    "team": "Rockford Raptors FC Pre II Fuerza",
+    "ours": [
+     13,
+     16
+    ],
+    "ecnl": [
+     12,
+     15
+    ]
+   }
   ]
  },
  {
@@ -19029,6 +19232,37 @@
    81913,
    82176,
    114091
+  ]
+ },
+ {
+  "conf": "u14g-4265-40564",
+  "name": "ECNL Girls New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134371,
+    "team": "Select",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
+    "id": 114091,
+    "team": "Connecticut FC United",
+    "ours": [
+     8,
+     9
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   }
   ]
  },
  {
