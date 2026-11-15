@@ -5627,8 +5627,8 @@
   "name": "ECNL Boys Midwest",
   "ours": [
    136276,
-   134416,
    120684,
+   134416,
    136052,
    134135,
    134341,
@@ -5651,6 +5651,30 @@
   "name": "ECNL Boys Midwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 136276,
+    "team": "Chicago Magic Soccer Club",
+    "ours": [
+     8,
+     24
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
+    "id": 134416,
+    "team": "MN Thunder Academy",
+    "ours": [
+     6,
+     11
+    ],
+    "ecnl": [
+     5,
+     11
+    ]
+   },
    {
     "id": 120684,
     "team": "St Croix",
@@ -22078,11 +22102,11 @@
   "name": "ECNL RL Boys Golden State",
   "ours": [
    107702,
-   85062,
    93390,
+   85062,
    110953,
-   135974,
    116157,
+   135974,
    109077,
    112659,
    114171,
@@ -22120,6 +22144,18 @@
     ]
    },
    {
+    "id": 85062,
+    "team": "Davis Legacy",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     21
+    ]
+   },
+   {
     "id": 135974,
     "team": "Mustang Soccer ECNL-RL B2008/09",
     "ours": [
@@ -22129,6 +22165,18 @@
     "ecnl": [
      9,
      9
+    ]
+   },
+   {
+    "id": 116157,
+    "team": "San Juan SC",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    }
   ]
