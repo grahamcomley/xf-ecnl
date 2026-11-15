@@ -16277,6 +16277,37 @@
   ]
  },
  {
+  "conf": "u11g-4379-42032",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135567,
+    "team": "New England Surf Pre",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     22
+    ]
+   },
+   {
+    "id": 131402,
+    "team": "FC Stars New Hampshire Pre-ECNL G2015/16",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11g-4379-42030",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
@@ -17360,8 +17391,8 @@
    117014,
    87556,
    134407,
-   111645,
    116950,
+   111645,
    133980,
    132536
   ],
@@ -17374,6 +17405,37 @@
    133980,
    132536,
    111645
+  ]
+ },
+ {
+  "conf": "u12g-4379-42033",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 107940,
+    "team": "New England Surf Pre",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 111645,
+    "team": "FC Stars New Hampshire Pre-ECNL G2014/15",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   }
   ]
  },
  {
