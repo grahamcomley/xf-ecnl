@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.39">
+<meta name="app-version" content="v1.40">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -304,9 +304,10 @@ body.tpopen header{z-index:40}
 </head>
 <body>
 <header>
-  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"></span></button><span class="appname"><span>Sideline</span> <span>Standings</span></span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"><svg class="ic chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></button><span class="appname"><span>Sideline</span> <span>Standings</span></span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
     <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
+<script>try{var _t=localStorage.getItem("ttlText"),_l=localStorage.getItem("lastTeam"),_m=/(?:^#|&)t=([^,&]+)/.exec(location.hash);if(_t&&_l&&(!_m||_m[1]===_l)){var _b=document.getElementById("ttl");_b.querySelector(".ttn").textContent=_t;_b.hidden=false;document.querySelector(".topline").classList.add("hasteam")}}catch(e){}</script>
 <div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div><div id="tpanel" hidden><div class="tpdim" id="tpdim"></div><div class="tpcard" id="tpbody"></div></div></div>
 <div id="scroller"><main id="app"><div class="card ctx">Loading…</div></main></div>
 <nav id="tabbar" hidden aria-label="Sections"></nav>
@@ -1336,8 +1337,16 @@ loadClerk(); applyGate(); loadGate();
 
 $("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
+function setTitle(k) {   // top-bar team name: set once per team, cleared only on the welcome page
+  const b = $("#ttl"), tl = $(".topline"), t = k && teamByKey(k);
+  if (!t) { b.hidden = true; tl.classList.remove("hasteam"); return; }
+  const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""), txt = `${t.s}${m ? ` · U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""}`, n = b.querySelector(".ttn");
+  if (n.textContent !== txt) n.textContent = txt;
+  b.setAttribute("aria-label", `${t.s} ${t.a || ""}: team options`); b.hidden = false; tl.classList.add("hasteam");
+  store.set("ttlText", txt);
+}
+$("#ttl").onclick = () => teamSheet(true);
 function route() {
-  { const b = $("#ttl"); if (b) { b.hidden = true; $(".topline").classList.remove("hasteam"); } }
   let h = location.hash.slice(1);
   if (INDEX.legacy && INDEX.legacy[h]) { h = "t=" + INDEX.legacy[h]; history.replaceState(null, "", "#" + h); }
   const keys = (new URLSearchParams(h).get("t") || "").split(",").filter(k => teamByKey(k));
@@ -1471,7 +1480,7 @@ function toggleFav(k) {
 let FSTATE = {};
 // First screen with no team yet: what Sideline is, search, browse, and what a free account adds.
 function drawLanding() {
-  CUR = null; closeFinder();
+  CUR = null; closeFinder(); setTitle(null);
   $("#teamhead").innerHTML = ""; $("#tabbar").hidden = true;
   $("#app").innerHTML = `<div class="land">
     <span class="logo land-logo" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -1592,7 +1601,7 @@ async function refreshConf(k) {
   finally { if (--REFRESHING <= 0) { REFRESHING = 0; document.body.classList.remove("refreshing"); } }
 }
 async function openTeam(k) {
-  CUR = k; closeFinder(); drawPills();
+  CUR = k; closeFinder(); setTitle(k); drawPills();
   const t = teamByKey(k);
   if (!CONF_CACHE[t.f]) { const txt = await fetch(`data/conf/${t.f}.json`, {cache: "no-store"}).then(r => r.text()); CONF_CACHE[t.f] = JSON.parse(txt); CONF_TXT[t.f] = txt; CONF_AT[t.f] = Date.now(); }
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
@@ -1917,7 +1926,7 @@ function renderTeam(D, fid, key) {
     for (const k of [key, ...keys]) { const t = teamByKey(k); lbl[k] = pillName(t.s); const id = lbl[k] + "|" + ageTag(t); (seen[id] = seen[id] || new Set()).add(k); }
     for (const ks of Object.values(seen)) if (ks.size > 1) for (const k of ks) lbl[k] = teamByKey(k).s;
     const fo = $("#finder").classList.contains("open");
-    { const t = teamByKey(key), b = $("#ttl"); b.querySelector(".ttn").textContent = `${t.s}${ageTag(t) ? " · " + ageTag(t) : ""}`; b.querySelector(".ttc").innerHTML = CHEV; b.setAttribute("aria-label", `${t.s} ${t.a || ""}: team options`); b.hidden = false; b.onclick = () => teamSheet(true); $(".topline").classList.add("hasteam"); }
+    setTitle(key);
     $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="${fo ? "Close search" : "Find a team"}">${icon(fo ? "x" : "search")}</button>
       <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : `<span class="tvisit">${pill(key, "on tmp", lbl)}<button class="tpill tfollow" id="starbtn" aria-label="Follow ${esc(focus.short)}">${icon("star")}Follow</button></span>`}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>`;
     const ts = $("#tstrip");
