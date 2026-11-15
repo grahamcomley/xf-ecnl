@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.36">
+<meta name="app-version" content="v1.37">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -76,7 +76,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
 .tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
 #teamhead{position:relative;z-index:2;background:var(--card)}
-#tpanel{position:absolute;left:0;right:0;top:100%;z-index:1}
+#tpanel{position:absolute;left:0;right:0;top:0;z-index:3}
 .tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
 .tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
 .tphead{display:flex;flex-direction:column;padding:6px 0 8px}.tphead b{font-size:16px}.tphead span{font-size:13px;color:var(--mut)}
@@ -284,6 +284,13 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 .topline .appname{flex:1;min-width:0;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subline{flex:none;white-space:nowrap}
 .logo{width:22px;height:22px;border-radius:6px;gap:2px;padding:0 5px}.logo i{height:2px}
+.ttl{flex:0 1 auto;min-width:0;display:flex;align-items:center;gap:8px;background:none;border:0;color:var(--ink);font:inherit;font-size:17px;font-weight:800;padding:4px 0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.ttl .ttn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ttc{flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);display:grid;place-items:center}.ttc .ic{width:16px;height:16px;color:#0b0d12;margin:0;transition:transform .15s}
+.ttl[aria-expanded="true"] .ttc .ic{transform:rotate(180deg)}
+.topline.hasteam .appname{flex:none;margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;font-size:10px;line-height:1.1;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.topline.hasteam .subline{display:none}
+body.tpopen header{z-index:40}
 .ibtn.plain{border:0;background:none;width:40px;height:40px;color:var(--mut)}.ibtn.plain .ic{width:20px;height:20px}
 #teamwrap{flex:none;padding:0;max-width:none;margin:0;width:100%;box-sizing:border-box;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
 #teamwrap .th{border:0;border-radius:0;background:none;box-shadow:inset 3px 0 0 var(--red);padding:6px calc(6px + env(safe-area-inset-right,0px)) 6px calc(12px + env(safe-area-inset-left,0px));align-items:center;gap:4px}
@@ -297,7 +304,7 @@ header{padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-are
 </head>
 <body>
 <header>
-  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><span class="appname">Sideline Standings</span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
+  <div class="topline"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span><button class="ttl" id="ttl" aria-expanded="false" aria-haspopup="true" hidden><span class="ttn"></span><span class="ttc" aria-hidden="true"></span></button><span class="appname"><span>Sideline</span> <span>Standings</span></span><span class="subline"><span class="checked" id="checked"></span><span id="ver"></span></span>
     <button class="ibtn plain bellbtn" id="belltop" aria-label="Recent alerts" hidden><span id="bellcount" class="bellcount" hidden></span></button><button class="ibtn plain" id="settop" aria-label="Settings"></button></div>
 </header>
 <div id="teamwrap"><div id="teamhead"></div><div id="ddmenu" class="ddmenu" hidden></div><div id="tpanel" hidden><div class="tpdim" id="tpdim"></div><div class="tpcard" id="tpbody"></div></div></div>
@@ -1266,7 +1273,7 @@ function maybeOfferAlerts(k) {
 }
 $("#anudgeclose").onclick = () => $("#anudge").hidden = true;
 // team sheet drop-down: closes on the dimmed area or when the page scrolls
-const closeTeamSheet = () => { TP_OPEN = false; $("#tpanel").hidden = true; const p = document.querySelector("#tstrip .tpill.on"); if (p) p.setAttribute("aria-expanded", "false"); };
+const closeTeamSheet = () => { TP_OPEN = false; $("#tpanel").hidden = true; document.body.classList.remove("tpopen"); $("#ttl").setAttribute("aria-expanded", "false"); };
 $("#tpdim").onclick = closeTeamSheet;
 $("#scroller").addEventListener("scroll", () => { if (TP_OPEN) closeTeamSheet(); }, {passive: true});
 $("#nsheetclose").onclick = () => $("#nsheet").hidden = true;
@@ -1330,6 +1337,7 @@ loadClerk(); applyGate(); loadGate();
 $("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i></button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
 function route() {
+  { const b = $("#ttl"); if (b) { b.hidden = true; $(".topline").classList.remove("hasteam"); } }
   let h = location.hash.slice(1);
   if (INDEX.legacy && INDEX.legacy[h]) { h = "t=" + INDEX.legacy[h]; history.replaceState(null, "", "#" + h); }
   const keys = (new URLSearchParams(h).get("t") || "").split(",").filter(k => teamByKey(k));
@@ -1899,7 +1907,7 @@ function renderTeam(D, fid, key) {
   const recent = (store.get("recentTeams") || "").split(",").filter(Boolean);
   const ageNum = t => +((/U(\d+)/.exec(t.a || "") || [])[1] || 99);
   const ageTag = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
-  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}${k === key ? ": team options" : ""}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}<span class="tpx" aria-hidden="true">${k === key ? CHEV : ""}</span></button>`; };
+  const pill = (k, cls, lbl) => { const t = teamByKey(k); return `<button class="tpill ${cls}" data-k="${k}" role="tab" aria-selected="${k === key}" aria-label="${esc(t.s)} ${esc(t.a || "")}${k === key ? ": team options" : ""}">${esc(lbl[k] || t.s)}${ageTag(t) ? ` · ${ageTag(t)}` : ""}</button>`; };
   const drawHead = () => {
     const fl = (favs() || []).filter(teamByKey);
     const keys = [...fl].sort((a, b) => { const x = teamByKey(a), y = teamByKey(b); return ageNum(x) - ageNum(y) || String(x.a).localeCompare(String(y.a)) || String(x.s).localeCompare(String(y.s)); });
@@ -1909,6 +1917,7 @@ function renderTeam(D, fid, key) {
     for (const k of [key, ...keys]) { const t = teamByKey(k); lbl[k] = pillName(t.s); const id = lbl[k] + "|" + ageTag(t); (seen[id] = seen[id] || new Set()).add(k); }
     for (const ks of Object.values(seen)) if (ks.size > 1) for (const k of ks) lbl[k] = teamByKey(k).s;
     const fo = $("#finder").classList.contains("open");
+    { const t = teamByKey(key), b = $("#ttl"); b.querySelector(".ttn").textContent = `${t.s}${ageTag(t) ? " · " + ageTag(t) : ""}`; b.querySelector(".ttc").innerHTML = CHEV; b.setAttribute("aria-label", `${t.s} ${t.a || ""}: team options`); b.hidden = false; b.onclick = () => teamSheet(true); $(".topline").classList.add("hasteam"); }
     $("#teamhead").innerHTML = `<div class="trow"><button class="tpill tsearch" id="tsearch" aria-label="${fo ? "Close search" : "Find a team"}">${icon(fo ? "x" : "search")}</button>
       <div class="tstrip" id="tstrip" role="tablist" aria-label="Your teams">${on ? "" : `<span class="tvisit">${pill(key, "on tmp", lbl)}<button class="tpill tfollow" id="starbtn" aria-label="Follow ${esc(focus.short)}">${icon("star")}Follow</button></span>`}${keys.map(k => pill(k, k === key ? "on" : "", lbl)).join("")}</div></div>`;
     const ts = $("#tstrip");
@@ -1938,11 +1947,11 @@ function renderTeam(D, fid, key) {
             <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
             <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
             <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div></div>`;
-      $("#tpbody").innerHTML = `<div class="tphead"><b>${esc((teamByKey(key) || {}).s || nm)} · ${esc(D.age_label.split(" (")[0])}</b><span>${esc(D.conf_name)}</span></div>${alertsHtml}
+      const upd = $("#checked").textContent;
+      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}${upd ? ` · ${/^Paused/.test(upd) ? "Updates paused" + esc(upd.slice(6)) : "Updated " + esc(upd)}` : ""}</span></div>${alertsHtml}
         <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
-      TP_OPEN = true; $("#tpanel").hidden = false;
-      const p = document.querySelector("#tstrip .tpill.on"); if (p) p.setAttribute("aria-expanded", "true");
+      TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
       $("#tpbody").onclick = async e => {
         const sb = e.target.closest(".seg button");
         if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : {rem: v}); setAcfg(cc); teamSheet(); return; }
