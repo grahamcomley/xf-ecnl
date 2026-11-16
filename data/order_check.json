@@ -2938,8 +2938,8 @@
    128328,
    75142,
    129699,
-   92769,
    118553,
+   92769,
    129517,
    126453,
    131287,
@@ -2962,18 +2962,6 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
-   {
-    "id": 133749,
-    "team": "HTX N Pre-ECNL STXCL B2014/15 II",
-    "ours": [
-     8,
-     22
-    ],
-    "ecnl": [
-     9,
-     25
-    ]
-   },
    {
     "id": 131286,
     "team": "RISE SC Pre-ECNL STXCL B2014/15 Navy",
@@ -3020,18 +3008,6 @@
     "ecnl": [
      8,
      8
-    ]
-   },
-   {
-    "id": 92769,
-    "team": "Coastal Premier Pre-ECNL STXCL B2014/15",
-    "ours": [
-     7,
-     7
-    ],
-    "ecnl": [
-     8,
-     7
     ]
    },
    {
@@ -16810,6 +16786,37 @@
   ]
  },
  {
+  "conf": "u17b-4287-41626",
+  "name": "ECNL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134471,
+    "team": "Sporting California USA",
+    "ours": [
+     10,
+     16
+    ],
+    "ecnl": [
+     9,
+     13
+    ]
+   },
+   {
+    "id": 131406,
+    "team": "SDSC Surf",
+    "ours": [
+     11,
+     6
+    ],
+    "ecnl": [
+     10,
+     6
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17b-4288-40549",
   "name": "ECNL Boys Texas",
   "ours": [
@@ -27228,10 +27235,10 @@
    80650,
    133621,
    80293,
+   87636,
    129368,
    131208,
    68555,
-   87636,
    128351,
    132758,
    80651,
@@ -27319,6 +27326,30 @@
     "ecnl": [
      8,
      13
+    ]
+   },
+   {
+    "id": 87636,
+    "team": "Sting CC ECNL RL STXCL G2012/13 Martinez",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   },
+   {
+    "id": 128351,
+    "team": "SG1 ECNL RL STXCL G2012/13",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
     ]
    },
    {
