@@ -6483,9 +6483,9 @@
   "conf": "u13b-4287-41622",
   "name": "ECNL Boys Southwest",
   "ours": [
-   133678,
    126632,
    94795,
+   133678,
    133558,
    134467,
    132187,
@@ -6519,6 +6519,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133678,
+    "team": "LAFC So Cal",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
     "id": 134467,
     "team": "Sporting California USA",
     "ours": [
@@ -6528,6 +6540,18 @@
     "ecnl": [
      8,
      13
+    ]
+   },
+   {
+    "id": 132457,
+    "team": "San Diego Surf",
+    "ours": [
+     9,
+     14
+    ],
+    "ecnl": [
+     8,
+     11
     ]
    },
    {
@@ -8098,6 +8122,18 @@
     ]
    },
    {
+    "id": 127358,
+    "team": "Pateadores IRV Blue",
+    "ours": [
+     9,
+     18
+    ],
+    "ecnl": [
+     8,
+     17
+    ]
+   },
+   {
     "id": 132991,
     "team": "Legends FC (CA) Black",
     "ours": [
@@ -8191,6 +8227,18 @@
     "ecnl": [
      8,
      3
+    ]
+   },
+   {
+    "id": 132986,
+    "team": "Legends FC (CA) Gold",
+    "ours": [
+     6,
+     2
+    ],
+    "ecnl": [
+     5,
+     1
     ]
    },
    {
@@ -11807,6 +11855,37 @@
    131397,
    94930,
    79561
+  ]
+ },
+ {
+  "conf": "u15b-4284-40523",
+  "name": "ECNL Boys Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 71813,
+    "team": "Seattle United",
+    "ours": [
+     9,
+     25
+    ],
+    "ecnl": [
+     8,
+     22
+    ]
+   },
+   {
+    "id": 81137,
+    "team": "PacNW",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   }
   ]
  },
  {
@@ -21477,8 +21556,8 @@
    132993,
    135596,
    133120,
-   135597,
    133752,
+   135597,
    131038,
    59261
   ],
@@ -21530,6 +21609,18 @@
     "ecnl": [
      8,
      20
+    ]
+   },
+   {
+    "id": 132488,
+    "team": "San Diego Surf Blue",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     12
     ]
    },
    {
@@ -21626,6 +21717,18 @@
     "ecnl": [
      5,
      5
+    ]
+   },
+   {
+    "id": 135597,
+    "team": "Sporting California USA RED",
+    "ours": [
+     7,
+     3
+    ],
+    "ecnl": [
+     6,
+     3
     ]
    },
    {
