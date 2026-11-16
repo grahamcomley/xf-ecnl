@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.47">
+<meta name="app-version" content="v1.53">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -244,6 +244,17 @@ h3{font-size:14px;margin:10px 0 6px}
 .imp.open .ar{transform:rotate(90deg)}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
+.gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 52px;line-height:1.45}
+.evtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:1px 4px;cursor:pointer;white-space:nowrap}
+.ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
+.grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
+.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 52px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
+.gsub .w{color:#86efac}.gsub .l{color:#fca5a5}
+.card.evcard{padding:14px}.evcard>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px}.evcard>summary::-webkit-details-marker{display:none}
+.evcard .evh{flex:1;min-width:0}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
+.evcard>summary>.ic{width:18px;height:18px;color:var(--mut);margin-top:3px;transition:transform .15s}.evcard[open]>summary>.ic{transform:rotate(180deg)}
+.evcard .evb{margin-top:10px}.fbr{display:grid;grid-template-columns:46px 1fr;gap:6px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13px}.fbr .fl{font-size:11px;color:var(--mut)}
+.evcard.flash{box-shadow:0 0 0 2px #6d28d9}
 .more{display:block;width:100%;border:1px dashed var(--line2);background:transparent;color:var(--link);font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:10px;cursor:pointer;margin:4px 0 8px}.root[hidden]{display:none}
 .lose,.lose.me-n,.lose.win{color:var(--mut);font-weight:500}.lo{color:var(--mut);font-weight:500}.arr{display:inline-block;font-size:.72em;color:var(--ink);padding:0 4px;vertical-align:1px}.parr{font-style:normal;font-size:.7em;margin-left:3px;vertical-align:2px}
 .sb{font-size:16px;margin:6px 0 2px}.sc{font-size:inherit;color:var(--ink)}.win{font-weight:800}.me-n{color:var(--ink);font-weight:700}
@@ -498,7 +509,9 @@ function confidence(teams, a, b) {
 function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function table(rows, games, ids) {
   const t = new Map(ids.map(i => [i, {id: i, gp: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0}]));
-  const add = (h, a, x, y) => { const H = t.get(h), A = t.get(a); if (!H || !A) return;
+  // A game against a team from the other half of a split division counts for our side only.
+  const Z = {gp: 0, gf: 0, ga: 0, w: 0, d: 0, l: 0, pts: 0};
+  const add = (h, a, x, y) => { const H = t.get(h) || (t.has(a) ? {...Z} : null), A = t.get(a) || (H ? {...Z} : null); if (!H || !A) return;
     H.gp++; A.gp++; H.gf += x; H.ga += y; A.gf += y; A.ga += x;
     if (x > y) { H.w++; H.pts += 3; A.l++; } else if (x === y) { H.d++; A.d++; H.pts++; A.pts++; } else { A.w++; A.pts += 3; H.l++; } };
   for (const g of games) {
@@ -507,6 +520,7 @@ function table(rows, games, ids) {
     if (PK_POINTS && g.hs === g.as && g.hpk != null && g.apk != null && g.hpk !== g.apk) { const W = t.get(g.hpk > g.apk ? g.home_id : g.away_id); if (W) W.pts++; }
   }
   for (const r of rows) add(r[0], r[1], r[2], r[3]);
+  for (const [id, v] of Object.entries(ADJ || {})) { const r = t.get(+id) || t.get(id); if (r) r.pts += v; }   // ECNL's own points (League Cup shootouts, deductions)
   const list = [...t.values()]; for (const r of list) { r.ppg = r.gp ? r.pts / r.gp : 0; r.gd = r.gf - r.ga; }
   return list;
 }
@@ -524,13 +538,15 @@ function simPrep(ids, M, played, remaining) {
   const n = ids.length, ix = new Map(ids.map((id, i) => [id, i]));
   const gp = new Int32Array(n), pts = new Int32Array(n), gf = new Int32Array(n), ga = new Int32Array(n), h2h = new Int32Array(n * n);
   for (const g of played) {
-    const h = ix.get(g.home_id), a = ix.get(g.away_id); if (h === undefined || a === undefined) continue;
-    gp[h]++; gp[a]++; gf[h] += g.hs; ga[h] += g.as; gf[a] += g.as; ga[a] += g.hs;
+    const h = ix.get(g.home_id), a = ix.get(g.away_id); if (h === undefined && a === undefined) continue;
     const ph = g.hs > g.as ? 3 : g.hs === g.as ? 1 : 0, pa = g.hs < g.as ? 3 : g.hs === g.as ? 1 : 0;
-    pts[h] += ph; pts[a] += pa; h2h[h * n + a] += ph; h2h[a * n + h] += pa;
+    if (h !== undefined) { gp[h]++; gf[h] += g.hs; ga[h] += g.as; pts[h] += ph; }
+    if (a !== undefined) { gp[a]++; gf[a] += g.as; ga[a] += g.hs; pts[a] += pa; }
+    if (h !== undefined && a !== undefined) { h2h[h * n + a] += ph; h2h[a * n + h] += pa; }
   }
-  const G = remaining.map(g => { const [lh, la] = M.lam(g.home_id, g.away_id, false); return {id: g.id, h: ix.get(g.home_id), a: ix.get(g.away_id), eh: Math.exp(-lh), ea: Math.exp(-la)}; })
-    .filter(x => x.h !== undefined && x.a !== undefined);
+  for (const [id, v] of Object.entries(ADJ || {})) { const i = ix.has(+id) ? ix.get(+id) : ix.get(id); if (i !== undefined) pts[i] += v; }
+  const G = remaining.map(g => { const [lh, la] = M.lam(g.home_id, g.away_id, false); const h = ix.get(g.home_id), a = ix.get(g.away_id); return {id: g.id, h: h === undefined ? -1 : h, a: a === undefined ? -1 : a, eh: Math.exp(-lh), ea: Math.exp(-la)}; })
+    .filter(x => x.h >= 0 || x.a >= 0);
   c = {ids, played, n, gp, pts, gf, ga, h2h, G}; SIMPREP.set(remaining, c); return c;
 }
 function simulate(ids, M, played, remaining, forced, N) {
@@ -550,8 +566,8 @@ function simulate(ids, M, played, remaining, forced, N) {
         if (k === 59) { if (f === "H") { x = 1; y = 0; } else if (f === "D") { x = 1; y = 1; } else { x = 0; y = 1; } }
       }
       xs[gi] = x; ys[gi] = y;
-      gp[g.h]++; gp[g.a]++; gf[g.h] += x; ga[g.h] += y; gf[g.a] += y; ga[g.a] += x;
-      pts[g.h] += x > y ? 3 : x === y ? 1 : 0; pts[g.a] += x < y ? 3 : x === y ? 1 : 0;
+      if (g.h >= 0) { gp[g.h]++; gf[g.h] += x; ga[g.h] += y; pts[g.h] += x > y ? 3 : x === y ? 1 : 0; }
+      if (g.a >= 0) { gp[g.a]++; gf[g.a] += y; ga[g.a] += x; pts[g.a] += x < y ? 3 : x === y ? 1 : 0; }
     }
     cnt.clear();
     for (let i = 0; i < n; i++) { order[i] = i; ppg[i] = gp[i] ? pts[i] / gp[i] : 0; cnt.set(pts[i], (cnt.get(pts[i]) || 0) + 1); }
@@ -575,8 +591,8 @@ const rangeOf = (S, id) => { const p = S.get(id).pos; let c = 0, lo = null, hi =
 const placeTxt = r => r[0] === r[1] ? ord(r[0]) : `${ord(r[0])}–${ord(r[1])}`;
 
 // ---------- state: teams index, favorites, routing ----------
-let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null, PK_POINTS = false;
-const CONF_CACHE = {}, PICKS = {};
+let TEAMS = [], INDEX = {}, STATUS = null, CUR = null, CTX = null, PK_POINTS = false, ADJ = null;
+const CONF_CACHE = {}, PICKS = {}, PK_PRE = {};
 // Saved picks (Predict): {conf file: {game id: {p: their pick, o: our pick when they made it, t: when}}}.
 // Kept on this device and, when signed in, in the account. Picks on played games stay, for grading.
 let SAVED = (() => { try { return JSON.parse(localStorage.getItem("savedPicks") || "{}") || {}; } catch (e) { return {}; } })();
@@ -1613,6 +1629,33 @@ async function refreshConf(k) {
   } catch (e) { console.warn("refresh failed", e); }
   finally { if (--REFRESHING <= 0) { REFRESHING = 0; document.body.classList.remove("refreshing"); } }
 }
+// Followed teams (the pill row) load quietly in the background after the first screen, so switching is instant.
+let PREF_RUN = null, READY_LOGGED = false;
+function prefetchFavs(again) {
+  if (PREF_RUN && !again) return;
+  PREF_RUN = (async () => {
+    await new Promise(r => setTimeout(r, 400));
+    const fs = [...new Set((favs() || []).map(k => (teamByKey(k) || {}).f).filter(Boolean))];
+    for (const f of fs) {
+      if (CONF_CACHE[f] && !again) continue;
+      if (again && f === (teamByKey(CUR) || {}).f) continue;   // the team on screen refreshes itself
+      try {
+        const txt = await fetch(`data/conf/${f}.json`, {cache: "no-store"}).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
+        if (txt !== CONF_TXT[f]) { CONF_CACHE[f] = JSON.parse(txt); CONF_TXT[f] = txt; }
+        CONF_AT[f] = Date.now();
+      } catch (e) {}
+      await new Promise(r => setTimeout(r, 150));
+    }
+    if (ME && pkShown()) {   // this weekend's Pick'em for each followed team
+      const [from, to] = pkWeekend(0);
+      for (const f of fs) {
+        if (PK_PRE[f] && PK_PRE[f].from === from && !again) continue;
+        try { PK_PRE[f] = {from, at: Date.now(), data: await api("GET", `/api/pickem?fk=${encodeURIComponent(f)}&from=${from}&to=${to}`)}; } catch (e) {}
+      }
+    }
+    PREF_RUN = null;
+  })();
+}
 async function openTeam(k) {
   CUR = k; closeFinder(); setTitle(k); drawPills();
   const t = teamByKey(k);
@@ -1620,9 +1663,11 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
+  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog("ready", `${Math.round(performance.now())}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
   $("#scroller").scrollTop = 0;
+  prefetchFavs();
 }
 function sec(kind, chip, title, sub, body, key, defOpen = true) {
   if (defOpen === "fixed") return `<div class="card sec fixed"><div class="sechead"><h2>${title}</h2></div><div class="sec-body">${sub ? `<div class="sec-sub">${sub}</div>` : ""}${body}</div></div>`;
@@ -1690,6 +1735,7 @@ function gameRow(D, M, g, o = {}) {
       <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
   if (o.det) det = `<div class="gdet" hidden>${o.det}</div>`;
+  if (o.strong) { if (o.strong.has(L)) ln = `<b>${ln}</b>`; if (o.strong.has(R)) rn = `<b>${rn}</b>`; }
   let toggles = "";
   if (o.picks && !done) {
     const P = M.probs(g.home_id, g.away_id, o.neutral), picked = PICKS[D.__fk][g.id] || "";
@@ -1702,7 +1748,7 @@ function gameRow(D, M, g, o = {}) {
       toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
     }
   }
-  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${det}${toggles}</div>`;
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
 const GRADE = {exact: ["EXACT", "Exact score"], called: ["CALLED", "Called it"], bigger: ["BIGGER", "Bigger win than expected"], closer: ["CLOSER", "Closer than expected"], missed: ["MISSED", "Missed"]};
@@ -1775,8 +1821,8 @@ function checkedTxt() {
 function renderTeam(D, fid, key) {
   setGearDot();
   D.__fk = teamByKey(key).f;
-  PK_POINTS = /^MLS NEXT/.test(D.league || "");
-  const M = makeModel(D.teams, D.model), today = todayISO(), ids = D.teams.map(t => t.id);
+  PK_POINTS = /^MLS NEXT/.test(D.league || ""); ADJ = D.adj || null;
+  const M = makeModel(D.teams, D.model), today = todayISO(), ids = D.members || D.teams.map(t => t.id);
   const focus = D.teams.find(t => t.id === fid), me = esc(focus.short), chipMe = esc(code(D, fid));
   const valid = D.games.filter(g => g.home_id && g.away_id && !g.bad);
   const played = valid.filter(g => g.hs != null && g.as != null);
@@ -1787,7 +1833,9 @@ function renderTeam(D, fid, key) {
   const picks = PICKS[D.__fk];
   for (const k of Object.keys(picks)) if (!remaining.some(g => String(g.id) === k)) delete picks[k];
   const spots = D.playoff_spots, N = 4000;
-  const base = simulate(ids, M, played, remaining, {}, N);
+  // Season odds come from the server (same numbers on every phone); worked out here only if a file has none.
+  const SO = D.odds && D.odds.pos, base = SO && ids.every(id => SO[id] && SO[id].length === ids.length)
+    ? new Map(ids.map(id => [id, {pos: SO[id]}])) : simulate(ids, M, played, remaining, {}, N);
   let keyIdx = 0, keyLabel = "finishing 1st";
   if (spots) { const p = atOrAbove(base, fid, spots - 1); if (p > 0.03 && p < 0.97) { keyIdx = spots - 1; keyLabel = `making the top ${spots}`; } }
   const keyNow = atOrAbove(base, fid, keyIdx);
@@ -1823,12 +1871,55 @@ function renderTeam(D, fid, key) {
   const upW = inWin.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime);
   const dayShort = d => d === yest ? "Yest" : d === today ? "Today" : shortDate(d);
   const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
-  const winHtml = (fin, wait, up) => (fin.length ? blk("Completed", fin.map(g => gameRow(D, M, g, {focus: fid, ours: true, left: shortDate(g.date)})).join("")) : "")
-    + (wait.length ? blk("Waiting for score", wait.map(g => gameRow(D, M, g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : shortDate(g.date)})).join("")) : "")
-    + [...new Set(up.map(g => g.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`,
-        up.filter(g => g.date === d).map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true})).join(""))).join("");
-  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe));
+  // Event games sit in the calendar with the league games (tagged with the event's name).
+  const EVI = evItemsFor(D, events, fid);
+  const evStand = {top: [], soon: []};
+  for (const ev of events) { const sp = !ev.competition && evSpan(ev); if (!sp) continue;
+    if (today >= sp[0] && today <= addDays(sp[1], 1)) evStand.top.push(ev); else if (today >= addDays(sp[0], -14) && today < sp[0]) evStand.soon.push(ev); }   // ours: known games, plus TBD / TENTATIVE days
+  const inW = x => x.date >= wStart && x.date <= wEnd;
+  const xWait = x => !x.done && !x.tbd && kickPassed(x.g);
+  const split = list => ({fin: list.filter(x => x.done), wait: list.filter(xWait), up: list.filter(x => !x.done && !xWait(x))});
+  const srt = a => a.sort((x, y) => (x.date + x.time).localeCompare(y.date + y.time));
+  const L = (g, o) => ({date: g.date, time: g.time || "", html: gameRow(D, M, g, o)});
+  const winHtml = (fin, wait, up, X = {fin: [], wait: [], up: []}) => {
+    const F = srt(fin.map(g => L(g, {focus: fid, ours: true, left: shortDate(g.date)})).concat(X.fin.map(x => Object.assign({}, x, {html: x.tbd ? x.html : x.html.replace(/<span class="gt">[^<]*/, `<span class="gt">${shortDate(x.date)}`)}))));
+    const W = srt(wait.map(g => L(g, {focus: fid, ours: true, wait: true, left: g.date === today ? shortTime(g.time) : shortDate(g.date)})).concat(X.wait));
+    const U = srt(up.map(g => L(g, {focus: fid, stake: true, ours: true})).concat(X.up));
+    return (F.length ? blk("Completed", F.map(x => x.html).join("")) : "") + (W.length ? blk("Waiting for score", W.map(x => x.html).join("")) : "")
+      + [...new Set(U.map(x => x.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`, U.filter(x => x.date === d).map(x => x.html).join(""))).join("");
+  };
+  // All teams, while an event is on: where our league's teams are playing today (and tomorrow, once it's set)
+  const evNow = (() => {
+    // one block per event (all its age-group flights together), games by time
+    const mem = new Set(ids), tom = addDays(today, 1), byEv = new Map();
+    for (const ev of D.events || []) {
+      if (ev.competition) continue;
+      const sp = evSpan(ev); if (!sp || today < sp[0] || today > sp[1]) continue;
+      const e = byEv.get(ev.event_id) || {ev, today: [], tomorrow: [], seen: new Set(), last: sp[1]};
+      e.last = e.last > sp[1] ? e.last : sp[1];
+      const m = evModel(ev);
+      for (const g of m.games) {
+        if (e.seen.has(g.id)) continue;
+        const h = m.sideId(g, "home"), a = m.sideId(g, "away");
+        if (!h || !a || !(mem.has(h) || mem.has(a))) continue;
+        if (g.date === today) e.today.push([ev, g]); else if (g.date === tom) e.tomorrow.push([ev, g]); else continue;
+        e.seen.add(g.id);
+      }
+      byEv.set(ev.event_id, e);
+    }
+    const out = [...byEv.values()].map(e => ({ev: e.ev, today: e.today, tomorrow: tom <= e.last ? e.tomorrow : [], more: tom <= e.last}));
+    if (!out.length) return "";
+    const region = (D.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
+    const nice = ev => evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    const rows = list => srt(list.map(([ev, g]) => evGameItem(D, ev, g, fid, {strong: mem, plain: true}))).map(x => x.html).join("");
+    return out.map(({ev, today: a, tomorrow: b, more}) => sec("div", "Event", `${esc(region)} teams at ${esc(nice(ev))}`, "",
+      blk(`Today · ${fmtDate(today)}`, a.length ? rows(a) : "<div class='mut'>No games for these teams today.</div>")
+      + (b.length ? blk(`Tomorrow · ${fmtDate(tom)}`, rows(b)) : more ? `<div class="mut" style="margin-top:8px">Tomorrow's games show once they're set.</div>` : ""), "evnow-" + ev.event_id)).join("");
+  })();
+  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe), split(EVI.filter(inW)));
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
+  const byDayX = (games, row, extra, desc) => { const all = srt(games.map(g => ({date: g.date, time: g.time || "", html: row(g)})).concat(extra)); if (desc) all.reverse();
+    return [...new Set(all.map(x => x.date))].map(d => blk(fmtDate(d), all.filter(x => x.date === d).map(x => x.html).join(""))).join(""); };
   const restS = scheduled.filter(g => g.date > wEnd);
   const restHtml = byDay(restS, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}))
     + (missed.length ? blk("New date not set", missed.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
@@ -1836,9 +1927,10 @@ function renderTeam(D, fid, key) {
   const seasonHtml = byDay(seasonRes, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
   // My team: the same sections, only this team's games
   const restM = restS.filter(isMe), missedM = missed.filter(isMe), seasonM = seasonRes.filter(isMe);
-  const restHtmlM = byDay(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}))
+  const evRest = EVI.filter(x => x.date > wEnd && !x.done), evPast = EVI.filter(x => x.date < wStart && x.done);
+  const restHtmlM = byDayX(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}), evRest)
     + (missedM.length ? blk("New date not set", missedM.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
-  const seasonHtmlM = byDay(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
+  const seasonHtmlM = byDayX(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}), evPast.map(x => Object.assign({}, x, {html: x.html.replace(/<span class="gt">[^<]*/, '<span class="gt">')})), true);
   // All teams | My team: your last choice; otherwise My team for a team you follow
   const gview = store.get("gview") || (starred ? "mine" : "all");
   // Remaining games for the predictor, one closed row per weekend (Mon–Sun); the next weekend with games
@@ -1883,6 +1975,7 @@ function renderTeam(D, fid, key) {
 
 <div class="pane" data-tab="team">
   ${alertCard()}
+  ${evStand.top.map(ev => evCard(D, ev, fid, true)).join("")}
   ${sec("us", chipMe, `Where we stand<span class="h2lg">${esc(D.conf_name)}</span>`, "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
@@ -1894,21 +1987,23 @@ function renderTeam(D, fid, key) {
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
+  ${evStand.soon.map(ev => evCard(D, ev, fid, true)).join("")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
   <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
   <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
+  ${evNow}
   ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
-  ${sec("div", "League", "Rest of season", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
+  ${sec("div", "League", "Coming up", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
   </div>
   <div class="gv" data-gv="mine" ${gview === "mine" ? "" : "hidden"}>
   ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, secM || `<div class='mut'>No league game for ${me} in this window.</div>`, "m4")}
-  ${sec("div", "League", `Rest of season${restM.length + missedM.length ? ` · ${restM.length + missedM.length}` : ""}`, "", restHtmlM || "<div class='mut'>No more games scheduled.</div>", "m4b", true)}
-  ${sec("div", "League", `Season results${seasonM.length ? ` · ${seasonM.length}` : ""}`, "", seasonHtmlM || "<div class='mut'>No earlier results.</div>", "m4c", false)}
+  ${sec("div", "League", `Coming up${restM.length + missedM.length + evRest.length ? ` · ${restM.length + missedM.length + evRest.length}` : ""}`, "", restHtmlM || "<div class='mut'>No more games scheduled.</div>", "m4b", true)}
+  ${sec("div", "League", `Season results${seasonM.length + evPast.length ? ` · ${seasonM.length + evPast.length}` : ""}`, "", seasonHtmlM || "<div class='mut'>No earlier results.</div>", "m4c", false)}
   </div>
   ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
-      events.map((ev, i) => eventRow(D, ev, fid, i)).join(""), "evs") : ""}
+      events.map(ev => evCard(D, ev, fid, false)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="predict">
   ${pkShown() ? `<div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>` : ""}
   <div data-pv="season" class="pv">
@@ -2008,16 +2103,22 @@ function renderTeam(D, fid, key) {
   const impact = gid => {
     if (impactDone.has(gid)) return; impactDone.add(gid);
     const g = remaining.find(x => String(x.id) === gid); if (!g) return;
-    if (nowK === null) nowK = atOrAbove(simulate(ids, M, played, remaining, {}, 1500), fid, keyIdx);
-    const res = {}; for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(ids, M, played, remaining, {[g.id]: o}, 1500), fid, keyIdx);
+    const SI = D.impact && D.impact[gid], fi = ids.indexOf(fid), ki = keyIdx === 0 ? 0 : 1;
+    let res = {}, now0;
+    if (SI && D.impact.now && fi >= 0) { now0 = D.impact.now[ki][fi]; for (const o of ["H", "D", "A"]) res[o] = SI[o][ki][fi]; }
+    else {
+      if (nowK === null) nowK = atOrAbove(simulate(ids, M, played, remaining, {}, 1500), fid, keyIdx);
+      now0 = nowK; for (const o of ["H", "D", "A"]) res[o] = atOrAbove(simulate(ids, M, played, remaining, {[g.id]: o}, 1500), fid, keyIdx);
+    }
+    const nowK2 = now0;
     let html = "", matters = false;
     const what = keyIdx === 0 ? "1st-place chance" : `top-${spots} chance`;
     if (isMe(g)) {
       const W = g.home_id === fid ? "H" : "A", L = W === "H" ? "A" : "H";
-      const up = res[W] - nowK, down = nowK - res[L];
+      const up = res[W] - nowK2, down = nowK2 - res[L];
       if (Math.max(up, down) < 0.03) html = "Little change either way.";
-      else if (down >= up) html = `A loss drops our ${what} from ${pct(nowK)} to <span class="dn">${pct(res[L])}</span>.`;
-      else html = `A win lifts our ${what} from ${pct(nowK)} to <span class="up">${pct(res[W])}</span>.`;
+      else if (down >= up) html = `A loss drops our ${what} from ${pct(nowK2)} to <span class="dn">${pct(res[L])}</span>.`;
+      else html = `A win lifts our ${what} from ${pct(nowK2)} to <span class="up">${pct(res[W])}</span>.`;
     } else {
       const swing = Math.max(res.H, res.D, res.A) - Math.min(res.H, res.D, res.A);
       if (swing >= 0.04) {
@@ -2034,6 +2135,14 @@ function renderTeam(D, fid, key) {
   };
   $("#app").onclick = e => {
     if (e.target.closest("a")) return;
+    const et = e.target.closest("[data-ev]:not(details)");
+    if (et) {
+      const k = et.dataset.ev, pane = et.closest(".pane");
+      let c = pane && pane.querySelector(`details.evcard[data-ev="${k}"]`);
+      if (!c) { showTab("games"); c = document.querySelector(`.pane[data-tab="games"] details.evcard[data-ev="${k}"]`); const ss = c && c.closest("details.sec"); if (ss) ss.open = true; }
+      if (c) { c.open = true; c.scrollIntoView({block: "start", behavior: "smooth"}); c.classList.add("flash"); setTimeout(() => c.classList.remove("flash"), 1200); }
+      return;
+    }
     const row = e.target.closest(".grow.tap");
     if (row && !e.target.closest(".toggles")) {
       const d = row.querySelector(".gdet"); d.hidden = !d.hidden; row.classList.toggle("open", !d.hidden);
@@ -2053,7 +2162,7 @@ function renderTeam(D, fid, key) {
     }
   };
   const queue = [...new Set([...document.querySelectorAll("[data-root]")].filter(e => !e.closest("#later, .lazy")).map(e => e.dataset.root))];
-  const step = () => { const gid = queue.shift(); if (gid === undefined || CTX.D !== D) return; impact(gid); setTimeout(step, 0); };
+  const step = () => { let gid = queue.shift(); while (gid !== undefined && !(D.impact && D.impact[gid])) gid = queue.shift(); if (gid === undefined || CTX.D !== D) return; impact(gid); setTimeout(step, 0); };
   setTimeout(step, 30);
 }
 
@@ -2130,10 +2239,17 @@ async function loadPickem(force) {
   if (!PK || PK.fk !== fk) PK = {fk, view: "week", sel: null, draft: {}};
   if (force) PK.draft = {};
   const [from, to] = PK.sel || pkWeekend(0);
-  if (!PK.data || force) box.innerHTML = "<div class='card ctx mut'>Loading Pick'em…</div>";
-  try {
-    PK.data = await api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${from}&to=${to}`);
-  } catch (e) { box.innerHTML = "<div class='card ctx mut'>Couldn't load Pick'em. Try again in a moment.</div>"; return; }
+  const pre = PK_PRE[fk], quick = !force && !PK.data && !PK.sel && pre && pre.from === from && Date.now() - pre.at < 10 * 60000;
+  if (quick) { PK.data = pre.data; drawPickem(); }   // instant from the background copy, then freshen below
+  else if (!PK.data || force) box.innerHTML = "<div class='card ctx mut'>Loading Pick'em…</div>";
+  let d;
+  try { d = await api("GET", `/api/pickem?fk=${encodeURIComponent(fk)}&from=${from}&to=${to}`); }
+  catch (e) { if (!quick) box.innerHTML = "<div class='card ctx mut'>Couldn't load Pick'em. Try again in a moment.</div>"; return; }
+  if (!PK || PK.fk !== fk) return;
+  if (!PK.sel) PK_PRE[fk] = {from, at: Date.now(), data: d};
+  const a = document.activeElement, typing = a && a.closest && a.closest("#pickem") && /INPUT|SELECT/.test(a.tagName);
+  if (quick && (typing || JSON.stringify(d) === JSON.stringify(PK.data))) { if (!typing) PK.data = d; return; }
+  PK.data = d;
   drawPickem();
 }
 function pkGameRow(D, g, tz, mine, seen, locked) {
@@ -2245,7 +2361,6 @@ function onPick(e) {
 }
 
 // Events (national events, tournaments) inside the team page; brackets show the possible path.
-// One collapsed row per event: name + dates, and our first game (or that it's finished).
 const EV_WORDS = /showcase|cup|classic|tournament|invitational|festival|series|playoff|final|challenge|shootout/i;
 const evName = ev => (ev.name || "Event").replace(/\s+20\d\d(-\d\d)?\s*$/, "") + (ev.competition || EV_WORDS.test(ev.name || "") ? "" : " Showcase");
 function dateRange(dates) {
@@ -2254,68 +2369,177 @@ function dateRange(dates) {
   if (dates[0] === dates[dates.length - 1]) return `${m(a)} ${a.getDate()}`;
   return m(a) === m(b) ? `${m(a)} ${a.getDate()}–${b.getDate()}` : `${m(a)} ${a.getDate()} – ${m(b)} ${b.getDate()}`;
 }
-function eventRow(D, ev, fid, i) {
-  const dates = ev.games.map(g => g.date).filter(Boolean).sort();
-  const tn = id => { const t = ev.teams.find(x => x.id === id); return t ? t.short : "TBD"; };
-  const ours = ev.games.filter(g => g.home_id === fid || g.away_id === fid).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-  const next = ours.find(g => g.hs == null || g.as == null);
-  let line;
-  if (next) {
-    const opp = next.home_id === fid ? next.away_id : next.home_id;
-    line = `${ev.competition ? "Next game" : "First game"}: ${next.home_id === fid ? "vs" : "@"} ${esc(tn(opp))} · ${fmtDate(next.date)} · ${fmtTime(next.time)}`;
-  } else if (ours.length) {
-    const w = ours.filter(g => (g.home_id === fid ? g.hs > g.as : g.as > g.hs)).length, d = ours.filter(g => g.hs === g.as).length;
-    line = `Finished · ${w}-${d}-${ours.length - w - d}`;
-  } else line = "Schedule not posted yet";
-  const sk = `open2:ev-${ev.event_id}-${ev.flight_id}`, open = store.get(sk) === "1";
-  return `<details class="evrow" data-key="${sk}" ${open ? "open" : ""}><summary><div class="when"><span>${dates.length ? dateRange(dates) : "Dates TBD"}${ev.flight && !ev.competition ? ` · Group: ${esc(ev.flight)}` : ""}</span></div>
-    <div class="evhead"><div class="evt">${esc(evName(ev))}</div><span class="imp">Details ${CHEV}</span></div><div class="mut">${line}</div></summary>
-    <div class="evbody"><div class="mut" style="margin-bottom:8px"><a class="vlink" href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a></div>${eventBody(D, ev, fid)}</div></details>`;
-}
-function eventBody(D, ev, fid) {
-  const M = makeModel(ev.teams, D.model), tn = id => { const t = ev.teams.find(x => x.id === id); return t ? t.short : "TBD"; };
-  const Dl = {teams: ev.teams, __fk: D.__fk};
-  const games = ev.games.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time) || (a.num || 0) - (b.num || 0));
-  const first = games.filter(g => g.home_id && g.away_id && g.hs == null && (g.home_id === fid || g.away_id === fid));
-  const done = games.filter(g => g.hs != null && g.as != null);
-  let path = "", WIN = "";
-  if (ev.bracket) {
-    const byNum = new Map(games.map(g => [g.num, g]));
-    const ref = s => { const m = /^(Winner|Loser)\s+(?:of\s+)?Game\s+#?(\d+)/i.exec(s || ""); return m ? [m[1].toLowerCase(), +m[2]] : null; };
-    const N = 15000, appear = new Map(games.map(g => [g.num, new Map()])), opp = new Map(games.map(g => [g.num, new Map()]));
-    const isWin = (g, seen = new Set()) => { if (!g) return false; const rh = ref(g.home), ra = ref(g.away); if (!rh && !ra) return true; if (!rh || !ra) return false; return rh[0] === "winner" && ra[0] === "winner" && isWin(byNum.get(rh[1])) && isWin(byNum.get(ra[1])); };
-    const depth = g => { const r = ref(g && g.home); return r ? 1 + depth(byNum.get(r[1])) : 0; };
-    const wp = games.filter(g => isWin(g) && ref(g.home)); const champ = wp.length ? wp.reduce((a, b) => depth(b) > depth(a) ? b : a) : null;
-    let wins = 0; 
-    for (let n = 0; n < N; n++) {
-      const res = new Map();
-      const side = (g, s) => { const id = g[s + "_id"]; if (id) return id; const r = ref(g[s]); if (!r) return null; const o = play(byNum.get(r[1])); return o ? (r[0] === "winner" ? o[0] : o[1]) : null; };
-      const play = g => { if (!g) return null; if (res.has(g.num)) return res.get(g.num);
-        const h = side(g, "home"), a = side(g, "away"); if (!h || !a) { res.set(g.num, null); return null; }
-        let hw; if (g.hs != null && g.as != null) hw = g.hs > g.as || (g.hs === g.as && (g.hpk ?? 0) > (g.apk ?? 0)); else { const [x, y] = M.sample(h, a, true); hw = x > y || (x === y && Math.random() < .5); }
-        const o = hw ? [h, a] : [a, h]; res.set(g.num, o);
-        if (h === fid || a === fid) { const m = appear.get(g.num); const other = h === fid ? a : h; m.set(other, (m.get(other) || 0) + 1); }
-        return o; };
-      games.forEach(play); if (champ && res.get(champ.num) && res.get(champ.num)[0] === fid) wins++;
-    }
-    WIN = pct(wins / N);
-    const stage = g => !ref(g.home) ? "Opening game" : g === champ ? "Championship" : isWin(g) ? "Winners' side" : "Consolation";
-    path = `<details class="inner"><summary>Possible path through the bracket</summary><div class="mut" style="margin-bottom:6px">Win → winners' side, loss → consolation. Tied bracket games assumed to go to penalties (50/50).</div><div class="path">` +
-      games.filter(g => appear.get(g.num).size).map(g => { const m = appear.get(g.num), tot = [...m.values()].reduce((a, b) => a + b, 0);
-        return `<div class="node"><b>Game ${g.num}</b> · ${fmtDate(g.date)} ${fmtTime(g.time)} · ${stage(g)} <span class="mut">· plays here ${pct(tot / N)}</span>` +
-          [...m.entries()].sort((a, b) => b[1] - a[1]).map(([o, c]) => { const P = M.probs(fid, o, true), cf = confidence(ev.teams, fid, o);
-            return `<div>vs <b>${esc(tn(o))}</b> <span class="mut">(${pct(c / tot)})</span> · win ${pct(P.w)} · draw ${pct(P.d)} · lose ${pct(P.l)} <span class="pill ${cf[1]}" title="${esc(cf[2])}">${cf[0]}</span></div>`; }).join("") + `</div>`; }).join("") + `</div></details>`;
+// ---------- Tournaments and showcases ----------
+// Every game a team might play shows on the calendar: known games as normal rows; games where the opponent
+// depends on results as "Opponent TBD" with one line per path; games we only play if we advance as TENTATIVE.
+// No percentages except the likely result of our next known game.
+const evTag = ev => (ev.competition ? (ev.flight || ev.name || "Other") : (ev.name || "Event"))
+  .replace(/\s+20\d\d(-\d\d)?\s*$/, "").replace(/^(Pre-)?ECNL\s+(RL\s+)?(Boys\s+|Girls\s+)?/i, "").replace(/^MLS NEXT\s+/i, "").trim().toUpperCase().slice(0, 14) || "EVENT";
+const evKey = ev => `${ev.event_id}-${ev.flight_id}`;
+// Field name; the complex too when it isn't the event's main one
+const shortComplex = c => c.replace(/\s+(Sports|Soccer|Athletic|Regional|Youth)?\s*(Complex|Park|Fields?|Center|Centre|Facility)$/i, "").trim() || c;
+const evField = (ev, venue) => { if (!venue) return ""; const parts = venue.split("·").map(x => x.trim()), c = parts.length > 1 ? shortComplex(parts[0]) : "";
+  const f = parts[parts.length - 1].replace(/#\s*0*(\d+)/, "$1");
+  return esc(c && c !== f ? `${c} · ${f}` : f); };
+const evDone = g => g.hs != null && g.as != null;
+function evModel(ev) {
+  if (ev.__m) return ev.__m;
+  const games = ev.games.slice().sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")) || (a.num || 0) - (b.num || 0));
+  const byNum = new Map(games.filter(g => g.num != null).map(g => [g.num, g]));
+  const ref = s => { const m = /^(Winner|Loser)\s+(?:of\s+)?Game\s+#?(\d+)/i.exec(s || ""); return m ? [m[1].toLowerCase() === "winner", +m[2]] : null; };
+  const winnerOf = (g, d = 0) => { if (!evDone(g) || d > 8) return null; const h = sideId(g, "home", d + 1), a = sideId(g, "away", d + 1); if (!h || !a) return null;
+    if (g.hs !== g.as) return g.hs > g.as ? h : a;
+    return g.hpk != null && g.apk != null && g.hpk !== g.apk ? (g.hpk > g.apk ? h : a) : null; };
+  const sideId = (g, s, depth = 0) => { if (g[s + "_id"]) return g[s + "_id"]; const r = ref(g[s]); if (!r || depth > 8) return null;
+    const x = byNum.get(r[1]); if (!x) return null; const w = winnerOf(x, depth + 1); if (!w) return null;
+    const xh = sideId(x, "home", depth + 1), xa = sideId(x, "away", depth + 1); return r[0] ? w : (w === xh ? xa : xh); };
+  const next = new Map();
+  for (const g of games) for (const s of ["home", "away"]) { const r = ref(g[s]); if (r) next.set((r[0] ? "W" : "L") + r[1], g); }
+  // what a bracket game decides: placement brackets (everyone plays every round) or winners-only knockouts
+  const label = new Map();
+  const terminal = games.filter(g => g.num != null && ref(g.home) && ref(g.away) && !next.has("W" + g.num) && !next.has("L" + g.num));
+  const vec = (g, d = 0) => { const r = g && ref(g.home); return r && d < 8 ? vec(byNum.get(r[1]), d + 1).concat(r[0] ? 1 : 0) : []; };
+  if (terminal.length > 1 && terminal.length * 2 === ev.teams.length && terminal.every(g => ref(g.home)[0] === ref(g.away)[0])) {
+    terminal.map(g => [g, vec(g)]).sort((a, b) => { for (let i = 0; i < Math.max(a[1].length, b[1].length); i++) { const d = (b[1][i] || 0) - (a[1][i] || 0); if (d) return d; } return 0; })
+      .forEach(([g], i) => label.set(g.id, i === 0 ? "Final (1st/2nd)" : `${ord(2 * i + 1)} place game`));
+  } else {
+    const fin = terminal.filter(g => ref(g.home)[0] && ref(g.away)[0]);
+    if (fin.length === 1) { label.set(fin[0].id, "Final"); for (const s of ["home", "away"]) { const x = byNum.get(ref(fin[0][s])[1]); if (x && ref(x.home)) label.set(x.id, "Semi-final"); } }
   }
-  const others = games.filter(g => g.home_id && g.away_id && g.hs == null && g.home_id !== fid && g.away_id !== fid);
-  const teamsTbl = `<details class="inner"><summary>Teams in the group (${ev.teams.length})</summary><div class="scroll"><table class="grid"><tr><th class="t">Team</th><th>Conf W-D-L</th><th>Rating</th><th>Rank</th><th>Games<br>new/all</th></tr>
-    ${ev.teams.slice().sort((a, b) => b.strength - a.strength).map(t => `<tr class="${t.id === fid ? "me" : ""}"><td class="t">${esc(t.short)}<div class="sub">${esc(t.conf_name)}</div></td><td>${t.conf_record ? `${t.conf_record.w}-${t.conf_record.d}-${t.conf_record.l}` : "—"}</td><td>${t.strength > 0 ? "+" : ""}${t.strength.toFixed(2)}</td><td>${t.pool_rank ? "#" + t.pool_rank : "—"}</td><td>${t.games_new} / ${t.games_rated}</td></tr>`).join("")}</table></div>
-    <div class="mut" style="margin-top:4px">Rating = expected goal difference vs an average team. Rank among all rated teams in this age group.</div></details>`;
-  return (first.map(g => fixtureCard(Dl, M, g, {focus: fid, neutral: true, teams: ev.teams})).join(""))
-    + (ev.bracket ? `<div style="margin:6px 0">Chance to win the group: <b>${WIN}</b></div>` : "") + path
-    + (done.length ? `<h3>Results</h3>` + done.map(g => resultRow(Dl, g, fid)).join("") : "")
-    + (others.length ? `<details class="inner"><summary>Other games in the group (${others.length})</summary>${others.map(g => gameRow(Dl, M, g, {neutral: true, teams: ev.teams, showDate: true})).join("")}</details>` : "")
-    + teamsTbl;
+  const tn = id => { const t = ev.teams.find(x => x.id === id); return t ? t.short : "TBD"; };
+  // a side we don't know yet, in words: a team, "winner of A / B", or "winner of Game 5"
+  const cands = (g, s, d = 0) => { const id = sideId(g, s); if (id) return [id]; const r = ref(g[s]); const x = r && byNum.get(r[1]); if (!x || d > 8) return [];
+    return [...cands(x, "home", d + 1), ...cands(x, "away", d + 1)]; };   // every team that could still end up on this side
+  const sideTxt = (g, s) => { const id = sideId(g, s); if (id) return esc(tn(id)); const r = ref(g[s]); if (!r) return esc(g[s] || "TBD");
+    const c = cands(g, s), x = byNum.get(r[1]);
+    if (c.length === 2 && x && sideId(x, "home") && sideId(x, "away")) return `${r[0] ? "winner" : "loser"} of ${esc(tn(c[0]))} / ${esc(tn(c[1]))}`;
+    if (c.length >= 2 && c.length <= 4) return `one of ${c.slice(0, -1).map(i => esc(tn(i))).join(", ")} or ${esc(tn(c[c.length - 1]))}`;
+    return `${r[0] ? "winner" : "loser"} of Game ${r[1]}`; };
+  ev.__m = {games, byNum, ref, winnerOf, sideId, next, label, tn, sideTxt};
+  return ev.__m;
 }
+// Our games at an event: the ones we know, plus the ones results will decide.
+function evOurs(ev, fid) {
+  const m = evModel(ev);
+  const mine = m.games.filter(g => m.sideId(g, "home") === fid || m.sideId(g, "away") === fid);
+  const known = mine.filter(g => m.sideId(g, "home") && m.sideId(g, "away"));
+  const maybe = mine.filter(g => !known.includes(g)).map(g => ({g, cond: [], other: m.sideId(g, "home") === fid ? "away" : "home"}));
+  const day3 = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"});
+  const walk = (g, cond, d) => {
+    if (!g || g.num == null || d > 6) return;
+    const outs = evDone(g) ? (w => w == null ? [] : [w === fid ? "W" : "L"])(m.winnerOf(g)) : ["W", "L"];
+    for (const o of outs) {
+      const n = m.next.get(o + g.num); if (!n) continue;
+      const c = evDone(g) ? cond : cond.concat(`<span class="${o === "W" ? "w" : "l"}">${o === "W" ? "Win" : "Loss"} ${day3(g.date)}</span>`);
+      if (!mine.includes(n)) maybe.push({g: n, from: g, o, cond: c});
+      walk(n, c, d + 1);
+    }
+  };
+  if (mine.length) walk(mine[mine.length - 1], [], 0);
+  // group by day: a day where every path has a game is certain (opponent TBD); otherwise TENTATIVE
+  const days = [...new Set(maybe.map(x => x.g.date))].sort().map(date => {
+    const items = maybe.filter(x => x.g.date === date), k = Math.max(...items.map(x => x.cond.length));
+    return {date, items, tentative: k > 0 && items.length < 2 ** k};
+  });
+  return {known, days};
+}
+function evTbdRow(ev, day, fid, card) {
+  if (!card) {   // Games: one short line; the paths live in the event card (tap opens it)
+    const m0 = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
+    const labs = [...new Set(day.items.map(x => m0.label.get(x.g.id) || ""))];
+    const what = labs.length === 1 && labs[0] ? labs[0] : labs.some(Boolean) ? "Placement game" : "";
+    const one = day.items.length === 1 && !day.items[0].cond.length ? day.items[0] : null;
+    const opp = one ? m0.sideTxt(one.g, one.other) : "";
+    const k = Math.max(...day.items.map(x => x.cond.length));
+    const dep = [...new Set(day.items.flatMap(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").split(" ").pop())))];
+    const why = day.tentative ? `If we ${day.items.map(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").replace(/^Win /, "win ").replace(/^Loss /, "lose ")).join(" and ")).join(" or ")}`
+      : k ? `Depends on ${dep.map(d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d).join(" and ")}` : (opp && !/^one of /.test(opp) ? `vs ${opp}` : "");
+    const me = esc(m0.tn(fid));
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">${what ? "·" : "vs"}</span><span class="gr"><span class="mut">${esc(what || "Opponent TBD")}</span></span><span class="gm"></span>
+      <div class="gsub"><span class="${day.tentative ? "ttag" : "evtag"}" data-ev="${evKey(ev)}">${day.tentative ? "TENTATIVE" : esc(evTag(ev))}</span> ${why}${one && one.g.venue ? ` · ${evField(ev, one.g.venue)}` : ""}</div></div>`;
+  }
+  const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
+  const labels = [...new Set(day.items.map(x => m.label.get(x.g.id) || ""))];
+  const title = labels.length === 1 && labels[0] ? labels[0] : labels.some(Boolean) ? "Placement game" : "Opponent TBD";
+  const lines = day.items.map(x => {
+    const ourSide = x.other ? (x.other === "home" ? "away" : "home") : (() => { for (const s of ["home", "away"]) { const r = m.ref(x.g[s]); if (r && r[1] === x.from.num && r[0] === (x.o === "W")) return s; } return "home"; })();
+    const other = ourSide === "home" ? "away" : "home", lab = m.label.get(x.g.id);
+    const where = `${times.length > 1 ? `${fmtTime(x.g.time)} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
+    const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
+    return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
+  });
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
+}
+// Rows for a list of event games, as calendar items {date, time, done, html}.
+function evGameItem(D, ev, g0, fid, o = {}) {
+  const mm = evModel(ev), g = Object.assign({}, g0, {home_id: mm.sideId(g0, "home"), away_id: mm.sideId(g0, "away")});   // bracket games: real teams once known
+  const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk};
+  const us = fid && (g.home_id === fid || g.away_id === fid);
+  let sub = evField(ev, g.venue);
+  if (o.likely && us && !evDone(g)) {
+    const opp = g.home_id === fid ? g.away_id : g.home_id, P = Me.probs(g.home_id, g.away_id, true), flip = g.away_id === fid;
+    const sL = flip ? [P.score[1], P.score[0]] : P.score, cf = confidence(ev.teams, fid, opp);
+    sub += `${sub ? " · " : ""}${likelyLine(evModel(ev).tn(fid), evModel(ev).tn(opp), sL)} · ${cf[0]} confidence`;
+  }
+  const lab = evModel(ev).label.get(g.id);
+  if (lab) sub = `${esc(lab)}${sub ? " · " + sub : ""}`;
+  if (!o.card && !o.plain) sub = `<span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span> ${sub}`;
+  if (evDone(g) && g.hs === g.as && g.hpk != null && g.apk != null && g.hpk !== g.apk) {
+    const ours = fid && (g.home_id === fid ? [g.hpk, g.apk] : g.away_id === fid ? [g.apk, g.hpk] : null);
+    sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
+  }
+  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
+    sub: o.card ? "" : sub, after: o.card && sub ? `<div class="gpaths">${sub}</div>` : "", det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
+  return {date: g.date, time: g.time || "", done: evDone(g), g, html};
+}
+// The focus team's event items (known games + TBD/TENTATIVE days), for the Games calendar and the event card.
+function evItemsFor(D, events, fid, card) {
+  const out = [];
+  let nextShown = false;
+  const upcoming = events.flatMap(ev => evOurs(ev, fid).known.filter(g => !evDone(g)).map(g => [ev, g]))
+    .sort((a, b) => (a[1].date + (a[1].time || "")).localeCompare(b[1].date + (b[1].time || "")));
+  const nextId = upcoming.length ? upcoming[0][1].id : null;
+  for (const ev of events) {
+    const {known, days} = evOurs(ev, fid);
+    for (const g of known) out.push(Object.assign(evGameItem(D, ev, g, fid, {card, likely: g.id === nextId && !nextShown && (nextShown = true)}), {ev}));
+    for (const d of days) out.push({date: d.date, time: d.items[0].g.time || "", done: false, tbd: true, ev, html: evTbdRow(ev, d, fid, card)});
+  }
+  return out;
+}
+// One event card: header, our games (same rows as Games), and the full schedule closed underneath.
+function evCard(D, ev, fid, open) {
+  const m = evModel(ev), items = evItemsFor(D, [ev], fid, true).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const dates = m.games.map(g => g.date).filter(Boolean).sort();
+  const ours = evOurs(ev, fid).known, venue = (ours.find(g => g.venue) || m.games.find(g => g.venue) || {}).venue || "";
+  const complex = venue ? venue.split("·")[0].trim() : "";
+  // next line: our next game, or how we finished
+  const left = ours.filter(g => !evDone(g)), tbd = items.filter(x => x.tbd).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  let line;
+  const day3 = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"});
+  if (tbd.length && (!left.length || (tbd[0].date + tbd[0].time) < (left[0].date + (left[0].time || "")))) {
+    const d = evOurs(ev, fid).days.find(x => x.date === tbd[0].date), one = d && d.items.length === 1 && !d.items[0].cond.length ? d.items[0] : null;
+    line = `Next: ${day3(tbd[0].date)} ${fmtTime(tbd[0].time)} · ${one ? `vs ${m.sideTxt(one.g, one.other)}` : "opponent TBD"}`;
+  } else if (left.length) { const g = left[0], h = m.sideId(g, "home"), opp = h === fid ? m.sideId(g, "away") : h;
+    line = `Next: ${day3(g.date)} ${fmtTime(g.time)} ${h === fid ? "vs" : "@"} ${esc(m.tn(opp))}`; }
+  else if (ours.length) {
+    const rec = ours.map(g => { const w = m.winnerOf(Object.assign({}, g, {home_id: m.sideId(g, "home"), away_id: m.sideId(g, "away")})), us = m.sideId(g, "home") === fid ? [g.hs, g.as] : [g.as, g.hs]; return `${w === fid ? "W" : us[0] === us[1] && w == null ? "D" : "L"} ${us[0]}–${us[1]}${us[0] === us[1] && w != null ? " pens" : ""}`; });
+    const last = ours[ours.length - 1], lab = m.label.get(last.id) || "", won = m.winnerOf(Object.assign({}, last, {home_id: m.sideId(last, "home"), away_id: m.sideId(last, "away")})) === fid;
+    const pm = /^Final \(1st\/2nd\)$/.test(lab) ? (won ? 1 : 2) : (/^(\d+)/.exec(lab) ? +(/^(\d+)/.exec(lab)[1]) + (won ? 0 : 1) : lab === "Final" ? (won ? 1 : 2) : 0);
+    line = `${pm ? `Finished ${ord(pm)} · ` : "Finished · "}${rec.join(", ")}`;
+  } else line = "Schedule not posted yet";
+  const blk = (t, b) => `<div class="blk"><div class="day">${t}</div>${b}</div>`;
+  const rows = [...new Set(items.map(x => x.date))].map(d => blk(fmtDate(d), items.filter(x => x.date === d).map(x => x.html).join(""))).join("");
+  const full = [...new Set(m.games.map(g => g.date))].map(d => blk(fmtDate(d), m.games.filter(g => g.date === d).map(g => {
+    const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
+    return `<div class="fbr"><span class="gt">${shortTime(g.time)}</span><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
+  }).join(""))).join("");
+  return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}</div>
+    <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
+    <div class="evb">${rows || "<div class='mut'>No games for us posted yet.</div>"}
+    <details class="inner"><summary>${ev.competition ? "Full schedule" : "See full bracket"}</summary>${full}<div class="mut" style="margin-top:6px"><a class="vlink" href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a></div></details></div></details>`;
+}
+// The event's dates, for the Standings card window (2 weeks before to the day after).
+const evSpan = ev => { const d = ev.games.map(g => g.date).filter(Boolean).sort(); return d.length ? [d[0], d[d.length - 1]] : null; };
 
 function accuracy(D) {
   const bt = D.pool_stats && D.pool_stats.backtest; if (!bt) return "";
@@ -2370,7 +2594,11 @@ async function checkForUpdate() {
       $("#checked").innerHTML = checkedTxt();
       // new results posted since this page loaded its league copies: drop them all (not just this team's)
       const f = (teamByKey(CUR) || {}).f;
-      if (prev && STATUS.checked !== prev) for (const c of Object.keys(CONF_CACHE)) if (c !== f) { delete CONF_CACHE[c]; delete CONF_TXT[c]; }
+      if (prev && STATUS.checked !== prev) {
+        const keep = new Set((favs() || []).map(k => (teamByKey(k) || {}).f));
+        for (const c of Object.keys(CONF_CACHE)) if (c !== f && !keep.has(c)) { delete CONF_CACHE[c]; delete CONF_TXT[c]; }
+        prefetchFavs(true);
+      }
       refreshConf(CUR);
     } catch (e) {}
   }
