@@ -5084,6 +5084,18 @@
     ]
    },
    {
+    "id": 133920,
+    "team": "Fort Lauderdale United FC Pre-ECNL B2014/15 NL",
+    "ours": [
+     9,
+     21
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   },
+   {
     "id": 113734,
     "team": "Davie United SC - Pre",
     "ours": [
@@ -5093,6 +5105,18 @@
     "ecnl": [
      4,
      3
+    ]
+   },
+   {
+    "id": 136437,
+    "team": "Miami FC Academy Pre-ECNL B2014/15",
+    "ours": [
+     6,
+     1
+    ],
+    "ecnl": [
+     5,
+     1
     ]
    }
   ]
@@ -25130,10 +25154,22 @@
   "kind": "points",
   "teams": [
    {
+    "id": 131246,
+    "team": "MVLA",
+    "ours": [
+     13,
+     32
+    ],
+    "ecnl": [
+     12,
+     29
+    ]
+   },
+   {
     "id": 103331,
     "team": "Force (CA)",
     "ours": [
-     10,
+     11,
      15
     ],
     "ecnl": [
@@ -28574,8 +28610,8 @@
    110989,
    117906,
    135717,
-   103330,
    106266,
+   103330,
    136909,
    114301,
    63832,
@@ -28602,6 +28638,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 113192,
+    "team": "MVLA",
+    "ours": [
+     13,
+     39
+    ],
+    "ecnl": [
+     12,
+     36
+    ]
+   },
+   {
     "id": 110989,
     "team": "Davis Legacy",
     "ours": [
@@ -28617,7 +28665,7 @@
     "id": 103330,
     "team": "Force (CA)",
     "ours": [
-     8,
+     9,
      10
     ],
     "ecnl": [
@@ -31841,6 +31889,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 103537,
+    "team": "MVLA",
+    "ours": [
+     14,
+     40
+    ],
+    "ecnl": [
+     13,
+     37
+    ]
+   },
+   {
     "id": 110987,
     "team": "Davis Legacy",
     "ours": [
@@ -31856,7 +31916,7 @@
     "id": 103329,
     "team": "Force (CA)",
     "ours": [
-     12,
+     13,
      8
     ],
     "ecnl": [
