@@ -11153,37 +11153,6 @@
   ]
  },
  {
-  "conf": "u12g-4379-42033",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 116950,
-    "team": "Scorpions SC Pre-ECNL G2014/2015",
-    "ours": [
-     8,
-     9
-    ],
-    "ecnl": [
-     9,
-     10
-    ]
-   },
-   {
-    "id": 132536,
-    "team": "Connecticut FC Legacy Pre",
-    "ours": [
-     7,
-     3
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   }
-  ]
- },
- {
   "conf": "u12g-4379-42031",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
@@ -15862,6 +15831,37 @@
    131832,
    69510,
    134413
+  ]
+ },
+ {
+  "conf": "u16g-4264-40560",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 79772,
+    "team": "Kansas City Athletics",
+    "ours": [
+     15,
+     29
+    ],
+    "ecnl": [
+     14,
+     29
+    ]
+   },
+   {
+    "id": 127911,
+    "team": "Chicago Inter",
+    "ours": [
+     14,
+     24
+    ],
+    "ecnl": [
+     13,
+     21
+    ]
+   }
   ]
  },
  {
