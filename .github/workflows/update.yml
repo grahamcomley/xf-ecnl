@@ -40,6 +40,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install numpy (season odds are worked out here, not on each phone)
+        run: pip install --quiet numpy
+
       # Raw API responses and the last built site data live in the Actions cache (not the repo):
       # restored each run, saved after. Age groups with no new games reuse their built pages.
       - uses: actions/cache@v4

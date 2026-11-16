@@ -20,6 +20,47 @@ import surf  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 OUT = os.path.join(ROOT, "site", "data")
+try:
+    import odds as odds_mod  # season odds on the server (needs numpy)
+except Exception as e:  # noqa: BLE001
+    odds_mod = None
+    print("odds: numpy not available, phones will work the odds out themselves:", e)
+import hashlib
+import time
+ODDS_DIR = os.path.join(ROOT, "data", "cache", "odds")
+
+
+def add_odds(out):
+    """Season odds + impact lines for one conference file, so every phone shows the same numbers.
+    Redone only when this conference's games, scores or points change, plus once overnight (the date is part of
+    the key) to pick up small rating changes and move the next-10-days window for impact lines."""
+    if odds_mod is None:
+        return
+    from zoneinfo import ZoneInfo
+    today = datetime.now(ZoneInfo("America/Los_Angeles")).date().isoformat()
+    sig = json.dumps([out.get("members"), out.get("adj"), out.get("playoff_spots"), today,
+                      [[g.get("id"), g.get("hs"), g.get("as"), g.get("bad"), g.get("date"), g.get("home_id"), g.get("away_id")]
+                       for g in out["games"]]], separators=(",", ":"), default=str)
+    key = hashlib.sha1(sig.encode()).hexdigest()
+    path = os.path.join(ODDS_DIR, out["key"] + ".json")
+    old = None
+    try:
+        with open(path) as f:
+            old = json.load(f)
+    except Exception:  # noqa: BLE001
+        pass
+    if old and old.get("key") == key:
+        out["odds"], out["impact"] = old["odds"], old["impact"]
+        return
+    try:
+        o, im = odds_mod.season_odds(out, today)
+    except Exception as e:  # noqa: BLE001
+        print("odds failed for", out["key"], e)
+        return
+    out["odds"], out["impact"] = o, im
+    os.makedirs(ODDS_DIR, exist_ok=True)
+    with open(path, "w") as f:
+        json.dump({"key": key, "at": time.time(), "odds": o, "impact": im}, f, separators=(",", ":"))
 BAD_STATUS = re.compile(r"cancel|forfeit|abandon|void", re.I)
 
 
@@ -381,17 +422,21 @@ def rating_games(games):
 def standings_from_games(games, team_ids):
     t = {i: {"id": i, "gp": 0, "w": 0, "d": 0, "l": 0, "gf": 0, "ga": 0} for i in team_ids}
     for g in games:
-        if g["hs"] is None or g["as"] is None or g["home_id"] not in t or g["away_id"] not in t:
+        if g["hs"] is None or g["as"] is None or (g["home_id"] not in t and g["away_id"] not in t):
             continue
-        h, a = t[g["home_id"]], t[g["away_id"]]
+        h, a = t.get(g["home_id"], {}), t.get(g["away_id"], {})   # {} = opponent from the other half of a split division
         for me, them, f, ag in ((h, a, g["hs"], g["as"]), (a, h, g["as"], g["hs"])):
+            if not me:
+                continue
             me["gp"] += 1; me["gf"] += f; me["ga"] += ag
             if f > ag: me["w"] += 1
             elif f == ag: me["d"] += 1
             else: me["l"] += 1
         # MLS NEXT: a draw goes to a shootout, the winner gets a second point
         if g.get("pkp") and g["hs"] == g["as"] and g.get("hpk") is not None and g.get("apk") is not None and g["hpk"] != g["apk"]:
-            (h if g["hpk"] > g["apk"] else a)["pkw"] = (h if g["hpk"] > g["apk"] else a).get("pkw", 0) + 1
+            w = h if g["hpk"] > g["apk"] else a
+            if w:
+                w["pkw"] = w.get("pkw", 0) + 1
     for r in t.values():
         r["pts"] = 3 * r["w"] + r["d"] + r.pop("pkw", 0)
         r["ppg"] = round(r["pts"] / r["gp"], 2) if r["gp"] else 0.0
@@ -692,7 +737,8 @@ def main():
             if g["conf"] == "event" and g["source"] == "current" and g.get("flight_id"):
                 ev_groups.setdefault((g["event_id"], g["flight_id"]), []).append(g)
         soon = (datetime.now(timezone.utc).date() + timedelta(days=90)).isoformat()   # events up to 90 days ahead
-        recent = (datetime.now(timezone.utc).date() - timedelta(days=15)).isoformat()   # and 15 days back
+        _t = datetime.now(timezone.utc).date()   # and back to the start of the season (Aug 1), so past events stay in Season results
+        recent = f"{_t.year if _t.month >= 8 else _t.year - 1}-08-01"
         events_by_team = {}
         for (eid, fid), gs in ev_groups.items():
             dates = [g["date"] for g in gs]
@@ -732,18 +778,47 @@ def main():
         for g in games:
             if re.match(r"ev\d+$", g["conf"]) and g["source"] == "current" and g.get("flight_id"):
                 flights.setdefault((g["event_id"], g["flight_id"]), []).append(g)
+        # Split divisions: ECNL sometimes splits one age group into flights (EAST/WEST, TEAL/WHITE) that also play
+        # each other, and lists each crossover game under only one of the two flights. A team belongs to the flight
+        # where it plays most; its table counts all its division games, whichever flight lists them.
+        div_fids = {}
+        for (eid, fid), gs in flights.items():
+            div_fids.setdefault((eid, gs[0].get("division_id")), []).append(fid)
+        home_flight = {}
+        for (eid, did), fids in div_fids.items():
+            if len(fids) < 2:
+                continue
+            cnt = {}
+            for fid in fids:
+                for g in flights[(eid, fid)]:
+                    for t in (g["home_id"], g["away_id"]):
+                        if t:
+                            cnt.setdefault(t, {}).setdefault(fid, 0)
+                            cnt[t][fid] += 1
+            for t, c in cnt.items():
+                home_flight[(eid, did, t)] = max(sorted(c), key=lambda f: c[f])
         div_flights = {}
         for (eid, fid), gs in flights.items():
             if len({t for g in gs for t in (g["home_id"], g["away_id"]) if t}) >= 3:
                 div_flights.setdefault((eid, gs[0].get("division_id")), set()).add(fid)
         for (eid, fid), gs in flights.items():
+            did = gs[0].get("division_id")
+            if len(div_fids.get((eid, did), ())) > 1:
+                members = {t for g in gs for t in (g["home_id"], g["away_id"]) if t and home_flight.get((eid, did, t)) == fid}
+                seen_g, gs = set(), [g for f2 in div_fids[(eid, did)] for g in flights[(eid, f2)]
+                                     if (g["home_id"] in members or g["away_id"] in members)]
+                gs = [g for g in gs if not (g["id"] in seen_g or seen_g.add(g["id"]))]
+                gs.sort(key=lambda g: (g["date"], g.get("time") or "", g["id"]))
+            else:
+                members = None
             tids = sorted({t for g in gs for t in (g["home_id"], g["away_id"]) if t}, key=str)
-            if len(tids) < 3:
+            mids = sorted(members, key=str) if members is not None else tids   # teams in this flight's table
+            if len(mids) < 3:
                 continue
             fkey = f"{pkey}-{eid}-{fid}"
             comp = featured.get((eid, fid), {})
             cname = short_conf(gs[0].get("event_name"))
-            official = []
+            official, adj = [], {}
             # ECNL's own table (with its tiebreak order): featured and Northwest conferences fresh every run,
             # every other conference about once a day (for the daily drift check against our table).
             div_id = comp.get("division_id") or gs[0].get("division_id")
@@ -758,7 +833,7 @@ def main():
                     for r in rows:
                         official.append({"id": to_int(r.get("teamID")), "gp": to_int(r.get("gp")),
                                          "pts": to_int(r.get("standingpoints")), "rank": to_int(r.get("rank"))})
-                ours = standings_from_games(gs, tids)
+                ours = standings_from_games(gs, mids)
                 ours_order = [t["id"] for t in sorted(ours, key=lambda t: (-t["ppg"], -t["pts"], -t["gd"], -t["gf"]))]
                 off_order = [o["id"] for o in sorted(official, key=lambda o: o["rank"] or 99)]
                 if official and ours_order != off_order:
@@ -768,6 +843,12 @@ def main():
                 bad = [{"id": o["id"], "team": short_name(names.get(o["id"])), "ours": [mine[o["id"]]["gp"], mine[o["id"]]["pts"]],
                         "ecnl": [o["gp"], o["pts"]]}
                        for o in official if o["id"] in mine and (o["gp"], o["pts"]) != (mine[o["id"]]["gp"], mine[o["id"]]["pts"])]
+                # same games played but different points: ECNL's own points stand (League Cup shootout points,
+                # deductions). Our table and odds use them; the drift check only reports real game differences.
+                adj = {str(t["id"]): t["ecnl"][1] - t["ours"][1] for t in bad if t["ecnl"][0] == t["ours"][0]}
+                bad = [t for t in bad if t["ecnl"][0] != t["ours"][0]]
+                if adj:
+                    order_diffs.append({"conf": fkey, "name": cname, "kind": "adjusted", "teams": adj})
                 if bad:
                     order_diffs.append({"conf": fkey, "name": cname, "kind": "points", "teams": bad})
             # each event stored once; teams point to it by index
@@ -792,7 +873,9 @@ def main():
                 "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt and {k: v for k, v in bt.items() if k != "preds"}},
                 "teams": [team_obj(t) for t in tids],
                 "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
-                "official": official, "computed": standings_from_games(gs, tids),
+                "members": mids if members is not None else None,
+                "adj": adj or None,
+                "official": official, "computed": standings_from_games(gs, mids),
                 "events": ev_list, "team_events": evs,
                 "live_record": update_prediction_log(pseudo, gs, m, log),
                 # "How we did": our pre-game likely score for each finished game (saved before kickoff
@@ -803,10 +886,11 @@ def main():
                             and ((log.get(pseudo["id"], {}).get(str(g["id"]), {}).get("s"))
                                  or str(g["id"]) in (bt or {}).get("preds", {}))},
             }
+            add_odds(out)
             with open(os.path.join(OUT, "conf", fkey + ".json"), "w") as f:
                 json.dump(out, f, separators=(",", ":"))
             written.add(fkey + ".json")
-            for t in tids:
+            for t in mids:
                 tk = f"{pkey}-{t}"
                 # a team can sit in several league flights (stages, league cups): keep the one with most games
                 score = (sum(1 for g in gs if t in (g["home_id"], g["away_id"])), "cup" not in cname.lower())
@@ -829,7 +913,8 @@ def main():
     pts_bad = [d for d in order_diffs if d.get("kind") == "points"]
     with open(os.path.join(OUT, "drift.json"), "w") as f:
         json.dump({"checked": now, "points": [{"conf": d["conf"], "name": d["name"], "teams": d["teams"]} for d in pts_bad],
-                   "order": [{"conf": d["conf"], "name": d["name"]} for d in order_diffs if d.get("kind") != "points"]},
+                   "order": [{"conf": d["conf"], "name": d["name"]} for d in order_diffs if not d.get("kind")],
+                   "adjusted": [{"conf": d["conf"], "name": d["name"], "teams": d["teams"]} for d in order_diffs if d.get("kind") == "adjusted"]},
                   f, separators=(",", ":"))
     tot = api.stats["live"] + api.stats["failed"]
     if tot > 50 and api.stats["failed"] > 0.3 * tot:
