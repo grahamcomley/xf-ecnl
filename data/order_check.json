@@ -1717,6 +1717,37 @@
   ]
  },
  {
+  "conf": "u11b-4380-41580",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114266,
+    "team": "Cape Coral SA Pre-ECNL B2015/16",
+    "ours": [
+     6,
+     13
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
+   {
+    "id": 137376,
+    "team": "Naples Elite Soccer Club NESC Pre-ECNL B2015/16",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4380-41015",
   "name": "Pre-ECNL Boys Florida",
   "ours": [
