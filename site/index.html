@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.55">
+<meta name="app-version" content="v1.56">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -180,10 +180,11 @@ details.sec>summary::-webkit-details-marker{display:none}
 details.sec h2,.sechead h2{margin:0;font-size:17px;flex:1}details.sec>summary .chev{width:18px;height:18px}details.sec:not([open])>summary .chev{transform:rotate(-90deg)}
 .sechead{padding:12px 14px;display:flex;align-items:center;gap:8px}
 .pane[hidden]{display:none}
-#tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+#tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
 #tabbar[hidden]{display:none}
 #tabbar button{background:none;border:0;color:var(--mut);font:inherit;font-size:11px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
-#tabbar button .ic{width:24px;height:24px}
+#tabbar button .ic{width:24px;height:24px}.evdot{position:absolute;top:3px;left:calc(50% + 8px);width:8px;height:8px;border-radius:50%;background:#ef4444}.evlive{font-size:9px;font-weight:800;letter-spacing:.06em;color:#fff;background:#b91c1c;border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:3px}
+.evlist{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;font-size:14px;text-align:left;padding:11px 2px;cursor:pointer}.evlist:first-child{border-top:0}.evlist .mut{font-size:12px;white-space:nowrap;margin-left:8px}
 #tabbar button.on{color:var(--accent)}
 .caret{color:var(--mut);transition:transform .15s}details:not([open])>summary .caret{transform:rotate(-90deg)}
 .sec-body{padding:0 12px 14px}.sec-sub{color:var(--mut);font-size:13px;margin:0 0 10px}
@@ -405,6 +406,7 @@ const ICON = {
   dots: '<circle cx="6" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="18" cy="12" r="1.3"/>',
   plussq: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8.5v7M8.5 12h7"/>',
   user: '<circle cx="12" cy="8.5" r="3.8"/><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0"/>',
+  flag: '<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/>',
   trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4"/><path d="M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4"/><path d="M8.5 20.5h7"/><path d="M10 17h4v3.5h-4z"/>',
   calendar: '<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
   grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/>',
@@ -417,7 +419,7 @@ const ICON = {
 };
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
 // Games and League are one tab now (All teams | My team inside it); old links and saved tabs still work.
-const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["predict", "sliders", "Predict"]];
+const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["events", "flag", "Events"], ["predict", "sliders", "Predict"]];
 // Opening the app after 15+ minutes away (or fresh) lands on Standings; a quick return keeps your tab.
 const AWAY_RESET = 15 * 60000;
 const awayLong = () => { try { const h = +localStorage.getItem("hiddenAt") || 0; return !h || Date.now() - h > AWAY_RESET; } catch (e) { return true; } };
@@ -459,7 +461,9 @@ function showTab(t, scroll = true) {
   document.querySelectorAll("#app .pane").forEach(p => p.hidden = p.dataset.tab !== t);
   document.querySelectorAll("#tabbar button").forEach(b => { b.classList.toggle("on", b.dataset.tab === t); b.setAttribute("aria-current", b.dataset.tab === t ? "page" : "false"); });
   if (scroll) $("#scroller").scrollTop = 0;
+  if (t === "events" && EVDOT) EVDOT.seen();
 }
+let EVDOT = null;   // the red dot on the Events tab: something new since you last looked, or an event day you haven't opened yet
 const icon = (n, fill) => `<svg class="ic" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
@@ -1374,7 +1378,7 @@ $("#nudgeclose").onclick = () => $("#nudge").hidden = true;
 $("#nudgego").onclick = () => { $("#nudge").hidden = true; signIn(); };
 loadClerk(); applyGate(); loadGate();
 
-$("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i></button>`).join("");
+$("#tabbar").innerHTML = TABS.map(([k, ic, lb]) => `<button data-tab="${k}">${icon(ic)}<span>${lb}</span><i class="tlock">${icon("lock")}</i>${k === "events" ? '<i class="evdot" hidden></i>' : ""}</button>`).join("");
 $("#tabbar").onclick = e => { const b = e.target.closest("button"); if (b) showTab(b.dataset.tab); };
 function setTitle(k) {   // top-bar team name: set once per team, cleared only on the welcome page
   const b = $("#ttl"), tl = $(".topline"), t = k && teamByKey(k);
@@ -1930,7 +1934,31 @@ function renderTeam(D, fid, key) {
       blk(`Today · ${fmtDate(today)}`, a.length ? rows(a) : "<div class='mut'>No games for these teams today.</div>")
       + (b.length ? blk(`Tomorrow · ${fmtDate(tom)}`, rows(b)) : more ? `<div class="mut" style="margin-top:8px">Tomorrow's games show once they're set.</div>` : ""), "evnow-" + ev.event_id)).join("");
   })();
-  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe), split(EVI.filter(inW)));
+  // ---- Events tab: the current or next event, today's games for our league's teams, then upcoming and earlier ones
+  const evPane = (() => {
+    if (!events.length) return `<div class="card ctx mut">No events on ECNL's schedule for ${me} yet.</div>`;
+    const spans = events.filter(e => !e.competition).map(ev => [ev, evSpan(ev)]).filter(x => x[1]);
+    const cur = spans.find(([, sp]) => today >= sp[0] && today <= addDays(sp[1], 1));
+    const main = cur || spans.filter(([, sp]) => sp[0] > today).sort((a, b) => a[1][0].localeCompare(b[1][0]))[0];
+    const live = !!(cur && today <= cur[1][1]);
+    const up = spans.filter(([ev, sp]) => (!main || ev !== main[0]) && sp[0] > today).sort((a, b) => a[1][0].localeCompare(b[1][0]));
+    const past = spans.filter(([ev, sp]) => (!main || ev !== main[0]) && sp[0] <= today).sort((a, b) => b[1][0].localeCompare(a[1][0]));
+    const comps = events.filter(e => e.competition);
+    return (main ? evCard(D, main[0], fid, true, live) : "") + (live ? evNow : "")
+      + (up.length ? sec("div", "Events", "Upcoming", "", up.map(([ev]) => evCard(D, ev, fid, false)).join(""), "evup") : "")
+      + (past.length ? sec("div", "Events", "Earlier this season", "", past.map(([ev]) => evCard(D, ev, fid, false)).join(""), "evpast", false) : "")
+      + (comps.length ? sec("div", "Events", "Other competitions", "Separate from this league's table", comps.map(ev => evCard(D, ev, fid, false)).join(""), "evcomp", false) : "");
+  })();
+  // red dot: new event info since you last opened Events, or an event day you haven't looked at yet
+  {
+    const sig = JSON.stringify(events.map(ev => [evKey(ev), evOurs(ev, fid).known.map(g => [g.id, g.date, g.time, g.venue, g.hs, g.as]), evOurs(ev, fid).days.length]));
+    let h = 0; for (let i = 0; i < sig.length; i++) h = (h * 31 + sig.charCodeAt(i)) | 0;
+    const live = events.some(ev => { const sp = !ev.competition && evSpan(ev); return sp && today >= sp[0] && today <= sp[1]; });
+    const kS = `evSeen:${key}`, kD = `evDay:${key}`;
+    EVDOT = {show: events.length > 0 && (store.get(kS) !== String(h) || (live && store.get(kD) !== today)),
+      seen() { store.set(kS, String(h)); store.set(kD, today); this.show = false; const d = document.querySelector("#tabbar .evdot"); if (d) d.hidden = true; }};
+  }
+  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe));
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
   const byDayX = (games, row, extra, desc) => { const all = srt(games.map(g => ({date: g.date, time: g.time || "", html: row(g)})).concat(extra)); if (desc) all.reverse();
     return [...new Set(all.map(x => x.date))].map(d => blk(fmtDate(d), all.filter(x => x.date === d).map(x => x.html).join(""))).join(""); };
@@ -1941,7 +1969,7 @@ function renderTeam(D, fid, key) {
   const seasonHtml = byDay(seasonRes, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
   // My team: the same sections, only this team's games
   const restM = restS.filter(isMe), missedM = missed.filter(isMe), seasonM = seasonRes.filter(isMe);
-  const evRest = EVI.filter(x => x.date > wEnd && !x.done), evPast = EVI.filter(x => x.date < wStart && x.done);
+  const evRest = [], evPast = [];   // event games live on the Events tab
   const restHtmlM = byDayX(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}), evRest)
     + (missedM.length ? blk("New date not set", missedM.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
   const seasonHtmlM = byDayX(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}), evPast.map(x => Object.assign({}, x, {html: x.html.replace(/<span class="gt">[^<]*/, '<span class="gt">')})), true);
@@ -1989,7 +2017,6 @@ function renderTeam(D, fid, key) {
 
 <div class="pane" data-tab="team">
   ${alertCard()}
-  ${evStand.top.map(ev => evCard(D, ev, fid, true)).join("")}
   ${sec("us", chipMe, `Where we stand<span class="h2lg">${esc(D.conf_name)}</span>`, "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
@@ -2001,12 +2028,10 @@ function renderTeam(D, fid, key) {
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
       <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
-  ${evStand.soon.map(ev => evCard(D, ev, fid, true)).join("")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
   <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
   <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
-  ${evNow}
   ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Coming up", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
@@ -2016,8 +2041,10 @@ function renderTeam(D, fid, key) {
   ${sec("div", "League", `Coming up${restM.length + missedM.length + evRest.length ? ` · ${restM.length + missedM.length + evRest.length}` : ""}`, "", restHtmlM || "<div class='mut'>No more games scheduled.</div>", "m4b", true)}
   ${sec("div", "League", `Season results${seasonM.length + evPast.length ? ` · ${seasonM.length + evPast.length}` : ""}`, "", seasonHtmlM || "<div class='mut'>No earlier results.</div>", "m4c", false)}
   </div>
-  ${events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
+  ${""/*events live on the Events tab*/ && events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
       events.map(ev => evCard(D, ev, fid, false)).join(""), "evs") : ""}
+</div><div class="pane" data-tab="events">
+  ${evPane}
 </div><div class="pane" data-tab="predict">
   ${pkShown() ? `<div class="pviews" id="pviews"><button data-pv="season">Season</button><button data-pv="pickem">Pick'em</button></div>` : ""}
   <div data-pv="season" class="pv">
@@ -2028,6 +2055,7 @@ function renderTeam(D, fid, key) {
 </div>
 `;
 
+  { const d = document.querySelector("#tabbar .evdot"); if (d) d.hidden = !(EVDOT && EVDOT.show); }
   showTab(TAB, false); $("#tabbar").hidden = false;
   document.querySelectorAll("details.sec, details.evrow").forEach(d => d.addEventListener("toggle", () => store.set(d.dataset.key, d.open ? "1" : "0")));
   // Header: team name + chevron (tap: your teams / find a team), age · league below. Following 2+ teams:
@@ -2522,7 +2550,7 @@ function evItemsFor(D, events, fid, card) {
   return out;
 }
 // One event card: header, our games (same rows as Games), and the full schedule closed underneath.
-function evCard(D, ev, fid, open) {
+function evCard(D, ev, fid, open, live) {
   const m = evModel(ev), items = evItemsFor(D, [ev], fid, true).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const dates = m.games.map(g => g.date).filter(Boolean).sort();
   const ours = evOurs(ev, fid).known, venue = (ours.find(g => g.venue) || m.games.find(g => g.venue) || {}).venue || "";
@@ -2548,7 +2576,7 @@ function evCard(D, ev, fid, open) {
     const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
     return `<div class="fbr"><span class="gt">${shortTime(g.time)}</span><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
   }).join(""))).join("");
-  return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}</div>
+  return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}</div>
     <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
     <div class="evb">${rows || "<div class='mut'>No games for us posted yet.</div>"}
     <details class="inner"><summary>${ev.competition ? "Full schedule" : "See full bracket"}</summary>${full}<div class="mut" style="margin-top:6px"><a class="vlink" href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a></div></details></div></details>`;
