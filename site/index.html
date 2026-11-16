@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.51">
+<meta name="app-version" content="v1.52">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -248,6 +248,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .evtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:1px 4px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
+.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 52px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
 .gsub .w{color:#86efac}.gsub .l{color:#fca5a5}
 .card.evcard{padding:14px}.evcard>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px}.evcard>summary::-webkit-details-marker{display:none}
 .evcard .evh{flex:1;min-width:0}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
@@ -2465,9 +2466,9 @@ function evTbdRow(ev, day, fid, card) {
     const other = ourSide === "home" ? "away" : "home", lab = m.label.get(x.g.id);
     const where = `${times.length > 1 ? `${fmtTime(x.g.time)} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
     const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
-    return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab && title !== lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
+    return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
-  return `<div class="grow tbd${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gtbd">${day.tentative ? `<span class="ttag">TENTATIVE</span> ` : ""}${esc(title)}</span><span></span><div class="gsub">${lines.join("<br>")}</div></div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2487,7 +2488,7 @@ function evGameItem(D, ev, g0, fid, o = {}) {
     const ours = fid && (g.home_id === fid ? [g.hpk, g.apk] : g.away_id === fid ? [g.apk, g.hpk] : null);
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
-  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us && !o.card, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
+  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
     sub, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
