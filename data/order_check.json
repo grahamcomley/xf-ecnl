@@ -13247,6 +13247,37 @@
   ]
  },
  {
+  "conf": "u15b-4354-41630",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131701,
+    "team": "Legends FC - Del Mar",
+    "ours": [
+     8,
+     22
+    ],
+    "ecnl": [
+     7,
+     19
+    ]
+   },
+   {
+    "id": 133636,
+    "team": "LA Breakers White",
+    "ours": [
+     7,
+     3
+    ],
+    "ecnl": [
+     6,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u15b-4355-40721",
   "name": "ECNL RL Boys Southeast",
   "ours": [
@@ -21039,11 +21070,11 @@
    135614,
    131965,
    134584,
-   131705,
+   94807,
    132518,
    132400,
    133209,
-   94807,
+   131705,
    133694,
    131020,
    114208,
@@ -21071,6 +21102,37 @@
    113071,
    134584,
    132400
+  ]
+ },
+ {
+  "conf": "u19b-4354-41633",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131705,
+    "team": "Legends FC - Del Mar",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   },
+   {
+    "id": 94807,
+    "team": "LA Breakers White",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     9
+    ]
+   }
   ]
  },
  {
