@@ -3534,6 +3534,37 @@
   ]
  },
  {
+  "conf": "u14b-4341-42028",
+  "name": "ECNL RL Boys Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114952,
+    "team": "STA MOSC",
+    "ours": [
+     11,
+     27
+    ],
+    "ecnl": [
+     10,
+     24
+    ]
+   },
+   {
+    "id": 134450,
+    "team": "Fox Soccer Academy",
+    "ours": [
+     11,
+     18
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4341-40708",
   "name": "ECNL RL Boys Northeast",
   "ours": [
