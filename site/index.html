@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.52">
+<meta name="app-version" content="v1.53">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1748,7 +1748,7 @@ function gameRow(D, M, g, o = {}) {
       toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
     }
   }
-  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>`;
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
 const GRADE = {exact: ["EXACT", "Exact score"], called: ["CALLED", "Called it"], bigger: ["BIGGER", "Bigger win than expected"], closer: ["CLOSER", "Closer than expected"], missed: ["MISSED", "Missed"]};
@@ -2489,7 +2489,7 @@ function evGameItem(D, ev, g0, fid, o = {}) {
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
   const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
-    sub, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
+    sub: o.card ? "" : sub, after: o.card && sub ? `<div class="gpaths">${sub}</div>` : "", det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
 // The focus team's event items (known games + TBD/TENTATIVE days), for the Games calendar and the event card.
