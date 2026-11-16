@@ -1372,12 +1372,31 @@
   ]
  },
  {
+  "conf": "u12b-4370-41048",
+  "name": "Pre-ECNL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133213,
+    "team": "Legends FC (CA) PRE Black I",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     8
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4370-41046",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
    133210,
-   133543,
    133704,
+   133543,
    133587,
    134064,
    133124,
@@ -1392,6 +1411,25 @@
    132230,
    133543,
    134448
+  ]
+ },
+ {
+  "conf": "u12b-4370-41046",
+  "name": "Pre-ECNL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133543,
+    "team": "Beach Futbol Club (CA) Pre-ECNL B2014/15 White I",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     12
+    ]
+   }
   ]
  },
  {
