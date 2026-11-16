@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.50">
+<meta name="app-version" content="v1.51">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1629,7 +1629,7 @@ async function refreshConf(k) {
   finally { if (--REFRESHING <= 0) { REFRESHING = 0; document.body.classList.remove("refreshing"); } }
 }
 // Followed teams (the pill row) load quietly in the background after the first screen, so switching is instant.
-let PREF_RUN = null;
+let PREF_RUN = null, READY_LOGGED = false;
 function prefetchFavs(again) {
   if (PREF_RUN && !again) return;
   PREF_RUN = (async () => {
@@ -1662,6 +1662,7 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
+  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog("ready", `${Math.round(performance.now())}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
   $("#scroller").scrollTop = 0;
@@ -1733,6 +1734,7 @@ function gameRow(D, M, g, o = {}) {
       <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
   if (o.det) det = `<div class="gdet" hidden>${o.det}</div>`;
+  if (o.strong) { if (o.strong.has(L)) ln = `<b>${ln}</b>`; if (o.strong.has(R)) rn = `<b>${rn}</b>`; }
   let toggles = "";
   if (o.picks && !done) {
     const P = M.probs(g.home_id, g.away_id, o.neutral), picked = PICKS[D.__fk][g.id] || "";
@@ -1876,14 +1878,6 @@ function renderTeam(D, fid, key) {
   const inW = x => x.date >= wStart && x.date <= wEnd;
   const xWait = x => !x.done && !x.tbd && kickPassed(x.g);
   const split = list => ({fin: list.filter(x => x.done), wait: list.filter(xWait), up: list.filter(x => !x.done && !xWait(x))});
-  const leagueEv = (() => {   // All teams, during an event: every event game involving a team from our league
-    const mem = new Set(ids), seen = new Set(EVI.filter(x => x.g).map(x => x.g.id)), out = EVI.filter(inW);
-    for (const ev of D.events || []) for (const g of ev.games)
-      if (!seen.has(g.id) && g.date >= wStart && g.date <= wEnd && (mem.has(g.home_id) || mem.has(g.away_id)) && g.home_id && g.away_id) {
-        seen.add(g.id); out.push(Object.assign(evGameItem(D, ev, g, fid), {ev}));
-      }
-    return out;
-  })();
   const srt = a => a.sort((x, y) => (x.date + x.time).localeCompare(y.date + y.time));
   const L = (g, o) => ({date: g.date, time: g.time || "", html: gameRow(D, M, g, o)});
   const winHtml = (fin, wait, up, X = {fin: [], wait: [], up: []}) => {
@@ -1893,7 +1887,35 @@ function renderTeam(D, fid, key) {
     return (F.length ? blk("Completed", F.map(x => x.html).join("")) : "") + (W.length ? blk("Waiting for score", W.map(x => x.html).join("")) : "")
       + [...new Set(U.map(x => x.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`, U.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   };
-  const sec4 = winHtml(finW, waitW, upW, split(leagueEv)), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe), split(EVI.filter(inW)));
+  // All teams, while an event is on: where our league's teams are playing today (and tomorrow, once it's set)
+  const evNow = (() => {
+    // one block per event (all its age-group flights together), games by time
+    const mem = new Set(ids), tom = addDays(today, 1), byEv = new Map();
+    for (const ev of D.events || []) {
+      if (ev.competition) continue;
+      const sp = evSpan(ev); if (!sp || today < sp[0] || today > sp[1]) continue;
+      const e = byEv.get(ev.event_id) || {ev, today: [], tomorrow: [], seen: new Set(), last: sp[1]};
+      e.last = e.last > sp[1] ? e.last : sp[1];
+      const m = evModel(ev);
+      for (const g of m.games) {
+        if (e.seen.has(g.id)) continue;
+        const h = m.sideId(g, "home"), a = m.sideId(g, "away");
+        if (!h || !a || !(mem.has(h) || mem.has(a))) continue;
+        if (g.date === today) e.today.push([ev, g]); else if (g.date === tom) e.tomorrow.push([ev, g]); else continue;
+        e.seen.add(g.id);
+      }
+      byEv.set(ev.event_id, e);
+    }
+    const out = [...byEv.values()].map(e => ({ev: e.ev, today: e.today, tomorrow: tom <= e.last ? e.tomorrow : [], more: tom <= e.last}));
+    if (!out.length) return "";
+    const region = (D.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
+    const nice = ev => evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    const rows = list => srt(list.map(([ev, g]) => evGameItem(D, ev, g, fid, {strong: mem, plain: true}))).map(x => x.html).join("");
+    return out.map(({ev, today: a, tomorrow: b, more}) => sec("div", "Event", `${esc(region)} teams at ${esc(nice(ev))}`, "",
+      blk(`Today · ${fmtDate(today)}`, a.length ? rows(a) : "<div class='mut'>No games for these teams today.</div>")
+      + (b.length ? blk(`Tomorrow · ${fmtDate(tom)}`, rows(b)) : more ? `<div class="mut" style="margin-top:8px">Tomorrow's games show once they're set.</div>` : ""), "evnow-" + ev.event_id)).join("");
+  })();
+  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe), split(EVI.filter(inW)));
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
   const byDayX = (games, row, extra, desc) => { const all = srt(games.map(g => ({date: g.date, time: g.time || "", html: row(g)})).concat(extra)); if (desc) all.reverse();
     return [...new Set(all.map(x => x.date))].map(d => blk(fmtDate(d), all.filter(x => x.date === d).map(x => x.html).join(""))).join(""); };
@@ -1969,6 +1991,7 @@ function renderTeam(D, fid, key) {
   ${alertCard()}
   <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
   <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
+  ${evNow}
   ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Coming up", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
@@ -2353,9 +2376,10 @@ const evTag = ev => (ev.competition ? (ev.flight || ev.name || "Other") : (ev.na
   .replace(/\s+20\d\d(-\d\d)?\s*$/, "").replace(/^(Pre-)?ECNL\s+(RL\s+)?(Boys\s+|Girls\s+)?/i, "").replace(/^MLS NEXT\s+/i, "").trim().toUpperCase().slice(0, 14) || "EVENT";
 const evKey = ev => `${ev.event_id}-${ev.flight_id}`;
 // Field name; the complex too when it isn't the event's main one
-const evField = (ev, venue) => { if (!venue) return ""; const parts = venue.split("·").map(x => x.trim()), f = parts[parts.length - 1], c = parts.length > 1 ? parts[0] : "";
-  if (!ev.__cx) { const n = {}; for (const g of ev.games) if (g.venue) { const k = g.venue.split("·")[0].trim(); n[k] = (n[k] || 0) + 1; } ev.__cx = Object.keys(n).sort((a, b) => n[b] - n[a])[0] || ""; }
-  return esc(c && c !== ev.__cx ? `${c} · ${f}` : f); };
+const shortComplex = c => c.replace(/\s+(Sports|Soccer|Athletic|Regional|Youth)?\s*(Complex|Park|Fields?|Center|Centre|Facility)$/i, "").trim() || c;
+const evField = (ev, venue) => { if (!venue) return ""; const parts = venue.split("·").map(x => x.trim()), c = parts.length > 1 ? shortComplex(parts[0]) : "";
+  const f = parts[parts.length - 1].replace(/#\s*0*(\d+)/, "$1");
+  return esc(c && c !== f ? `${c} · ${f}` : f); };
 const evDone = g => g.hs != null && g.as != null;
 function evModel(ev) {
   if (ev.__m) return ev.__m;
@@ -2418,7 +2442,21 @@ function evOurs(ev, fid) {
   });
   return {known, days};
 }
-function evTbdRow(ev, day, fid) {
+function evTbdRow(ev, day, fid, card) {
+  if (!card) {   // Games: one short line; the paths live in the event card (tap opens it)
+    const m0 = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
+    const labs = [...new Set(day.items.map(x => m0.label.get(x.g.id) || ""))];
+    const what = labs.length === 1 && labs[0] ? labs[0] : labs.some(Boolean) ? "Placement game" : "";
+    const one = day.items.length === 1 && !day.items[0].cond.length ? day.items[0] : null;
+    const opp = one ? m0.sideTxt(one.g, one.other) : "";
+    const k = Math.max(...day.items.map(x => x.cond.length));
+    const dep = [...new Set(day.items.flatMap(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").split(" ").pop())))];
+    const why = day.tentative ? `If we ${day.items.map(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").replace(/^Win /, "win ").replace(/^Loss /, "lose ")).join(" and ")).join(" or ")}`
+      : k ? `Depends on ${dep.map(d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d).join(" and ")}` : (opp && !/^one of /.test(opp) ? `vs ${opp}` : "");
+    const me = esc(m0.tn(fid));
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">${what ? "·" : "vs"}</span><span class="gr"><span class="mut">${esc(what || "Opponent TBD")}</span></span><span class="gm"></span>
+      <div class="gsub"><span class="${day.tentative ? "ttag" : "evtag"}" data-ev="${evKey(ev)}">${day.tentative ? "TENTATIVE" : esc(evTag(ev))}</span> ${why}${one && one.g.venue ? ` · ${evField(ev, one.g.venue)}` : ""}</div></div>`;
+  }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
   const labels = [...new Set(day.items.map(x => m.label.get(x.g.id) || ""))];
   const title = labels.length === 1 && labels[0] ? labels[0] : labels.some(Boolean) ? "Placement game" : "Opponent TBD";
@@ -2429,8 +2467,7 @@ function evTbdRow(ev, day, fid) {
     const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab && title !== lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
-  const tag = `<span class="${day.tentative ? "ttag" : "evtag"}" data-ev="${evKey(ev)}">${day.tentative ? "TENTATIVE" : esc(evTag(ev))}</span>`;
-  return `<div class="grow tbd${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}<span class="kslot">${tag}</span></span><span class="gtbd">${esc(title)}${day.tentative ? ` <span class="mut" style="font-weight:400">· ${esc(evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase()))}</span>` : ""}</span><span></span><div class="gsub">${lines.join("<br>")}</div></div>`;
+  return `<div class="grow tbd${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gtbd">${day.tentative ? `<span class="ttag">TENTATIVE</span> ` : ""}${esc(title)}</span><span></span><div class="gsub">${lines.join("<br>")}</div></div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2445,16 +2482,17 @@ function evGameItem(D, ev, g0, fid, o = {}) {
   }
   const lab = evModel(ev).label.get(g.id);
   if (lab) sub = `${esc(lab)}${sub ? " · " + sub : ""}`;
+  if (!o.card && !o.plain) sub = `<span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span> ${sub}`;
   if (evDone(g) && g.hs === g.as && g.hpk != null && g.apk != null && g.hpk !== g.apk) {
     const ours = fid && (g.home_id === fid ? [g.hpk, g.apk] : g.away_id === fid ? [g.apk, g.hpk] : null);
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
-  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true,
-    tag: `<span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>`, sub, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
+  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us && !o.card, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
+    sub, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
 // The focus team's event items (known games + TBD/TENTATIVE days), for the Games calendar and the event card.
-function evItemsFor(D, events, fid) {
+function evItemsFor(D, events, fid, card) {
   const out = [];
   let nextShown = false;
   const upcoming = events.flatMap(ev => evOurs(ev, fid).known.filter(g => !evDone(g)).map(g => [ev, g]))
@@ -2462,14 +2500,14 @@ function evItemsFor(D, events, fid) {
   const nextId = upcoming.length ? upcoming[0][1].id : null;
   for (const ev of events) {
     const {known, days} = evOurs(ev, fid);
-    for (const g of known) out.push(Object.assign(evGameItem(D, ev, g, fid, {likely: g.id === nextId && !nextShown && (nextShown = true)}), {ev}));
-    for (const d of days) out.push({date: d.date, time: d.items[0].g.time || "", done: false, tbd: true, ev, html: evTbdRow(ev, d, fid)});
+    for (const g of known) out.push(Object.assign(evGameItem(D, ev, g, fid, {card, likely: g.id === nextId && !nextShown && (nextShown = true)}), {ev}));
+    for (const d of days) out.push({date: d.date, time: d.items[0].g.time || "", done: false, tbd: true, ev, html: evTbdRow(ev, d, fid, card)});
   }
   return out;
 }
 // One event card: header, our games (same rows as Games), and the full schedule closed underneath.
 function evCard(D, ev, fid, open) {
-  const m = evModel(ev), items = evItemsFor(D, [ev], fid).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+  const m = evModel(ev), items = evItemsFor(D, [ev], fid, true).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
   const dates = m.games.map(g => g.date).filter(Boolean).sort();
   const ours = evOurs(ev, fid).known, venue = (ours.find(g => g.venue) || m.games.find(g => g.venue) || {}).venue || "";
   const complex = venue ? venue.split("·")[0].trim() : "";
