@@ -5605,8 +5605,8 @@
   "name": "ECNL RL Boys STXCL",
   "ours": [
    133238,
-   132659,
    132497,
+   132659,
    131199,
    134506,
    133303,
@@ -5637,6 +5637,30 @@
   "name": "ECNL RL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 133238,
+    "team": "LTFC ECNL RL STXCL B2013/14",
+    "ours": [
+     11,
+     29
+    ],
+    "ecnl": [
+     10,
+     28
+    ]
+   },
+   {
+    "id": 132659,
+    "team": "Pflugerville FC ECNL RL STXCL B2013/14 Green",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     20
+    ]
+   },
    {
     "id": 134506,
     "team": "Rayados Pflugerville ECNL RL STXCL B2013/14",
@@ -6341,6 +6365,30 @@
     "ecnl": [
      10,
      14
+    ]
+   },
+   {
+    "id": 114289,
+    "team": "Marin FC",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
+    "id": 125866,
+    "team": "Davis Legacy",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
     ]
    },
    {
@@ -9378,8 +9426,8 @@
    134884,
    95343,
    117484,
-   113902,
    94752,
+   113902,
    82174,
    81912,
    135070,
@@ -9408,6 +9456,30 @@
   "name": "ECNL RL Boys New England",
   "kind": "points",
   "teams": [
+   {
+    "id": 95343,
+    "team": "SUSA FC",
+    "ours": [
+     9,
+     22
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
+   {
+    "id": 113902,
+    "team": "Manhattan SC",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     16
+    ]
+   },
    {
     "id": 94752,
     "team": "Scorpions SC",
@@ -18053,8 +18125,8 @@
    82421,
    58163,
    82293,
-   134865,
-   80962
+   80962,
+   134865
   ],
   "ecnl": [
    132048,
@@ -18098,6 +18170,30 @@
     "ecnl": [
      9,
      19
+    ]
+   },
+   {
+    "id": 134865,
+    "team": "Valor Soccer",
+    "ours": [
+     11,
+     1
+    ],
+    "ecnl": [
+     10,
+     1
+    ]
+   },
+   {
+    "id": 80962,
+    "team": "Columbia Premier",
+    "ours": [
+     13,
+     4
+    ],
+    "ecnl": [
+     12,
+     1
     ]
    }
   ]
@@ -25036,6 +25132,30 @@
   "kind": "points",
   "teams": [
    {
+    "id": 103331,
+    "team": "Force (CA)",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   },
+   {
+    "id": 126187,
+    "team": "Davis Legacy",
+    "ours": [
+     15,
+     20
+    ],
+    "ecnl": [
+     14,
+     17
+    ]
+   },
+   {
     "id": 66690,
     "team": "Pleasanton RAGE",
     "ours": [
@@ -28142,6 +28262,61 @@
    133501,
    132947,
    127075
+  ]
+ },
+ {
+  "conf": "u14g-4298-40756",
+  "name": "ECNL RL Girls Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133429,
+    "team": "Oregon Premier FC",
+    "ours": [
+     10,
+     30
+    ],
+    "ecnl": [
+     9,
+     27
+    ]
+   },
+   {
+    "id": 112930,
+    "team": "Eugene Metro FC",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
+    ]
+   },
+   {
+    "id": 131486,
+    "team": "FC Portland",
+    "ours": [
+     11,
+     11
+    ],
+    "ecnl": [
+     10,
+     8
+    ]
+   },
+   {
+    "id": 133501,
+    "team": "Eastside Timbers",
+    "ours": [
+     11,
+     4
+    ],
+    "ecnl": [
+     10,
+     4
+    ]
+   }
   ]
  },
  {
