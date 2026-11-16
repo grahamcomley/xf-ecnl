@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.53">
+<meta name="app-version" content="v1.54">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -416,7 +416,18 @@ const ICON = {
 // Bottom tabs. The app opens on the last tab used; a shared link for a new team opens on Team.
 // Games and League are one tab now (All teams | My team inside it); old links and saved tabs still work.
 const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], ["predict", "sliders", "Predict"]];
-let TAB = (() => { try { const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
+// Opening the app after 15+ minutes away (or fresh) lands on Standings; a quick return keeps your tab.
+const AWAY_RESET = 15 * 60000;
+const awayLong = () => { try { const h = +localStorage.getItem("hiddenAt") || 0; return !h || Date.now() - h > AWAY_RESET; } catch (e) { return true; } };
+let TAB = (() => { try { if (awayLong()) return "team"; const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
+let FOCUS_AT = 0, SHOWN_AT = document.visibilityState === "visible" ? 0 : null;
+const markHidden = () => { try { localStorage.setItem("hiddenAt", String(Date.now())); } catch (e) {} };
+addEventListener("pagehide", markHidden);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) return markHidden();
+  if (SHOWN_AT === null) SHOWN_AT = performance.now();   // load time counts from when the app is on screen
+  if (awayLong() && Date.now() - FOCUS_AT > 5000 && typeof showTab === "function" && CUR && TAB !== "team") showTab("team");
+});
 // Short team names for the header pills (search, tables and games keep the full name).
 // Sure rules only: drop filler words (FC, SC, Soccer Club, Youth...), league/birth-year tags, state names -> WA, OR...
 // A few Northwest names that are still long get a reviewed short form; anything else keeps its (rule-trimmed) name.
@@ -1422,6 +1433,7 @@ async function showNote(gids, view, item) {
   $("#ngo").onclick = () => { $("#nsheet").hidden = true; TEAM_READY.then(() => focusGames(gids, view)); };
 }
 function focusGames(gids, view) {
+  FOCUS_AT = Date.now();
   let el = null;
   if (view) showTab(view === "league" ? "league" : view === "games" ? "games" : view, false);
   const shown = x => x.closest(".pane") && !x.closest(".pane").hidden && !(x.closest(".gv") && x.closest(".gv").hidden);
@@ -1663,7 +1675,7 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
-  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog("ready", `${Math.round(performance.now())}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
+  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog("ready", `${Math.round(performance.now() - (SHOWN_AT || 0))}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
   $("#scroller").scrollTop = 0;
