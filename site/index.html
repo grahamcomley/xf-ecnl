@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.54">
+<meta name="app-version" content="v1.55">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -43,9 +43,9 @@ header{flex:none;background:#07090c;border-bottom:1px solid var(--line);padding:
 details.evrow{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--card)}
 details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relative}details.evrow>summary::-webkit-details-marker{display:none}
 .evhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 2px}.evt{font-size:15px;font-weight:700}details.evrow[open]>summary .chev{transform:rotate(180deg)}.evbody{padding:0 10px 12px}
-.grow{display:grid;grid-template-columns:46px 1fr auto 1fr 30px;gap:6px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.grow{display:grid;grid-template-columns:42px minmax(0,1fr) auto minmax(0,1fr) 16px;gap:5px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
 .grow.tap{cursor:pointer}.grow.ours{background:var(--me);border-radius:8px;border-bottom-color:transparent}
-.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called,.gtag.bigger{color:var(--up);border-color:#1f5f3a}.gtag.missed{color:var(--dn);border-color:#7f1d1d}
+.gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gl,.gr{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called,.gtag.bigger{color:var(--up);border-color:#1f5f3a}.gtag.missed{color:var(--dn);border-color:#7f1d1d}
 .keytag{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--mut);border:1px solid var(--line2);border-radius:5px;padding:1px 4px}
 .gm .res{width:18px;height:18px;font-size:10px}
 .gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
@@ -244,11 +244,13 @@ h3{font-size:14px;margin:10px 0 6px}
 .imp.open .ar{transform:rotate(90deg)}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
-.gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 52px;line-height:1.45}
+.gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 47px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gtop{grid-column:1/-1;line-height:1;margin-bottom:-2px}
+@media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
 .evtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:1px 4px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
-.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 52px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
+.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 47px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
 .gsub .w{color:#86efac}.gsub .l{color:#fca5a5}
 .card.evcard{padding:14px}.evcard>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px}.evcard>summary::-webkit-details-marker{display:none}
 .evcard .evh{flex:1;min-width:0}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
@@ -1760,7 +1762,7 @@ function gameRow(D, M, g, o = {}) {
       toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
     }
   }
-  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}">${o.toptag ? `<div class="gtop">${o.toptag}</div>` : ""}<span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
 const GRADE = {exact: ["EXACT", "Exact score"], called: ["CALLED", "Called it"], bigger: ["BIGGER", "Bigger win than expected"], closer: ["CLOSER", "Closer than expected"], missed: ["MISSED", "Missed"]};
@@ -2464,11 +2466,12 @@ function evTbdRow(ev, day, fid, card) {
     const opp = one ? m0.sideTxt(one.g, one.other) : "";
     const k = Math.max(...day.items.map(x => x.cond.length));
     const dep = [...new Set(day.items.flatMap(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").split(" ").pop())))];
+    const full = d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d;
     const why = day.tentative ? `If we ${day.items.map(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").replace(/^Win /, "win ").replace(/^Loss /, "lose ")).join(" and ")).join(" or ")}`
-      : k ? `Depends on ${dep.map(d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d).join(" and ")}` : (opp && !/^one of /.test(opp) ? `vs ${opp}` : "");
-    const me = esc(m0.tn(fid));
-    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">${what ? "·" : "vs"}</span><span class="gr"><span class="mut">${esc(what || "Opponent TBD")}</span></span><span class="gm"></span>
-      <div class="gsub"><span class="${day.tentative ? "ttag" : "evtag"}" data-ev="${evKey(ev)}">${day.tentative ? "TENTATIVE" : esc(evTag(ev))}</span> ${why}${one && one.g.venue ? ` · ${evField(ev, one.g.venue)}` : ""}</div></div>`;
+      : k ? (what ? `${esc(what)} · depends on ${dep.join(" and ")}` : `Depends on ${dep.map(full).join(" and ")}`) : (what ? esc(what) : "");
+    const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
+      <div class="gsub">${why}${one && one.g.venue ? `${why ? " · " : ""}${evField(ev, one.g.venue)}` : ""}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
   const labels = [...new Set(day.items.map(x => m.label.get(x.g.id) || ""))];
@@ -2491,16 +2494,16 @@ function evGameItem(D, ev, g0, fid, o = {}) {
   if (o.likely && us && !evDone(g)) {
     const opp = g.home_id === fid ? g.away_id : g.home_id, P = Me.probs(g.home_id, g.away_id, true), flip = g.away_id === fid;
     const sL = flip ? [P.score[1], P.score[0]] : P.score, cf = confidence(ev.teams, fid, opp);
-    sub += `${sub ? " · " : ""}${likelyLine(evModel(ev).tn(fid), evModel(ev).tn(opp), sL)} · ${cf[0]} confidence`;
+    sub += `${sub ? " · " : ""}Likely ${sL[0] > sL[1] ? "W" : sL[0] < sL[1] ? "L" : "D"} ${sL[0]}–${sL[1]} · ${cf[0]} confidence`;
   }
   const lab = evModel(ev).label.get(g.id);
   if (lab) sub = `${esc(lab)}${sub ? " · " + sub : ""}`;
-  if (!o.card && !o.plain) sub = `<span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span> ${sub}`;
+  const toptag = !o.card && !o.plain ? `<span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>` : "";
   if (evDone(g) && g.hs === g.as && g.hpk != null && g.apk != null && g.hpk !== g.apk) {
     const ours = fid && (g.home_id === fid ? [g.hpk, g.apk] : g.away_id === fid ? [g.apk, g.hpk] : null);
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
-  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong,
+  const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong, toptag,
     sub: o.card ? "" : sub, after: o.card && sub ? `<div class="gpaths">${sub}</div>` : "", det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
