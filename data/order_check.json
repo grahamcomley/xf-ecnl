@@ -19893,6 +19893,30 @@
     ]
    },
    {
+    "id": 35860,
+    "team": "MVLA",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     16
+    ]
+   },
+   {
+    "id": 80633,
+    "team": "Association FC",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   },
+   {
     "id": 71301,
     "team": "River Islands Surf",
     "ours": [
