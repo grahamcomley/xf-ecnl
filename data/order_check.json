@@ -24496,6 +24496,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 130062,
+    "team": "Oregon Surf PreECNL G2014/15",
+    "ours": [
+     10,
+     24
+    ],
+    "ecnl": [
+     9,
+     21
+    ]
+   },
+   {
     "id": 133431,
     "team": "Oregon Premier FC Pre-ECNL G2014/15",
     "ours": [
@@ -24517,6 +24529,18 @@
     "ecnl": [
      10,
      16
+    ]
+   },
+   {
+    "id": 133129,
+    "team": "Portland City United SC PRE-ECNL G2014/15",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     7
     ]
    }
   ]
