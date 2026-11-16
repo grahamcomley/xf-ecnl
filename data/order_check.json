@@ -13463,6 +13463,18 @@
     ]
    },
    {
+    "id": 135603,
+    "team": "Sporting California USA RED",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   },
+   {
     "id": 134410,
     "team": "Eagles SC",
     "ours": [
@@ -13544,6 +13556,18 @@
     "ecnl": [
      8,
      7
+    ]
+   },
+   {
+    "id": 132490,
+    "team": "San Diego Surf Blue",
+    "ours": [
+     8,
+     5
+    ],
+    "ecnl": [
+     7,
+     4
     ]
    },
    {
