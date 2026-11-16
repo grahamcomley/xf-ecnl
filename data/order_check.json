@@ -34558,8 +34558,8 @@
   "name": "ECNL Girls Mid-Atlantic",
   "ours": [
    81266,
-   133821,
    130286,
+   133821,
    131437,
    134237,
    129047,
@@ -34581,6 +34581,37 @@
    80895,
    135361,
    129047
+  ]
+ },
+ {
+  "conf": "u16g-4263-40554",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130286,
+    "team": "NCFC Youth NC Courage",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 69224,
+    "team": "NC Fusion",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     10
+    ]
+   }
   ]
  },
  {
