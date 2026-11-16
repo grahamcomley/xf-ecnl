@@ -29524,7 +29524,6 @@
    130103,
    128356,
    131210,
-   80073,
    131349,
    129404,
    132739,
@@ -29532,206 +29531,8 @@
    132755,
    80666,
    131211,
-   92681
-  ]
- },
- {
-  "conf": "u16g-4260-41145",
-  "name": "ECNL RL Girls STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 80064,
-    "team": "AHFC CENTRAL ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     30
-    ],
-    "ecnl": [
-     9,
-     27
-    ]
-   },
-   {
-    "id": 133619,
-    "team": "Lonestar ATX ECNL RL STXCL G2010/11White",
-    "ours": [
-     10,
-     27
-    ],
-    "ecnl": [
-     9,
-     24
-    ]
-   },
-   {
-    "id": 82220,
-    "team": "AHFC EAST ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     26
-    ],
-    "ecnl": [
-     9,
-     23
-    ]
-   },
-   {
-    "id": 112304,
-    "team": "TC Premier SC ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     25
-    ],
-    "ecnl": [
-     9,
-     22
-    ]
-   },
-   {
-    "id": 130103,
-    "team": "Dynamos ECNL RL STXCL G2010/11",
-    "ours": [
-     11,
-     24
-    ],
-    "ecnl": [
-     10,
-     21
-    ]
-   },
-   {
-    "id": 128356,
-    "team": "SG1 ECNL RL STXCL G2010/11",
-    "ours": [
-     11,
-     18
-    ],
-    "ecnl": [
-     10,
-     18
-    ]
-   },
-   {
-    "id": 131210,
-    "team": "FC Westlake Central ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     14
-    ],
-    "ecnl": [
-     9,
-     14
-    ]
-   },
-   {
-    "id": 92681,
-    "team": "Force FC ECNL RL STXCL G2010/11",
-    "ours": [
-     9,
-     11
-    ],
-    "ecnl": [
-     8,
-     11
-    ]
-   },
-   {
-    "id": 80073,
-    "team": "AHFC WEST ECNL RL STXCL G2010/11",
-    "ours": [
-     9,
-     10
-    ],
-    "ecnl": [
-     8,
-     10
-    ]
-   },
-   {
-    "id": 131349,
-    "team": "RISE SC ECNL RL STXCL G2010/11",
-    "ours": [
-     11,
-     15
-    ],
-    "ecnl": [
-     10,
-     12
-    ]
-   },
-   {
-    "id": 129404,
-    "team": "Challenge ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     10
-    ]
-   },
-   {
-    "id": 132739,
-    "team": "Lonestar ATX NTH ECNL RL STXCL G2010/11 Gold",
-    "ours": [
-     9,
-     10
-    ],
-    "ecnl": [
-     8,
-     7
-    ]
-   },
-   {
-    "id": 57511,
-    "team": "AHFC NW ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     5
-    ],
-    "ecnl": [
-     9,
-     5
-    ]
-   },
-   {
-    "id": 132755,
-    "team": "Lonestar ATX STH ECNL RL STXCL G2010/11 Gold",
-    "ours": [
-     9,
-     1
-    ],
-    "ecnl": [
-     8,
-     1
-    ]
-   },
-   {
-    "id": 80666,
-    "team": "Lonestar SAT ECNL RL STXCL G2010/11",
-    "ours": [
-     9,
-     1
-    ],
-    "ecnl": [
-     8,
-     1
-    ]
-   },
-   {
-    "id": 131211,
-    "team": "FC Westlake North ECNL RL STXCL G2010/11",
-    "ours": [
-     10,
-     0
-    ],
-    "ecnl": [
-     9,
-     0
-    ]
-   }
+   92681,
+   80073
   ]
  },
  {
@@ -29752,47 +29553,16 @@
   ],
   "ecnl": [
    81266,
-   133821,
-   131437,
    130286,
+   131437,
    134237,
    69224,
    134660,
    135520,
    80895,
    135361,
+   133821,
    129047
-  ]
- },
- {
-  "conf": "u16g-4263-40554",
-  "name": "ECNL Girls Mid-Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 130286,
-    "team": "NCFC Youth NC Courage",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     15
-    ]
-   },
-   {
-    "id": 69224,
-    "team": "NC Fusion",
-    "ours": [
-     8,
-     10
-    ],
-    "ecnl": [
-     7,
-     10
-    ]
-   }
   ]
  },
  {
@@ -30164,8 +29934,8 @@
    135880,
    67454,
    132723,
-   136393,
    135731,
+   136393,
    135949
   ]
  },
@@ -30218,8 +29988,8 @@
      11
     ],
     "ecnl": [
-     11,
-     13
+     12,
+     14
     ]
    },
    {
@@ -30230,20 +30000,8 @@
      11
     ],
     "ecnl": [
-     15,
-     7
-    ]
-   },
-   {
-    "id": 136393,
-    "team": "FC Wichita Navy",
-    "ours": [
-     9,
-     4
-    ],
-    "ecnl": [
-     10,
-     4
+     17,
+     11
     ]
    },
    {
@@ -30256,6 +30014,18 @@
     "ecnl": [
      15,
      6
+    ]
+   },
+   {
+    "id": 136393,
+    "team": "FC Wichita Navy",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     11,
+     4
     ]
    }
   ]
@@ -30382,67 +30152,12 @@
    111201,
    136911,
    94954,
-   44314,
    87983,
+   44314,
    93733,
    135719,
    110986,
    82657
-  ]
- },
- {
-  "conf": "u16g-4300-40776",
-  "name": "ECNL RL Girls Golden State",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 110986,
-    "team": "Davis Legacy",
-    "ours": [
-     15,
-     22
-    ],
-    "ecnl": [
-     14,
-     22
-    ]
-   },
-   {
-    "id": 94954,
-    "team": "Force (CA)",
-    "ours": [
-     13,
-     17
-    ],
-    "ecnl": [
-     12,
-     14
-    ]
-   },
-   {
-    "id": 44314,
-    "team": "Pleasanton RAGE",
-    "ours": [
-     14,
-     13
-    ],
-    "ecnl": [
-     13,
-     13
-    ]
-   },
-   {
-    "id": 87983,
-    "team": "COSC",
-    "ours": [
-     13,
-     15
-    ],
-    "ecnl": [
-     12,
-     12
-    ]
-   }
   ]
  },
  {
@@ -30530,37 +30245,6 @@
   ]
  },
  {
-  "conf": "u16g-4302-42350",
-  "name": "ECNL RL Girls GMA",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 115346,
-    "team": "Nationals SC-CA GMA",
-    "ours": [
-     11,
-     23
-    ],
-    "ecnl": [
-     10,
-     20
-    ]
-   },
-   {
-    "id": 115791,
-    "team": "Liverpool FC MI ECNL RL GMA G2010/11",
-    "ours": [
-     10,
-     0
-    ],
-    "ecnl": [
-     9,
-     0
-    ]
-   }
-  ]
- },
- {
   "conf": "u16g-4303-40782",
   "name": "ECNL RL Girls Gulf Coast",
   "ours": [
@@ -30584,37 +30268,6 @@
    132558,
    112535,
    130874
-  ]
- },
- {
-  "conf": "u16g-4303-40782",
-  "name": "ECNL RL Girls Gulf Coast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134543,
-    "team": "Coastal Rush",
-    "ours": [
-     11,
-     26
-    ],
-    "ecnl": [
-     10,
-     23
-    ]
-   },
-   {
-    "id": 112535,
-    "team": "Alabama FC Huntsville",
-    "ours": [
-     13,
-     0
-    ],
-    "ecnl": [
-     12,
-     0
-    ]
-   }
   ]
  },
  {
@@ -30866,80 +30519,25 @@
    81570
   ],
   "ecnl": [
-   132910,
    81571,
+   132910,
    133370,
+   97351,
    74613,
    76044,
    132867,
    112165,
    133671,
+   95048,
    133177,
    94495,
-   95048,
    133042,
-   97351,
    81570,
    132117,
    131539,
    82648,
    134914,
    135590
-  ]
- },
- {
-  "conf": "u16g-4306-40806",
-  "name": "ECNL RL Girls Mountain",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 81571,
-    "team": "Avalanche",
-    "ours": [
-     4,
-     9
-    ],
-    "ecnl": [
-     3,
-     6
-    ]
-   },
-   {
-    "id": 133177,
-    "team": "La Roca FC ECNL RL North 2010/11",
-    "ours": [
-     2,
-     1
-    ],
-    "ecnl": [
-     1,
-     1
-    ]
-   },
-   {
-    "id": 94495,
-    "team": "Boise Thorns",
-    "ours": [
-     2,
-     1
-    ],
-    "ecnl": [
-     1,
-     1
-    ]
-   },
-   {
-    "id": 97351,
-    "team": "Idaho Rush",
-    "ours": [
-     2,
-     3
-    ],
-    "ecnl": [
-     1,
-     0
-    ]
-   }
   ]
  },
  {
@@ -31320,221 +30918,6 @@
    81341,
    82188,
    131880
-  ]
- },
- {
-  "conf": "u16g-4314-41412",
-  "name": "ECNL RL Girls Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131880,
-    "team": "Charlotte SA Gold",
-    "ours": [
-     12,
-     28
-    ],
-    "ecnl": [
-     11,
-     28
-    ]
-   },
-   {
-    "id": 81341,
-    "team": "Concorde Fire Platinum",
-    "ours": [
-     14,
-     22
-    ],
-    "ecnl": [
-     13,
-     22
-    ]
-   },
-   {
-    "id": 81682,
-    "team": "Alabama FC",
-    "ours": [
-     13,
-     22
-    ],
-    "ecnl": [
-     12,
-     19
-    ]
-   },
-   {
-    "id": 131504,
-    "team": "GSA",
-    "ours": [
-     15,
-     22
-    ],
-    "ecnl": [
-     14,
-     19
-    ]
-   },
-   {
-    "id": 82188,
-    "team": "South Carolina United",
-    "ours": [
-     14,
-     17
-    ],
-    "ecnl": [
-     13,
-     16
-    ]
-   },
-   {
-    "id": 79896,
-    "team": "Atlanta Fire United",
-    "ours": [
-     15,
-     18
-    ],
-    "ecnl": [
-     14,
-     17
-    ]
-   }
-  ]
- },
- {
-  "conf": "u16g-4315-41750",
-  "name": "ECNL RL Girls Southern Cal",
-  "ours": [
-   129893,
-   134173,
-   89529,
-   132176,
-   133026,
-   131030,
-   133582,
-   135895,
-   133727,
-   132478,
-   97427,
-   131717
-  ],
-  "ecnl": [
-   89529,
-   129893,
-   134173,
-   132176,
-   133026,
-   131030,
-   133582,
-   135895,
-   133727,
-   132478,
-   97427,
-   131717
-  ]
- },
- {
-  "conf": "u16g-4315-41750",
-  "name": "ECNL RL Girls Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 89529,
-    "team": "SLAMMERS FC ECNL RL S.Cal G2010/11",
-    "ours": [
-     4,
-     10
-    ],
-    "ecnl": [
-     3,
-     9
-    ]
-   },
-   {
-    "id": 131030,
-    "team": "Pateadores ECNL RL SoCal G2010/11 NB",
-    "ours": [
-     6,
-     9
-    ],
-    "ecnl": [
-     5,
-     8
-    ]
-   }
-  ]
- },
- {
-  "conf": "u16g-4316-41744",
-  "name": "ECNL RL Girls Southwest",
-  "ours": [
-   132167,
-   132466,
-   77351,
-   133590,
-   132221,
-   133025,
-   77520,
-   64912,
-   134110,
-   81126,
-   133718,
-   82186,
-   79329,
-   135893,
-   134393,
-   131716,
-   79285
-  ],
-  "ecnl": [
-   132167,
-   77351,
-   132466,
-   133590,
-   132221,
-   133025,
-   77520,
-   64912,
-   134110,
-   81126,
-   133718,
-   82186,
-   79329,
-   135893,
-   134393,
-   131716,
-   79285
-  ]
- },
- {
-  "conf": "u16g-4316-41744",
-  "name": "ECNL RL Girls Southwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132466,
-    "team": "San Diego Surf",
-    "ours": [
-     8,
-     21
-    ],
-    "ecnl": [
-     7,
-     18
-    ]
-   },
-   {
-    "id": 79285,
-    "team": "LV Heat Surf",
-    "ours": [
-     5,
-     0
-    ],
-    "ecnl": [
-     4,
-     0
-    ]
-   }
   ]
  },
  {
@@ -32052,18 +31435,6 @@
     "ecnl": [
      4,
      6
-    ]
-   },
-   {
-    "id": 135361,
-    "team": "Fairfax Virginia Union",
-    "ours": [
-     4,
-     3
-    ],
-    "ecnl": [
-     3,
-     3
     ]
    }
   ]
