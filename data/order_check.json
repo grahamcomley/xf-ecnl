@@ -8467,6 +8467,37 @@
   ]
  },
  {
+  "conf": "u14b-4273-40438",
+  "name": "ECNL Boys Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133422,
+    "team": "Oregon Premier FC",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
+    "id": 96070,
+    "team": "Eugene Metro FC",
+    "ours": [
+     11,
+     6
+    ],
+    "ecnl": [
+     10,
+     6
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4274-40444",
   "name": "ECNL Boys Florida",
   "ours": [
