@@ -11901,37 +11901,6 @@
   ]
  },
  {
-  "conf": "u15b-4284-40523",
-  "name": "ECNL Boys Northwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 71813,
-    "team": "Seattle United",
-    "ours": [
-     9,
-     25
-    ],
-    "ecnl": [
-     8,
-     22
-    ]
-   },
-   {
-    "id": 81137,
-    "team": "PacNW",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     18
-    ]
-   }
-  ]
- },
- {
   "conf": "u15b-4285-40529",
   "name": "ECNL Boys Ohio Valley",
   "ours": [
