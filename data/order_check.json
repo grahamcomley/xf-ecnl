@@ -21203,34 +21203,6 @@
   ]
  },
  {
-  "conf": "a15b-537-537",
-  "name": "MLS NEXT Academy Northern California Coast",
-  "ours": [
-   8546,
-   9459,
-   8444,
-   8552,
-   9447,
-   9429,
-   9417,
-   9405,
-   9465,
-   9411
-  ],
-  "ecnl": [
-   8546,
-   9459,
-   8552,
-   8444,
-   9447,
-   9429,
-   9417,
-   9405,
-   9465,
-   9411
-  ]
- },
- {
   "conf": "a15b-543-543",
   "name": "MLS NEXT Academy Northern California Redwood",
   "ours": [
