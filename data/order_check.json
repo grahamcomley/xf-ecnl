@@ -1707,6 +1707,61 @@
   ]
  },
  {
+  "conf": "u12b-4387-41884",
+  "name": "Pre-ECNL Boys Colorado",
+  "ours": [
+   131418,
+   131889,
+   132099,
+   130970,
+   132787,
+   135739,
+   133206,
+   135930
+  ],
+  "ecnl": [
+   131418,
+   131889,
+   132099,
+   130970,
+   135739,
+   133206,
+   135930,
+   132787
+  ]
+ },
+ {
+  "conf": "u12b-4387-41884",
+  "name": "Pre-ECNL Boys Colorado",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131889,
+    "team": "Colorado EDGE Pre-ECNL B2014/15 United",
+    "ours": [
+     4,
+     7
+    ],
+    "ecnl": [
+     3,
+     7
+    ]
+   },
+   {
+    "id": 132787,
+    "team": "Real Colorado Pre-ECNL Olympico B2014/15",
+    "ours": [
+     2,
+     3
+    ],
+    "ecnl": [
+     1,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4389-41850",
   "name": "Pre-ECNL Boys Northeast - South",
   "ours": [
