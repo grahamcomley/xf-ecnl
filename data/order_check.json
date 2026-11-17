@@ -10589,6 +10589,37 @@
   ]
  },
  {
+  "conf": "u11g-4379-42032",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132936,
+    "team": "Albany Alleycats Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   },
+   {
+    "id": 117013,
+    "team": "AC Connecticut Pre-ECNL G2015/16",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     8
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11g-4379-42030",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
