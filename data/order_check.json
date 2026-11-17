@@ -578,37 +578,6 @@
   ]
  },
  {
-  "conf": "u11b-4380-41580",
-  "name": "Pre-ECNL Boys Florida",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 114266,
-    "team": "Cape Coral SA Pre-ECNL B2015/16",
-    "ours": [
-     6,
-     13
-    ],
-    "ecnl": [
-     5,
-     12
-    ]
-   },
-   {
-    "id": 137376,
-    "team": "Naples Elite Soccer Club NESC Pre-ECNL B2015/16",
-    "ours": [
-     7,
-     14
-    ],
-    "ecnl": [
-     6,
-     13
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4380-41015",
   "name": "Pre-ECNL Boys Florida",
   "ours": [
@@ -640,37 +609,6 @@
    133923,
    131732,
    136438
-  ]
- },
- {
-  "conf": "u11b-4380-41015",
-  "name": "Pre-ECNL Boys Florida",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135253,
-    "team": "Palm Beach United FC Pre-ECNL B2015/16",
-    "ours": [
-     6,
-     4
-    ],
-    "ecnl": [
-     5,
-     4
-    ]
-   },
-   {
-    "id": 132924,
-    "team": "Strikers Miami FC PRE-ECNL B2015/16",
-    "ours": [
-     7,
-     15
-    ],
-    "ecnl": [
-     6,
-     12
-    ]
-   }
   ]
  },
  {
@@ -6020,37 +5958,6 @@
   ]
  },
  {
-  "conf": "u16b-4276-40470",
-  "name": "ECNL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133196,
-    "team": "Lobos Rush",
-    "ours": [
-     16,
-     17
-    ],
-    "ecnl": [
-     15,
-     17
-    ]
-   },
-   {
-    "id": 135574,
-    "team": "Chattanooga Red Wolves SC",
-    "ours": [
-     18,
-     22
-    ],
-    "ecnl": [
-     17,
-     19
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4277-40464",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
@@ -6568,37 +6475,6 @@
    131693,
    134454,
    136144
-  ]
- },
- {
-  "conf": "u16b-4336-40650",
-  "name": "ECNL RL Boys Heartland",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 136269,
-    "team": "FC United Iowa",
-    "ours": [
-     10,
-     22
-    ],
-    "ecnl": [
-     9,
-     19
-    ]
-   },
-   {
-    "id": 134454,
-    "team": "Sporting Iowa Strikers",
-    "ours": [
-     10,
-     0
-    ],
-    "ecnl": [
-     9,
-     0
-    ]
-   }
   ]
  },
  {
