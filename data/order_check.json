@@ -10508,8 +10508,8 @@
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
    135567,
-   134408,
    131799,
+   134408,
    132936,
    117013,
    131402,
@@ -10525,6 +10525,37 @@
    132538,
    131799,
    117013
+  ]
+ },
+ {
+  "conf": "u11g-4379-42032",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134408,
+    "team": "Select Northeast Pre-ECNL G2015/16",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 133979,
+    "team": "Vale Rush United Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     5
+    ],
+    "ecnl": [
+     8,
+     4
+    ]
+   }
   ]
  },
  {
@@ -11157,8 +11188,8 @@
    107940,
    117014,
    87556,
-   116950,
    134407,
+   116950,
    111645,
    133980,
    132536
@@ -11172,6 +11203,37 @@
    111645,
    132536,
    133980
+  ]
+ },
+ {
+  "conf": "u12g-4379-42033",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134407,
+    "team": "Select Northeast Pre-ECNL G2014/15",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   },
+   {
+    "id": 133980,
+    "team": "Vale Rush United Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   }
   ]
  },
  {
@@ -11319,16 +11381,71 @@
    131384
   ],
   "ecnl": [
-   136719,
-   93230,
    92015,
+   93230,
+   136719,
    134537,
-   111493,
    111862,
+   111493,
    93788,
    90877,
    131384,
    90876
+  ]
+ },
+ {
+  "conf": "u12g-4384-41166",
+  "name": "Pre-ECNL Girls Northwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 90876,
+    "team": "Eastside FC Pre-ECNL G2014/15 I",
+    "ours": [
+     6,
+     18
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
+    "id": 92015,
+    "team": "Seattle United Pre-ECNL G2014/15",
+    "ours": [
+     5,
+     10
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 136719,
+    "team": "Seattle United Pre Copa",
+    "ours": [
+     5,
+     11
+    ],
+    "ecnl": [
+     6,
+     11
+    ]
+   },
+   {
+    "id": 111493,
+    "team": "XF Pre-ECNL G2014/15 2",
+    "ours": [
+     6,
+     8
+    ],
+    "ecnl": [
+     7,
+     8
+    ]
+   }
   ]
  },
  {
