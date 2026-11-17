@@ -9723,6 +9723,37 @@
   ]
  },
  {
+  "conf": "u19b-4350-40664",
+  "name": "ECNL RL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 57682,
+    "team": "Alabama FC",
+    "ours": [
+     14,
+     35
+    ],
+    "ecnl": [
+     13,
+     34
+    ]
+   },
+   {
+    "id": 134795,
+    "team": "Tennessee SC",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     24
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4351-41156",
   "name": "ECNL RL Boys NorCal",
   "ours": [
@@ -10231,6 +10262,37 @@
   ]
  },
  {
+  "conf": "u11g-4253-41797",
+  "name": "Pre-ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130853,
+    "team": "Lakota FC G2015/16 Black",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 130869,
+    "team": "Total Futbol Academy G2015/16 Elite 2",
+    "ours": [
+     9,
+     0
+    ],
+    "ecnl": [
+     10,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11g-4371-41753",
   "name": "Pre-ECNL Girls Frontier",
   "ours": [
@@ -10428,8 +10490,8 @@
    105511,
    118444,
    135965,
-   134820,
    118443,
+   134820,
    132533,
    131798
   ],
@@ -10438,8 +10500,8 @@
    132535,
    105511,
    135965,
-   134820,
    118443,
+   134820,
    132533,
    131798,
    118444
@@ -10467,37 +10529,6 @@
    132538,
    131799,
    117013
-  ]
- },
- {
-  "conf": "u11g-4379-42032",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132936,
-    "team": "Albany Alleycats Pre-ECNL G2015/16",
-    "ours": [
-     9,
-     12
-    ],
-    "ecnl": [
-     8,
-     11
-    ]
-   },
-   {
-    "id": 117013,
-    "team": "AC Connecticut Pre-ECNL G2015/16",
-    "ours": [
-     7,
-     9
-    ],
-    "ecnl": [
-     6,
-     8
-    ]
-   }
   ]
  },
  {
@@ -10742,12 +10773,43 @@
   ],
   "ecnl": [
    79049,
-   131718,
    115275,
+   131718,
    125768,
    131747,
    131955,
    132839
+  ]
+ },
+ {
+  "conf": "u12g-4253-41802",
+  "name": "Pre-ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115275,
+    "team": "Lexington Sporting Club Academy Pre-ECNL G2014/15",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     8,
+     16
+    ]
+   },
+   {
+    "id": 131718,
+    "team": "Mercury Pre-ECNL G2014/15 1",
+    "ours": [
+     7,
+     14
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   }
   ]
  },
  {
@@ -10871,37 +10933,6 @@
   ]
  },
  {
-  "conf": "u12g-4372-41905",
-  "name": "Pre-ECNL Girls GMA",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 115329,
-    "team": "Nationals SC Macomb Pre-ECNL G2014/15 BLUE Rodman",
-    "ours": [
-     8,
-     22
-    ],
-    "ecnl": [
-     7,
-     19
-    ]
-   },
-   {
-    "id": 135000,
-    "team": "Royal Oak FC Pre ECNL RL GMA G2014/15 Green",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   }
-  ]
- },
- {
   "conf": "u12g-4373-41054",
   "name": "Pre-ECNL Girls Heartland",
   "ours": [
@@ -10955,37 +10986,6 @@
    114518,
    132736,
    135150
-  ]
- },
- {
-  "conf": "u12g-4373-41056",
-  "name": "Pre-ECNL Girls Heartland",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135150,
-    "team": "SLSG Green Academy II Pre-",
-    "ours": [
-     9,
-     14
-    ],
-    "ecnl": [
-     8,
-     11
-    ]
-   },
-   {
-    "id": 114518,
-    "team": "AFA Fillies Pre-ECNL G2014/15",
-    "ours": [
-     8,
-     3
-    ],
-    "ecnl": [
-     7,
-     3
-    ]
-   }
   ]
  },
  {
@@ -11129,15 +11129,6 @@
    134835,
    132372
   ]
- },
- {
-  "conf": "u12g-4376-41058",
-  "name": "Pre-ECNL Girls New England",
-  "kind": "adjusted",
-  "teams": {
-   "134405": -2,
-   "126894": 1
-  }
  },
  {
   "conf": "u12g-4379-42037",
@@ -11327,13 +11318,22 @@
   "ecnl": [
    135737,
    131422,
-   137573,
    135648,
-   132694,
+   137573,
    130988,
+   132694,
    132113,
    135683
   ]
+ },
+ {
+  "conf": "u12g-4386-41063",
+  "name": "Pre-ECNL Girls Colorado",
+  "kind": "adjusted",
+  "teams": {
+   "135648": 3,
+   "132694": -3
+  }
  },
  {
   "conf": "u12g-4388-41066",
