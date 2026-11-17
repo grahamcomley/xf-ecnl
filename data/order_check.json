@@ -840,6 +840,37 @@
   ]
  },
  {
+  "conf": "u12b-4254-41774",
+  "name": "Pre-ECNL Boys Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 111888,
+    "team": "WNY Flash Pre-ECNL II B2014/15",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   },
+   {
+    "id": 132826,
+    "team": "Team Challenger FC South B2014/15 Gold",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     9,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4254-41782",
   "name": "Pre-ECNL Boys Ohio Valley",
   "ours": [
@@ -1095,8 +1126,8 @@
    136354,
    117722,
    117748,
-   131230,
-   136412
+   136412,
+   131230
   ]
  },
  {
@@ -1216,47 +1247,6 @@
   ]
  },
  {
-  "conf": "u12b-4364-40820",
-  "name": "Pre-ECNL Boys New England",
-  "ours": [
-   135079,
-   114510,
-   134890,
-   126417,
-   116959,
-   117146,
-   114653,
-   113925,
-   133939,
-   111640,
-   117012,
-   135309
-  ],
-  "ecnl": [
-   135079,
-   114510,
-   134890,
-   126417,
-   116959,
-   117146,
-   113925,
-   133939,
-   114653,
-   111640,
-   117012,
-   135309
-  ]
- },
- {
-  "conf": "u12b-4364-40820",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "adjusted",
-  "teams": {
-   "114653": -3,
-   "135309": 3
-  }
- },
- {
   "conf": "u12b-4365-41497",
   "name": "Pre-ECNL Boys Northeast - North",
   "ours": [
@@ -1351,25 +1341,6 @@
   ]
  },
  {
-  "conf": "u12b-4370-41048",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133213,
-    "team": "Legends FC (CA) PRE Black I",
-    "ours": [
-     7,
-     9
-    ],
-    "ecnl": [
-     6,
-     8
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4370-41046",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
@@ -1393,25 +1364,6 @@
   ]
  },
  {
-  "conf": "u12b-4370-41046",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133543,
-    "team": "Beach Futbol Club (CA) Pre-ECNL B2014/15 White I",
-    "ours": [
-     8,
-     13
-    ],
-    "ecnl": [
-     7,
-     12
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4370-41050",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
@@ -1432,40 +1384,9 @@
    133593,
    134447,
    133126,
-   114466,
    119664,
+   114466,
    133214
-  ]
- },
- {
-  "conf": "u12b-4370-41050",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 114466,
-    "team": "West Coast FC Pre-ECNL B2014/15 White II",
-    "ours": [
-     8,
-     4
-    ],
-    "ecnl": [
-     7,
-     4
-    ]
-   },
-   {
-    "id": 119664,
-    "team": "Rebels SC Pre-ECNL B2014/15 Blue II",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     3
-    ]
-   }
   ]
  },
  {
@@ -1666,37 +1587,6 @@
    133206,
    135930,
    132787
-  ]
- },
- {
-  "conf": "u12b-4387-41884",
-  "name": "Pre-ECNL Boys Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131889,
-    "team": "Colorado EDGE Pre-ECNL B2014/15 United",
-    "ours": [
-     4,
-     7
-    ],
-    "ecnl": [
-     3,
-     7
-    ]
-   },
-   {
-    "id": 132787,
-    "team": "Real Colorado Pre-ECNL Olympico B2014/15",
-    "ours": [
-     2,
-     3
-    ],
-    "ecnl": [
-     1,
-     0
-    ]
-   }
   ]
  },
  {
@@ -14715,110 +14605,36 @@
    44771
   ],
   "ecnl": [
-   116532,
    103537,
+   67935,
+   116532,
+   105052,
    106264,
-   114300,
    96271,
+   114300,
    136910,
    110987,
-   103329,
    135718,
-   44771,
-   67935,
-   105052
+   103329,
+   44771
   ]
  },
  {
   "conf": "u15g-4300-40775",
   "name": "ECNL RL Girls Golden State",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 116532,
-    "team": "San Juan SC",
-    "ours": [
-     12,
-     36
-    ],
-    "ecnl": [
-     13,
-     39
-    ]
-   },
-   {
-    "id": 103537,
-    "team": "MVLA",
-    "ours": [
-     13,
-     37
-    ],
-    "ecnl": [
-     14,
-     40
-    ]
-   },
-   {
-    "id": 106264,
-    "team": "Placer United",
-    "ours": [
-     13,
-     23
-    ],
-    "ecnl": [
-     14,
-     26
-    ]
-   },
-   {
-    "id": 114300,
-    "team": "Marin FC",
-    "ours": [
-     12,
-     21
-    ],
-    "ecnl": [
-     13,
-     24
-    ]
-   },
-   {
-    "id": 96271,
-    "team": "Bay Area Surf -",
-    "ours": [
-     13,
-     21
-    ],
-    "ecnl": [
-     14,
-     24
-    ]
-   },
-   {
-    "id": 136910,
-    "team": "Stanislaus Surf",
-    "ours": [
-     12,
-     14
-    ],
-    "ecnl": [
-     13,
-     17
-    ]
-   },
-   {
-    "id": 103329,
-    "team": "Force (CA)",
-    "ours": [
-     12,
-     5
-    ],
-    "ecnl": [
-     13,
-     8
-    ]
-   }
-  ]
+  "kind": "adjusted",
+  "teams": {
+   "103537": -37,
+   "116532": -36,
+   "105052": -24,
+   "106264": -23,
+   "96271": -21,
+   "114300": -21,
+   "136910": -14,
+   "110987": -13,
+   "135718": -7,
+   "103329": -5
+  }
  },
  {
   "conf": "u15g-4301-41618",
@@ -15709,55 +15525,6 @@
    "134659": 2,
    "82112": -1
   }
- },
- {
-  "conf": "u15g-4406-41820",
-  "name": "ECNL Girls Mid-Atlantic League Cup",
-  "ours": [
-   134238,
-   94863,
-   135362,
-   133822,
-   135518
-  ],
-  "ecnl": [
-   94863,
-   134238,
-   135362,
-   133822,
-   135518
-  ]
- },
- {
-  "conf": "u15g-4406-41820",
-  "name": "ECNL Girls Mid-Atlantic League Cup",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134238,
-    "team": "Arlington Soccer Association",
-    "ours": [
-     4,
-     9
-    ],
-    "ecnl": [
-     3,
-     6
-    ]
-   },
-   {
-    "id": 135362,
-    "team": "Fairfax Virginia Union",
-    "ours": [
-     4,
-     6
-    ],
-    "ecnl": [
-     3,
-     6
-    ]
-   }
-  ]
  },
  {
   "conf": "u15g-4407-41557",
