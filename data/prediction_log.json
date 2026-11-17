@@ -24922,7 +24922,9 @@
     0.223,
     0.569
    ],
-   "pick": "A"
+   "pick": "A",
+   "result": "A",
+   "score": "0-1"
   },
   "1092859": {
    "date": "2026-12-05",
@@ -131652,7 +131654,9 @@
     0.209,
     0.34
    ],
-   "pick": "H"
+   "pick": "H",
+   "result": "H",
+   "score": "4-1"
   },
   "1123954": {
    "date": "2026-11-15",
@@ -285501,7 +285505,9 @@
     0.208,
     0.445
    ],
-   "pick": "A"
+   "pick": "A",
+   "result": "H",
+   "score": "4-0"
   },
   "1127338": {
    "date": "2026-11-08",
@@ -340742,6 +340748,36 @@
     0.024
    ],
    "pick": "H"
+  },
+  "1152188": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2011/12",
+   "away": "Wilmington Hammerheads ECNL G2011/12",
+   "p": [
+    0.535,
+    0.213,
+    0.253
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1152189": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2011/12",
+   "away": "Arlington Soccer Association ECNL G2011/12",
+   "p": [
+    0.511,
+    0.234,
+    0.255
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "u15g-4406-41820": {
@@ -340757,6 +340793,36 @@
    "pick": "D",
    "result": "H",
    "score": "3-1"
+  },
+  "1152188": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2011/12",
+   "away": "Wilmington Hammerheads ECNL G2011/12",
+   "p": [
+    0.535,
+    0.213,
+    0.253
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "1152189": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2011/12",
+   "away": "Arlington Soccer Association ECNL G2011/12",
+   "p": [
+    0.511,
+    0.234,
+    0.255
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "u15g-4407-42874": {},
@@ -365546,6 +365612,36 @@
    "pick": "H",
    "result": "A",
    "score": "1-2"
+  },
+  "1152192": {
+   "date": "2026-12-12",
+   "home": "Arlington Soccer Association ECNL G2010/11",
+   "away": "NCFC Youth NC Courage ECNL G2010/11",
+   "p": [
+    0.26,
+    0.229,
+    0.511
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1152193": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2010/11",
+   "away": "Richmond United ECNL G2010/11",
+   "p": [
+    0.476,
+    0.252,
+    0.272
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
   }
  },
  "u16g-4406-41821": {
@@ -365561,6 +365657,36 @@
    "pick": "H",
    "result": "H",
    "score": "2-0"
+  },
+  "1152192": {
+   "date": "2026-12-12",
+   "home": "Arlington Soccer Association ECNL G2010/11",
+   "away": "NCFC Youth NC Courage ECNL G2010/11",
+   "p": [
+    0.26,
+    0.229,
+    0.511
+   ],
+   "pick": "A",
+   "s": [
+    1,
+    2
+   ]
+  },
+  "1152193": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2010/11",
+   "away": "Richmond United ECNL G2010/11",
+   "p": [
+    0.476,
+    0.252,
+    0.272
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
   }
  },
  "u16g-4407-42875": {},
@@ -389866,6 +389992,36 @@
    "pick": "H",
    "result": "H",
    "score": "5-1"
+  },
+  "1152190": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2009/10",
+   "away": "South Carolina Surf ECNL G2009/10",
+   "p": [
+    0.742,
+    0.141,
+    0.118
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1152191": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2009/10",
+   "away": "Fairfax Virginia Union ECNL G2009/10",
+   "p": [
+    0.64,
+    0.179,
+    0.18
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "u17g-4406-41822": {
@@ -389881,6 +390037,36 @@
    "pick": "H",
    "result": "A",
    "score": "2-4"
+  },
+  "1152190": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2009/10",
+   "away": "South Carolina Surf ECNL G2009/10",
+   "p": [
+    0.742,
+    0.141,
+    0.118
+   ],
+   "pick": "H",
+   "s": [
+    3,
+    1
+   ]
+  },
+  "1152191": {
+   "date": "2026-12-12",
+   "home": "Charlotte SA ECNL G2009/10",
+   "away": "Fairfax Virginia Union ECNL G2009/10",
+   "p": [
+    0.64,
+    0.179,
+    0.18
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "u17g-4407-42876": {
@@ -411277,6 +411463,36 @@
    "pick": "A",
    "result": "A",
    "score": "2-3"
+  },
+  "1152194": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2008/09",
+   "away": "Charlotte SA ECNL G2008/09",
+   "p": [
+    0.757,
+    0.158,
+    0.085
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1152195": {
+   "date": "2026-12-12",
+   "home": "NCFC Youth NC Courage ECNL G2008/09",
+   "away": "Richmond United ECNL G2008/09",
+   "p": [
+    0.414,
+    0.254,
+    0.332
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
   }
  },
  "u19g-4406-41823": {
@@ -411292,6 +411508,36 @@
    "pick": "H",
    "result": "H",
    "score": "12-0"
+  },
+  "1152194": {
+   "date": "2026-12-12",
+   "home": "VDA ECNL G2008/09",
+   "away": "Charlotte SA ECNL G2008/09",
+   "p": [
+    0.757,
+    0.158,
+    0.085
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    0
+   ]
+  },
+  "1152195": {
+   "date": "2026-12-12",
+   "home": "NCFC Youth NC Courage ECNL G2008/09",
+   "away": "Richmond United ECNL G2008/09",
+   "p": [
+    0.414,
+    0.254,
+    0.332
+   ],
+   "pick": "H",
+   "s": [
+    1,
+    0
+   ]
   }
  },
  "u19g-4425-41849": {
