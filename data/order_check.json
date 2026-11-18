@@ -961,9 +961,9 @@
    133225,
    131197,
    132713,
+   131664,
    131177,
-   133251,
-   131664
+   133251
   ]
  },
  {
@@ -1536,52 +1536,13 @@
    132512,
    134697,
    134199,
-   131914,
-   132954,
    132528,
+   132954,
+   131914,
    133383,
    133496,
    133434,
    133131
-  ]
- },
- {
-  "conf": "u12b-4383-41043",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "adjusted",
-  "teams": {
-   "134697": -3
-  }
- },
- {
-  "conf": "u12b-4383-41043",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131914,
-    "team": "Eugene Metro FC Pre-ECNL B2014/15 Prem 2",
-    "ours": [
-     8,
-     8
-    ],
-    "ecnl": [
-     7,
-     11
-    ]
-   },
-   {
-    "id": 132528,
-    "team": "Idaho Rush Pre-ECNL B2014/15 II Black",
-    "ours": [
-     9,
-     11
-    ],
-    "ecnl": [
-     8,
-     8
-    ]
-   }
   ]
  },
  {
@@ -1636,96 +1597,10 @@
    131889,
    132099,
    130970,
-   135739,
    133206,
+   135739,
    135930,
    132787
-  ]
- },
- {
-  "conf": "u12b-4387-41884",
-  "name": "Pre-ECNL Boys Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132787,
-    "team": "Real Colorado Pre-ECNL Olympico B2014/15",
-    "ours": [
-     3,
-     6
-    ],
-    "ecnl": [
-     2,
-     3
-    ]
-   },
-   {
-    "id": 135739,
-    "team": "Colorado Storm South Pre-ECNL B2014/15",
-    "ours": [
-     3,
-     2
-    ],
-    "ecnl": [
-     2,
-     2
-    ]
-   }
-  ]
- },
- {
-  "conf": "u12b-4387-40809",
-  "name": "Pre-ECNL Boys Colorado",
-  "ours": [
-   137560,
-   132782,
-   131888,
-   132784,
-   137570,
-   132098,
-   135929,
-   130966
-  ],
-  "ecnl": [
-   132782,
-   137560,
-   131888,
-   132784,
-   137570,
-   132098,
-   135929,
-   130966
-  ]
- },
- {
-  "conf": "u12b-4387-40809",
-  "name": "Pre-ECNL Boys Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 137560,
-    "team": "Colorado Storm Pre-ECNL B2014/15",
-    "ours": [
-     4,
-     10
-    ],
-    "ecnl": [
-     3,
-     7
-    ]
-   },
-   {
-    "id": 135929,
-    "team": "Colorado Rush Pre-ECNL B2014/15 Blue",
-    "ours": [
-     5,
-     3
-    ],
-    "ecnl": [
-     4,
-     3
-    ]
-   }
   ]
  },
  {
