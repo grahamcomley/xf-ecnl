@@ -9442,6 +9442,37 @@
   ]
  },
  {
+  "conf": "u19b-4276-40472",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 83080,
+    "team": "Germantown Legends",
+    "ours": [
+     16,
+     44
+    ],
+    "ecnl": [
+     15,
+     41
+    ]
+   },
+   {
+    "id": 135526,
+    "team": "Lobos Rush",
+    "ours": [
+     16,
+     11
+    ],
+    "ecnl": [
+     15,
+     11
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19b-4277-40466",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
