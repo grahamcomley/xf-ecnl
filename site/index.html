@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.59">
+<meta name="app-version" content="v1.60">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -694,7 +694,7 @@ function askSignIn(act, team) {
   store.set("pendAct", JSON.stringify({act, team: team || CUR, at: Date.now()}));
   $("#signwhy").textContent = act === "tab:predict" && PKON ? "Sign in to predict the season and play Pick'em." : PEND_WHY[act] || "Sign in to keep going.";
   $("#signsheet").hidden = false;
-  try { navigator.sendBeacon && navigator.sendBeacon("/api/log/anon?e=ask&a=" + encodeURIComponent(act)); } catch (e) {}
+  appLog("ask", act);   // which tap asked, with the visitor id (Admin › Usage › Sign-ups)
 }
 $("#signsheetclose").onclick = () => { $("#signsheet").hidden = true; store.set("pendAct", ""); };
 $("#signsheetgo").onclick = () => { $("#signsheet").hidden = true; signIn(); };
@@ -1033,6 +1033,12 @@ function usageHtml(u) {
     ${wh ? line("Opened in", wh) : ""}
     ${line("Load time", u.today.loads ? `typical ${sec(u.today.typical)} · slowest ${sec(u.today.slowest)}` : "-")}
     ${line("This week", `${u.week.follows} follow change${u.week.follows === 1 ? "" : "s"} · ${u.week.picks} Pick'em pick${u.week.picks === 1 ? "" : "s"}`)}
+    ${u.signups ? (S => `<div class="admh"><b>Sign-ups this week</b></div>
+    ${line("New phones", `${S.newPhones} · ${S.newApp} app · ${S.newPhones - S.newApp} web`)}
+    ${line("Asked to sign in", `${S.asked} phone${S.asked === 1 ? "" : "s"}`)}
+    ${line("Signed up", S.signedUp)}
+    ${line("Backed out of sign-in", S.backedOut)}
+    ${line("Top taps", S.taps.length ? S.taps.map(([k, v]) => `${esc(k)} ${v}`).join(" · ") : "-")}`)(u.signups) : ""}
     <p class="mut" style="font-size:12px;margin:8px 0 0">Prod numbers, fresh each time you open Admin</p>`;
 }
 async function drawAdmin(b) {

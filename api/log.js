@@ -66,7 +66,7 @@ export async function usageStats(env) {
   if (!env.LOGS) return null;
   const now = new Date(), pt = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
   const today = now.getTime() - (pt.getHours() * 3600 + pt.getMinutes() * 60 + pt.getSeconds()) * 1000 - now.getMilliseconds();
-  const start = today - 6 * 864e5, day = "CAST((at - ?1) / 86400000 AS INTEGER)", W = "site = 'live' AND at >= ?1";
+  const start = today - 6 * 864e5, day = "CAST((at - ?1) / 86400000 AS INTEGER)", W = "site = 'live' AND at >= ?1 AND json_valid(data)";
   const P = "json_extract(data, '$.p')", person = "coalesce(json_extract(data, '$.kind'), 'person') = 'person'";
   const all = (sql, ...b) => env.LOGS.prepare(sql).bind(start, ...b).all().then(r => r.results || []);
   const [vis, sig, opn, err, lines, wk] = await Promise.all([
@@ -75,7 +75,14 @@ export async function usageStats(env) {
     all(`SELECT ${day} d, count(*) n FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/config' AND ${person} GROUP BY d`),
     all(`SELECT ${day} d, count(*) n FROM events WHERE ${W} AND (evt = 'api.error' OR (evt = 'api' AND json_extract(data, '$.s') >= 500)) GROUP BY d`),
     all(`SELECT ${P} p FROM events WHERE ${W} AND at >= ?2 AND evt = 'api' AND (${P} LIKE '/api/log/app/open/%' OR ${P} LIKE '/api/log/app/ready/%') AND ${person}`, today),
-    all(`SELECT evt, count(*) n FROM events WHERE ${W} AND evt IN ('account.favs', 'picks.saved') GROUP BY evt`)]);
+    all(`SELECT evt, count(*) n FROM events WHERE ${W} AND evt IN ('account.favs', 'picks.saved', 'account.created') GROUP BY evt`)]);
+  // Sign-ups this week. New phones: first seen (any time in the logs) this week; "app" if any open was in the App Store app.
+  // Asked: phones the app asked to sign in (since v1.60, with the tap that asked). Backed out: app sign-in sheet cancelled.
+  const [np, asks, back] = await Promise.all([
+    all(`SELECT count(*) n, coalesce(sum(app), 0) app FROM (SELECT min(at) first, max(CASE WHEN ${P} LIKE '/api/log/app/open/%~20app' THEN 1 ELSE 0 END) app FROM events
+      WHERE site = 'live' AND evt = 'api' AND json_valid(data) AND json_extract(data, '$.vid') IS NOT NULL AND ${person} GROUP BY json_extract(data, '$.vid')) WHERE first >= ?1`),
+    all(`SELECT ${P} p, count(*) n, count(DISTINCT json_extract(data, '$.vid')) v FROM events WHERE ${W} AND evt = 'api' AND ${P} LIKE '/api/log/app/ask/%' AND ${person} GROUP BY p`),
+    all(`SELECT count(*) n FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/log/app/signin-back/cancelled'`)]);
   const days = [...Array(7)].map((_, i) => ({at: start + i * 864e5, signedIn: 0, visitors: 0, opens: 0, errors: 0}));
   const fill = (rows, f) => rows.forEach(r => { if (days[r.d]) days[r.d][f] = r.n; });
   fill(vis, "visitors"); fill(sig, "signedIn"); fill(opn, "opens"); fill(err, "errors");
@@ -89,8 +96,14 @@ export async function usageStats(env) {
   }
   ms.sort((a, b) => a - b);
   const n = e => (wk.find(r => r.evt === e) || {}).n || 0;
+  const NAMES = {"tab:games": "Games", "tab:predict": "Predict", "tab:league": "League", "tab:events": "Events", star: "Follow", bell: "Alerts", settings: "Settings", share: "Share"};
+  const taps = {};
+  for (const r of asks) { const a = dec(r.p).split("/").pop(); const k = NAMES[a] || a; taps[k] = (taps[k] || 0) + r.n; }
+  const askedPhones = await (asks.length ? all(`SELECT count(DISTINCT json_extract(data, '$.vid')) n FROM events WHERE ${W} AND evt = 'api' AND ${P} LIKE '/api/log/app/ask/%' AND ${person}`).then(r => r[0].n) : 0);
+  const signups = {newPhones: np[0] ? np[0].n : 0, newApp: np[0] ? np[0].app : 0, asked: askedPhones, signedUp: n("account.created"), backedOut: back[0] ? back[0].n : 0,
+    taps: Object.entries(taps).sort((a, b) => b[1] - a[1]).slice(0, 3)};
   return {days, today: {ver, where, typical: ms.length ? ms[Math.floor(ms.length / 2)] : null, slowest: ms.length ? ms[ms.length - 1] : null, loads: ms.length},
-    week: {follows: n("account.favs"), picks: n("picks.saved")}, at: Date.now()};
+    week: {follows: n("account.favs"), picks: n("picks.saved")}, signups, at: Date.now()};
 }
 // Once a day: refresh the whole mirror from KV and drop events older than 60 days.
 export async function dbDailySync(env) {
