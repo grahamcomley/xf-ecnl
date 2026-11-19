@@ -7692,6 +7692,37 @@
   ]
  },
  {
+  "conf": "u17b-4286-40537",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134156,
+    "team": "NTH NASA",
+    "ours": [
+     12,
+     26
+    ],
+    "ecnl": [
+     11,
+     23
+    ]
+   },
+   {
+    "id": 68799,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     13,
+     4
+    ],
+    "ecnl": [
+     12,
+     4
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17b-4287-41626",
   "name": "ECNL Boys Southwest",
   "ours": [
