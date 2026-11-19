@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.56">
+<meta name="app-version" content="v1.57">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -107,7 +107,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps{list-style:none;padding:0;margin:6px 0 4px;counter-reset:st}.steps li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
 .steps li::before{counter-increment:st;content:counter(st);flex:none;width:24px;height:24px;border-radius:50%;background:var(--card2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mut)}
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
-.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
+.btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.usl{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;white-space:nowrap}.usl>span:last-child{overflow:hidden;text-overflow:ellipsis}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 #a2hs,#anudge,#nudge,#nsheet,#tsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
 .inrow{display:flex;gap:10px;align-items:flex-start;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;text-align:left;padding:11px 12px;cursor:pointer}.inrow:first-child{border-top:0}.inrow .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:transparent}.inrow.unread .dot{background:var(--red)}.inrow>span{flex:1;min-width:0}.inrow b{display:block;font-size:14px}.inrow.unread b{font-weight:800}.inrow .ddsub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.inrow .when{flex:none;font-size:11px;color:var(--mut);margin-top:2px}
@@ -1013,13 +1013,35 @@ async function drawPrivacy(b) {
   if (pageIs("privacy")) refreshPage();
 }
 // Admin: shown only to the owner (the server checks too).
+// Admin › Usage: prod usage (today vs yesterday, last 7 days, today's versions and load times). Totals only.
+function usageHtml(u) {
+  const t = u.days[6], y = u.days[5], ver = document.querySelector('meta[name="app-version"]').content;
+  const tile = (v, k, yv) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div><div class="k" style="margin-top:2px">Yest. ${yv}</div></div>`;
+  const dl = (ms, i) => new Date(ms + 12 * 36e5).toLocaleDateString("en-US", {weekday: "short", day: "numeric", timeZone: "America/Los_Angeles"}).replace(/(\d+) (\w+)/, "$2 $1") + (i === 6 ? " (so far)" : "");
+  const line = (k, v) => `<div class="usl"><span class="mut">${k}</span><span>${v}</span></div>`;
+  const opens = Object.values(u.today.ver).reduce((a, b) => a + b, 0), cur = u.today.ver[ver] || 0;
+  const W = u.today.where, wh = [["app", "app"], ["web", "web"], ["home", "home"]].filter(([k]) => W[k]).map(([k, n]) => `${W[k]} ${n}`).join(" · ");
+  const sec = ms => ms == null ? "-" : ms < 10000 ? (ms / 1000).toFixed(1) + "s" : Math.round(ms / 1000) + "s";
+  return `<div class="admtiles">${tile(t.signedIn, "Signed in", y.signedIn)}${tile(t.visitors, "Visitors", y.visitors)}${tile(t.opens, "Opens", y.opens)}${tile(t.errors, "Errors", y.errors)}</div>
+    <div class="admh"><b>Last 7 days</b></div>
+    <table class="adm"><tr><th>Day</th><th class="n">Signed in</th><th class="n">Visitors</th><th class="n">Opens</th><th class="n">Errors</th></tr>
+    ${u.days.map((x, i) => [x, i]).reverse().map(([x, i]) => `<tr><td style="white-space:nowrap">${dl(x.at, i)}</td><td class="n">${x.signedIn}</td><td class="n">${x.visitors}</td><td class="n">${x.opens}</td><td class="n">${x.errors}</td></tr>`).join("")}</table>
+    <div class="admh"><b>Today</b></div>
+    ${line(`On current version (${esc(ver)})`, opens ? `${cur} of ${opens} opens` : "No app opens yet")}
+    ${wh ? line("Opened in", wh) : ""}
+    ${line("Load time", u.today.loads ? `typical ${sec(u.today.typical)} · slowest ${sec(u.today.slowest)}` : "-")}
+    ${line("This week", `${u.week.follows} follow change${u.week.follows === 1 ? "" : "s"} · ${u.week.picks} Pick'em pick${u.week.picks === 1 ? "" : "s"}`)}
+    <p class="mut" style="font-size:12px;margin:8px 0 0">Prod numbers, fresh each time you open Admin</p>`;
+}
 async function drawAdmin(b) {
   if (!(ME && ME.admin)) { b.innerHTML = "<div class='pgin'><p class='mut'>Not available.</p></div>"; return; }
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
+    const usageP = api("GET", "/api/admin/usage").catch(() => null);
     const [d, pkp, ak] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false}))]);
     const ck = await api("GET", "/api/admin/clerk").catch(() => ({saved: false}));
     const rv = await api("GET", "/api/admin/reviewer").catch(() => ({}));
+    const us = await usageP;
     const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
     const active = d.users.filter(u => u.seen > week).length, saved = d.users.reduce((n, u) => n + u.teams, 0);
@@ -1029,13 +1051,14 @@ async function drawAdmin(b) {
       <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
         <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
         <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
+      ${us ? fold("usage", "Usage", `${us.days[6].signedIn} ${us.days[6].signedIn === 1 ? "person" : "people"} today · ${us.days[6].errors} error${us.days[6].errors === 1 ? "" : "s"}`, usageHtml(us), true) : ""}
       ${d.alerts ? fold("alerts", "Alerts", `${d.alerts.people} ${d.alerts.people === 1 ? "person" : "people"} · ${d.alerts.week} sent this week`, `<div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
         <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
         <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
         <div class="stat"><div class="v">${d.alerts.lastWeek}</div><div class="k">Sent last week</div></div></div>
         <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
-        <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, true) : ""}
+        <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, false) : ""}
       ${fold("app", "App Store app", `${ak.saved ? "Apple push key saved" : "Apple push key needed"} · ${IS_APP ? "you're in the app" : "you're in the browser"}`, `
         <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). ${ak.chk ? (ak.chk.ok ? "Connection to Apple checked: working." : `Connection to Apple: not working yet (${esc(String(ak.chk.status))} ${esc(ak.chk.reason || "")}).`) : "Connection check runs within 5 minutes."} Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
           <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>

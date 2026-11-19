@@ -58,6 +58,40 @@ export function dbDevice(env, ctx, dev, d) {
   if (ctx && ctx.waitUntil) ctx.waitUntil(p);
   return p;
 }
+// Admin page "Usage" section: prod (live) usage for today and the last 7 days, Pacific days. Totals only,
+// no emails. Visitors = distinct devices that opened the site (people, not bots); signed in = distinct
+// accounts that called the API; opens = every time the site or app started (people, not bots);
+// errors = server errors. Version, where it was opened and load time come from the app's own log lines.
+export async function usageStats(env) {
+  if (!env.LOGS) return null;
+  const now = new Date(), pt = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+  const today = now.getTime() - (pt.getHours() * 3600 + pt.getMinutes() * 60 + pt.getSeconds()) * 1000 - now.getMilliseconds();
+  const start = today - 6 * 864e5, day = "CAST((at - ?1) / 86400000 AS INTEGER)", W = "site = 'live' AND at >= ?1";
+  const P = "json_extract(data, '$.p')", person = "coalesce(json_extract(data, '$.kind'), 'person') = 'person'";
+  const all = (sql, ...b) => env.LOGS.prepare(sql).bind(start, ...b).all().then(r => r.results || []);
+  const [vis, sig, opn, err, lines, wk] = await Promise.all([
+    all(`SELECT ${day} d, count(DISTINCT coalesce(json_extract(data, '$.vid'), json_extract(data, '$.ua'))) n FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/config' AND ${person} GROUP BY d`),
+    all(`SELECT ${day} d, count(DISTINCT uid) n FROM events WHERE ${W} AND evt = 'api' AND uid IS NOT NULL GROUP BY d`),
+    all(`SELECT ${day} d, count(*) n FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/config' AND ${person} GROUP BY d`),
+    all(`SELECT ${day} d, count(*) n FROM events WHERE ${W} AND (evt = 'api.error' OR (evt = 'api' AND json_extract(data, '$.s') >= 500)) GROUP BY d`),
+    all(`SELECT ${P} p FROM events WHERE ${W} AND at >= ?2 AND evt = 'api' AND (${P} LIKE '/api/log/app/open/%' OR ${P} LIKE '/api/log/app/ready/%') AND ${person}`, today),
+    all(`SELECT evt, count(*) n FROM events WHERE ${W} AND evt IN ('account.favs', 'picks.saved') GROUP BY evt`)]);
+  const days = [...Array(7)].map((_, i) => ({at: start + i * 864e5, signedIn: 0, visitors: 0, opens: 0, errors: 0}));
+  const fill = (rows, f) => rows.forEach(r => { if (days[r.d]) days[r.d][f] = r.n; });
+  fill(vis, "visitors"); fill(sig, "signedIn"); fill(opn, "opens"); fill(err, "errors");
+  // today's open lines look like /api/log/app/open/v1.56~20app; ready lines /api/log/app/ready/740ms~20v1.56
+  const dec = s => { try { return decodeURIComponent(s.replace(/~/g, "%")); } catch (e) { return s; } };
+  const ver = {}, where = {}, ms = [];
+  for (const {p} of lines) {
+    const t = dec(p).split("/").pop();
+    if (p.includes("/open/")) { const [v, w] = t.split(" "); ver[v] = (ver[v] || 0) + 1; where[w || "web"] = (where[w || "web"] || 0) + 1; }
+    else { const n = parseInt(t, 10); if (n > 0) ms.push(n); }
+  }
+  ms.sort((a, b) => a - b);
+  const n = e => (wk.find(r => r.evt === e) || {}).n || 0;
+  return {days, today: {ver, where, typical: ms.length ? ms[Math.floor(ms.length / 2)] : null, slowest: ms.length ? ms[ms.length - 1] : null, loads: ms.length},
+    week: {follows: n("account.favs"), picks: n("picks.saved")}, at: Date.now()};
+}
 // Once a day: refresh the whole mirror from KV and drop events older than 60 days.
 export async function dbDailySync(env) {
   if (!env.LOGS || !env.USERS) return null;
