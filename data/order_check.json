@@ -6799,65 +6799,6 @@
   ]
  },
  {
-  "conf": "u16b-4350-40662",
-  "name": "ECNL RL Boys Mid-America",
-  "ours": [
-   134792,
-   81752,
-   112533,
-   133338,
-   133762,
-   94941,
-   134012,
-   133895,
-   134647,
-   134108
-  ],
-  "ecnl": [
-   134792,
-   81752,
-   112533,
-   133338,
-   133762,
-   94941,
-   134012,
-   134647,
-   133895,
-   134108
-  ]
- },
- {
-  "conf": "u16b-4350-40662",
-  "name": "ECNL RL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134647,
-    "team": "FC Alliance TN",
-    "ours": [
-     14,
-     10
-    ],
-    "ecnl": [
-     13,
-     10
-    ]
-   },
-   {
-    "id": 134108,
-    "team": "Mississippi Surf",
-    "ours": [
-     15,
-     6
-    ],
-    "ecnl": [
-     14,
-     3
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4351-41154",
   "name": "ECNL RL Boys NorCal",
   "ours": [
@@ -7066,42 +7007,11 @@
    68840,
    131904,
    131808,
+   81339,
    79895,
    81343,
    129035,
-   81339,
    82201
-  ]
- },
- {
-  "conf": "u16b-4355-40722",
-  "name": "ECNL RL Boys Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 68840,
-    "team": "United Futbol Academy",
-    "ours": [
-     16,
-     31
-    ],
-    "ecnl": [
-     15,
-     28
-    ]
-   },
-   {
-    "id": 129035,
-    "team": "South Carolina Surf",
-    "ours": [
-     14,
-     10
-    ],
-    "ecnl": [
-     13,
-     10
-    ]
-   }
   ]
  },
  {
@@ -20494,6 +20404,37 @@
    131878,
    57570,
    57582
+  ]
+ },
+ {
+  "conf": "u19g-4314-41414",
+  "name": "ECNL RL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 57570,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     13,
+     32
+    ],
+    "ecnl": [
+     12,
+     29
+    ]
+   },
+   {
+    "id": 131878,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     12,
+     2
+    ],
+    "ecnl": [
+     11,
+     2
+    ]
+   }
   ]
  },
  {
