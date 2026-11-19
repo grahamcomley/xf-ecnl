@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.57">
+<meta name="app-version" content="v1.58">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -424,6 +424,9 @@ const TABS = [["team", "trophy", "Standings"], ["games", "calendar", "Games"], [
 const AWAY_RESET = 15 * 60000;
 const awayLong = () => { try { const h = +localStorage.getItem("hiddenAt") || 0; return !h || Date.now() - h > AWAY_RESET; } catch (e) { return true; } };
 let TAB = (() => { try { if (awayLong()) return "team"; const t = localStorage.getItem("tab") || "team"; return t === "league" ? "games" : t; } catch (e) { return "team"; } })();
+// WAITED: the welcome page or a sign-in screen showed before the first team, so the time to that team
+// includes the person's own time there; it's logged as "ready-signin", not as load time.
+let WAITED = false;
 let FOCUS_AT = 0, SHOWN_AT = document.visibilityState === "visible" ? 0 : null;
 const markHidden = () => { try { localStorage.setItem("hiddenAt", String(Date.now())); } catch (e) {} };
 addEventListener("pagehide", markHidden);
@@ -687,6 +690,7 @@ function applyGate() {
 const PEND_WHY = {star: "Sign in to save this team.", share: "Sign in to share this team.", settings: "Sign in to change your settings.", bell: "Sign in to see your alerts.",
   "tab:games": "Sign in to see games and results.", "tab:league": "Sign in to see every game in the league.", "tab:predict": "Sign in to predict how the season finishes."};
 function askSignIn(act, team) {
+  WAITED = true;
   store.set("pendAct", JSON.stringify({act, team: team || CUR, at: Date.now()}));
   $("#signwhy").textContent = act === "tab:predict" && PKON ? "Sign in to predict the season and play Pick'em." : PEND_WHY[act] || "Sign in to keep going.";
   $("#signsheet").hidden = false;
@@ -787,6 +791,7 @@ function watchSignIn() {
   SIGNIN_T = setInterval(() => { if (window.Clerk.user || ++n > 300) { clearInterval(SIGNIN_T); onAuth(); } }, 1000);
 }
 function signIn() {
+  WAITED = true;
   if (!window.Clerk) return;
   if (IS_APP && SA() && !signIn.web) { appSignIn().then(ok => { if (!ok) { signIn.web = true; signIn(); } }); return; }
   document.querySelectorAll("[data-oauth]").forEach(b => b.disabled = false);
@@ -1013,16 +1018,16 @@ async function drawPrivacy(b) {
   if (pageIs("privacy")) refreshPage();
 }
 // Admin: shown only to the owner (the server checks too).
-// Admin › Usage: prod usage (today vs yesterday, last 7 days, today's versions and load times). Totals only.
+// Admin › Usage: prod usage (today, last 7 days, today's versions and load times). Totals only.
 function usageHtml(u) {
-  const t = u.days[6], y = u.days[5], ver = document.querySelector('meta[name="app-version"]').content;
-  const tile = (v, k, yv) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div><div class="k" style="margin-top:2px">Yest. ${yv}</div></div>`;
+  const t = u.days[6], ver = document.querySelector('meta[name="app-version"]').content;
+  const tile = (v, k) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`;
   const dl = (ms, i) => new Date(ms + 12 * 36e5).toLocaleDateString("en-US", {weekday: "short", day: "numeric", timeZone: "America/Los_Angeles"}).replace(/(\d+) (\w+)/, "$2 $1") + (i === 6 ? " (so far)" : "");
   const line = (k, v) => `<div class="usl"><span class="mut">${k}</span><span>${v}</span></div>`;
   const opens = Object.values(u.today.ver).reduce((a, b) => a + b, 0), cur = u.today.ver[ver] || 0;
   const W = u.today.where, wh = [["app", "app"], ["web", "web"], ["home", "home"]].filter(([k]) => W[k]).map(([k, n]) => `${W[k]} ${n}`).join(" · ");
   const sec = ms => ms == null ? "-" : ms < 10000 ? (ms / 1000).toFixed(1) + "s" : Math.round(ms / 1000) + "s";
-  return `<div class="admtiles">${tile(t.signedIn, "Signed in", y.signedIn)}${tile(t.visitors, "Visitors", y.visitors)}${tile(t.opens, "Opens", y.opens)}${tile(t.errors, "Errors", y.errors)}</div>
+  return `<div class="admtiles">${tile(t.signedIn, "Signed in")}${tile(t.visitors, "Visitors")}${tile(t.opens, "Opens")}${tile(t.errors, "Errors")}</div>
     <div class="admh"><b>Last 7 days</b></div>
     <table class="adm"><tr><th>Day</th><th class="n">Signed in</th><th class="n">Visitors</th><th class="n">Opens</th><th class="n">Errors</th></tr>
     ${u.days.map((x, i) => [x, i]).reverse().map(([x, i]) => `<tr><td style="white-space:nowrap">${dl(x.at, i)}</td><td class="n">${x.signedIn}</td><td class="n">${x.visitors}</td><td class="n">${x.opens}</td><td class="n">${x.errors}</td></tr>`).join("")}</table>
@@ -1547,6 +1552,7 @@ function toggleFav(k) {
 let FSTATE = {};
 // First screen with no team yet: what Sideline is, search, browse, and what a free account adds.
 function drawLanding() {
+  WAITED = true;
   CUR = null; closeFinder(); setTitle(null);
   $("#teamhead").innerHTML = ""; $("#tabbar").hidden = true;
   $("#app").innerHTML = `<div class="land">
@@ -1704,7 +1710,7 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
-  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog("ready", `${Math.round(performance.now() - (SHOWN_AT || 0))}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
+  if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog(WAITED ? "ready-signin" : "ready", `${Math.round(performance.now() - (SHOWN_AT || 0))}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
   $("#scroller").scrollTop = 0;
