@@ -11104,6 +11104,37 @@
   ]
  },
  {
+  "conf": "u12g-4373-41056",
+  "name": "Pre-ECNL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135149,
+    "team": "SLSG Navy Academy II Pre-ECNL G2014/15",
+    "ours": [
+     8,
+     22
+    ],
+    "ecnl": [
+     7,
+     19
+    ]
+   },
+   {
+    "id": 114518,
+    "team": "AFA Fillies Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     3
+    ],
+    "ecnl": [
+     8,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12g-4374-41528",
   "name": "Pre-ECNL Girls Lake Michigan",
   "ours": [
