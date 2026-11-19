@@ -7,7 +7,7 @@
 // Sign-in is Clerk (clerk.sidelinestandings.com). Session tokens are checked here without a network
 // call: RS256 signature against Clerk's public key (CLERK_JWT_KEY), then the time claims and the origin.
 
-import {makeLog, dbPerson, dbDailySync} from "./log.js";
+import {makeLog, dbPerson, dbDailySync, usageStats} from "./log.js";
 import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner} from "./alerts.js";
@@ -217,6 +217,12 @@ async function handle(req, env, url, p, L, who0) {
       await env.USERS.put("cfg:gate", body.gate ? "on" : "off");
       L.keep("admin.gate", {uid: c.sub, gate: !!body.gate});
       return json({ok: true, gate: !!body.gate});
+    }
+    // GET /api/admin/usage: owner only. Prod usage totals for the Admin page (no emails).
+    if (p === "/api/admin/usage" && req.method === "GET") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      const u = await usageStats(env);
+      return u ? json(u) : json({error: "logs not set up"}, 503);
     }
     // Pick'em players: list, rename, hide (owner only).
     if (p === "/api/admin/pickem" && req.method === "GET") {
