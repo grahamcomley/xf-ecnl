@@ -1085,6 +1085,25 @@
   ]
  },
  {
+  "conf": "u12b-4331-42117",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132709,
+    "team": "San Antonio FC Pre-ECNL STXCL B2014/15",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4331-42119",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -1102,6 +1121,25 @@
    131664,
    131177,
    133251
+  ]
+ },
+ {
+  "conf": "u12b-4331-42119",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133251,
+    "team": "LTFC Pre-ECNL STXCL B2014/15",
+    "ours": [
+     9,
+     22
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   }
   ]
  },
  {
