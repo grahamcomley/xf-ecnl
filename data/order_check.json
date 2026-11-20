@@ -6933,15 +6933,6 @@
   ]
  },
  {
-  "conf": "u16b-4353-40716",
-  "name": "ECNL RL Boys Northwest",
-  "kind": "adjusted",
-  "teams": {
-   "81732": -2,
-   "135850": 1
-  }
- },
- {
   "conf": "u16b-4354-41631",
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
