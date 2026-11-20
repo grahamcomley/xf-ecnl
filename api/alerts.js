@@ -421,11 +421,13 @@ export function timeLeft(ms) {
 }
 
 // Game-day reminders: "morning of" (8 AM, or when quiet hours end) or 2 hours before kickoff.
-// Game times are the field's local time; we read them in the phone's time zone.
+// Game times are the field's local time: kickoff is worked out in the field's time zone (g[9], from its ZIP;
+// the phone's own zone only when the field isn't known yet). "Morning of" is 8 AM on the phone's clock.
+// A reminder that quiet hours held until less than 15 minutes before kickoff is dropped, not sent late.
 async function reminders(env, st, up, now) {
   if (!up.length) return 0;
   const pt = localParts("America/Los_Angeles", now);
-  const soon = up.some(g => { if (!g[7] || g[7] === "00:00") return false; const k = zonedMs(g[6], g[7], "America/Los_Angeles"); return k > now && k - now < 4 * HOUR; });
+  const soon = up.some(g => { if (!g[7] || g[7] === "00:00") return false; const k = zonedMs(g[6], g[7], g[9] || "America/Los_Angeles"); return k > now && k - now < 4 * HOUR; });
   const morning = pt.hour >= 5 && pt.hour < 13 && up.some(g => g[6] === pt.date);
   if (!soon && !morning) return 0;   // nothing could be due: skip listing devices
   const byTeam = new Map();
@@ -441,9 +443,11 @@ async function reminders(env, st, up, now) {
       if (t.rem === "off" || !byTeam.has(t.k)) continue;
       for (const g of byTeam.get(t.k)) {
         const key = id + "|" + g[0]; if (st.rem[key]) continue;
-        const timed = g[7] && g[7] !== "00:00", kick = timed ? zonedMs(g[6], g[7], tz) : zonedMs(g[6], "20:00", tz);
+        const ftz = g[9] || tz, timed = g[7] && g[7] !== "00:00", kick = timed ? zonedMs(g[6], g[7], ftz) : zonedMs(g[6], "20:00", ftz);
         const target = t.rem === "2h" && timed ? kick - 2 * HOUR : zonedMs(g[6], "08:00", tz);
-        if (now < target || now >= kick || quiet(d, now)) continue;
+        if (now < target) continue;
+        if (now >= kick - (timed ? 15 * 60000 : 0)) { st.rem[key] = now; continue; }   // too late to be useful
+        if (quiet(d, now)) continue;
         const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
         const title = (t.rem === "2h" && timed ? timeLeft(kick - now) + ": " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
         const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}&g=${g[0]}&v=games`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
