@@ -8685,37 +8685,6 @@
   ]
  },
  {
-  "conf": "u17b-4356-40747",
-  "name": "ECNL RL Boys Texas",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 57746,
-    "team": "Albion Hurricanes FC",
-    "ours": [
-     9,
-     7
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   },
-   {
-    "id": 131643,
-    "team": "San Antonio City SC",
-    "ours": [
-     10,
-     0
-    ],
-    "ecnl": [
-     9,
-     0
-    ]
-   }
-  ]
- },
- {
   "conf": "u17b-4357-41698",
   "name": "ECNL RL Boys Virginia",
   "ours": [
@@ -8901,45 +8870,14 @@
   "ecnl": [
    133019,
    114125,
-   133290,
    113586,
    95207,
+   133290,
    133291,
    133292,
    112098,
    133615,
    131204
-  ]
- },
- {
-  "conf": "u19b-4261-41131",
-  "name": "ECNL RL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133290,
-    "team": "Lonestar ATX NTH ECNL RL STXCL B2008/09 Gold A",
-    "ours": [
-     8,
-     9
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   },
-   {
-    "id": 113586,
-    "team": "NB AJAX ECNL RL STXCL B2008/09",
-    "ours": [
-     9,
-     13
-    ],
-    "ecnl": [
-     8,
-     10
-    ]
-   }
   ]
  },
  {
@@ -10080,9 +10018,9 @@
    135280,
    136488,
    135614,
+   132518,
    131965,
    94807,
-   132518,
    131705,
    133694,
    131020,
@@ -10095,6 +10033,15 @@
    132400,
    133209
   ]
+ },
+ {
+  "conf": "u19b-4354-41633",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "adjusted",
+  "teams": {
+   "132518": 3,
+   "133688": -3
+  }
  },
  {
   "conf": "u19b-4355-40724",
