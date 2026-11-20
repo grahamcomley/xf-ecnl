@@ -2273,44 +2273,13 @@
    111796,
    133731,
    136445,
-   117925,
    133339,
+   117925,
    131966,
    137868,
    134086,
    134451,
    134228
-  ]
- },
- {
-  "conf": "u13b-4341-42027",
-  "name": "ECNL RL Boys Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 117925,
-    "team": "Eastern FC",
-    "ours": [
-     11,
-     12
-    ],
-    "ecnl": [
-     10,
-     12
-    ]
-   },
-   {
-    "id": 133339,
-    "team": "WNY Flash Binghamton",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     9
-    ]
-   }
   ]
  },
  {
@@ -2739,9 +2708,9 @@
   "ecnl": [
    134336,
    129648,
-   132248,
    131353,
    129416,
+   132248,
    131352,
    111246,
    131251,
@@ -2753,37 +2722,6 @@
    131483,
    69770,
    133273
-  ]
- },
- {
-  "conf": "u13b-4356-40743",
-  "name": "ECNL RL Boys Texas",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132248,
-    "team": "FC Dallas Youth",
-    "ours": [
-     12,
-     22
-    ],
-    "ecnl": [
-     11,
-     22
-    ]
-   },
-   {
-    "id": 129416,
-    "team": "CHALLENGE UNITED",
-    "ours": [
-     8,
-     15
-    ],
-    "ecnl": [
-     7,
-     12
-    ]
-   }
   ]
  },
  {
@@ -11595,37 +11533,6 @@
   ]
  },
  {
-  "conf": "u13g-4298-40755",
-  "name": "ECNL RL Girls Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133430,
-    "team": "Oregon Premier FC",
-    "ours": [
-     10,
-     28
-    ],
-    "ecnl": [
-     9,
-     27
-    ]
-   },
-   {
-    "id": 123107,
-    "team": "Eugene Metro FC",
-    "ours": [
-     11,
-     12
-    ],
-    "ecnl": [
-     10,
-     11
-    ]
-   }
-  ]
- },
- {
   "conf": "u13g-4299-40767",
   "name": "ECNL RL Girls Frontier",
   "ours": [
@@ -11678,16 +11585,6 @@
    95941,
    135713
   ]
- },
- {
-  "conf": "u13g-4300-40773",
-  "name": "ECNL RL Girls Golden State",
-  "kind": "adjusted",
-  "teams": {
-   "133205": -2,
-   "131246": -3,
-   "135938": 4
-  }
  },
  {
   "conf": "u13g-4301-41610",
