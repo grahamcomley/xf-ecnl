@@ -971,25 +971,6 @@
   ]
  },
  {
-  "conf": "u12b-4331-42117",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132709,
-    "team": "San Antonio FC Pre-ECNL STXCL B2014/15",
-    "ours": [
-     9,
-     12
-    ],
-    "ecnl": [
-     8,
-     12
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4331-42119",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -1007,25 +988,6 @@
    131664,
    131177,
    133251
-  ]
- },
- {
-  "conf": "u12b-4331-42119",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133251,
-    "team": "LTFC Pre-ECNL STXCL B2014/15",
-    "ours": [
-     9,
-     22
-    ],
-    "ecnl": [
-     8,
-     19
-    ]
-   }
   ]
  },
  {
@@ -1273,70 +1235,15 @@
    114508,
    118001,
    117145,
-   135308,
    116958,
+   135308,
    114509,
-   117011,
+   134889,
    113924,
    114652,
    134846,
    111638,
-   134889
-  ]
- },
- {
-  "conf": "u12b-4364-40818",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134846,
-    "team": "East Meadow Soccer Club Pre-ECNL B2014/15",
-    "ours": [
-     9,
-     18
-    ],
-    "ecnl": [
-     8,
-     15
-    ]
-   },
-   {
-    "id": 135308,
-    "team": "Oakwood Soccer Club Pre Blue",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     13
-    ]
-   },
-   {
-    "id": 116958,
-    "team": "Scorpions SC Pre-ECNL B2014/15",
-    "ours": [
-     9,
-     14
-    ],
-    "ecnl": [
-     8,
-     11
-    ]
-   },
-   {
-    "id": 134889,
-    "team": "Select Pre-ECNL B2014/15 Blue",
-    "ours": [
-     10,
-     9
-    ],
-    "ecnl": [
-     9,
-     9
-    ]
-   }
+   117011
   ]
  },
  {
@@ -1711,44 +1618,13 @@
   ],
   "ecnl": [
    131418,
-   131889,
    132099,
    130970,
-   133206,
+   131889,
    135739,
+   133206,
    135930,
    132787
-  ]
- },
- {
-  "conf": "u12b-4387-41884",
-  "name": "Pre-ECNL Boys Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131889,
-    "team": "Colorado EDGE Pre-ECNL B2014/15 United",
-    "ours": [
-     5,
-     7
-    ],
-    "ecnl": [
-     4,
-     7
-    ]
-   },
-   {
-    "id": 135739,
-    "team": "Colorado Storm South Pre-ECNL B2014/15",
-    "ours": [
-     4,
-     5
-    ],
-    "ecnl": [
-     3,
-     2
-    ]
-   }
   ]
  },
  {
@@ -5739,9 +5615,9 @@
    55701,
    94448,
    94654,
-   133271,
    95306,
    91125,
+   133271,
    92540,
    129728,
    81910,
@@ -5750,37 +5626,6 @@
    134333,
    131628,
    131183
-  ]
- },
- {
-  "conf": "u15b-4356-40745",
-  "name": "ECNL RL Boys Texas",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 94513,
-    "team": "DKSC",
-    "ours": [
-     9,
-     23
-    ],
-    "ecnl": [
-     8,
-     20
-    ]
-   },
-   {
-    "id": 133271,
-    "team": "Lonestar ATX White",
-    "ours": [
-     10,
-     16
-    ],
-    "ecnl": [
-     9,
-     16
-    ]
-   }
   ]
  },
  {
@@ -9998,10 +9843,10 @@
    135280,
    136488,
    135614,
+   132518,
    131965,
    134584,
    94807,
-   132518,
    132400,
    133209,
    131705,
@@ -10033,15 +9878,6 @@
    132400,
    133209
   ]
- },
- {
-  "conf": "u19b-4354-41633",
-  "name": "ECNL RL Boys Southern Cal",
-  "kind": "adjusted",
-  "teams": {
-   "132518": 3,
-   "133688": -3
-  }
  },
  {
   "conf": "u19b-4355-40724",
