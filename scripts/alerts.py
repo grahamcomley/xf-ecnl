@@ -7,6 +7,7 @@ few minutes and sends the notifications, so this script never contacts anyone.
 
 Also written to alerts.json, for A2 alerts:
   "up":  league/event games today and tomorrow (Pacific) with no score yet, for game-day reminders
+         [id, conf, home key, away key, home, away, date, time (field's local time), venue, field's time zone or ""]
          [game id, conf file, home key, away key, home name, away name, date, time, venue]
   "wk":  last weekend's results (Fri-Sun) per team, for the Sunday wrap-up
          {team key: [place, teams in conf, points, latest result's run id, [[opponent, us, them], ...]]}
@@ -217,7 +218,7 @@ def main():
                 seen_up.add(g["id"])
                 up.append([str(g["id"]), c2, f"{pk}-{g['home_id']}", f"{pk}-{g['away_id']}",
                            tidy(names.get(g["home_id"]) or g.get("home")), tidy(names.get(g["away_id"]) or g.get("away")),
-                           g["date"], g.get("time") or "", (g.get("venue") or "")[:80]])
+                           g["date"], g.get("time") or "", (g.get("venue") or "")[:80], g.get("tz") or ""])
 
     # last weekend's results per team (Friday-Sunday, Pacific), for the Sunday wrap-up
     wd = pt_today.weekday()   # Mon=0 .. Sun=6

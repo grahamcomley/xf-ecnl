@@ -104,6 +104,31 @@ def to_int(v):
         return None
 
 
+# The field's time zone from its ZIP code (first 3 digits), so game-day reminders work out kickoff in the
+# field's local time, not the phone's. US only; None when the game has no field yet. Approximate at state
+# borders that split time zones; good enough for "2 hours before".
+_ZIP3_TZ = [  # (first, last, zone); anything not listed is Eastern
+    (324, 325, "America/Chicago"), (350, 372, "America/Chicago"), (380, 397, "America/Chicago"),
+    (420, 427, "America/Chicago"), (463, 464, "America/Chicago"), (476, 477, "America/Chicago"),
+    (500, 589, "America/Chicago"), (577, 577, "America/Denver"), (590, 599, "America/Denver"),
+    (600, 689, "America/Chicago"), (690, 693, "America/Denver"), (700, 797, "America/Chicago"),
+    (798, 799, "America/Denver"), (800, 849, "America/Denver"), (835, 835, "America/Los_Angeles"),
+    (838, 838, "America/Los_Angeles"), (850, 865, "America/Phoenix"), (870, 885, "America/Denver"),
+    (889, 961, "America/Los_Angeles"), (967, 968, "Pacific/Honolulu"), (969, 969, "Pacific/Guam"),
+    (970, 994, "America/Los_Angeles"), (995, 999, "America/Anchorage")]
+
+
+def zip_tz(z):
+    z = str(z or "").strip()[:3]
+    if len(z) != 3 or not z.isdigit():
+        return None
+    n, tz = int(z), "America/New_York"
+    for lo, hi, zone in _ZIP3_TZ:   # later, narrower ranges win
+        if lo <= n <= hi:
+            tz = zone
+    return tz
+
+
 def normalize(raw, conf_key, neutral, weight=1.0, source="current"):
     out = []
     for g in raw or []:
@@ -126,6 +151,7 @@ def normalize(raw, conf_key, neutral, weight=1.0, source="current"):
             "venue": " · ".join(x for x in (g.get("complex"), g.get("venue")) if x),
             "status": status.strip(),
             "bad": bool(BAD_STATUS.search(status)),
+            "tz": zip_tz(g.get("zip")),
             "conf": conf_key, "neutral": neutral, "weight_mult": weight, "source": source,
         })
     return out
