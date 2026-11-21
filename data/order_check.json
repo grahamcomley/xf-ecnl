@@ -183,6 +183,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133745,
+    "team": "HTX NW Pre-ECNL STXCL B2015/16",
+    "ours": [
+     10,
+     20
+    ],
+    "ecnl": [
+     9,
+     20
+    ]
+   },
+   {
     "id": 87775,
     "team": "AHFC East Pre-ECNL STXCL B2015/16",
     "ours": [
@@ -262,6 +274,18 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 131325,
+    "team": "RISE SC Pre-ECNL STXCL B2015/16 White",
+    "ours": [
+     9,
+     13
+    ],
+    "ecnl": [
+     8,
+     10
+    ]
+   },
    {
     "id": 118099,
     "team": "AHFC NW Pre-ECNL STXCL B2015/16",
@@ -15424,8 +15448,8 @@
    57703,
    52300,
    57697,
-   47518,
    131902,
+   47518,
    131806,
    131459,
    129033,
@@ -15443,6 +15467,37 @@
    57710,
    52300,
    129033
+  ]
+ },
+ {
+  "conf": "u19b-4355-40724",
+  "name": "ECNL RL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 57697,
+    "team": "Atlanta Fire United",
+    "ours": [
+     17,
+     23
+    ],
+    "ecnl": [
+     16,
+     23
+    ]
+   },
+   {
+    "id": 131902,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     17,
+     23
+    ],
+    "ecnl": [
+     16,
+     20
+    ]
+   }
   ]
  },
  {
@@ -19864,8 +19919,72 @@
  {
   "conf": "u14g-4260-41143",
   "name": "ECNL RL Girls STXCL",
+  "ours": [
+   59646,
+   80697,
+   75524,
+   114129,
+   133255,
+   80650,
+   133621,
+   80293,
+   129368,
+   131208,
+   68555,
+   87636,
+   128351,
+   132758,
+   80651,
+   132745
+  ],
+  "ecnl": [
+   59646,
+   80697,
+   75524,
+   114129,
+   133255,
+   80650,
+   133621,
+   80293,
+   87636,
+   129368,
+   131208,
+   68555,
+   128351,
+   132758,
+   80651,
+   132745
+  ]
+ },
+ {
+  "conf": "u14g-4260-41143",
+  "name": "ECNL RL Girls STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 75524,
+    "team": "AHFC WEST ECNL RL STXCL G2012/13",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 87636,
+    "team": "Sting CC ECNL RL STXCL G2012/13 Martinez",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
+    ]
+   },
    {
     "id": 80651,
     "team": "AHFC CENTRAL ECNL RL STXCL G2012/13 II",
@@ -31939,12 +32058,12 @@
    133467,
    47038,
    60137,
-   133007,
+   47010,
    45768,
    46987,
    46997,
    47003,
-   47010,
+   133007,
    108207,
    134643,
    4298
@@ -31994,6 +32113,18 @@
     ]
    },
    {
+    "id": 47010,
+    "team": "Ohio Elite SA",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
     "id": 60137,
     "team": "Ohio Premier",
     "ours": [
@@ -32008,6 +32139,18 @@
    {
     "id": 4298,
     "team": "Pittsburgh Riverhounds",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 133007,
+    "team": "Racing Louisville Academy",
     "ours": [
      1,
      0
@@ -33493,9 +33636,9 @@
   "conf": "u19g-4315-41752",
   "name": "ECNL RL Girls Southern Cal",
   "ours": [
-   134176,
    133708,
    97469,
+   134176,
    133725,
    133585,
    129891,
@@ -33528,8 +33671,32 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134176,
+    "team": "Sporting California USA ECNL RL S.Cal G2008/09",
+    "ours": [
+     5,
+     12
+    ],
+    "ecnl": [
+     4,
+     12
+    ]
+   },
+   {
     "id": 133708,
     "team": "Legends FC (CA) ECNL RL S. Cal G2008/09",
+    "ours": [
+     7,
+     19
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   },
+   {
+    "id": 97469,
+    "team": "Rebels SC ECNL RL SoCal G2008/09",
     "ours": [
      7,
      19
