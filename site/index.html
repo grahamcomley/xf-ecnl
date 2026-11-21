@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.62">
+<meta name="app-version" content="v1.63">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -75,7 +75,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tpill.tmp .tpx .ic{width:13px;height:13px;color:var(--mut)}
 .tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
 .tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
-#teamhead{position:relative;z-index:2;background:var(--card)}
+#teamhead{position:relative;z-index:2;background:var(--card);padding-bottom:8px;border-bottom:1px solid var(--line2);box-shadow:0 6px 10px -4px rgba(0,0,0,.6)}
 #tpanel{position:absolute;left:0;right:0;top:0;z-index:3}
 .tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
 .tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
@@ -248,13 +248,13 @@ h3{font-size:14px;margin:10px 0 6px}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 47px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .gtop{grid-column:1/-1;line-height:1;margin-bottom:-2px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
-.pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--red);border-color:var(--red);color:#fff;box-shadow:none}
+.pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
 .tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
 .grow.ours+.grow.ours,[data-tk]+[data-tk]{margin-top:6px}
 .evgo{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:12px 4px 4px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}.evgo .ic{transform:rotate(-90deg);width:18px;height:18px;color:var(--mut);flex:none}
 .nogames{margin-top:10px;font-size:13px;color:var(--mut)}
-body.allmine #tstrip .tpill:not(.tfollow){background:var(--ink);color:#0b0d12;border-color:var(--ink)}
+body.allmine #tstrip .tpill:not(.tfollow){background:var(--me);color:#fff;border-color:var(--red)}
 .evtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:2px 5px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
