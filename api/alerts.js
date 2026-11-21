@@ -235,6 +235,19 @@ function localParts(tz, ms) {
   const g = t => p.find(x => x.type === t).value;
   return {day: g("weekday"), date: `${g("year")}-${g("month")}-${g("day")}`, hour: +g("hour") % 24};
 }
+// "10:00 AM MST (9:00 AM PST)" when the phone is in another time zone than the field; just "10:00 AM" otherwise
+function whenText(g, ftz, tz, kick) {
+  const t = time12(g[7]);
+  if (!g[9] || !tz || ftz === tz || !g[7] || g[7] === "00:00") return t;
+  try {
+    const ab = z => { let a = new Intl.DateTimeFormat("en-US", {timeZone: z, timeZoneName: "short"}).formatToParts(kick).find(x => x.type === "timeZoneName").value;
+      if (/^(GMT|UTC)/.test(a)) { const b = new Intl.DateTimeFormat("en-GB", {timeZone: z, timeZoneName: "short"}).formatToParts(kick).find(x => x.type === "timeZoneName").value; if (b && !/^(GMT|UTC)[+-]/.test(b)) a = b; }
+      return a; };
+    const mine = new Intl.DateTimeFormat("en-US", {timeZone: tz, hour: "numeric", minute: "2-digit"}).format(kick);
+    if (mine.replace(/\u202f/g, " ") === t) return t;
+    return `${t} ${ab(ftz)} (${mine.replace(/\u202f/g, " ")} ${ab(tz)})`;
+  } catch (e) { return t; }
+}
 const time12 = t => { if (!t || t === "00:00") return "Time TBD"; const [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
 const ordn = n => n + (["th", "st", "nd", "rd"][(n % 100 - 20) % 10] || ["th", "st", "nd", "rd"][n % 100] || "th");
 export function quiet(d, ms) {
@@ -450,7 +463,7 @@ async function reminders(env, st, up, now) {
         if (quiet(d, now)) continue;
         const home = g[2] === t.k, us = home ? g[4] : g[5], them = home ? g[5] : g[4];
         const title = (t.rem === "2h" && timed ? timeLeft(kick - now) + ": " : "Game day: ") + `${us} ${home ? "vs" : "@"} ${them}`;
-        const s = await send(env, d.sub, {t: title, b: [time12(g[7]), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}&g=${g[0]}&v=games`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
+        const s = await send(env, d.sub, {t: title, b: [whenText(g, ftz, tz, kick), g[8]].filter(Boolean).join(" · "), u: `/#t=${t.k}&g=${g[0]}&v=games`, tag: "r" + g[0], badge: d.badge}, "reminder", d);
         st.rem[key] = now;
         if (s === 404 || s === 410) { (dbDevice(env, null, m.name.split(":")[2], null), await env.USERS.delete(m.name)); break; }
         if (s < 300) n++;
