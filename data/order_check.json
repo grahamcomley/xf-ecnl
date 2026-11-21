@@ -116,6 +116,44 @@
   ]
  },
  {
+  "conf": "u11b-4331-42128",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133743,
+    "team": "HTX N Pre-ECNL STXCL B2015/16",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u11b-4331-42131",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 128319,
+    "team": "SG1 Pre-ECNL STXCL B2015/16",
+    "ours": [
+     9,
+     5
+    ],
+    "ecnl": [
+     8,
+     5
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4331-42134",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -1166,8 +1204,8 @@
   "ours": [
    133790,
    75142,
-   118553,
    80138,
+   118553,
    132285,
    131287,
    131288,
@@ -1190,6 +1228,30 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 133790,
+    "team": "MAFC Pre-ECNL STXCL B2014/15",
+    "ours": [
+     9,
+     27
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 118553,
+    "team": "AHFC SW Pre-ECNL STXCL B2014/15",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     15
+    ]
+   },
    {
     "id": 132285,
     "team": "Cavalry Pre-ECNL STXCL B2014/15",
@@ -1492,8 +1554,8 @@
   "ours": [
    114508,
    118001,
-   134846,
    117145,
+   134846,
    116958,
    111638,
    135308,
@@ -1524,6 +1586,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134846,
+    "team": "East Meadow Soccer Club Pre-ECNL B2014/15",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
     "id": 116958,
     "team": "Scorpions SC Pre-ECNL B2014/15",
     "ours": [
@@ -1533,6 +1607,18 @@
     "ecnl": [
      9,
      14
+    ]
+   },
+   {
+    "id": 111638,
+    "team": "FC Stars Pre-ECNL B2014/15 Blue",
+    "ours": [
+     10,
+     16
+    ],
+    "ecnl": [
+     9,
+     13
     ]
    },
    {
@@ -5873,6 +5959,37 @@
   ]
  },
  {
+  "conf": "u15b-4276-40469",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134784,
+    "team": "Tennessee SC",
+    "ours": [
+     17,
+     41
+    ],
+    "ecnl": [
+     16,
+     38
+    ]
+   },
+   {
+    "id": 94925,
+    "team": "Germantown Legends",
+    "ours": [
+     17,
+     10
+    ],
+    "ecnl": [
+     16,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u15b-4277-40463",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
@@ -6251,6 +6368,37 @@
    134124,
    131247,
    131174
+  ]
+ },
+ {
+  "conf": "u15b-4288-40547",
+  "name": "ECNL Boys Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133282,
+    "team": "Lonestar ATX Red",
+    "ours": [
+     15,
+     32
+    ],
+    "ecnl": [
+     14,
+     29
+    ]
+   },
+   {
+    "id": 94660,
+    "team": "FC Dallas Youth White",
+    "ours": [
+     11,
+     4
+    ],
+    "ecnl": [
+     10,
+     4
+    ]
+   }
   ]
  },
  {
@@ -6739,6 +6887,30 @@
      12,
      24
     ]
+   },
+   {
+    "id": 131364,
+    "team": "FC Tulsa Academy",
+    "ours": [
+     14,
+     14
+    ],
+    "ecnl": [
+     13,
+     14
+    ]
+   },
+   {
+    "id": 134711,
+    "team": "Arkansas Comets FC",
+    "ours": [
+     16,
+     10
+    ],
+    "ecnl": [
+     15,
+     7
+    ]
    }
   ]
  },
@@ -6985,14 +7157,14 @@
   "name": "ECNL RL Boys Southern Cal",
   "ours": [
    131701,
-   133568,
    135283,
    94917,
    132521,
    134588,
+   133568,
    131018,
-   68852,
    97295,
+   68852,
    133697,
    132987,
    132406,
@@ -7028,6 +7200,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 133568,
+    "team": "CDA Slammers FC Black",
+    "ours": [
+     9,
+     21
+    ],
+    "ecnl": [
+     8,
+     21
+    ]
+   },
+   {
     "id": 132521,
     "team": "San Diego Surf ECNL RL S.Cal B2011/12",
     "ours": [
@@ -7040,6 +7224,18 @@
     ]
    },
    {
+    "id": 97295,
+    "team": "Rebels SC ECNL RL SoCal B2011/12 Blue",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     10
+    ]
+   },
+   {
     "id": 132987,
     "team": "Legends FC (CA) ECNL RL S.Cal B2011/12",
     "ours": [
@@ -7049,6 +7245,30 @@
     "ecnl": [
      8,
      9
+    ]
+   },
+   {
+    "id": 133697,
+    "team": "LAFC So Cal ECNL RL S.Cal B2011/12 WHITE",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
+    "id": 133636,
+    "team": "LA Breakers White",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
     ]
    }
   ]
@@ -7508,6 +7728,37 @@
    131561,
    135574,
    132269
+  ]
+ },
+ {
+  "conf": "u16b-4276-40470",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134783,
+    "team": "Tennessee SC",
+    "ours": [
+     17,
+     45
+    ],
+    "ecnl": [
+     16,
+     42
+    ]
+   },
+   {
+    "id": 83074,
+    "team": "Germantown Legends",
+    "ours": [
+     17,
+     6
+    ],
+    "ecnl": [
+     16,
+     6
+    ]
+   }
   ]
  },
  {
@@ -8388,8 +8639,8 @@
   "name": "ECNL RL Boys Frontier",
   "ours": [
    131363,
-   130562,
    135555,
+   130562,
    55422,
    114847,
    134712,
@@ -8409,6 +8660,37 @@
    135725,
    62776,
    55422
+  ]
+ },
+ {
+  "conf": "u16b-4347-40632",
+  "name": "ECNL RL Boys Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135555,
+    "team": "Arkansas Rising",
+    "ours": [
+     13,
+     27
+    ],
+    "ecnl": [
+     12,
+     24
+    ]
+   },
+   {
+    "id": 62776,
+    "team": "Oklahoma Cosmos",
+    "ours": [
+     12,
+     4
+    ],
+    "ecnl": [
+     11,
+     4
+    ]
+   }
   ]
  },
  {
@@ -8534,6 +8816,30 @@
     "ecnl": [
      13,
      18
+    ]
+   },
+   {
+    "id": 94941,
+    "team": "Germantown Legends",
+    "ours": [
+     14,
+     15
+    ],
+    "ecnl": [
+     13,
+     12
+    ]
+   },
+   {
+    "id": 133895,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     17,
+     12
+    ],
+    "ecnl": [
+     16,
+     12
     ]
    }
   ]
@@ -8696,8 +9002,8 @@
    133565,
    132404,
    134586,
-   66498,
    135616,
+   66498,
    113076,
    61048,
    131963,
@@ -8722,6 +9028,37 @@
    132520,
    66498,
    113076
+  ]
+ },
+ {
+  "conf": "u16b-4354-41631",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133637,
+    "team": "LA Breakers White",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 66498,
+    "team": "Rebels SC ECNL RL SoCal B2010/11 Blue",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     7
+    ]
+   }
   ]
  },
  {
@@ -11945,9 +12282,9 @@
   "ours": [
    95181,
    135280,
+   132518,
    136488,
    135614,
-   132518,
    131965,
    134584,
    94807,
@@ -11981,6 +12318,61 @@
    134584,
    132400,
    133209
+  ]
+ },
+ {
+  "conf": "u19b-4354-41633",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95181,
+    "team": "West Coast FC White",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     21
+    ]
+   },
+   {
+    "id": 135280,
+    "team": "Empire Surf",
+    "ours": [
+     8,
+     21
+    ],
+    "ecnl": [
+     7,
+     18
+    ]
+   },
+   {
+    "id": 136488,
+    "team": "Eagles SC ECNL RL SoCal B2008/09 Blue",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 135614,
+    "team": "Sporting California USA ECNL RL S. Cal B2008/09",
+    "ours": [
+     9,
+     18
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   }
   ]
  },
  {
@@ -12098,8 +12490,8 @@
    133560,
    135596,
    133752,
-   135597,
    131038,
+   135597,
    59261
   ],
   "ecnl": [
@@ -12121,6 +12513,37 @@
    131038,
    59261,
    133120
+  ]
+ },
+ {
+  "conf": "u19b-4358-40736",
+  "name": "ECNL RL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132482,
+    "team": "San Diego Surf ECNL RL White B2008/09",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   },
+   {
+    "id": 135597,
+    "team": "Sporting California USA RED",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   }
   ]
  },
  {
@@ -13540,8 +13963,8 @@
   "name": "ECNL RL Girls STXCL",
   "ours": [
    132070,
-   133254,
    131225,
+   133254,
    131145,
    133622,
    132820,
@@ -13576,6 +13999,30 @@
   "name": "ECNL RL Girls STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 132070,
+    "team": "Lonestar SAT ECNL RL STXCL G2013/14 II",
+    "ours": [
+     11,
+     33
+    ],
+    "ecnl": [
+     10,
+     30
+    ]
+   },
+   {
+    "id": 133254,
+    "team": "LTFC ECNL RL STXCL G2013/14",
+    "ours": [
+     12,
+     30
+    ],
+    "ecnl": [
+     11,
+     30
+    ]
+   },
    {
     "id": 131225,
     "team": "FC Westlake North ECNL RL STXCL G2013/14",
@@ -13646,6 +14093,30 @@
     "ecnl": [
      11,
      8
+    ]
+   },
+   {
+    "id": 132746,
+    "team": "Lonestar ATX NTH ECNL RL STXCL G2013/14 Gold",
+    "ours": [
+     11,
+     7
+    ],
+    "ecnl": [
+     10,
+     6
+    ]
+   },
+   {
+    "id": 132660,
+    "team": "Pflugerville FC ECNL RL STXCL G2013/14 Green",
+    "ours": [
+     12,
+     1
+    ],
+    "ecnl": [
+     11,
+     0
     ]
    }
   ]
@@ -13744,8 +14215,8 @@
    134824,
    134825,
    131343,
-   131930,
    131574,
+   131930,
    97576,
    134409,
    131784
@@ -13759,6 +14230,68 @@
    134825,
    131930,
    131784
+  ]
+ },
+ {
+  "conf": "u13g-4264-41608",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134824,
+    "team": "St. Louis Scott Gallagher Navy",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 131930,
+    "team": "Missouri Rush",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u13g-4264-41606",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115320,
+    "team": "Nationals SC",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 134190,
+    "team": "Michigan Hawks",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   }
   ]
  },
  {
@@ -14041,8 +14574,8 @@
   "ours": [
    96490,
    108897,
-   69973,
    131271,
+   69973,
    131001,
    69768,
    94445,
@@ -14093,6 +14626,18 @@
     ]
    },
    {
+    "id": 69973,
+    "team": "SOLAR SC",
+    "ours": [
+     9,
+     17
+    ],
+    "ecnl": [
+     8,
+     16
+    ]
+   },
+   {
     "id": 131001,
     "team": "Sting Royal",
     "ours": [
@@ -14134,6 +14679,18 @@
     "ours": [
      7,
      11
+    ],
+    "ecnl": [
+     6,
+     8
+    ]
+   },
+   {
+    "id": 111690,
+    "team": "Sting Black",
+    "ours": [
+     7,
+     9
     ],
     "ecnl": [
      6,
@@ -14246,6 +14803,30 @@
     ]
    },
    {
+    "id": 132362,
+    "team": "United PDX",
+    "ours": [
+     11,
+     11
+    ],
+    "ecnl": [
+     10,
+     10
+    ]
+   },
+   {
+    "id": 131485,
+    "team": "FC Portland",
+    "ours": [
+     12,
+     9
+    ],
+    "ecnl": [
+     11,
+     8
+    ]
+   },
+   {
     "id": 111406,
     "team": "Portland City United",
     "ours": [
@@ -14305,6 +14886,30 @@
   "name": "ECNL RL Girls Frontier",
   "kind": "points",
   "teams": [
+   {
+    "id": 132681,
+    "team": "FC Tulsa Academy",
+    "ours": [
+     11,
+     20
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
+    "id": 134720,
+    "team": "Arkansas Comets FC",
+    "ours": [
+     13,
+     20
+    ],
+    "ecnl": [
+     12,
+     19
+    ]
+   },
    {
     "id": 115590,
     "team": "OK Energy FC Frontier",
@@ -14447,6 +15052,30 @@
   "name": "ECNL RL Girls Heartland",
   "kind": "points",
   "teams": [
+   {
+    "id": 134828,
+    "team": "St. Louis Scott Gallagher MO",
+    "ours": [
+     10,
+     25
+    ],
+    "ecnl": [
+     9,
+     24
+    ]
+   },
+   {
+    "id": 114517,
+    "team": "AFA Fillies",
+    "ours": [
+     11,
+     12
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   },
    {
     "id": 111536,
     "team": "Sporting Iowa",
@@ -15088,10 +15717,10 @@
   "ours": [
    96493,
    76690,
-   69767,
    131840,
    111850,
    129364,
+   69767,
    134505,
    131267,
    132044,
@@ -15136,6 +15765,18 @@
     ]
    },
    {
+    "id": 69767,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     6,
+     12
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
+   {
     "id": 129364,
     "team": "Challenge",
     "ours": [
@@ -15157,6 +15798,18 @@
     "ecnl": [
      6,
      14
+    ]
+   },
+   {
+    "id": 111850,
+    "team": "Sting Royal",
+    "ours": [
+     6,
+     14
+    ],
+    "ecnl": [
+     5,
+     11
     ]
    },
    {
@@ -16771,6 +17424,37 @@
   ]
  },
  {
+  "conf": "u14g-4316-41742",
+  "name": "ECNL RL Girls Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134389,
+    "team": "Arizona Arsenal",
+    "ours": [
+     5,
+     7
+    ],
+    "ecnl": [
+     4,
+     6
+    ]
+   },
+   {
+    "id": 108959,
+    "team": "LV Heat Surf",
+    "ours": [
+     6,
+     4
+    ],
+    "ecnl": [
+     5,
+     3
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14g-4317-41389",
   "name": "ECNL RL Girls Texas",
   "ours": [
@@ -16811,6 +17495,30 @@
   "name": "ECNL RL Girls Texas",
   "kind": "points",
   "teams": [
+   {
+    "id": 96864,
+    "team": "FC Dallas Youth",
+    "ours": [
+     6,
+     16
+    ],
+    "ecnl": [
+     5,
+     13
+    ]
+   },
+   {
+    "id": 129367,
+    "team": "Challenge",
+    "ours": [
+     6,
+     12
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
    {
     "id": 80865,
     "team": "OK Energy FC Texas",
@@ -17514,8 +18222,8 @@
   "name": "ECNL Girls Ohio Valley",
   "ours": [
    59470,
-   134640,
    133464,
+   134640,
    59612,
    95897,
    133000
@@ -17569,6 +18277,18 @@
      0,
      0
     ]
+   },
+   {
+    "id": 133464,
+    "team": "Tennessee SC",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
    }
   ]
  },
@@ -17578,9 +18298,9 @@
   "ours": [
    71333,
    61753,
+   69761,
    60141,
    61433,
-   69761,
    108211
   ],
   "ecnl": [
@@ -17615,6 +18335,18 @@
     "ours": [
      1,
      3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 69761,
+    "team": "Pittsburgh Riverhounds",
+    "ours": [
+     1,
+     1
     ],
     "ecnl": [
      0,
@@ -17802,6 +18534,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 131923,
+    "team": "Beach Futbol Club (CA)",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
     "id": 132461,
     "team": "San Diego Surf",
     "ours": [
@@ -17823,6 +18567,18 @@
     "ecnl": [
      7,
      14
+    ]
+   },
+   {
+    "id": 94955,
+    "team": "Rebels SC",
+    "ours": [
+     6,
+     8
+    ],
+    "ecnl": [
+     5,
+     8
     ]
    },
    {
@@ -17859,8 +18615,8 @@
    59609,
    131273,
    95108,
-   129341,
    94652,
+   129341,
    132702,
    81105,
    94440,
@@ -17906,6 +18662,30 @@
     "ecnl": [
      8,
      24
+    ]
+   },
+   {
+    "id": 129341,
+    "team": "Challenge SC",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     16
+    ]
+   },
+   {
+    "id": 94652,
+    "team": "FC Dallas Youth",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     16
     ]
    },
    {
@@ -18048,9 +18828,9 @@
   "ours": [
    135552,
    132679,
-   134724,
    136385,
    114860,
+   134724,
    135873,
    135466,
    51717
@@ -18064,6 +18844,37 @@
    135466,
    51717,
    136385
+  ]
+ },
+ {
+  "conf": "u15g-4299-40763",
+  "name": "ECNL RL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132679,
+    "team": "FC Tulsa Academy",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
+    "id": 134724,
+    "team": "Arkansas Comets FC",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     25
+    ]
+   }
   ]
  },
  {
@@ -18201,6 +19012,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 95585,
+    "team": "Kansas City Athletics",
+    "ours": [
+     14,
+     35
+    ],
+    "ecnl": [
+     13,
+     32
+    ]
+   },
+   {
     "id": 123155,
     "team": "Kansas Rush Gold",
     "ours": [
@@ -18244,6 +19067,25 @@
    136105,
    46600,
    94297
+  ]
+ },
+ {
+  "conf": "u15g-4304-40787",
+  "name": "ECNL RL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 81109,
+    "team": "Sporting Iowa",
+    "ours": [
+     15,
+     5
+    ],
+    "ecnl": [
+     14,
+     5
+    ]
+   }
   ]
  },
  {
@@ -18830,6 +19672,73 @@
    94645,
    131713,
    64241
+  ]
+ },
+ {
+  "conf": "u15g-4317-41390",
+  "name": "ECNL RL Girls Texas",
+  "ours": [
+   94443,
+   129370,
+   94655,
+   95455,
+   134502,
+   131259,
+   97508,
+   94687,
+   81917,
+   43929,
+   72908,
+   132725,
+   131264,
+   132042
+  ],
+  "ecnl": [
+   94443,
+   129370,
+   94655,
+   95455,
+   134502,
+   131259,
+   94687,
+   97508,
+   81917,
+   43929,
+   72908,
+   132725,
+   131264,
+   132042
+  ]
+ },
+ {
+  "conf": "u15g-4317-41390",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 97508,
+    "team": "SOLAR SC",
+    "ours": [
+     7,
+     10
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   },
+   {
+    "id": 43929,
+    "team": "Sting Black",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   }
   ]
  },
  {
@@ -19482,8 +20391,8 @@
   "ours": [
    81266,
    130286,
-   133821,
    131437,
+   133821,
    134237,
    129047,
    69224,
@@ -19504,6 +20413,37 @@
    135361,
    133821,
    129047
+  ]
+ },
+ {
+  "conf": "u16g-4263-40554",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131437,
+    "team": "Charlotte SA",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
+    "id": 134660,
+    "team": "Wilmington Hammerheads",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -20201,6 +21141,37 @@
   ]
  },
  {
+  "conf": "u16g-4299-40764",
+  "name": "ECNL RL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135467,
+    "team": "Sporting Springfield",
+    "ours": [
+     12,
+     24
+    ],
+    "ecnl": [
+     11,
+     21
+    ]
+   },
+   {
+    "id": 135551,
+    "team": "Arkansas Rising",
+    "ours": [
+     14,
+     14
+    ],
+    "ecnl": [
+     13,
+     14
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4300-40776",
   "name": "ECNL RL Girls Golden State",
   "ours": [
@@ -20239,9 +21210,9 @@
    106540,
    113210,
    113218,
-   114224,
    130588,
-   130625
+   130625,
+   114224
   ],
   "ecnl": [
    130588,
@@ -20250,6 +21221,37 @@
    114224,
    130625,
    106540
+  ]
+ },
+ {
+  "conf": "u16g-4301-41619",
+  "name": "ECNL RL Girls GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114224,
+    "team": "Steel City FC",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 106540,
+    "team": "WNY Flash Rochester",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -20351,13 +21353,32 @@
   ]
  },
  {
+  "conf": "u16g-4304-40794",
+  "name": "ECNL RL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 81716,
+    "team": "Kansas City Athletics",
+    "ours": [
+     14,
+     28
+    ],
+    "ecnl": [
+     13,
+     28
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4304-40788",
   "name": "ECNL RL Girls Heartland",
   "ours": [
    136109,
    61202,
-   134856,
    134857,
+   134856,
    69511,
    79599
   ],
@@ -20368,6 +21389,49 @@
    69511,
    79599,
    134857
+  ]
+ },
+ {
+  "conf": "u16g-4304-40788",
+  "name": "ECNL RL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134857,
+    "team": "St. Louis Scott Gallagher MO",
+    "ours": [
+     14,
+     20
+    ],
+    "ecnl": [
+     13,
+     17
+    ]
+   },
+   {
+    "id": 69511,
+    "team": "Sporting Iowa",
+    "ours": [
+     15,
+     18
+    ],
+    "ecnl": [
+     14,
+     15
+    ]
+   },
+   {
+    "id": 79599,
+    "team": "AFA Fillies",
+    "ours": [
+     16,
+     3
+    ],
+    "ecnl": [
+     15,
+     3
+    ]
+   }
   ]
  },
  {
@@ -23064,9 +24128,9 @@
    59349,
    69577,
    82106,
+   134500,
    129374,
    68998,
-   134500,
    131280,
    49244,
    69149,
@@ -23120,6 +24184,30 @@
     "ecnl": [
      8,
      16
+    ]
+   },
+   {
+    "id": 134500,
+    "team": "Dallas Texans",
+    "ours": [
+     9,
+     17
+    ],
+    "ecnl": [
+     8,
+     14
+    ]
+   },
+   {
+    "id": 69199,
+    "team": "OK Energy FC Texas",
+    "ours": [
+     11,
+     8
+    ],
+    "ecnl": [
+     10,
+     8
     ]
    }
   ]
@@ -23701,9 +24789,9 @@
    134235,
    133819,
    131443,
-   134662,
    135522,
    129045,
+   134662,
    59930,
    13888,
    135359
@@ -23720,6 +24808,37 @@
    13888,
    135359,
    134662
+  ]
+ },
+ {
+  "conf": "u19g-4263-40556",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131443,
+    "team": "Charlotte SA",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     10
+    ]
+   },
+   {
+    "id": 134662,
+    "team": "Wilmington Hammerheads",
+    "ours": [
+     8,
+     9
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   }
   ]
  },
  {
@@ -24890,8 +26009,8 @@
    132219,
    133716,
    59773,
-   48251,
-   82189
+   82189,
+   48251
   ],
   "ecnl": [
    132165,
@@ -24911,6 +26030,37 @@
    48251,
    132464,
    132219
+  ]
+ },
+ {
+  "conf": "u19g-4316-41746",
+  "name": "ECNL RL Girls Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134394,
+    "team": "Arizona Arsenal",
+    "ours": [
+     6,
+     15
+    ],
+    "ecnl": [
+     5,
+     12
+    ]
+   },
+   {
+    "id": 48251,
+    "team": "LV Heat Surf",
+    "ours": [
+     6,
+     0
+    ],
+    "ecnl": [
+     5,
+     0
+    ]
+   }
   ]
  },
  {
@@ -25519,6 +26669,46 @@
    6074,
    6114,
    6216
+  ]
+ },
+ {
+  "conf": "a15b-477-477",
+  "name": "MLS NEXT Academy Desert",
+  "ours": [
+   8189,
+   8570,
+   8201,
+   9495,
+   8582,
+   9483,
+   8558,
+   8588,
+   8576,
+   8216,
+   8564,
+   9471,
+   9501,
+   9489,
+   9591,
+   9477
+  ],
+  "ecnl": [
+   8189,
+   8570,
+   8201,
+   9495,
+   8582,
+   9483,
+   8558,
+   8588,
+   8576,
+   8216,
+   9471,
+   8564,
+   9501,
+   9489,
+   9591,
+   9477
   ]
  },
  {
@@ -26856,30 +28046,6 @@
   ]
  },
  {
-  "conf": "n17b-114-114",
-  "name": "MLS NEXT Homegrown Southeast (Pro Player Pathway)",
-  "ours": [
-   5804,
-   2788,
-   6183,
-   1861,
-   5703,
-   6346,
-   6197,
-   2089
-  ],
-  "ecnl": [
-   2788,
-   5804,
-   6183,
-   1861,
-   5703,
-   6346,
-   6197,
-   2089
-  ]
- },
- {
   "conf": "n17b-123-123",
   "name": "MLS NEXT Homegrown West (Pro Player Pathway)",
   "ours": [
@@ -27212,26 +28378,25 @@
   "conf": "a17b-533-533",
   "name": "MLS NEXT Academy Northeast",
   "ours": [
-   10875,
+   9011,
    10881,
    10887,
    11099,
    8143,
    8273,
    9005,
-   9011,
    9023,
    9029,
    9035,
    9047,
    9053,
-   9059
+   9059,
+   10875
   ],
   "ecnl": [
-   10875,
+   9011,
    8273,
    9005,
-   9011,
    10881,
    10887,
    9023,
@@ -27241,7 +28406,8 @@
    9053,
    9059,
    11099,
-   9047
+   9047,
+   10875
   ]
  },
  {
@@ -28022,13 +29188,13 @@
   "name": "MLS NEXT Academy Northeast",
   "ours": [
    10876,
+   9012,
    10882,
    10888,
    11100,
    8144,
    8274,
    9006,
-   9012,
    9024,
    9030,
    9036,
@@ -28038,9 +29204,9 @@
   ],
   "ecnl": [
    10876,
+   9012,
    8274,
    9006,
-   9012,
    10882,
    10888,
    9024,
