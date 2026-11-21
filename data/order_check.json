@@ -1395,6 +1395,69 @@
   ]
  },
  {
+  "conf": "u12b-4364-40820",
+  "name": "Pre-ECNL Boys New England",
+  "ours": [
+   114510,
+   135079,
+   134890,
+   126417,
+   116959,
+   117146,
+   111640,
+   114653,
+   113925,
+   133939,
+   117012,
+   135309
+  ],
+  "ecnl": [
+   135079,
+   114510,
+   134890,
+   126417,
+   116959,
+   117146,
+   114653,
+   113925,
+   133939,
+   111640,
+   117012,
+   135309
+  ]
+ },
+ {
+  "conf": "u12b-4364-40820",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135079,
+    "team": "East Meadow Soccer Club Pre-ECNL B2014/15 II",
+    "ours": [
+     10,
+     23
+    ],
+    "ecnl": [
+     9,
+     23
+    ]
+   },
+   {
+    "id": 111640,
+    "team": "FC Stars Pre-ECNL B2014/15 White",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u12b-4365-41497",
   "name": "Pre-ECNL Boys Northeast - North",
   "ours": [
@@ -11666,8 +11729,8 @@
   "conf": "u12g-4371-41754",
   "name": "Pre-ECNL Girls Frontier",
   "ours": [
-   130432,
    133069,
+   130432,
    136388,
    134716,
    135869,
@@ -11694,6 +11757,37 @@
    135403,
    135870,
    136398
+  ]
+ },
+ {
+  "conf": "u12g-4371-41754",
+  "name": "Pre-ECNL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133069,
+    "team": "FC Tulsa Academy Pre-ECNL G2014/15",
+    "ours": [
+     9,
+     22
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
+   {
+    "id": 134716,
+    "team": "Arkansas Comets FC Pre-ECNL G2014/15",
+    "ours": [
+     13,
+     25
+    ],
+    "ecnl": [
+     12,
+     25
+    ]
+   }
   ]
  },
  {
@@ -19439,8 +19533,8 @@
   "conf": "u17g-4269-41864",
   "name": "ECNL Girls Ohio Valley",
   "ours": [
-   133004,
    133466,
+   133004,
    134642,
    45767,
    46996,
@@ -19456,6 +19550,25 @@
   ]
  },
  {
+  "conf": "u17g-4269-41864",
+  "name": "ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133466,
+    "team": "Tennessee SC",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17g-4269-41859",
   "name": "ECNL Girls Ohio Valley",
   "ours": [
@@ -19463,8 +19576,8 @@
    46986,
    47002,
    47037,
-   60737,
-   65018
+   65018,
+   60737
   ],
   "ecnl": [
    46986,
@@ -19473,6 +19586,25 @@
    65018,
    60737,
    47037
+  ]
+ },
+ {
+  "conf": "u17g-4269-41859",
+  "name": "ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 60737,
+    "team": "Pittsburgh Riverhounds",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
