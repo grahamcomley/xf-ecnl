@@ -11368,6 +11368,37 @@
   ]
  },
  {
+  "conf": "u13g-4260-41141",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132820,
+    "team": "Lonestar ATX ECNL RL STXCL G2013/14 Red",
+    "ours": [
+     12,
+     22
+    ],
+    "ecnl": [
+     11,
+     19
+    ]
+   },
+   {
+    "id": 132746,
+    "team": "Lonestar ATX NTH ECNL RL STXCL G2013/14 Gold",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4260-41139",
   "name": "ECNL RL Girls STXCL",
   "ours": [
