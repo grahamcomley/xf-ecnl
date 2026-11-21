@@ -1839,6 +1839,30 @@
     ]
    },
    {
+    "id": 114510,
+    "team": "SUSA FC Pre-ECNL B2014/15 ll",
+    "ours": [
+     10,
+     23
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 116959,
+    "team": "Scorpions SC Pre-ECNL B2014/15 ll",
+    "ours": [
+     10,
+     17
+    ],
+    "ecnl": [
+     9,
+     16
+    ]
+   },
+   {
     "id": 111640,
     "team": "FC Stars Pre-ECNL B2014/15 White",
     "ours": [
@@ -2814,10 +2838,10 @@
   "ours": [
    133404,
    119581,
-   121217,
    98067,
    119998,
    133410,
+   121217,
    134174,
    129032,
    131805
@@ -2848,6 +2872,30 @@
   "name": "ECNL Boys Southeast",
   "kind": "points",
   "teams": [
+   {
+    "id": 119581,
+    "team": "Atlanta Fire United",
+    "ours": [
+     6,
+     13
+    ],
+    "ecnl": [
+     5,
+     10
+    ]
+   },
+   {
+    "id": 121217,
+    "team": "South Carolina United",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     9
+    ]
+   },
    {
     "id": 131805,
     "team": "GSA",
@@ -3525,6 +3573,18 @@
     ]
    },
    {
+    "id": 131291,
+    "team": "Charlotte SA White",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
     "id": 133014,
     "team": "Jacksonville Hammerheads FC",
     "ours": [
@@ -3546,6 +3606,18 @@
     "ecnl": [
      11,
      13
+    ]
+   },
+   {
+    "id": 134676,
+    "team": "Wilmington Hammerheads",
+    "ours": [
+     11,
+     8
+    ],
+    "ecnl": [
+     10,
+     8
     ]
    },
    {
@@ -13294,8 +13366,8 @@
    136041,
    128433,
    136042,
-   133721,
    134337,
+   133721,
    133421,
    134338,
    132309,
@@ -13327,10 +13399,22 @@
   "kind": "points",
   "teams": [
    {
+    "id": 128433,
+    "team": "Chicago Inter Pre-ECNL G2015/16 Red",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
     "id": 133721,
     "team": "NWI Lions United Pre-ECNL G2015/16",
     "ours": [
-     10,
+     11,
      21
     ],
     "ecnl": [
@@ -14613,6 +14697,67 @@
     "ecnl": [
      10,
      2
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u13g-4263-40551",
+  "name": "ECNL Girls Mid-Atlantic",
+  "ours": [
+   133824,
+   133050,
+   131428,
+   134240,
+   131830,
+   132023,
+   135364,
+   134657,
+   135516,
+   129050,
+   112976
+  ],
+  "ecnl": [
+   133050,
+   133824,
+   131428,
+   134240,
+   131830,
+   132023,
+   135364,
+   134657,
+   135516,
+   129050,
+   112976
+  ]
+ },
+ {
+  "conf": "u13g-4263-40551",
+  "name": "ECNL Girls Mid-Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133824,
+    "team": "Richmond United",
+    "ours": [
+     8,
+     20
+    ],
+    "ecnl": [
+     7,
+     17
+    ]
+   },
+   {
+    "id": 129050,
+    "team": "South Carolina Surf",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
     ]
    }
   ]
@@ -29676,8 +29821,8 @@
   "conf": "n19b-124-124",
   "name": "MLS NEXT Homegrown West (Pro Player Pathway)",
   "ours": [
-   7250,
    7214,
+   7250,
    7209,
    7257,
    7231,
@@ -29685,8 +29830,8 @@
    7265
   ],
   "ecnl": [
-   7250,
    7214,
+   7250,
    7209,
    7257,
    7376,
