@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.65">
+<meta name="app-version" content="v1.66">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -251,7 +251,10 @@ h3{font-size:14px;margin:10px 0 6px}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
 .tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
-.grow.ours+.grow.ours,[data-tk]+[data-tk]{margin-top:6px}
+.grow.ours+.grow.ours{margin-top:6px}
+/* team view and All my teams: every game is ours, so no red rows (red stays where ours sit among others) */
+.gv[data-gv="mine"] .grow.ours,#allmine .grow.ours{background:none;border-radius:0;border-bottom-color:var(--line)}
+.gv[data-gv="mine"] .grow.ours+.grow.ours,#allmine .grow.ours+.grow.ours{margin-top:0}
 .evgo{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:12px 4px 4px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}.evgo .ic{transform:rotate(-90deg);width:18px;height:18px;color:var(--mut);flex:none}
 .nogames{margin-top:10px;font-size:13px;color:var(--mut)}
 body.allmine #tstrip .tpill:not(.tfollow){background:var(--me);color:#fff;border-color:var(--red)}
