@@ -3187,11 +3187,11 @@
    131187,
    131291,
    132028,
-   132526,
    133014,
+   132526,
    134676,
-   132375,
    112979,
+   132375,
    135345
   ],
   "ecnl": [
@@ -3212,6 +3212,18 @@
   "name": "ECNL RL Boys Carolinas",
   "kind": "points",
   "teams": [
+   {
+    "id": 132029,
+    "team": "NCFC Youth Elite",
+    "ours": [
+     12,
+     36
+    ],
+    "ecnl": [
+     11,
+     33
+    ]
+   },
    {
     "id": 131187,
     "team": "Charlotte SA Blue",
@@ -3234,6 +3246,42 @@
     "ecnl": [
      9,
      11
+    ]
+   },
+   {
+    "id": 132526,
+    "team": "Highland FC",
+    "ours": [
+     12,
+     13
+    ],
+    "ecnl": [
+     11,
+     13
+    ]
+   },
+   {
+    "id": 132375,
+    "team": "Catawba Valley YSA",
+    "ours": [
+     12,
+     7
+    ],
+    "ecnl": [
+     11,
+     7
+    ]
+   },
+   {
+    "id": 112979,
+    "team": "NC Fusion",
+    "ours": [
+     11,
+     7
+    ],
+    "ecnl": [
+     10,
+     4
     ]
    }
   ]
@@ -3358,6 +3406,34 @@
  {
   "conf": "u13b-4350-40659",
   "name": "ECNL RL Boys Mid-America",
+  "ours": [
+   134787,
+   133759,
+   112541,
+   133898,
+   134004,
+   134114,
+   132066,
+   133202,
+   133865,
+   134644
+  ],
+  "ecnl": [
+   134787,
+   133759,
+   112541,
+   134004,
+   133898,
+   134114,
+   132066,
+   133202,
+   133865,
+   134644
+  ]
+ },
+ {
+  "conf": "u13b-4350-40659",
+  "name": "ECNL RL Boys Mid-America",
   "kind": "points",
   "teams": [
    {
@@ -3373,6 +3449,18 @@
     ]
    },
    {
+    "id": 133898,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   },
+   {
     "id": 133202,
     "team": "Lobos Rush",
     "ours": [
@@ -3382,6 +3470,18 @@
     "ecnl": [
      7,
      4
+    ]
+   },
+   {
+    "id": 133865,
+    "team": "Germantown Legends",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
     ]
    }
   ]
@@ -3575,6 +3675,37 @@
   ]
  },
  {
+  "conf": "u13b-4354-41628",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132524,
+    "team": "San Diego Surf ECNL RL S.Cal B2013/14",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
+   {
+    "id": 132992,
+    "team": "Legends FC (CA) ECNL RL S.Cal B2013/14",
+    "ours": [
+     9,
+     18
+    ],
+    "ecnl": [
+     8,
+     18
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4356-40743",
   "name": "ECNL RL Boys Texas",
   "ours": [
@@ -3663,8 +3794,8 @@
   "name": "ECNL RL Boys Southwest",
   "ours": [
    132493,
-   133576,
    132487,
+   133576,
    133687,
    127358,
    132193,
@@ -3700,6 +3831,37 @@
    96696,
    133115,
    133575
+  ]
+ },
+ {
+  "conf": "u13b-4358-40731",
+  "name": "ECNL RL Boys Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132487,
+    "team": "San Diego Surf ECNL RL White B2013/14",
+    "ours": [
+     7,
+     18
+    ],
+    "ecnl": [
+     6,
+     15
+    ]
+   },
+   {
+    "id": 135607,
+    "team": "Sporting California USA RED",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   }
   ]
  },
  {
@@ -4084,6 +4246,30 @@
     "ecnl": [
      8,
      12
+    ]
+   },
+   {
+    "id": 134844,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
+    "id": 94543,
+    "team": "FC Stars",
+    "ours": [
+     10,
+     11
+    ],
+    "ecnl": [
+     9,
+     10
     ]
    },
    {
@@ -4535,8 +4721,8 @@
    95343,
    117484,
    94752,
-   113902,
    82174,
+   113902,
    81912,
    135070,
    116993,
@@ -4565,6 +4751,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 82174,
+    "team": "FSA FC",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   },
+   {
     "id": 81912,
     "team": "FC Stars",
     "ours": [
@@ -4586,6 +4784,18 @@
     "ecnl": [
      9,
      10
+    ]
+   },
+   {
+    "id": 133861,
+    "team": "SUSA FC ACADEMY",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    }
   ]
@@ -4644,6 +4854,37 @@
    113706,
    133154,
    129984
+  ]
+ },
+ {
+  "conf": "u14b-4341-40708",
+  "name": "ECNL RL Boys Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 112839,
+    "team": "FC Copa Academy",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
+   {
+    "id": 114242,
+    "team": "West-Mont United",
+    "ours": [
+     7,
+     8
+    ],
+    "ecnl": [
+     6,
+     8
+    ]
+   }
   ]
  },
  {
@@ -6737,6 +6978,79 @@
    134863,
    101051,
    81138
+  ]
+ },
+ {
+  "conf": "u15b-4354-41630",
+  "name": "ECNL RL Boys Southern Cal",
+  "ours": [
+   131701,
+   133568,
+   135283,
+   94917,
+   132521,
+   134588,
+   131018,
+   68852,
+   97295,
+   133697,
+   132987,
+   132406,
+   135617,
+   133636,
+   113080,
+   133691,
+   131962
+  ],
+  "ecnl": [
+   131701,
+   133568,
+   135283,
+   94917,
+   134588,
+   132521,
+   131018,
+   68852,
+   97295,
+   132987,
+   133697,
+   132406,
+   135617,
+   133636,
+   113080,
+   133691,
+   131962
+  ]
+ },
+ {
+  "conf": "u15b-4354-41630",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132521,
+    "team": "San Diego Surf ECNL RL S.Cal B2011/12",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   },
+   {
+    "id": 132987,
+    "team": "Legends FC (CA) ECNL RL S.Cal B2011/12",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   }
   ]
  },
  {
@@ -13534,6 +13848,37 @@
   ]
  },
  {
+  "conf": "u13g-4267-40575",
+  "name": "ECNL Girls Northern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135939,
+    "team": "Bay Area Surf -",
+    "ours": [
+     12,
+     25
+    ],
+    "ecnl": [
+     11,
+     22
+    ]
+   },
+   {
+    "id": 55311,
+    "team": "Pleasanton RAGE",
+    "ours": [
+     14,
+     11
+    ],
+    "ecnl": [
+     13,
+     11
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4268-40581",
   "name": "ECNL Girls Northwest",
   "ours": [
@@ -13881,6 +14226,37 @@
    131485,
    132362,
    111406
+  ]
+ },
+ {
+  "conf": "u13g-4298-40755",
+  "name": "ECNL RL Girls Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133430,
+    "team": "Oregon Premier FC",
+    "ours": [
+     11,
+     31
+    ],
+    "ecnl": [
+     10,
+     28
+    ]
+   },
+   {
+    "id": 111406,
+    "team": "Portland City United",
+    "ours": [
+     12,
+     5
+    ],
+    "ecnl": [
+     11,
+     5
+    ]
+   }
   ]
  },
  {
@@ -14577,8 +14953,8 @@
    135885,
    131027,
    132179,
-   133638,
    134167,
+   133638,
    128902,
    128549,
    133730,
@@ -14600,6 +14976,37 @@
    133638,
    128902,
    131708
+  ]
+ },
+ {
+  "conf": "u13g-4315-41747",
+  "name": "ECNL RL Girls Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 128547,
+    "team": "SLAMMERS FC ECNL RL S.Cal G2013/14",
+    "ours": [
+     6,
+     14
+    ],
+    "ecnl": [
+     5,
+     11
+    ]
+   },
+   {
+    "id": 133638,
+    "team": "Legends FC (CA) ECNL RL S. Cal G2013/14",
+    "ours": [
+     7,
+     10
+    ],
+    "ecnl": [
+     6,
+     10
+    ]
+   }
   ]
  },
  {
@@ -16371,14 +16778,14 @@
    96864,
    57496,
    129367,
-   39747,
    80865,
+   39747,
    131258,
    114028,
    111848,
-   134504,
    132727,
    132043,
+   134504,
    131262,
    78765
   ],
@@ -16397,6 +16804,37 @@
    78765,
    57496,
    134504
+  ]
+ },
+ {
+  "conf": "u14g-4317-41389",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 80865,
+    "team": "OK Energy FC Texas",
+    "ours": [
+     11,
+     21
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 134504,
+    "team": "Dallas Texans",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -19008,6 +19446,37 @@
   ]
  },
  {
+  "conf": "u16g-4260-41145",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 57511,
+    "team": "AHFC NW ECNL RL STXCL G2010/11",
+    "ours": [
+     11,
+     6
+    ],
+    "ecnl": [
+     10,
+     5
+    ]
+   },
+   {
+    "id": 132755,
+    "team": "Lonestar ATX STH ECNL RL STXCL G2010/11 Gold",
+    "ours": [
+     10,
+     2
+    ],
+    "ecnl": [
+     9,
+     1
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4263-40554",
   "name": "ECNL Girls Mid-Atlantic",
   "ours": [
@@ -19476,8 +19945,8 @@
    62249,
    133024,
    61426,
-   135892,
    131922,
+   135892,
    62045,
    48247,
    82166,
@@ -19507,6 +19976,37 @@
    134383,
    81798,
    134089
+  ]
+ },
+ {
+  "conf": "u16g-4271-40602",
+  "name": "ECNL Girls Southwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131922,
+    "team": "Beach Futbol Club (CA)",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     9
+    ]
+   },
+   {
+    "id": 81798,
+    "team": "Rebels SC",
+    "ours": [
+     6,
+     1
+    ],
+    "ecnl": [
+     5,
+     1
+    ]
+   }
   ]
  },
  {
