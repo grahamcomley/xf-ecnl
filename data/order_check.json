@@ -1768,13 +1768,13 @@
   "name": "ECNL RL Boys STXCL",
   "ours": [
    133238,
-   132659,
    132497,
+   132659,
    134506,
-   131205,
    133303,
    133610,
    131199,
+   131205,
    112171,
    132664,
    133305,
@@ -1798,6 +1798,14 @@
  {
   "conf": "u13b-4261-41130",
   "name": "ECNL RL Boys STXCL",
+  "kind": "adjusted",
+  "teams": {
+   "132497": -3
+  }
+ },
+ {
+  "conf": "u13b-4261-41130",
+  "name": "ECNL RL Boys STXCL",
   "kind": "points",
   "teams": [
    {
@@ -1817,7 +1825,7 @@
     "team": "FC Westlake North ECNL RL STXCL B2013/14",
     "ours": [
      10,
-     15
+     12
     ],
     "ecnl": [
      9,
@@ -19177,6 +19185,37 @@
    136040,
    33175,
    134120
+  ]
+ },
+ {
+  "conf": "u19g-4264-40562",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134859,
+    "team": "St. Louis Scott Gallagher Navy",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     22
+    ]
+   },
+   {
+    "id": 114377,
+    "team": "Missouri Rush",
+    "ours": [
+     14,
+     16
+    ],
+    "ecnl": [
+     13,
+     16
+    ]
+   }
   ]
  },
  {
