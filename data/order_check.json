@@ -415,6 +415,37 @@
   ]
  },
  {
+  "conf": "u11b-4364-40817",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133926,
+    "team": "SUSA FC Pre-ECNL B2015/16 l",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
+    "id": 117692,
+    "team": "Scorpions SC Pre-ECNL B2015/16",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4364-40819",
   "name": "Pre-ECNL Boys New England",
   "ours": [
@@ -617,12 +648,12 @@
    135946,
    132924,
    137020,
-   136473,
    133923,
+   136473,
    113232,
    131732,
-   136438,
    135253,
+   136438,
    131770,
    137416
   ],
@@ -640,6 +671,37 @@
    133923,
    131732,
    136438
+  ]
+ },
+ {
+  "conf": "u11b-4380-41015",
+  "name": "Pre-ECNL Boys Florida",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133923,
+    "team": "Fort Lauderdale United FC Pre-ECNL B2015/16 RL",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
+    "id": 136438,
+    "team": "Miami FC Academy Pre-ECNL B2015/16",
+    "ours": [
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
+     3
+    ]
+   }
   ]
  },
  {
