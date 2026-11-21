@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.66">
+<meta name="app-version" content="v1.68">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -250,6 +250,8 @@ h3{font-size:14px;margin:10px 0 6px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
+.tzab{font-size:9.5px;font-weight:600;color:var(--mut);margin-left:2px;letter-spacing:.2px}
+.tz2{display:block;font-size:10px;line-height:1.2;color:var(--mut);font-weight:500;white-space:nowrap;margin-top:1px}
 .tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
 .grow.ours+.grow.ours{margin-top:6px}
 /* team view and All my teams: every game is ours, so no red rows (red stays where ours sit among others) */
@@ -1768,7 +1770,7 @@ function fixtureCard(D, M, g, o = {}) {
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
   const likelyTop = us ? `Likely ${sL[0] > sL[1] ? "win" : sL[0] < sL[1] ? "loss" : "draw"} ${sL[0]}–${sL[1]}` : likelyLine(LN, RN, sL);
-  return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+  return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${esc(altTxt(g))}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
     <div class="teams t4"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
     <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
     </div>`;
@@ -1785,6 +1787,57 @@ const nm = (n, me, win, lose) => `<span class="${me ? "me-n" : ""}${win ? " win"
 // Final score with the winner marked: the losing side is grey and a small arrow points at the winning score.
 const scoreMid = (ls, rs) => `<span class="${ls < rs ? "lo" : ""}">${ls}</span><span class="arr">${ls > rs ? "◂" : ls < rs ? "▸" : "–"}</span><span class="${rs < ls ? "lo" : ""}">${rs}</span>`;
 const shortTime = t => (!t || t === "00:00") ? "TBD" : fmtTime(t).replace(":00 ", " ").replace(" AM", "a").replace(" PM", "p");
+// Game times are the field's local time (g.tz = the field's time zone). When the phone is somewhere else,
+// we also show the phone's time: "10a" with "9a PST" under it. Any zone in the world; no tz → one time, as before.
+const PHONE_TZ = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || null; } catch (e) { return null; } })();
+const _zp = {};
+function zParts(ms, tz) {
+  const f = _zp[tz] || (_zp[tz] = new Intl.DateTimeFormat("en-US", {timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"}));
+  const p = {}; for (const x of f.formatToParts(ms)) p[x.type] = x.value;
+  return {date: `${p.year}-${p.month}-${p.day}`, time: `${String(+p.hour % 24).padStart(2, "0")}:${p.minute}`};
+}
+// the moment a field's wall-clock time happens
+function zoneMs(date, time, tz) {
+  const [y, m, d] = date.split("-").map(Number), [hh, mm] = (time || "00:00").split(":").map(Number), want = Date.UTC(y, m - 1, d, hh, mm);
+  const off = t => { const q = zParts(t, tz); const [a, b, c] = q.date.split("-").map(Number), [e, f] = q.time.split(":").map(Number); return Date.UTC(a, b - 1, c, e, f) - t; };
+  let t = want - off(want); t = want - off(t); return t;
+}
+function zAbbr(tz, ms) {
+  const get = loc => { try { return new Intl.DateTimeFormat(loc, {timeZone: tz, timeZoneName: "short"}).formatToParts(ms).find(x => x.type === "timeZoneName").value; } catch (e) { return ""; } };
+  let a = get("en-US"); if (/^(GMT|UTC)/.test(a)) { const b = get("en-GB"); if (b && !/^(GMT|UTC)[+-]/.test(b)) a = b; }
+  return a;
+}
+const _alt = new Map();
+// the phone's time for a game, or null when it's the same as the field's (or we don't know the field's zone)
+function altTime(g) {
+  if (!g || !g.tz || !PHONE_TZ || !g.date || !g.time || g.time === "00:00" || g.tz === PHONE_TZ) return null;
+  const k = `${g.date}|${g.time}|${g.tz}`;
+  if (_alt.has(k)) return _alt.get(k);
+  let r = null;
+  try {
+    const ms = zoneMs(g.date, g.time, g.tz), p = zParts(ms, PHONE_TZ);
+    if (p.date !== g.date || p.time !== g.time) {
+      const day = p.date !== g.date ? new Date(p.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"}) + " " : "";
+      r = {short: day + shortTime(p.time), full: day + fmtTime(p.time), ab: zAbbr(PHONE_TZ, ms), fab: zAbbr(g.tz, ms)};
+    }
+  } catch (e) {}
+  _alt.set(k, r); return r;
+}
+// when the game starts (field time), for "has it kicked off yet"
+const startMs = g => g.tz ? (() => { try { return zoneMs(g.date, g.time, g.tz); } catch (e) { return new Date(`${g.date}T${g.time}:00`).getTime(); } })() : new Date(`${g.date}T${g.time}:00`).getTime();
+// the field's zone label, always shown next to a game time ("MST", "PST", "GMT"…); "" when the field isn't known yet
+const _fab = new Map();
+function fieldAb(g) {
+  if (!g || !g.tz || !g.date || !g.time || g.time === "00:00") return "";
+  const k = `${g.date}|${g.time}|${g.tz}`;
+  if (!_fab.has(k)) { let a = ""; try { a = zAbbr(g.tz, zoneMs(g.date, g.time, g.tz)); } catch (e) {} _fab.set(k, a); }
+  return _fab.get(k);
+}
+// pieces to drop in: after the short time (zone label + the phone's time underneath) / after a full time / in the details line
+const altCol = g => { const f = fieldAb(g), a = altTime(g);
+  return (f ? `<span class="tzab">${esc(f)}</span>` : "") + (a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""); };
+const altTxt = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${f}` : "") + (a ? ` (${a.full} ${a.ab})` : ""); };
+const altDet = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${esc(f)}` : "") + (a ? ` · ${esc(a.full)} ${esc(a.ab)} your time` : ""); };
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
 // "vs"/"@" when there's no score. Tap a row for odds, venue and impact.
@@ -1793,7 +1846,8 @@ function gameRow(D, M, g, o = {}) {
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
   const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
   const done = g.hs != null && g.as != null;
-  const left = o.left !== undefined ? o.left : (o.showDate ? shortDate(g.date) : shortTime(g.time));
+  let left = o.left !== undefined ? o.left : (o.showDate ? shortDate(g.date) : shortTime(g.time));
+  if (left === shortTime(g.time)) left += altCol(g);
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -1807,7 +1861,7 @@ function gameRow(D, M, g, o = {}) {
     const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
     det = `<div class="gdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>
-      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
+      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
   if (o.det) det = `<div class="gdet" hidden>${o.det}</div>`;
   if (o.strong) { if (o.strong.has(L)) ln = `<b>${ln}</b>`; if (o.strong.has(R)) rn = `<b>${rn}</b>`; }
@@ -1882,7 +1936,7 @@ function code(D, id, teams) {
 function waitRow(D, g, f) {
   const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
-  return `<div class="rrow"><span class="rd">${fmtTime(g.time)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us && flip ? "@" : "vs"}</span> ${esc(teamName(D, R))} <span class="pill a">Waiting for score</span></span></div>`;
+  return `<div class="rrow"><span class="rd">${fmtTime(g.time)}${altCol(g)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us && flip ? "@" : "vs"}</span> ${esc(teamName(D, R))} <span class="pill a">Waiting for score</span></span></div>`;
 }
 function checkedTxt() {
   if (!STATUS) return "";
@@ -1936,7 +1990,7 @@ function renderTeam(D, fid, key) {
   // Game weekend (Fri–Sun): only this weekend. Mon–Thu: last weekend's results + next weekend's games.
   const dow = new Date(today + "T12:00:00").getDay(), wkend = dow === 5 || dow === 6 || dow === 0;
   const yest = addDays(today, -1), wStart = addDays(mon, wkend ? 4 : -3), wEnd = addDays(mon, 6), nowMs = Date.now();
-  const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > new Date(`${g.date}T${g.time}:00`).getTime() + 2 * 3600e3);
+  const kickPassed = g => g.date < today || (g.date === today && g.time && g.time !== "00:00" && nowMs > startMs(g) + 2 * 3600e3);
   const inWin = valid.filter(g => g.date >= wStart && g.date <= wEnd && !g.pending);
   const dayLabel = d => (d === yest ? "Yesterday · " : d === today ? "Today · " : "") + fmtDate(d);
   const byTime = (a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || ""));
@@ -2433,7 +2487,7 @@ function pkGameRow(D, g, tz, mine, seen, locked) {
   const P = CTX.M.probs(g.home_id, g.away_id), sc = P.scores[P.pick];
   const dr = PK.draft[g.id] || (mine ? [mine[0], mine[1]] : null);
   const done = g.hs != null && g.as != null, pts = dr && done ? pkPts(dr, g) : null;
-  const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}`;
+  const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}${altTxt(g)}`;
   const step = side => locked ? `<span class="pkfinal${done && (side ? g.as < g.hs : g.hs < g.as) ? " lo" : ""}">${done ? (side ? g.as : g.hs) : ""}${done && (side ? g.as > g.hs : g.hs > g.as) ? '<i class="parr">◂</i>' : ""}</span>` : `<span class="pkstep" data-side="${side}"><button data-d="-1">−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1">+</button></span>`;
   const others = (seen || []).filter(x => !x.me);
   return `<div class="pkg${ours ? " ours" : ""}" data-g="${g.id}">
@@ -2630,7 +2684,7 @@ function evTbdRow(ev, day, fid, card) {
     const full = d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d;
     const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
-    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gt">${times.map(shortTime).join(" / ")}${times.length === 1 ? altCol(day.items[0].g) : ""}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
       <div class="gsub">${why}${one && one.g.venue ? `${why ? " · " : ""}${evField(ev, one.g.venue)}` : ""}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
@@ -2639,11 +2693,11 @@ function evTbdRow(ev, day, fid, card) {
   const lines = day.items.map(x => {
     const ourSide = x.other ? (x.other === "home" ? "away" : "home") : (() => { for (const s of ["home", "away"]) { const r = m.ref(x.g[s]); if (r && r[1] === x.from.num && r[0] === (x.o === "W")) return s; } return "home"; })();
     const other = ourSide === "home" ? "away" : "home", lab = m.label.get(x.g.id);
-    const where = `${times.length > 1 ? `${fmtTime(x.g.time)} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
+    const where = `${times.length > 1 ? `${fmtTime(x.g.time)}${esc(altTxt(x.g))} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
     const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
-  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gt">${times.map(shortTime).join(" / ")}${times.length === 1 ? altCol(day.items[0].g) : ""}</span><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2651,7 +2705,7 @@ function evGameItem(D, ev, g0, fid, o = {}) {
   const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk};
   const us = fid && (g.home_id === fid || g.away_id === fid);
   let sub = evField(ev, g.venue);
-  const tdy = todayISO(), begun = !evDone(g) && g.date && (g.date < tdy || (g.date === tdy && g.time && g.time !== "00:00" && Date.now() >= new Date(`${g.date}T${g.time}:00`).getTime()));
+  const tdy = todayISO(), begun = !evDone(g) && g.date && (g.date < tdy || (g.date === tdy && g.time && g.time !== "00:00" && Date.now() >= startMs(g)));
   if (begun && us) sub += `${sub ? " · " : ""}Waiting for score`;
   if (o.likely && us && !evDone(g)) {
     const opp = g.home_id === fid ? g.away_id : g.home_id, P = Me.probs(g.home_id, g.away_id, true), flip = g.away_id === fid;
@@ -2666,7 +2720,7 @@ function evGameItem(D, ev, g0, fid, o = {}) {
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
   const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong, toptag,
-    sub: o.card ? "" : sub, after: o.card && sub ? `<div class="gpaths">${sub}</div>` : "", det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
+    sub: o.card ? "" : sub, after: o.card && sub ? `<div class="gpaths">${sub}</div>` : "", det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
 // The focus team's event items (known games + TBD/TENTATIVE days), for the Games calendar and the event card.
@@ -2695,9 +2749,9 @@ function evCard(D, ev, fid, open, live) {
   const day3 = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"});
   if (tbd.length && (!left.length || (tbd[0].date + tbd[0].time) < (left[0].date + (left[0].time || "")))) {
     const d = evOurs(ev, fid).days.find(x => x.date === tbd[0].date), one = d && d.items.length === 1 && !d.items[0].cond.length ? d.items[0] : null;
-    line = `Next: ${day3(tbd[0].date)} ${fmtTime(tbd[0].time)} · ${one ? `vs ${m.sideTxt(one.g, one.other)}` : "opponent TBD"}`;
+    line = `Next: ${day3(tbd[0].date)} ${fmtTime(tbd[0].time)}${esc(altTxt(Object.assign({tz: (ev.games.find(x => x.tz) || {}).tz}, tbd[0])))} · ${one ? `vs ${m.sideTxt(one.g, one.other)}` : "opponent TBD"}`;
   } else if (left.length) { const g = left[0], h = m.sideId(g, "home"), opp = h === fid ? m.sideId(g, "away") : h;
-    line = `Next: ${day3(g.date)} ${fmtTime(g.time)} ${h === fid ? "vs" : "@"} ${esc(m.tn(opp))}`; }
+    line = `Next: ${day3(g.date)} ${fmtTime(g.time)}${esc(altTxt(g))} ${h === fid ? "vs" : "@"} ${esc(m.tn(opp))}`; }
   else if (ours.length) {
     const rec = ours.map(g => { const w = m.winnerOf(Object.assign({}, g, {home_id: m.sideId(g, "home"), away_id: m.sideId(g, "away")})), us = m.sideId(g, "home") === fid ? [g.hs, g.as] : [g.as, g.hs]; return `${w === fid ? "W" : us[0] === us[1] && w == null ? "D" : "L"} ${us[0]}–${us[1]}${us[0] === us[1] && w != null ? " pens" : ""}`; });
     const last = ours[ours.length - 1], lab = m.label.get(last.id) || "", won = m.winnerOf(Object.assign({}, last, {home_id: m.sideId(last, "home"), away_id: m.sideId(last, "away")})) === fid;
@@ -2708,7 +2762,7 @@ function evCard(D, ev, fid, open, live) {
   const rows = [...new Set(items.map(x => x.date))].map(d => blk(fmtDate(d), items.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   const full = [...new Set(m.games.map(g => g.date))].map(d => blk(fmtDate(d), m.games.filter(g => g.date === d).map(g => {
     const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
-    return `<div class="fbr"><span class="gt">${shortTime(g.time)}</span><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
+    return `<div class="fbr"><span class="gt">${shortTime(g.time)}${altCol(g)}</span><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
   }).join(""))).join("");
   return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}</div>
     <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
