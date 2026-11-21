@@ -17031,6 +17031,37 @@
   ]
  },
  {
+  "conf": "u16g-4395-41205",
+  "name": "ECNL RL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 82276,
+    "team": "Evolution",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   },
+   {
+    "id": 114853,
+    "team": "FC Wisconsin",
+    "ours": [
+     10,
+     1
+    ],
+    "ecnl": [
+     9,
+     1
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4395-41199",
   "name": "ECNL RL Girls Lake Michigan",
   "ours": [
