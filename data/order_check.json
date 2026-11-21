@@ -697,8 +697,8 @@
    134260,
    136469,
    136543,
-   136651,
    134457,
+   136651,
    133341,
    136468
   ],
@@ -742,6 +742,30 @@
     "ecnl": [
      8,
      18
+    ]
+   },
+   {
+    "id": 136651,
+    "team": "Eastern FC Pre-ECNL RL B2015/16",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
+    ]
+   },
+   {
+    "id": 134457,
+    "team": "Fox Soccer Academy Premier Pre-ECNL 2015/16",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     3
     ]
    }
   ]
@@ -2262,6 +2286,37 @@
    126259,
    133433,
    133495
+  ]
+ },
+ {
+  "conf": "u12b-4383-40810",
+  "name": "Pre-ECNL Boys Far West",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131481,
+    "team": "FC Portland Pre-ECNL B2014/15 I",
+    "ours": [
+     9,
+     22
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
+   {
+    "id": 126259,
+    "team": "Columbia Premier SC Pre-ECNL B2014/15 I",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     15
+    ]
+   }
   ]
  },
  {
@@ -12336,9 +12391,9 @@
    59253,
    129027,
    134149,
-   35806,
    60031,
    131800,
+   35806,
    52497,
    46038,
    59237
@@ -12360,6 +12415,30 @@
   "name": "ECNL Boys Southeast",
   "kind": "points",
   "teams": [
+   {
+    "id": 134149,
+    "team": "NTH NASA",
+    "ours": [
+     13,
+     23
+    ],
+    "ecnl": [
+     12,
+     20
+    ]
+   },
+   {
+    "id": 35806,
+    "team": "CESA Triumph",
+    "ours": [
+     12,
+     14
+    ],
+    "ecnl": [
+     11,
+     14
+    ]
+   },
    {
     "id": 46038,
     "team": "United Futbol Academy",
@@ -21662,6 +21741,18 @@
     ]
    },
    {
+    "id": 112304,
+    "team": "TC Premier SC ECNL RL STXCL G2010/11",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
     "id": 130103,
     "team": "Dynamos ECNL RL STXCL G2010/11",
     "ours": [
@@ -21671,6 +21762,18 @@
     "ecnl": [
      11,
      24
+    ]
+   },
+   {
+    "id": 129404,
+    "team": "Challenge ECNL RL STXCL G2010/11",
+    "ours": [
+     11,
+     13
+    ],
+    "ecnl": [
+     10,
+     13
     ]
    },
    {
@@ -22964,14 +23067,14 @@
    76044,
    132867,
    95048,
+   81570,
    112165,
    133671,
    133177,
    94495,
    133042,
-   135590,
    134914,
-   81570
+   135590
   ],
   "ecnl": [
    81571,
@@ -23013,6 +23116,18 @@
     ]
    },
    {
+    "id": 132117,
+    "team": "Arsenal Colorado",
+    "ours": [
+     17,
+     37
+    ],
+    "ecnl": [
+     16,
+     34
+    ]
+   },
+   {
     "id": 74613,
     "team": "Real Colorado Olympico",
     "ours": [
@@ -23037,6 +23152,18 @@
     ]
    },
    {
+    "id": 133042,
+    "team": "Colorado Storm Central",
+    "ours": [
+     14,
+     1
+    ],
+    "ecnl": [
+     13,
+     1
+    ]
+   },
+   {
     "id": 134914,
     "team": "NM Rapids SC",
     "ours": [
@@ -23045,6 +23172,30 @@
     ],
     "ecnl": [
      0,
+     0
+    ]
+   },
+   {
+    "id": 135590,
+    "team": "El Paso Locomotive FC",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 81570,
+    "team": "Utah Avalanche NUU Avalanche",
+    "ours": [
+     3,
+     3
+    ],
+    "ecnl": [
+     2,
      0
     ]
    }
@@ -24206,14 +24357,14 @@
    129638,
    133012,
    119509,
-   59649,
    131350,
+   59649,
    130077,
    132738,
    133618,
+   70338,
    133294,
    64558,
-   70338,
    95134,
    49353
   ],
@@ -24233,6 +24384,61 @@
    131350,
    133294,
    64558
+  ]
+ },
+ {
+  "conf": "u17g-4260-41146",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131350,
+    "team": "RISE SC ECNL RL STXCL G2009/10",
+    "ours": [
+     10,
+     16
+    ],
+    "ecnl": [
+     9,
+     13
+    ]
+   },
+   {
+    "id": 130077,
+    "team": "Houstonians FC ECNL RL STXCL G2009/10",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     10
+    ]
+   },
+   {
+    "id": 70338,
+    "team": "Lonestar SAT ECNL RL STXCL G2009/10",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   },
+   {
+    "id": 95134,
+    "team": "210 FC ECNL RL STXCL G2009/10",
+    "ours": [
+     11,
+     7
+    ],
+    "ecnl": [
+     10,
+     7
+    ]
+   }
   ]
  },
  {
@@ -25692,9 +25898,9 @@
   "name": "ECNL RL Girls Ohio Valley",
   "ours": [
    113295,
+   134008,
    133006,
    133470,
-   134008,
    68815,
    69456,
    69583,
@@ -25709,6 +25915,37 @@
    69583,
    133006,
    133470
+  ]
+ },
+ {
+  "conf": "u17g-4313-41481",
+  "name": "ECNL RL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 113295,
+    "team": "Lexington Sporting Club Academy",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 134008,
+    "team": "Mercury",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -27363,6 +27600,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 101590,
+    "team": "Kansas Rush Gold",
+    "ours": [
+     14,
+     37
+    ],
+    "ecnl": [
+     13,
+     34
+    ]
+   },
+   {
     "id": 132716,
     "team": "Toca Fusion Elite",
     "ours": [
@@ -27384,6 +27633,18 @@
     "ecnl": [
      14,
      14
+    ]
+   },
+   {
+    "id": 131851,
+    "team": "Gretna Elite Academy",
+    "ours": [
+     15,
+     13
+    ],
+    "ecnl": [
+     14,
+     13
     ]
    }
   ]
