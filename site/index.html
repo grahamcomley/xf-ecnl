@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.64">
+<meta name="app-version" content="v1.65">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1972,6 +1972,12 @@ function renderTeam(D, fid, key) {
     return (F.length ? blk("Completed", F.map(x => x.html).join("")) : "") + (W.length ? blk("Waiting for score", W.map(x => x.html).join("")) : "")
       + [...new Set(U.map(x => x.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`, U.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   };
+  // My team's window card: by day (results, waiting and upcoming together), every game with its time
+  const dayHtml = (games, X) => {
+    const rows = srt(games.map(g => { const done = isDone(g), wait = !done && kickPassed(g);
+      return L(g, done || wait ? {focus: fid, ours: true, wait, left: shortTime(g.time)} : {focus: fid, stake: true, ours: true}); }).concat(X));
+    return [...new Set(rows.map(x => x.date))].map(d => blk(dayLabel(d), rows.filter(x => x.date === d).map(x => x.html).join(""))).join("");
+  };
   // All teams, while an event is on: where our league's teams are playing today (and tomorrow, once it's set)
   const evNow = (() => {
     // one block per event (all its age-group flights together), games by time
@@ -2071,8 +2077,7 @@ function renderTeam(D, fid, key) {
         + evLink(ev1.map(x => x[0]), ev1.length ? (ev1.find(x => x[1] === key) || ev1[0])[1] : ""), "am4")
       + (later.length ? sec("div", "League", `Coming up · next 7 days`, "", days(later), "am4b", true) : "");
   };
-  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(inWinM.filter(isDone).sort(byTime), inWinM.filter(g => !isDone(g) && kickPassed(g)).sort(byTime),
-    inWinM.filter(g => !isDone(g) && !kickPassed(g)).sort(byTime), split(EVI.filter(inWM))) + evLink(evWinM);
+  const sec4 = winHtml(finW, waitW, upW), secM = dayHtml(inWinM, EVI.filter(inWM)) + evLink(evWinM);
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
   const byDayX = (games, row, extra, desc) => { const all = srt(games.map(g => ({date: g.date, time: g.time || "", html: row(g)})).concat(extra)); if (desc) all.reverse();
     return [...new Set(all.map(x => x.date))].map(d => blk(fmtDate(d), all.filter(x => x.date === d).map(x => x.html).join(""))).join(""); };
