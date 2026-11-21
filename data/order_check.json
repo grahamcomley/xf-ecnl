@@ -2015,8 +2015,8 @@
   "name": "ECNL Boys New England",
   "ours": [
    134877,
-   134845,
    115176,
+   134845,
    94546,
    117143,
    116991,
@@ -2040,6 +2040,37 @@
    135307,
    114650,
    117143
+  ]
+ },
+ {
+  "conf": "u13b-4281-41757",
+  "name": "ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134845,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 94546,
+    "team": "FC Stars",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   }
   ]
  },
  {
@@ -2416,8 +2447,8 @@
    117144,
    116992,
    126415,
-   114503,
    94545,
+   114503,
    135073,
    113919,
    133862,
@@ -2437,6 +2468,37 @@
    135321,
    117144,
    133862
+  ]
+ },
+ {
+  "conf": "u13b-4340-41829",
+  "name": "ECNL RL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94545,
+    "team": "FC Stars",
+    "ours": [
+     10,
+     15
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   },
+   {
+    "id": 135073,
+    "team": "East Meadow Soccer Club",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     12
+    ]
+   }
   ]
  },
  {
@@ -10703,8 +10765,8 @@
   "conf": "u11g-4373-41055",
   "name": "Pre-ECNL Girls Heartland",
   "ours": [
-   135144,
    114759,
+   135144,
    131577,
    117747,
    131815,
@@ -10728,6 +10790,37 @@
    131417,
    114759,
    136878
+  ]
+ },
+ {
+  "conf": "u11g-4373-41055",
+  "name": "Pre-ECNL Girls Heartland",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135144,
+    "team": "SLSG Navy Academy I Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     24
+    ],
+    "ecnl": [
+     8,
+     24
+    ]
+   },
+   {
+    "id": 114759,
+    "team": "Missouri Rush Pre-ECNL G2015/16 Blue",
+    "ours": [
+     10,
+     27
+    ],
+    "ecnl": [
+     9,
+     24
+    ]
+   }
   ]
  },
  {
@@ -10762,6 +10855,37 @@
    134297,
    134337,
    133535
+  ]
+ },
+ {
+  "conf": "u11g-4374-41527",
+  "name": "Pre-ECNL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133721,
+    "team": "NWI Lions United Pre-ECNL G2015/16",
+    "ours": [
+     10,
+     21
+    ],
+    "ecnl": [
+     9,
+     18
+    ]
+   },
+   {
+    "id": 128434,
+    "team": "Chicago Inter Pre-ECNL G2015/16 Blue",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
+    ]
+   }
   ]
  },
  {
@@ -12560,9 +12684,9 @@
   "name": "ECNL RL Girls Texas",
   "ours": [
    96493,
+   76690,
    129364,
    69767,
-   76690,
    131840,
    111850,
    134505,
@@ -12589,6 +12713,37 @@
    131267,
    94447,
    111691
+  ]
+ },
+ {
+  "conf": "u13g-4317-41388",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 76690,
+    "team": "SOLAR SC",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   },
+   {
+    "id": 111691,
+    "team": "Sting Black",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   }
   ]
  },
  {
