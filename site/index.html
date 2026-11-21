@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.60">
+<meta name="app-version" content="v1.66">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -71,11 +71,11 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .tsearch{width:32px;padding:0!important;display:grid;place-items:center;flex:none}.tsearch .ic{width:16px;height:16px}
 .tpill.tmp{border-style:dashed}
 .tpx{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin:0 -7px 0 6px;border-radius:50%;vertical-align:middle}
-.tpill.on:not(.tmp){background:var(--ink);color:#0b0d12;border-color:var(--ink)}.tpill.on:not(.tmp) .tpx{background:#0b0d12}.tpill.on:not(.tmp) .tpx .ic{width:13px;height:13px;color:var(--ink)}
+.tpill.on:not(.tmp){background:var(--me);color:#fff;border-color:var(--red)}.tpill.on:not(.tmp) .tpx{background:rgba(255,255,255,.16)}.tpill.on:not(.tmp) .tpx .ic{width:13px;height:13px;color:#fff}
 .tpill.tmp .tpx .ic{width:13px;height:13px;color:var(--mut)}
 .tvisit{flex:none;display:inline-flex;align-items:center;gap:4px;padding:2px;border:1.5px dashed var(--mut);border-radius:19px}.tvisit .tpill.tmp{border-color:transparent;height:30px}
 .tpill.tfollow{display:inline-flex;align-items:center;gap:5px;height:30px;color:#fde047;border-color:#a16207;background:transparent}.tpill.tfollow .ic{width:14px;height:14px;color:#fde047}
-#teamhead{position:relative;z-index:2;background:var(--card)}
+#teamhead{position:relative;z-index:2;background:var(--card);padding-bottom:8px;border-bottom:1px solid var(--line2);box-shadow:0 6px 10px -4px rgba(0,0,0,.6)}
 #tpanel{position:absolute;left:0;right:0;top:0;z-index:3}
 .tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
 .tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
@@ -248,7 +248,17 @@ h3{font-size:14px;margin:10px 0 6px}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 47px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .gtop{grid-column:1/-1;line-height:1;margin-bottom:-2px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
-.evtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:1px 4px;cursor:pointer;white-space:nowrap}
+.pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
+.pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
+.tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
+.grow.ours+.grow.ours{margin-top:6px}
+/* team view and All my teams: every game is ours, so no red rows (red stays where ours sit among others) */
+.gv[data-gv="mine"] .grow.ours,#allmine .grow.ours{background:none;border-radius:0;border-bottom-color:var(--line)}
+.gv[data-gv="mine"] .grow.ours+.grow.ours,#allmine .grow.ours+.grow.ours{margin-top:0}
+.evgo{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:12px 4px 4px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}.evgo .ic{transform:rotate(-90deg);width:18px;height:18px;color:var(--mut);flex:none}
+.nogames{margin-top:10px;font-size:13px;color:var(--mut)}
+body.allmine #tstrip .tpill:not(.tfollow){background:var(--me);color:#fff;border-color:var(--red)}
+.evtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:2px 5px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
 .gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 47px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
@@ -451,11 +461,23 @@ function pillName(full) {
   if (t.length > 1 && t[t.length - 1].toLowerCase() === "academy") t.pop();
   return t.map(x => STATE_AB[x] || x).join(" ");
 }
-// Games tab: All teams | My team (remembered)
+// Games tab: <team> | <league> | All my teams (remembered). "every" = every followed team's games together.
+let ALLMINE_DRAW = null, TITLE_KEY = null;
 function setGv(v, save = true) {
+  if (v === "every" && !document.querySelector('#gviews button[data-gv="every"]')) v = "mine";
   if (save) store.set("gview", v);
   document.querySelectorAll("#gviews button").forEach(b => b.classList.toggle("on", b.dataset.gv === v));
   document.querySelectorAll(".gv").forEach(x => x.hidden = x.dataset.gv !== v);
+  if (v === "every" && ALLMINE_DRAW) ALLMINE_DRAW();
+  syncAllMine();
+}
+// While All my teams is showing: every team pill lit and the title says so; anything else puts the team back.
+function syncAllMine() {
+  const on = TAB === "games" && !!document.querySelector('.gv[data-gv="every"]:not([hidden])');
+  document.body.classList.toggle("allmine", on);
+  const n = document.querySelector("#ttl .ttn");
+  if (on) { if (n) n.textContent = "All my teams"; }
+  else if (n && n.textContent === "All my teams" && TITLE_KEY) setTitle(TITLE_KEY);
 }
 function showTab(t, scroll = true) {
   if (t === "league") { t = "games"; setGv("all", false); }
@@ -465,6 +487,7 @@ function showTab(t, scroll = true) {
   document.querySelectorAll("#tabbar button").forEach(b => { b.classList.toggle("on", b.dataset.tab === t); b.setAttribute("aria-current", b.dataset.tab === t ? "page" : "false"); });
   if (scroll) $("#scroller").scrollTop = 0;
   if (t === "events" && EVDOT) EVDOT.seen();
+  syncAllMine();
 }
 let EVDOT = null;   // the red dot on the Events tab: something new since you last looked, or an event day you haven't opened yet
 const icon = (n, fill) => `<svg class="ic" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
@@ -1415,6 +1438,7 @@ function setTitle(k) {   // top-bar team name: set once per team, cleared only o
   const b = $("#ttl"), tl = $(".topline"), t = k && teamByKey(k);
   if (!t) { b.hidden = true; tl.classList.remove("hasteam"); return; }
   const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""), txt = `${t.s}${m ? ` · U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""}`, n = b.querySelector(".ttn");
+  TITLE_KEY = k;
   if (n.textContent !== txt) n.textContent = txt;
   b.setAttribute("aria-label", `${t.s} ${t.a || ""}: team options`); b.hidden = false; tl.classList.add("hasteam");
   store.set("ttlText", txt);
@@ -1472,6 +1496,7 @@ async function showNote(gids, view, item) {
 function focusGames(gids, view) {
   FOCUS_AT = Date.now();
   let el = null;
+  if (view === "games" && store.get("gview") === "every") setGv("mine");   // an alert is about one team's game
   if (view) showTab(view === "league" ? "league" : view === "games" ? "games" : view, false);
   const shown = x => x.closest(".pane") && !x.closest(".pane").hidden && !(x.closest(".gv") && x.closest(".gv").hidden);
   for (const id of gids) {
@@ -1923,6 +1948,18 @@ function renderTeam(D, fid, key) {
   const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
   // Event games sit in the calendar with the league games (tagged with the event's name).
   const EVI = evItemsFor(D, events, fid);
+  const regionOf = X => (X.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
+  const regionName = (D.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
+  const nice = ev => evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  const ageOf = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec((t && t.a) || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
+  // My team / All my teams: the window stretches to cover a tournament that runs past the weekend (Thu–Tue or longer)
+  const stretch = (spans, a, b) => { for (const sp of spans) if (sp[0] <= b && sp[1] >= a) { if (sp[0] < a) a = sp[0]; if (sp[1] > b) b = sp[1]; } return [a, b]; };
+  const spansOf = evs => evs.filter(e => !e.competition).map(evSpan).filter(Boolean);
+  const [mS, mE] = stretch(spansOf(events), wStart, wEnd);
+  const winTitle = (a, b) => a !== wStart || b !== wEnd ? "This week" : wkend ? "This weekend" : "Last weekend & coming up";
+  const evLink = (evs, k) => { if (!evs.length) return "";
+    const nm = evs.length === 1 ? `${esc(nice(evs[0]))} bracket` : "Event brackets";
+    return `<button class="evgo" data-goev="${k || ""}"><span>${nm} and results on Events</span>${icon("chev")}</button>`; };
   const evStand = {top: [], soon: []};
   for (const ev of events) { const sp = !ev.competition && evSpan(ev); if (!sp) continue;
     if (today >= sp[0] && today <= addDays(sp[1], 1)) evStand.top.push(ev); else if (today >= addDays(sp[0], -14) && today < sp[0]) evStand.soon.push(ev); }   // ours: known games, plus TBD / TENTATIVE days
@@ -1937,6 +1974,12 @@ function renderTeam(D, fid, key) {
     const U = srt(up.map(g => L(g, {focus: fid, stake: true, ours: true})).concat(X.up));
     return (F.length ? blk("Completed", F.map(x => x.html).join("")) : "") + (W.length ? blk("Waiting for score", W.map(x => x.html).join("")) : "")
       + [...new Set(U.map(x => x.date))].map((d, i) => blk(`${i === 0 ? "Coming up · " : ""}${dayLabel(d)}`, U.filter(x => x.date === d).map(x => x.html).join(""))).join("");
+  };
+  // My team's window card: by day (results, waiting and upcoming together), every game with its time
+  const dayHtml = (games, X) => {
+    const rows = srt(games.map(g => { const done = isDone(g), wait = !done && kickPassed(g);
+      return L(g, done || wait ? {focus: fid, ours: true, wait, left: shortTime(g.time)} : {focus: fid, stake: true, ours: true}); }).concat(X));
+    return [...new Set(rows.map(x => x.date))].map(d => blk(dayLabel(d), rows.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   };
   // All teams, while an event is on: where our league's teams are playing today (and tomorrow, once it's set)
   const evNow = (() => {
@@ -1959,8 +2002,7 @@ function renderTeam(D, fid, key) {
     }
     const out = [...byEv.values()].map(e => ({ev: e.ev, today: e.today, tomorrow: tom <= e.last ? e.tomorrow : [], more: tom <= e.last}));
     if (!out.length) return "";
-    const region = (D.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
-    const nice = ev => evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    const region = regionName;
     const rows = list => srt(list.map(([ev, g]) => evGameItem(D, ev, g, fid, {strong: mem, plain: true}))).map(x => x.html).join("");
     return out.map(({ev, today: a, tomorrow: b, more}) => sec("div", "Event", `${esc(region)} teams at ${esc(nice(ev))}`, "",
       blk(`Today · ${fmtDate(today)}`, a.length ? rows(a) : "<div class='mut'>No games for these teams today.</div>")
@@ -1990,7 +2032,55 @@ function renderTeam(D, fid, key) {
     EVDOT = {show: events.length > 0 && (store.get(kS) !== String(h) || (live && store.get(kD) !== today)),
       seen() { store.set(kS, String(h)); store.set(kD, today); this.show = false; const d = document.querySelector("#tabbar .evdot"); if (d) d.hidden = true; }};
   }
-  const sec4 = winHtml(finW, waitW, upW), secM = winHtml(finW.filter(isMe), waitW.filter(isMe), upW.filter(isMe));
+  const inWinM = valid.filter(g => isMe(g) && g.date >= mS && g.date <= mE && !g.pending);
+  const inWM = x => x.date >= mS && x.date <= mE;
+  const evWinM = events.filter(ev => !ev.competition && EVI.some(x => x.ev === ev && inWM(x)));
+  // All my teams: every followed team's games (league + events) for the window, then the next 7 days.
+  ALLMINE_DRAW = async () => {
+    if (!$("#allmine")) return;
+    const teams = [];
+    for (const k of (favs() || []).filter(teamByKey)) {
+      const t = teamByKey(k);
+      try {
+        if (!CONF_CACHE[t.f]) { const txt = await fetch(`data/conf/${t.f}.json`, {cache: "no-store"}).then(r => r.text()); CONF_CACHE[t.f] = JSON.parse(txt); CONF_TXT[t.f] = txt; CONF_AT[t.f] = Date.now(); }
+        const D2 = CONF_CACHE[t.f], tm = D2.teams.find(x => `${D2.pool_key}-${x.id}` === k); if (!tm) continue;
+        D2.__fk = t.f;
+        teams.push({k, t, D: D2, fid: tm.id, evs: ((D2.team_events || {})[String(tm.id)] || []).map(i => D2.events[i]).filter(Boolean),
+          lbl: `${regionOf(D2)}${ageOf(t) ? " " + ageOf(t) : ""}`,   // tag = the league: the team's name is already on the game line
+          name: `${pillName(t.s)}${ageOf(t) ? " · " + ageOf(t) : ""}`});
+      } catch (e) {}
+    }
+    const box = $("#allmine"); if (!box) return;   // moved on meanwhile
+    const [a, b] = stretch(teams.flatMap(x => spansOf(x.evs)), wStart, wEnd), end2 = addDays(b, 7);
+    const items = [], seen = new Set(), had = new Set(), evW = new Map();
+    for (const T of teams) {
+      const M2 = makeModel(T.D.teams, T.D.model), tag = `<span class="tmtag">${esc(T.lbl)}</span>`;
+      const add = (date, time, html) => { items.push({date, time: time || "", html: `<div data-tk="${T.k}">${html}</div>`}); if (date >= a && date <= b) had.add(T.k); };
+      for (const g of T.D.games || []) {
+        if (!g.home_id || !g.away_id || g.bad || g.pending || (g.home_id !== T.fid && g.away_id !== T.fid)) continue;
+        if (g.date < a || g.date > end2 || seen.has("g" + g.id)) continue;
+        seen.add("g" + g.id);
+        const done = g.hs != null && g.as != null;
+        add(g.date, g.time, gameRow(T.D, M2, g, {focus: T.fid, ours: true, wait: !done && kickPassed(g), toptag: tag}));
+      }
+      for (const x of evItemsFor(T.D, T.evs, T.fid)) {
+        if (x.date < a || x.date > end2 || (x.g && seen.has("e" + x.g.id))) continue;
+        if (x.g) seen.add("e" + x.g.id);
+        add(x.date, x.time, x.html.replace('<div class="gtop">', `<div class="gtop">${tag} `));
+        if (x.date >= a && x.date <= b && !x.ev.competition && !evW.has(x.ev.event_id)) evW.set(x.ev.event_id, [x.ev, T.k]);
+      }
+    }
+    const days = list => [...new Set(srt(list).map(x => x.date))].map(d => blk(dayLabel(d), list.filter(x => x.date === d).map(x => x.html).join(""))).join("");
+    const inA = items.filter(x => x.date <= b), later = items.filter(x => x.date > b);
+    const none = teams.filter(T => !had.has(T.k)).map(T => esc(T.name));
+    const ev1 = [...evW.values()];
+    box.innerHTML = sec("div", "League", winTitle(a, b), `${fmtDate(a)} – ${fmtDate(b)}`,
+        (inA.length ? days(inA) : "<div class='mut'>No games for your teams in this window.</div>")
+        + (none.length && inA.length ? `<div class="nogames">No games ${winTitle(a, b) === "This weekend" ? "this weekend" : "in this window"}: ${none.join(", ")}</div>` : "")
+        + evLink(ev1.map(x => x[0]), ev1.length ? (ev1.find(x => x[1] === key) || ev1[0])[1] : ""), "am4")
+      + (later.length ? sec("div", "League", `Coming up · next 7 days`, "", days(later), "am4b", true) : "");
+  };
+  const sec4 = winHtml(finW, waitW, upW), secM = dayHtml(inWinM, EVI.filter(inWM)) + evLink(evWinM);
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
   const byDayX = (games, row, extra, desc) => { const all = srt(games.map(g => ({date: g.date, time: g.time || "", html: row(g)})).concat(extra)); if (desc) all.reverse();
     return [...new Set(all.map(x => x.date))].map(d => blk(fmtDate(d), all.filter(x => x.date === d).map(x => x.html).join(""))).join(""); };
@@ -2000,13 +2090,15 @@ function renderTeam(D, fid, key) {
   const seasonRes = played.filter(g => g.date < wStart).sort((a, b) => byTime(b, a));
   const seasonHtml = byDay(seasonRes, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}));
   // My team: the same sections, only this team's games
-  const restM = restS.filter(isMe), missedM = missed.filter(isMe), seasonM = seasonRes.filter(isMe);
-  const evRest = [], evPast = [];   // event games live on the Events tab
+  const restM = scheduled.filter(g => g.date > mE && isMe(g)), missedM = missed.filter(isMe), seasonM = played.filter(g => g.date < mS && isMe(g)).sort((a, b) => byTime(b, a));
+  const evRest = EVI.filter(x => x.date > mE && !x.done), evPast = EVI.filter(x => x.done && x.date < mS);   // event games sit with the league games
   const restHtmlM = byDayX(restM, g => gameRow(D, M, g, {focus: fid, stake: true, ours: true}), evRest)
     + (missedM.length ? blk("New date not set", missedM.map(g => gameRow(D, M, g, {focus: fid, stake: true, ours: true, left: "TBD"})).join("")) : "");
   const seasonHtmlM = byDayX(seasonM, g => gameRow(D, M, g, {focus: fid, ours: true, left: ""}), evPast.map(x => Object.assign({}, x, {html: x.html.replace(/<span class="gt">[^<]*/, '<span class="gt">')})), true);
   // All teams | My team: your last choice; otherwise My team for a team you follow
-  const gview = store.get("gview") || (starred ? "mine" : "all");
+  const nFav = (favs() || []).filter(teamByKey).length;
+  let gview = store.get("gview") || (starred ? "mine" : "all");
+  if (gview === "every" && nFav < 2) gview = "mine";
   // Remaining games for the predictor, one closed row per weekend (Mon–Sun); the next weekend with games
   // starts open. Every game still counts in the predicted table, open or not.
   const prow = g => gameRow(D, M, g, {focus: fid, picks: true, left: shortTime(g.time)});
@@ -2062,17 +2154,18 @@ function renderTeam(D, fid, key) {
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
-  <div class="pviews" id="gviews"><button data-gv="all" class="${gview === "all" ? "on" : ""}">All teams</button><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">My team</button></div>
+  <div class="pviews${nFav >= 2 ? " pv3" : ""}" id="gviews"><button data-gv="mine" class="${gview === "mine" ? "on" : ""}">${me} ${ageOf(teamByKey(key))}</button><button data-gv="all" class="${gview === "all" ? "on" : ""}">${esc(regionName)} ${ageOf(teamByKey(key))}</button>${nFav >= 2 ? `<button data-gv="every" class="${gview === "every" ? "on" : ""}">All my teams</button>` : ""}</div>
   <div class="gv" data-gv="all" ${gview === "all" ? "" : "hidden"}>
   ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, sec4 || "<div class='mut'>No league games in this window.</div>", "s4")}
   ${sec("div", "League", "Coming up", "", `<div class="lazy">${restHtml || "<div class='mut'>No more games scheduled.</div>"}</div>`, "s4b2", false)}
   ${sec("div", "League", "Season results", "", seasonHtml || "<div class='mut'>No earlier results.</div>", "s4c2", false)}
   </div>
   <div class="gv" data-gv="mine" ${gview === "mine" ? "" : "hidden"}>
-  ${sec("div", "League", `${wkend ? "This weekend" : "Last weekend & coming up"}<span class="h2lg">${esc(D.conf_name)}</span>`, `${fmtDate(wStart)} – ${fmtDate(wEnd)}`, secM || `<div class='mut'>No league game for ${me} in this window.</div>`, "m4")}
+  ${sec("div", "League", winTitle(mS, mE), `${fmtDate(mS)} – ${fmtDate(mE)}`, secM || `<div class='mut'>No games for ${me} in this window.</div>`, "m4")}
   ${sec("div", "League", `Coming up${restM.length + missedM.length + evRest.length ? ` · ${restM.length + missedM.length + evRest.length}` : ""}`, "", restHtmlM || "<div class='mut'>No more games scheduled.</div>", "m4b", true)}
   ${sec("div", "League", `Season results${seasonM.length + evPast.length ? ` · ${seasonM.length + evPast.length}` : ""}`, "", seasonHtmlM || "<div class='mut'>No earlier results.</div>", "m4c", false)}
   </div>
+  <div class="gv" data-gv="every" ${gview === "every" ? "" : "hidden"}><div id="allmine"><div class="card ctx mut">Loading your teams…</div></div></div>
   ${""/*events live on the Events tab*/ && events.length ? sec("div", "Events", events.every(e => e.competition) ? "Other competitions" : events.some(e => e.competition) ? "Other competitions & events" : "Showcases & tournaments", events.some(e => e.competition) ? "Separate from this league's table." : "Don't count toward league standings.",
       events.map(ev => evCard(D, ev, fid, false)).join(""), "evs") : ""}
 </div><div class="pane" data-tab="events">
@@ -2120,7 +2213,9 @@ function renderTeam(D, fid, key) {
     else if (cur && cur.offsetLeft + cur.offsetWidth > ts.scrollLeft + ts.clientWidth) ts.scrollLeft = cur.offsetLeft + cur.offsetWidth - ts.clientWidth + 8;
     fade(); ts.onscroll = () => { fade(); store.set("stripX", String(Math.round(ts.scrollLeft))); };
     // another team: switch (keeps your tab) · the team you're on: its team sheet
-    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return; if (b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
+    ts.onclick = e => { const b = e.target.closest("button[data-k]"); if (!b) return;
+      if (document.body.classList.contains("allmine")) setGv("mine");   // All my teams → just this team
+      if (b.dataset.k === key) return; KEEP_TAB = true; location.hash = "t=" + b.dataset.k; };
     $("#tsearch").onclick = () => $("#finder").classList.contains("open") ? closeFinder() : openFinder();
     const follow = () => { toggleFav(key); const on = (favs() || []).includes(key); drawHead(); toast(on ? `Following ${focus.short}. It's saved to your teams.` : `Stopped following ${focus.short}`);
       if (on && CLERK_READY && !ME && !store.get("nudged") && !store.get("signedInOnce")) { store.set("nudged", "1"); setTimeout(() => $("#nudge").hidden = false, 700); }
@@ -2157,6 +2252,8 @@ function renderTeam(D, fid, key) {
   if (TP_OPEN || OPEN_SHEET) { OPEN_SHEET = false; teamSheet(); }   // sheet open while flipping teams: show this team's
   try { store.set("recentTeams", [key].concat(recent.filter(k => k !== key)).slice(0, 30).join(",")); } catch (e) {}
   if ($("#gviews")) $("#gviews").onclick = e => { const b = e.target.closest("button[data-gv]"); if (b) setGv(b.dataset.gv); };
+  if (gview === "every") ALLMINE_DRAW();
+  syncAllMine();
   async function share() {
     const url = location.origin + location.pathname + "#t=" + key;
     if (navigator.share) { try { await navigator.share({title: focus.short, url}); return; } catch (e) {} }
@@ -2209,11 +2306,15 @@ function renderTeam(D, fid, key) {
   };
   $("#app").onclick = e => {
     if (e.target.closest("a")) return;
+    const go = e.target.closest("[data-goev]");
+    if (go) { if (go.dataset.goev && go.dataset.goev !== CUR) { TAB = "events"; KEEP_TAB = true; location.hash = "t=" + go.dataset.goev; } else showTab("events"); return; }
     const et = e.target.closest("[data-ev]:not(details)");
     if (et) {
       const k = et.dataset.ev, pane = et.closest(".pane");
       let c = pane && pane.querySelector(`details.evcard[data-ev="${k}"]`);
-      if (!c) { showTab("games"); c = document.querySelector(`.pane[data-tab="games"] details.evcard[data-ev="${k}"]`); const ss = c && c.closest("details.sec"); if (ss) ss.open = true; }
+      const tk = et.closest("[data-tk]");
+      if (tk && tk.dataset.tk !== CUR) { TAB = "events"; KEEP_TAB = true; location.hash = "t=" + tk.dataset.tk; return; }   // All my teams: that team's Events
+      if (!c) { showTab("events"); c = document.querySelector(`.pane[data-tab="events"] details.evcard[data-ev="${k}"]`); const ss = c && c.closest("details.sec"); if (ss) ss.open = true; }
       if (c) { c.open = true; c.scrollIntoView({block: "start", behavior: "smooth"}); c.classList.add("flash"); setTimeout(() => c.classList.remove("flash"), 1200); }
       return;
     }
@@ -2527,8 +2628,7 @@ function evTbdRow(ev, day, fid, card) {
     const k = Math.max(...day.items.map(x => x.cond.length));
     const dep = [...new Set(day.items.flatMap(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").split(" ").pop())))];
     const full = d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d;
-    const why = day.tentative ? `If we ${day.items.map(x => x.cond.map(c => c.replace(/<[^>]+>/g, "").replace(/^Win /, "win ").replace(/^Loss /, "lose ")).join(" and ")).join(" or ")}`
-      : k ? (what ? `${esc(what)} · depends on ${dep.join(" and ")}` : `Depends on ${dep.map(full).join(" and ")}`) : (what ? esc(what) : "");
+    const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
     return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gt">${times.map(shortTime).join(" / ")}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
       <div class="gsub">${why}${one && one.g.venue ? `${why ? " · " : ""}${evField(ev, one.g.venue)}` : ""}</div></div>`;
@@ -2551,6 +2651,8 @@ function evGameItem(D, ev, g0, fid, o = {}) {
   const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk};
   const us = fid && (g.home_id === fid || g.away_id === fid);
   let sub = evField(ev, g.venue);
+  const tdy = todayISO(), begun = !evDone(g) && g.date && (g.date < tdy || (g.date === tdy && g.time && g.time !== "00:00" && Date.now() >= new Date(`${g.date}T${g.time}:00`).getTime()));
+  if (begun && us) sub += `${sub ? " · " : ""}Waiting for score`;
   if (o.likely && us && !evDone(g)) {
     const opp = g.home_id === fid ? g.away_id : g.home_id, P = Me.probs(g.home_id, g.away_id, true), flip = g.away_id === fid;
     const sL = flip ? [P.score[1], P.score[0]] : P.score, cf = confidence(ev.teams, fid, opp);
