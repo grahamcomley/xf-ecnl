@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.67">
+<meta name="app-version" content="v1.68">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -250,6 +250,7 @@ h3{font-size:14px;margin:10px 0 6px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
+.tzab{font-size:9.5px;font-weight:600;color:var(--mut);margin-left:2px;letter-spacing:.2px}
 .tz2{display:block;font-size:10px;line-height:1.2;color:var(--mut);font-weight:500;white-space:nowrap;margin-top:1px}
 .tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
 .grow.ours+.grow.ours{margin-top:6px}
@@ -1824,10 +1825,19 @@ function altTime(g) {
 }
 // when the game starts (field time), for "has it kicked off yet"
 const startMs = g => g.tz ? (() => { try { return zoneMs(g.date, g.time, g.tz); } catch (e) { return new Date(`${g.date}T${g.time}:00`).getTime(); } })() : new Date(`${g.date}T${g.time}:00`).getTime();
-// pieces to drop in: under the short time / after a full time / in the details line
-const altCol = g => { const a = altTime(g); return a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""; };
-const altTxt = g => { const a = altTime(g); return a ? ` (${a.full} ${a.ab})` : ""; };
-const altDet = g => { const a = altTime(g); return a ? ` ${esc(a.fab)} · ${esc(a.full)} ${esc(a.ab)} your time` : ""; };
+// the field's zone label, always shown next to a game time ("MST", "PST", "GMT"…); "" when the field isn't known yet
+const _fab = new Map();
+function fieldAb(g) {
+  if (!g || !g.tz || !g.date || !g.time || g.time === "00:00") return "";
+  const k = `${g.date}|${g.time}|${g.tz}`;
+  if (!_fab.has(k)) { let a = ""; try { a = zAbbr(g.tz, zoneMs(g.date, g.time, g.tz)); } catch (e) {} _fab.set(k, a); }
+  return _fab.get(k);
+}
+// pieces to drop in: after the short time (zone label + the phone's time underneath) / after a full time / in the details line
+const altCol = g => { const f = fieldAb(g), a = altTime(g);
+  return (f ? `<span class="tzab">${esc(f)}</span>` : "") + (a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""); };
+const altTxt = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${f}` : "") + (a ? ` (${a.full} ${a.ab})` : ""); };
+const altDet = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${esc(f)}` : "") + (a ? ` · ${esc(a.full)} ${esc(a.ab)} your time` : ""); };
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
 // "vs"/"@" when there's no score. Tap a row for odds, venue and impact.

@@ -235,16 +235,16 @@ function localParts(tz, ms) {
   const g = t => p.find(x => x.type === t).value;
   return {day: g("weekday"), date: `${g("year")}-${g("month")}-${g("day")}`, hour: +g("hour") % 24};
 }
-// "10:00 AM MST (9:00 AM PST)" when the phone is in another time zone than the field; just "10:00 AM" otherwise
+// "10:00 AM MST (9:00 AM PST)" when the phone is in another time zone than the field; "10:00 AM PST" otherwise
 function whenText(g, ftz, tz, kick) {
   const t = time12(g[7]);
-  if (!g[9] || !tz || ftz === tz || !g[7] || g[7] === "00:00") return t;
+  if (!g[9] || !g[7] || g[7] === "00:00") return t;   // field not known yet: one time, no label
   try {
     const ab = z => { let a = new Intl.DateTimeFormat("en-US", {timeZone: z, timeZoneName: "short"}).formatToParts(kick).find(x => x.type === "timeZoneName").value;
       if (/^(GMT|UTC)/.test(a)) { const b = new Intl.DateTimeFormat("en-GB", {timeZone: z, timeZoneName: "short"}).formatToParts(kick).find(x => x.type === "timeZoneName").value; if (b && !/^(GMT|UTC)[+-]/.test(b)) a = b; }
       return a; };
     const mine = new Intl.DateTimeFormat("en-US", {timeZone: tz, hour: "numeric", minute: "2-digit"}).format(kick);
-    if (mine.replace(/\u202f/g, " ") === t) return t;
+    if (!tz || ftz === tz || mine.replace(/\u202f/g, " ") === t) return `${t} ${ab(ftz)}`;   // always say which zone
     return `${t} ${ab(ftz)} (${mine.replace(/\u202f/g, " ")} ${ab(tz)})`;
   } catch (e) { return t; }
 }
