@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.61">
+<meta name="app-version" content="v1.62">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -248,13 +248,14 @@ h3{font-size:14px;margin:10px 0 6px}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 47px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .gtop{grid-column:1/-1;line-height:1;margin-bottom:-2px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
+.pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--red);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
-.tmtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:1px 4px;white-space:nowrap}
+.tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
 .grow.ours+.grow.ours,[data-tk]+[data-tk]{margin-top:6px}
 .evgo{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:12px 4px 4px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}.evgo .ic{transform:rotate(-90deg);width:18px;height:18px;color:var(--mut);flex:none}
 .nogames{margin-top:10px;font-size:13px;color:var(--mut)}
 body.allmine #tstrip .tpill:not(.tfollow){background:var(--ink);color:#0b0d12;border-color:var(--ink)}
-.evtag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:1px 4px;cursor:pointer;white-space:nowrap}
+.evtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:2px 5px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
 .gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 47px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
@@ -1944,6 +1945,7 @@ function renderTeam(D, fid, key) {
   const blk = (title, body) => `<div class="blk"><div class="day">${title}</div>${body}</div>`;
   // Event games sit in the calendar with the league games (tagged with the event's name).
   const EVI = evItemsFor(D, events, fid);
+  const regionOf = X => (X.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
   const regionName = (D.conf_name || "").replace(/^(Pre-ECNL|ECNL RL|ECNL|MLS NEXT( Homegrown| Academy)?)\s+((Boys|Girls)\s+)?/i, "") || "League";
   const nice = ev => evTag(ev).toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
   const ageOf = t => { const m = /U(\d+)\s+(Boys|Girls)/.exec((t && t.a) || ""); return m ? `U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""; };
@@ -2035,7 +2037,8 @@ function renderTeam(D, fid, key) {
         const D2 = CONF_CACHE[t.f], tm = D2.teams.find(x => `${D2.pool_key}-${x.id}` === k); if (!tm) continue;
         D2.__fk = t.f;
         teams.push({k, t, D: D2, fid: tm.id, evs: ((D2.team_events || {})[String(tm.id)] || []).map(i => D2.events[i]).filter(Boolean),
-          lbl: `${pillName(t.s)}${ageOf(t) ? " · " + ageOf(t) : ""}`});
+          lbl: `${regionOf(D2)}${ageOf(t) ? " " + ageOf(t) : ""}`,   // tag = the league: the team's name is already on the game line
+          name: `${pillName(t.s)}${ageOf(t) ? " · " + ageOf(t) : ""}`});
       } catch (e) {}
     }
     const box = $("#allmine"); if (!box) return;   // moved on meanwhile
@@ -2060,7 +2063,7 @@ function renderTeam(D, fid, key) {
     }
     const days = list => [...new Set(srt(list).map(x => x.date))].map(d => blk(dayLabel(d), list.filter(x => x.date === d).map(x => x.html).join(""))).join("");
     const inA = items.filter(x => x.date <= b), later = items.filter(x => x.date > b);
-    const none = teams.filter(T => !had.has(T.k)).map(T => esc(T.lbl));
+    const none = teams.filter(T => !had.has(T.k)).map(T => esc(T.name));
     const ev1 = [...evW.values()];
     box.innerHTML = sec("div", "League", winTitle(a, b), `${fmtDate(a)} – ${fmtDate(b)}`,
         (inA.length ? days(inA) : "<div class='mut'>No games for your teams in this window.</div>")
@@ -2640,6 +2643,8 @@ function evGameItem(D, ev, g0, fid, o = {}) {
   const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk};
   const us = fid && (g.home_id === fid || g.away_id === fid);
   let sub = evField(ev, g.venue);
+  const tdy = todayISO(), begun = !evDone(g) && g.date && (g.date < tdy || (g.date === tdy && g.time && g.time !== "00:00" && Date.now() >= new Date(`${g.date}T${g.time}:00`).getTime()));
+  if (begun && us) sub += `${sub ? " · " : ""}Waiting for score`;
   if (o.likely && us && !evDone(g)) {
     const opp = g.home_id === fid ? g.away_id : g.home_id, P = Me.probs(g.home_id, g.away_id, true), flip = g.away_id === fid;
     const sL = flip ? [P.score[1], P.score[0]] : P.score, cf = confidence(ev.teams, fid, opp);
