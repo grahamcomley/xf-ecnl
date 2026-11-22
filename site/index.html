@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.71">
+<meta name="app-version" content="v1.72">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -250,7 +250,9 @@ h3{font-size:14px;margin:10px 0 6px}
 .gtop .gt{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:11.5px;font-weight:600;color:var(--mut);white-space:nowrap}
 .gtop .tzab,.rd .tzab,.rd .tz2{display:inline!important;margin:0 0 0 3px!important;font-size:10.5px}.rd .tz2::before{content:"· "}
 .gtop .tz2{display:block!important;margin:1px 0 0!important;font-size:10.5px}
-.rrow{flex-wrap:wrap}.rrow .rd{flex-basis:100%}.gtop .kslot{display:block;margin:2px 0 0}
+.rrow{flex-wrap:wrap}.rrow .rd{flex-basis:100%}.gtop .kslot{display:block;margin:2px 0 0}.gtags .kslot{display:inline;margin:0}
+.thd{display:flex;align-items:baseline;gap:5px;padding:9px 2px 1px;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.2px}.day+.thd{padding-top:6px}
+.thd .z{font-size:11px;font-weight:600;color:var(--mut)}.thd .alt{font-size:12px;font-weight:600;color:var(--mut)}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:4px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
@@ -1840,6 +1842,32 @@ function fieldAb(g) {
 // pieces to drop in: after the short time (zone label + the phone's time underneath) / after a full time / in the details line
 const altCol = g => { const f = fieldAb(g), a = altTime(g);
   return (f ? `<span class="tzab">${esc(f)}</span>` : "") + (a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""); };
+// Time headers: inside each day block, games are grouped under their start time ("10a MST · 9a PST"),
+// so rows carry no time of their own. Runs on every list as it's drawn (MutationObserver runs before paint).
+function timeHeads(root) {
+  for (const blk of (root || document).querySelectorAll(".blk:not([data-th])")) {
+    blk.dataset.th = "1";
+    let last = null;
+    for (const el of [...blk.children]) {
+      const row = el.classList.contains("grow") || el.classList.contains("fbr") ? el : el.querySelector && el.querySelector(":scope > .grow");
+      if (!row) continue;
+      const top = row.querySelector(":scope > .gtop"), gt = top && top.querySelector(".gt"), t1 = gt && gt.querySelector(".t1");
+      if (!t1) continue;
+      const ab = t1.querySelector(".tzab"), t = [...t1.childNodes].filter(n => n !== ab).map(n => n.textContent).join("").trim();
+      if (!/^(\d|TBD)/.test(t)) continue;   // a date shown in place of a time stays on the row
+      const alt = gt.querySelector(".tz2"), kslot = gt.querySelector(".kslot"), key = gt.textContent;
+      if (key !== last) {
+        const h = document.createElement("div"); h.className = "thd";
+        h.innerHTML = `<span>${esc(t)}</span>${ab ? `<span class="z">${esc(ab.textContent)}</span>` : ""}${alt ? `<span class="alt">· ${esc(alt.textContent)}</span>` : ""}`;
+        el.before(h); last = key;
+      }
+      if (kslot && kslot.innerHTML.trim()) top.querySelector(".gtags").appendChild(kslot);
+      gt.remove();
+      const tg = top.querySelector(".gtags"); if (!tg || !tg.innerHTML.trim()) top.remove();
+    }
+  }
+}
+new MutationObserver(ms => { for (const m of ms) if (m.addedNodes.length) { timeHeads(document); return; } }).observe(document.documentElement, {childList: true, subtree: true});
 // top-right time block: "12:30p MST" with the phone's "11:30a PST" under it when different
 const timeBlock = (txt, g) => { const f = g ? fieldAb(g) : "", a = g ? altTime(g) : null;
   return `<span class="t1">${txt}${f ? `<span class="tzab">${esc(f)}</span>` : ""}</span>${a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""}`; };
