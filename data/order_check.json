@@ -2924,6 +2924,18 @@
     ]
    },
    {
+    "id": 112171,
+    "team": "SAFC ECNL RL STXCL B2013/14",
+    "ours": [
+     9,
+     10
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
     "id": 132664,
     "team": "Barca Academy Austin ECNL RL STXCL B2013/14 Blue",
     "ours": [
@@ -2933,6 +2945,18 @@
     "ecnl": [
      10,
      9
+    ]
+   },
+   {
+    "id": 133305,
+    "team": "Lonestar ATX STH ECNL RL STXCL B2013/14 Gold",
+    "ours": [
+     10,
+     4
+    ],
+    "ecnl": [
+     9,
+     3
     ]
    }
   ]
@@ -6186,8 +6210,8 @@
    119063,
    119437,
    137622,
-   119073,
    119127,
+   119073,
    137537,
    119294,
    119319,
@@ -6220,6 +6244,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 137622,
+    "team": "DASC",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     16
+    ]
+   },
+   {
     "id": 137537,
     "team": "Kickers FC",
     "ours": [
@@ -6229,6 +6265,18 @@
     "ecnl": [
      6,
      9
+    ]
+   },
+   {
+    "id": 119073,
+    "team": "Fusion Soccer Club",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     12
     ]
    },
    {
@@ -17769,6 +17817,30 @@
     "ecnl": [
      9,
      19
+    ]
+   },
+   {
+    "id": 127995,
+    "team": "Chicago Inter",
+    "ours": [
+     13,
+     20
+    ],
+    "ecnl": [
+     12,
+     17
+    ]
+   },
+   {
+    "id": 134300,
+    "team": "Rockford Raptors FC",
+    "ours": [
+     12,
+     9
+    ],
+    "ecnl": [
+     11,
+     9
     ]
    }
   ]
@@ -29960,6 +30032,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 132719,
+    "team": "Toca Fusion Premier",
+    "ours": [
+     18,
+     32
+    ],
+    "ecnl": [
+     17,
+     29
+    ]
+   },
+   {
     "id": 135950,
     "team": "Kansas Rush Blue",
     "ours": [
@@ -30048,6 +30132,18 @@
     "ecnl": [
      11,
      15
+    ]
+   },
+   {
+    "id": 52182,
+    "team": "Oklahoma Cosmos",
+    "ours": [
+     12,
+     13
+    ],
+    "ecnl": [
+     11,
+     13
     ]
    },
    {
@@ -31931,9 +32027,9 @@
    133010,
    114124,
    60821,
-   43957,
    133267,
    113187,
+   43957,
    59402,
    133617
   ],
@@ -31947,6 +32043,37 @@
    59402,
    133617,
    113187
+  ]
+ },
+ {
+  "conf": "u19g-4260-41142",
+  "name": "ECNL RL Girls STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 60821,
+    "team": "NB AJAX ECNL RL STXCL G2008/09",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   },
+   {
+    "id": 43957,
+    "team": "Sting CC ECNL RL STXCL G2008/09 Hennessy",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     7
+    ]
+   }
   ]
  },
  {
@@ -32189,8 +32316,8 @@
   "ours": [
    33438,
    31488,
-   45841,
    69035,
+   45841,
    60301,
    56277,
    39256,
@@ -32213,6 +32340,37 @@
    132206,
    56277,
    31328
+  ]
+ },
+ {
+  "conf": "u19g-4267-40580",
+  "name": "ECNL Girls Northern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 69035,
+    "team": "Bay Area Surf",
+    "ours": [
+     13,
+     29
+    ],
+    "ecnl": [
+     12,
+     26
+    ]
+   },
+   {
+    "id": 39256,
+    "team": "Pleasanton RAGE",
+    "ours": [
+     14,
+     16
+    ],
+    "ecnl": [
+     13,
+     16
+    ]
+   }
   ]
  },
  {
@@ -34263,6 +34421,37 @@
     "ecnl": [
      6,
      10
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u19g-4395-41207",
+  "name": "ECNL RL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134319,
+    "team": "Rockford Raptors FC",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
+    "id": 114851,
+    "team": "FC Wisconsin",
+    "ours": [
+     11,
+     4
+    ],
+    "ecnl": [
+     10,
+     4
     ]
    }
   ]
