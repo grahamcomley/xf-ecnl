@@ -190,8 +190,8 @@
    134492,
    133252,
    133233,
-   131195,
    133235,
+   131195,
    133237,
    132662,
    132628
@@ -205,6 +205,44 @@
    133237,
    132662,
    132628
+  ]
+ },
+ {
+  "conf": "u11b-4331-42122",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133235,
+    "team": "Lonestar ATX NW Pre-ECNL STXCL B2015/16 Red B",
+    "ours": [
+     9,
+     15
+    ],
+    "ecnl": [
+     8,
+     12
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u11b-4331-42126",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131231,
+    "team": "Lions FC Pre-ECNL STXCL B2015/16 RED",
+    "ours": [
+     8,
+     3
+    ],
+    "ecnl": [
+     7,
+     3
+    ]
+   }
   ]
  },
  {
@@ -2018,8 +2056,8 @@
   "ours": [
    134877,
    134845,
-   115176,
    94546,
+   115176,
    117143,
    116991,
    94751,
@@ -2050,6 +2088,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 94546,
+    "team": "FC Stars",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
     "id": 134845,
     "team": "East Meadow Soccer Club",
     "ours": [
@@ -2071,6 +2121,18 @@
     "ecnl": [
      9,
      13
+    ]
+   },
+   {
+    "id": 114496,
+    "team": "SUSA FC",
+    "ours": [
+     11,
+     10
+    ],
+    "ecnl": [
+     10,
+     10
     ]
    }
   ]
@@ -2905,6 +2967,37 @@
    134080,
    116326,
    130877
+  ]
+ },
+ {
+  "conf": "u13b-4350-40659",
+  "name": "ECNL RL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133898,
+    "team": "Tennessee SC Murfreesboro",
+    "ours": [
+     11,
+     21
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 133202,
+    "team": "Lobos Rush",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     8,
+     4
+    ]
+   }
   ]
  },
  {
@@ -12585,6 +12678,25 @@
   ]
  },
  {
+  "conf": "u13g-4299-40767",
+  "name": "ECNL RL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132734,
+    "team": "Toca Fusion Premier",
+    "ours": [
+     16,
+     25
+    ],
+    "ecnl": [
+     15,
+     24
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4299-40761",
   "name": "ECNL RL Girls Frontier",
   "ours": [
@@ -12604,6 +12716,25 @@
    134720,
    88815,
    115590
+  ]
+ },
+ {
+  "conf": "u13g-4299-40761",
+  "name": "ECNL RL Girls Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 115590,
+    "team": "OK Energy FC Frontier",
+    "ours": [
+     13,
+     18
+    ],
+    "ecnl": [
+     12,
+     17
+    ]
+   }
   ]
  },
  {
@@ -12708,6 +12839,63 @@
    132733,
    130715,
    131843
+  ]
+ },
+ {
+  "conf": "u13g-4305-40797",
+  "name": "ECNL RL Girls Mid-America",
+  "ours": [
+   133986,
+   133938,
+   133866,
+   133187,
+   132277,
+   134650,
+   134096,
+   135783,
+   135815
+  ],
+  "ecnl": [
+   133986,
+   132277,
+   133938,
+   133187,
+   133866,
+   134650,
+   134096,
+   135783,
+   135815
+  ]
+ },
+ {
+  "conf": "u13g-4305-40797",
+  "name": "ECNL RL Girls Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132277,
+    "team": "Tennessee United SC",
+    "ours": [
+     3,
+     4
+    ],
+    "ecnl": [
+     2,
+     4
+    ]
+   },
+   {
+    "id": 133866,
+    "team": "Germantown Legends",
+    "ours": [
+     8,
+     14
+    ],
+    "ecnl": [
+     7,
+     11
+    ]
+   }
   ]
  },
  {
@@ -12995,6 +13183,25 @@
   ]
  },
  {
+  "conf": "u13g-4313-41477",
+  "name": "ECNL RL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 136007,
+    "team": "Indy Eleven",
+    "ours": [
+     13,
+     20
+    ],
+    "ecnl": [
+     12,
+     17
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13g-4313-41471",
   "name": "ECNL RL Girls Ohio Valley",
   "ours": [
@@ -13016,6 +13223,25 @@
    133184,
    80537,
    110408
+  ]
+ },
+ {
+  "conf": "u13g-4313-41471",
+  "name": "ECNL RL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133777,
+    "team": "NWI Lions United",
+    "ours": [
+     11,
+     15
+    ],
+    "ecnl": [
+     10,
+     15
+    ]
+   }
   ]
  },
  {
@@ -16420,8 +16646,8 @@
   "conf": "u15g-4317-41390",
   "name": "ECNL RL Girls Texas",
   "ours": [
-   94443,
    94655,
+   94443,
    95455,
    129370,
    131259,
@@ -16450,6 +16676,37 @@
    131264,
    132042,
    43929
+  ]
+ },
+ {
+  "conf": "u15g-4317-41390",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94655,
+    "team": "FC Dallas Youth",
+    "ours": [
+     7,
+     16
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 81917,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     9,
+     11
+    ],
+    "ecnl": [
+     8,
+     11
+    ]
+   }
   ]
  },
  {
