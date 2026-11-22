@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.70">
+<meta name="app-version" content="v1.71">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -246,10 +246,11 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.gtop{grid-column:1/-1;display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;line-height:1.25;margin-bottom:-1px}.gtags{display:inline-flex;gap:5px;align-items:center;flex-wrap:wrap}.gtags:empty{display:none}
-.gtop .gt{font-size:11.5px;font-weight:600;color:var(--mut);white-space:nowrap}
-.gtop .tzab,.gtop .tz2,.rd .tzab,.rd .tz2{display:inline!important;margin:0 0 0 3px!important;font-size:10.5px}.gtop .tz2::before,.rd .tz2::before{content:"· "}
-.rrow{flex-wrap:wrap}.rrow .rd{flex-basis:100%}.gtop .kslot{display:inline;margin:0 0 0 6px}
+.gtop{grid-column:1/-1;display:flex;align-items:flex-start;justify-content:space-between;gap:4px 8px;line-height:1.25;margin-bottom:-1px}.gtags{display:inline-flex;gap:5px;align-items:center;flex-wrap:wrap}.gtags:empty{display:none}
+.gtop .gt{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:11.5px;font-weight:600;color:var(--mut);white-space:nowrap}
+.gtop .tzab,.rd .tzab,.rd .tz2{display:inline!important;margin:0 0 0 3px!important;font-size:10.5px}.rd .tz2::before{content:"· "}
+.gtop .tz2{display:block!important;margin:1px 0 0!important;font-size:10.5px}
+.rrow{flex-wrap:wrap}.rrow .rd{flex-basis:100%}.gtop .kslot{display:block;margin:2px 0 0}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:4px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
@@ -1839,6 +1840,9 @@ function fieldAb(g) {
 // pieces to drop in: after the short time (zone label + the phone's time underneath) / after a full time / in the details line
 const altCol = g => { const f = fieldAb(g), a = altTime(g);
   return (f ? `<span class="tzab">${esc(f)}</span>` : "") + (a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""); };
+// top-right time block: "12:30p MST" with the phone's "11:30a PST" under it when different
+const timeBlock = (txt, g) => { const f = g ? fieldAb(g) : "", a = g ? altTime(g) : null;
+  return `<span class="t1">${txt}${f ? `<span class="tzab">${esc(f)}</span>` : ""}</span>${a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""}`; };
 const altTxt = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${f}` : "") + (a ? ` (${a.full} ${a.ab})` : ""); };
 const altDet = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${esc(f)}` : "") + (a ? ` · ${esc(a.full)} ${esc(a.ab)} your time` : ""); };
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
@@ -1850,7 +1854,7 @@ function gameRow(D, M, g, o = {}) {
   const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
   const done = g.hs != null && g.as != null;
   let left = o.left !== undefined ? o.left : (o.showDate ? shortDate(g.date) : shortTime(g.time));
-  if (left === shortTime(g.time)) left += altCol(g);
+  left = left === shortTime(g.time) ? timeBlock(left, g) : left ? `<span class="t1">${left}</span>` : "";
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -1881,7 +1885,7 @@ function gameRow(D, M, g, o = {}) {
     }
   }
   // the time (and its zone) sits on its own line in the top-left corner, then any tags; teams get the full width below
-  const top = left || o.tag || o.toptag ? `<div class="gtop"><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gtags">${o.toptag || ""}</span></div>` : "";
+  const top = left || o.tag || o.toptag ? `<div class="gtop"><span class="gtags">${o.toptag || ""}</span><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span></div>` : "";
   return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}">${top}<span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
@@ -2689,7 +2693,7 @@ function evTbdRow(ev, day, fid, card) {
     const full = d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d;
     const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
-    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="gt">${times.map(shortTime).join(" / ")}${times.length === 1 ? altCol(day.items[0].g) : ""}</span><span class="gtags"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</span></div><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="gtags"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</span><span class="gt">${timeBlock(times.map(shortTime).join(" / "), times.length === 1 ? day.items[0].g : null)}</span></div><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
       <div class="gsub">${why}${one && one.g.venue ? `${why ? " · " : ""}${evField(ev, one.g.venue)}` : ""}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
@@ -2702,7 +2706,7 @@ function evTbdRow(ev, day, fid, card) {
     const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
-  return `<div class="grow ours${day.tentative ? " tent" : ""}"><div class="gtop"><span class="gt">${times.map(shortTime).join(" / ")}${times.length === 1 ? altCol(day.items[0].g) : ""}</span><span class="gtags"></span></div><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><div class="gtop"><span class="gtags"></span><span class="gt">${timeBlock(times.map(shortTime).join(" / "), times.length === 1 ? day.items[0].g : null)}</span></div><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2767,7 +2771,7 @@ function evCard(D, ev, fid, open, live) {
   const rows = [...new Set(items.map(x => x.date))].map(d => blk(fmtDate(d), items.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   const full = [...new Set(m.games.map(g => g.date))].map(d => blk(fmtDate(d), m.games.filter(g => g.date === d).map(g => {
     const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
-    return `<div class="fbr"><div class="gtop"><span class="gt">${shortTime(g.time)}${altCol(g)}</span></div><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
+    return `<div class="fbr"><div class="gtop"><span class="gtags"></span><span class="gt">${timeBlock(shortTime(g.time), g)}</span></div><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
   }).join(""))).join("");
   return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}</div>
     <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
