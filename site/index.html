@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.74">
+<meta name="app-version" content="v1.75">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -496,6 +496,11 @@ let EVDOT = null;   // the red dot on the Events tab: something new since you la
 const icon = (n, fill) => `<svg class="ic" viewBox="0 0 24 24" fill="${fill ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[n]}</svg>`;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const pct = x => (x >= 0.995 ? ">99" : x < 0.005 ? (x > 0 ? "<1" : "0") : Math.round(x * 100)) + "%";
+// A chance of finishing in the top k: "0%" only when it's mathematically out (k or more teams already have more points
+// than this team can still reach); otherwise never below "<1%", even if no simulated season had it happen.
+let REACH = null;   // {pts: Map(id → points now), max: Map(id → most points still possible)}
+const canReach = (id, k) => { if (!REACH || !REACH.max.has(id)) return true; const m = REACH.max.get(id); let above = 0; for (const [o, p] of REACH.pts) if (o !== id && p > m) above++; return above < k; };
+const pctK = (x, id, k) => x < 0.005 && canReach(id, k) ? "<1%" : x < 0.005 ? "0%" : pct(x);
 const fmtDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday:"short", month:"short", day:"numeric"});
 const fmtTime = t => { if (!t || t === "00:00") return "Time TBD"; let [h, m] = t.split(":").map(Number); return `${(h % 12) || 12}:${String(m).padStart(2,"0")} ${h < 12 ? "AM" : "PM"}`; };
 const todayISO = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
@@ -1985,6 +1990,7 @@ function renderTeam(D, fid, key) {
   const ours = played.filter(isMe).sort((a, b) => b.date.localeCompare(a.date)), others = played.filter(g => !isMe(g)).sort((a, b) => b.date.localeCompare(a.date));
   const now = rank(table([], played, ids), played);
   const left = id => remaining.filter(g => g.home_id === id || g.away_id === id).length;
+  REACH = {pts: new Map(now.map(r => [r.id, r.pts])), max: new Map(now.map(r => [r.id, r.pts + 3 * left(r.id)]))};
   // When ECNL's own table agrees with the scores, show teams in ECNL's exact order (their tiebreakers).
   const off = new Map((D.official || []).map(o => [o.id, o]));
   // ECNL's rank number is only trusted to break exact ties (same PPG and points), never to override the table.
@@ -2207,13 +2213,13 @@ function renderTeam(D, fid, key) {
   ${sec("us", chipMe, `Where we stand<span class="h2lg">${esc(D.conf_name)}</span>`, "", `
     <div class="focus">
       <div class="stat"><div class="v">${ord(fPos)}</div><div class="k">Place now · likely ${placeTxt(rangeOf(base, fid))}</div></div>
-      <div class="stat"><div class="v">${pct(atOrAbove(base, fid, 0))}</div><div class="k">Chance to finish 1st</div></div>
-      ${spots ? `<div class="stat"><div class="v">${pct(atOrAbove(base, fid, spots - 1))}</div><div class="k">Chance of top ${spots}</div></div>` : ""}
+      <div class="stat"><div class="v">${pctK(atOrAbove(base, fid, 0), fid, 1)}</div><div class="k">Chance to finish 1st</div></div>
+      ${spots ? `<div class="stat"><div class="v">${pctK(atOrAbove(base, fid, spots - 1), fid, spots)}</div><div class="k">Chance of top ${spots}</div></div>` : ""}
     </div>
     <div class="upd">${icon("refresh")}<span>Updating with the latest scores</span></div>
     <table class="grid"><tr><th>#</th><th class="t">Team</th><th>GP</th><th>W-D-L</th><th>PTS</th><th>PPG</th><th class="chance">1st</th>${spots ? `<th class="chance">Top ${spots}</th>` : ""}<th class="maxc" title="Most points still possible">Max</th></tr>
     ${now.map((r, i) => `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}</td><td>${r.gp}</td><td>${r.w}-${r.d}-${r.l}</td><td>${r.pts}</td><td>${r.ppg.toFixed(2)}</td>
-      <td class="chance">${pct(base.get(r.id).pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(base, r.id, spots - 1))}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
+      <td class="chance">${pctK(base.get(r.id).pos[0], r.id, 1)}</td>${spots ? `<td class="chance">${pctK(atOrAbove(base, r.id, spots - 1), r.id, spots)}</td>` : ""}<td class="maxc">${r.pts + 3 * left(r.id)}</td></tr>`).join("")}
     </table><div class="mut" style="margin-top:6px">${spots ? `Dashed line: ${esc(D.playoff_label)}. ` : ""}Max = most points still possible.</div>`, "s1", "fixed")}
 </div><div class="pane" data-tab="games">
   ${alertCard()}
@@ -2417,7 +2423,7 @@ function drawPredictor() {
     ${fin.map((r, i) => { const s = S.get(r.id), b = base.get(r.id);
       return `<tr class="${r.id === fid ? "me" : ""} ${spots && i === spots - 1 ? "cut" : ""}"><td>${i + 1}</td><td class="t">${esc(teamName(D, r.id))}<div class="sub">likely ${placeTxt(rangeOf(S, r.id))}</div></td>
       <td>${r.w}-${r.d}-${r.l}</td><td>${r.gd > 0 ? "+" : ""}${r.gd}</td><td><b>${r.pts}</b></td>
-      <td class="chance">${pct(s.pos[0])}${delta(s.pos[0], b.pos[0])}</td>${spots ? `<td class="chance">${pct(atOrAbove(S, r.id, spots - 1))}${delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`; }).join("")}
+      <td class="chance">${pctK(s.pos[0], r.id, 1)}${delta(s.pos[0], b.pos[0])}</td>${spots ? `<td class="chance">${pctK(atOrAbove(S, r.id, spots - 1), r.id, spots)}${delta(atOrAbove(S, r.id, spots - 1), atOrAbove(base, r.id, spots - 1))}</td>` : ""}</tr>`; }).join("")}
   </table><div class="mut" style="margin-top:6px">Final table if every pick comes true. Shaded = chances${nP ? " with your changes" : ""}.</div>`;
   const c = $("#clearpicks"); if (c) c.onclick = () => {
     const S = SAVED[D.__fk] || {}; for (const id of Object.keys(PICKS[D.__fk])) delete S[id];   // games already played keep their pick (for grading)
