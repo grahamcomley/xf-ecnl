@@ -3708,6 +3708,34 @@
  {
   "conf": "u14b-4276-40468",
   "name": "ECNL Boys Mid-America",
+  "ours": [
+   134785,
+   131559,
+   134059,
+   131973,
+   98519,
+   134633,
+   133190,
+   98515,
+   132267,
+   135572
+  ],
+  "ecnl": [
+   134785,
+   131559,
+   134059,
+   131973,
+   134633,
+   98519,
+   133190,
+   132267,
+   98515,
+   135572
+  ]
+ },
+ {
+  "conf": "u14b-4276-40468",
+  "name": "ECNL Boys Mid-America",
   "kind": "points",
   "teams": [
    {
@@ -3723,6 +3751,18 @@
     ]
    },
    {
+    "id": 98519,
+    "team": "Germantown Legends",
+    "ours": [
+     18,
+     24
+    ],
+    "ecnl": [
+     17,
+     21
+    ]
+   },
+   {
     "id": 133190,
     "team": "Lobos Rush",
     "ours": [
@@ -3732,6 +3772,18 @@
     "ecnl": [
      17,
      16
+    ]
+   },
+   {
+    "id": 132267,
+    "team": "Tennessee United SC",
+    "ours": [
+     16,
+     11
+    ],
+    "ecnl": [
+     15,
+     11
     ]
    }
   ]
@@ -8114,8 +8166,8 @@
   "name": "ECNL RL Boys Southeast",
   "ours": [
    69008,
-   134180,
    131457,
+   134180,
    68840,
    131904,
    81343,
@@ -8144,6 +8196,30 @@
   "name": "ECNL RL Boys Southeast",
   "kind": "points",
   "teams": [
+   {
+    "id": 134180,
+    "team": "NTH NASA",
+    "ours": [
+     18,
+     37
+    ],
+    "ecnl": [
+     17,
+     37
+    ]
+   },
+   {
+    "id": 131904,
+    "team": "Charlotte SA Gold",
+    "ours": [
+     18,
+     32
+    ],
+    "ecnl": [
+     17,
+     29
+    ]
+   },
    {
     "id": 81343,
     "team": "Concorde Fire Premier",
@@ -8425,6 +8501,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 95357,
+    "team": "MAFC ECNL RL STXCL B2009/10",
+    "ours": [
+     11,
+     31
+    ],
+    "ecnl": [
+     10,
+     28
+    ]
+   },
+   {
     "id": 129721,
     "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2009/10",
     "ours": [
@@ -8530,6 +8618,18 @@
     "ecnl": [
      11,
      12
+    ]
+   },
+   {
+    "id": 113587,
+    "team": "NB AJAX ECNL RL STXCL B2009/10",
+    "ours": [
+     12,
+     6
+    ],
+    "ecnl": [
+     11,
+     6
     ]
    },
    {
@@ -13229,6 +13329,30 @@
      10,
      16
     ]
+   },
+   {
+    "id": 132733,
+    "team": "Toca Fusion Elite",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   },
+   {
+    "id": 131843,
+    "team": "Gretna Elite Academy",
+    "ours": [
+     11,
+     4
+    ],
+    "ecnl": [
+     10,
+     4
+    ]
    }
   ]
  },
@@ -13786,10 +13910,10 @@
   "ours": [
    96493,
    76690,
-   131840,
    111850,
-   129364,
+   131840,
    69767,
+   129364,
    134505,
    131267,
    132044,
@@ -13814,6 +13938,37 @@
    131267,
    94447,
    111691
+  ]
+ },
+ {
+  "conf": "u13g-4317-41388",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 111850,
+    "team": "Sting Royal",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   },
+   {
+    "id": 129364,
+    "team": "Challenge",
+    "ours": [
+     7,
+     12
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   }
   ]
  },
  {
@@ -21583,14 +21738,14 @@
    47038,
    60137,
    47010,
-   45768,
+   133007,
    46987,
    46997,
    47003,
-   133007,
    108207,
    134643,
-   4298
+   4298,
+   45768
   ],
   "ecnl": [
    133467,
@@ -21605,6 +21760,37 @@
    45768,
    46997,
    47003
+  ]
+ },
+ {
+  "conf": "u19g-4269-40592",
+  "name": "ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 45768,
+    "team": "FC Pride Elite",
+    "ours": [
+     1,
+     0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 133007,
+    "team": "Racing Louisville Academy",
+    "ours": [
+     2,
+     3
+    ],
+    "ecnl": [
+     1,
+     0
+    ]
+   }
   ]
  },
  {
