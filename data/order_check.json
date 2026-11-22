@@ -2656,6 +2656,18 @@
     ]
    },
    {
+    "id": 133213,
+    "team": "Legends FC (CA) PRE Black I",
+    "ours": [
+     8,
+     10
+    ],
+    "ecnl": [
+     7,
+     9
+    ]
+   },
+   {
     "id": 133544,
     "team": "Beach Futbol Club (CA) Pre-ECNL B2014/15 Gold I",
     "ours": [
@@ -2686,9 +2698,9 @@
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
    133543,
-   133704,
    134064,
    133210,
+   133704,
    133587,
    133124,
    132230
@@ -2719,6 +2731,18 @@
     "ecnl": [
      7,
      13
+    ]
+   },
+   {
+    "id": 133704,
+    "team": "LAFC So Cal Pre GOLD I",
+    "ours": [
+     7,
+     11
+    ],
+    "ecnl": [
+     6,
+     10
     ]
    },
    {
@@ -9210,6 +9234,37 @@
   ]
  },
  {
+  "conf": "u15b-4347-40631",
+  "name": "ECNL RL Boys Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 64066,
+    "team": "Oklahoma Cosmos",
+    "ours": [
+     11,
+     19
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 134711,
+    "team": "Arkansas Comets FC",
+    "ours": [
+     17,
+     11
+    ],
+    "ecnl": [
+     16,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u15b-4348-41602",
   "name": "ECNL RL Boys Golden State",
   "ours": [
@@ -11821,9 +11876,9 @@
    131036,
    130994,
    132976,
+   132484,
    133566,
    80520,
-   132484,
    133753,
    132978,
    135600,
@@ -11889,6 +11944,30 @@
     "ecnl": [
      6,
      6
+    ]
+   },
+   {
+    "id": 132484,
+    "team": "San Diego Surf ECNL RL White B2010/11",
+    "ours": [
+     7,
+     9
+    ],
+    "ecnl": [
+     6,
+     6
+    ]
+   },
+   {
+    "id": 132978,
+    "team": "Legends FC (CA) Black",
+    "ours": [
+     8,
+     4
+    ],
+    "ecnl": [
+     7,
+     4
     ]
    },
    {
@@ -19415,6 +19494,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 132172,
+    "team": "Beach Futbol Club (CA) Gold",
+    "ours": [
+     7,
+     17
+    ],
+    "ecnl": [
+     6,
+     16
+    ]
+   },
+   {
     "id": 133452,
     "team": "Legends FC (CA)",
     "ours": [
@@ -19436,6 +19527,18 @@
     "ecnl": [
      5,
      5
+    ]
+   },
+   {
+    "id": 129798,
+    "team": "Rebels SC",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     8
     ]
    },
    {
@@ -28742,6 +28845,30 @@
     ]
    },
    {
+    "id": 68802,
+    "team": "Concorde Fire Platinum",
+    "ours": [
+     14,
+     33
+    ],
+    "ecnl": [
+     13,
+     30
+    ]
+   },
+   {
+    "id": 59536,
+    "team": "United Futbol Academy",
+    "ours": [
+     15,
+     22
+    ],
+    "ecnl": [
+     14,
+     22
+    ]
+   },
+   {
     "id": 68797,
     "team": "Concorde Fire Premier",
     "ours": [
@@ -32270,6 +32397,18 @@
     ]
    },
    {
+    "id": 133045,
+    "team": "Colorado Storm Central",
+    "ours": [
+     14,
+     32
+    ],
+    "ecnl": [
+     13,
+     29
+    ]
+   },
+   {
     "id": 132908,
     "team": "Colorado EDGE",
     "ours": [
@@ -32291,6 +32430,18 @@
     "ecnl": [
      17,
      33
+    ]
+   },
+   {
+    "id": 98483,
+    "team": "Avalanche",
+    "ours": [
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
+     3
     ]
    },
    {
