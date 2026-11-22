@@ -2632,6 +2632,18 @@
     ]
    },
    {
+    "id": 78292,
+    "team": "LA Breakers Pre-ECNL B2014/15 Blue I",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
     "id": 135621,
     "team": "Sporting California USA Pre-ECNL B2014/15 RED I",
     "ours": [
@@ -2673,10 +2685,10 @@
   "conf": "u12b-4370-41046",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
-   133210,
    133543,
    133704,
    134064,
+   133210,
    133587,
    133124,
    132230
@@ -2697,6 +2709,18 @@
   "name": "Pre-ECNL Boys Southern Cal",
   "kind": "points",
   "teams": [
+   {
+    "id": 133210,
+    "team": "Legends FC (CA) PRE I",
+    "ours": [
+     8,
+     13
+    ],
+    "ecnl": [
+     7,
+     13
+    ]
+   },
    {
     "id": 133543,
     "team": "Beach Futbol Club (CA) Pre-ECNL B2014/15 White I",
@@ -3458,8 +3482,8 @@
   "ours": [
    130862,
    133973,
-   129401,
    131495,
+   129401,
    67156,
    61891,
    133298,
@@ -3484,6 +3508,37 @@
    116670,
    133973,
    130101
+  ]
+ },
+ {
+  "conf": "u13b-4261-41132",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 130862,
+    "team": "MAFC ECNL RL STXCL B2013/14 Red",
+    "ours": [
+     12,
+     36
+    ],
+    "ecnl": [
+     11,
+     33
+    ]
+   },
+   {
+    "id": 129401,
+    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2013/14",
+    "ours": [
+     12,
+     19
+    ],
+    "ecnl": [
+     11,
+     19
+    ]
+   }
   ]
  },
  {
@@ -13550,8 +13605,8 @@
    135281,
    68853,
    132402,
-   135615,
    133689,
+   135615,
    133562,
    132996,
    110507,
@@ -13601,6 +13656,18 @@
     ]
    },
    {
+    "id": 133689,
+    "team": "LAFC So Cal ECNL RL S.Cal B2009/10 GOLD",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
     "id": 134585,
     "team": "Rebels SC ECNL RL SoCal B2009/10 White",
     "ours": [
@@ -13610,6 +13677,18 @@
     "ecnl": [
      7,
      6
+    ]
+   },
+   {
+    "id": 132519,
+    "team": "San Diego Surf ECNL RL S.Cal B2009/10",
+    "ours": [
+     6,
+     0
+    ],
+    "ecnl": [
+     5,
+     0
     ]
    }
   ]
@@ -15169,8 +15248,8 @@
   "ours": [
    57682,
    133884,
-   134795,
    112527,
+   134795,
    133764,
    134104,
    133329,
@@ -15196,6 +15275,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 112527,
+    "team": "Alabama FC Huntsville",
+    "ours": [
+     15,
+     30
+    ],
+    "ecnl": [
+     14,
+     27
+    ]
+   },
+   {
     "id": 134795,
     "team": "Tennessee SC",
     "ours": [
@@ -15205,6 +15296,18 @@
     "ecnl": [
      15,
      28
+    ]
+   },
+   {
+    "id": 134014,
+    "team": "Mississippi Rush United",
+    "ours": [
+     13,
+     6
+    ],
+    "ecnl": [
+     12,
+     6
     ]
    },
    {
@@ -30267,6 +30370,18 @@
     ]
    },
    {
+    "id": 134391,
+    "team": "Arizona Arsenal",
+    "ours": [
+     7,
+     5
+    ],
+    "ecnl": [
+     6,
+     4
+    ]
+   },
+   {
     "id": 58369,
     "team": "Eagles SC",
     "ours": [
@@ -30276,6 +30391,18 @@
     "ecnl": [
      7,
      4
+    ]
+   },
+   {
+    "id": 70099,
+    "team": "Utah Royals FC-AZ RL G2009/10",
+    "ours": [
+     6,
+     3
+    ],
+    "ecnl": [
+     5,
+     2
     ]
    }
   ]
