@@ -5367,37 +5367,6 @@
   ]
  },
  {
-  "conf": "u14b-4273-40438",
-  "name": "ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 96283,
-    "team": "Capital FC",
-    "ours": [
-     12,
-     28
-    ],
-    "ecnl": [
-     11,
-     25
-    ]
-   },
-   {
-    "id": 96070,
-    "team": "Eugene Metro FC",
-    "ours": [
-     12,
-     6
-    ],
-    "ecnl": [
-     11,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u14b-4274-40444",
   "name": "ECNL Boys Florida",
   "ours": [
@@ -6586,8 +6555,8 @@
    114497,
    133443,
    132508,
-   133500,
    117874,
+   133500,
    134160,
    116440
   ],
@@ -6599,6 +6568,37 @@
    116440,
    114497,
    133500
+  ]
+ },
+ {
+  "conf": "u14b-4344-40624",
+  "name": "ECNL RL Boys Far West League Cup",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 114497,
+    "team": "Portland City United",
+    "ours": [
+     12,
+     33
+    ],
+    "ecnl": [
+     11,
+     30
+    ]
+   },
+   {
+    "id": 133500,
+    "team": "Eastside Timbers",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   }
   ]
  },
  {
@@ -11518,8 +11518,8 @@
    134586,
    135616,
    66498,
-   113076,
    61048,
+   113076,
    131963,
    133696,
    132520
@@ -11574,6 +11574,18 @@
     ]
    },
    {
+    "id": 133690,
+    "team": "LAFC So Cal ECNL RL S.Cal B2010/11 GOLD",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
     "id": 133565,
     "team": "CDA Slammers FC Black",
     "ours": [
@@ -11595,6 +11607,18 @@
     "ecnl": [
      7,
      7
+    ]
+   },
+   {
+    "id": 113076,
+    "team": "LV Heat Surf ECNL RL SoCal B2010/11",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     6
     ]
    },
    {
@@ -13681,6 +13705,18 @@
     ]
    },
    {
+    "id": 133689,
+    "team": "LAFC So Cal ECNL RL S.Cal B2009/10 GOLD",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     16
+    ]
+   },
+   {
     "id": 110507,
     "team": "Rebels SC ECNL RL SoCal B2009/10 Blue",
     "ours": [
@@ -13714,6 +13750,18 @@
     "ecnl": [
      8,
      6
+    ]
+   },
+   {
+    "id": 113074,
+    "team": "LV Heat Surf ECNL RL SoCal B2009/10",
+    "ours": [
+     10,
+     5
+    ],
+    "ecnl": [
+     9,
+     5
     ]
    },
    {
@@ -21242,8 +21290,40 @@
  {
   "conf": "u14g-4304-40792",
   "name": "ECNL RL Girls Heartland",
+  "ours": [
+   123156,
+   132731,
+   137130,
+   130716,
+   131844,
+   116243
+  ],
+  "ecnl": [
+   123156,
+   132731,
+   137130,
+   131844,
+   130716,
+   116243
+  ]
+ },
+ {
+  "conf": "u14g-4304-40792",
+  "name": "ECNL RL Girls Heartland",
   "kind": "points",
   "teams": [
+   {
+    "id": 130716,
+    "team": "Sporting Blue Valley",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   },
    {
     "id": 116243,
     "team": "Kansas City Athletics",
@@ -21293,6 +21373,18 @@
     "ecnl": [
      9,
      24
+    ]
+   },
+   {
+    "id": 136103,
+    "team": "FC United Iowa",
+    "ours": [
+     10,
+     19
+    ],
+    "ecnl": [
+     9,
+     19
     ]
    },
    {
@@ -21816,8 +21908,8 @@
    115278,
    94198,
    134002,
-   133468,
    82457,
+   133468,
    81503,
    132999
   ],
@@ -21833,12 +21925,43 @@
   ]
  },
  {
+  "conf": "u14g-4313-41478",
+  "name": "ECNL RL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 82457,
+    "team": "Indy Eleven",
+    "ours": [
+     12,
+     17
+    ],
+    "ecnl": [
+     11,
+     14
+    ]
+   },
+   {
+    "id": 81503,
+    "team": "FC Pride Elite",
+    "ours": [
+     12,
+     10
+    ],
+    "ecnl": [
+     11,
+     7
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14g-4313-41472",
   "name": "ECNL RL Girls Ohio Valley",
   "ours": [
    80686,
-   133778,
    64402,
+   133778,
    106386,
    82474,
    115224,
@@ -21854,6 +21977,37 @@
    80940,
    80538,
    80686
+  ]
+ },
+ {
+  "conf": "u14g-4313-41472",
+  "name": "ECNL RL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133778,
+    "team": "NWI Lions United",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     22
+    ]
+   },
+   {
+    "id": 80538,
+    "team": "Indiana Elite FC",
+    "ours": [
+     10,
+     2
+    ],
+    "ecnl": [
+     9,
+     2
+    ]
+   }
   ]
  },
  {
@@ -24117,6 +24271,18 @@
     ]
    },
    {
+    "id": 130717,
+    "team": "Sporting Blue Valley",
+    "ours": [
+     14,
+     29
+    ],
+    "ecnl": [
+     13,
+     26
+    ]
+   },
+   {
     "id": 132726,
     "team": "Toca Fusion Elite",
     "ours": [
@@ -24213,6 +24379,18 @@
     "ecnl": [
      14,
      5
+    ]
+   },
+   {
+    "id": 136105,
+    "team": "FC United Iowa",
+    "ours": [
+     15,
+     3
+    ],
+    "ecnl": [
+     14,
+     3
     ]
    }
   ]
@@ -27205,6 +27383,37 @@
    135719,
    110986,
    82657
+  ]
+ },
+ {
+  "conf": "u16g-4300-40776",
+  "name": "ECNL RL Girls Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94954,
+    "team": "Force (CA)",
+    "ours": [
+     14,
+     17
+    ],
+    "ecnl": [
+     13,
+     17
+    ]
+   },
+   {
+    "id": 44314,
+    "team": "Pleasanton RAGE",
+    "ours": [
+     15,
+     16
+    ],
+    "ecnl": [
+     14,
+     13
+    ]
+   }
   ]
  },
  {
