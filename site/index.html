@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.72">
+<meta name="app-version" content="v1.73">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -43,14 +43,14 @@ header{flex:none;background:#07090c;border-bottom:1px solid var(--line);padding:
 details.evrow{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--card)}
 details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relative}details.evrow>summary::-webkit-details-marker{display:none}
 .evhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 2px}.evt{font-size:15px;font-weight:700}details.evrow[open]>summary .chev{transform:rotate(180deg)}.evbody{padding:0 10px 12px}
-.grow{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 16px;gap:5px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.grow{display:grid;grid-template-columns:42px minmax(0,1fr) auto minmax(0,1fr) 16px;gap:5px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--line);font-size:14px}
 .grow.tap{cursor:pointer}.grow.ours{background:var(--me);border-radius:8px;border-bottom-color:transparent}
 .gt{font-size:11px;color:var(--mut);white-space:nowrap}.gl{text-align:right}.gr{text-align:left}.gl,.gr{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.gm{text-align:center;font-size:12px}.gtag{font-size:9px;font-weight:800;letter-spacing:.5px;border-radius:5px;padding:1px 4px;border:1px solid var(--line2);color:var(--mut)}.gtag.exact,.gtag.called,.gtag.bigger{color:var(--up);border-color:#1f5f3a}.gtag.missed{color:var(--dn);border-color:#7f1d1d}
 .keytag{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--mut);border:1px solid var(--line2);border-radius:5px;padding:1px 4px}
 .gm .res{width:18px;height:18px;font-size:10px}
 .gs{text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;min-width:42px}
 .gs.res{font-weight:800;color:var(--ink)}.gs.pred{color:var(--mut)}.gs.vs{color:var(--mut);font-size:12px}
-.gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 0}.gdet .root{margin-top:2px}
+.gdet,.grow .toggles{grid-column:1/-1}.gdet{font-size:12px;color:var(--mut);padding:2px 0 0 52px}.gdet .root{margin-top:2px}
 .blk{margin-bottom:6px}.pcards .grow{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:var(--card);padding:9px 8px}.howsum{font-size:15px;margin-bottom:2px}.score.pred{color:var(--mut);font-size:18px;font-weight:600}.score.res{font-size:20px;font-weight:800}
 .venue{font-size:12px;color:var(--mut);margin-top:2px}
 .ic{width:20px;height:20px;display:block}
@@ -245,18 +245,13 @@ h3{font-size:14px;margin:10px 0 6px}
 .imp.open .ar{transform:rotate(90deg)}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
-.gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.gtop{grid-column:1/-1;display:flex;align-items:flex-start;justify-content:space-between;gap:4px 8px;line-height:1.25;margin-bottom:-1px}.gtags{display:inline-flex;gap:5px;align-items:center;flex-wrap:wrap}.gtags:empty{display:none}
-.gtop .gt{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:11.5px;font-weight:600;color:var(--mut);white-space:nowrap}
-.gtop .tzab,.rd .tzab,.rd .tz2{display:inline!important;margin:0 0 0 3px!important;font-size:10.5px}.rd .tz2::before{content:"· "}
-.gtop .tz2{display:block!important;margin:1px 0 0!important;font-size:10.5px}
-.rrow{flex-wrap:wrap}.rrow .rd{flex-basis:100%}.gtop .kslot{display:block;margin:2px 0 0}.gtags .kslot{display:inline;margin:0}
-.thd{display:flex;align-items:baseline;gap:5px;padding:9px 2px 1px;font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.2px}.day+.thd{padding-top:6px}
-.thd .z{font-size:11px;font-weight:600;color:var(--mut)}.thd .alt{font-size:12px;font-weight:600;color:var(--mut)}
-@media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:4px}}
+.gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 47px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gtop{grid-column:1/-1;line-height:1;margin-bottom:-2px}
+@media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:38px minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:42px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
 .pviews.pv3 button{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:8px 6px}
-.tzab{display:block;font-size:10px;line-height:1.2;font-weight:600;color:var(--mut);letter-spacing:.2px;white-space:nowrap;margin-top:1px}
+.tzab{font-size:9.5px;font-weight:600;color:var(--mut);margin-left:2px;letter-spacing:.2px}
+.cv{display:none}.yt{color:var(--mut);font-weight:700}
 .tz2{display:block;font-size:10px;line-height:1.2;color:var(--mut);font-weight:500;white-space:nowrap;margin-top:1px}
 .tmtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:var(--ink);border:1px solid var(--line2);background:var(--card2);border-radius:5px;padding:2px 5px;white-space:nowrap;text-transform:uppercase}
 .grow.ours+.grow.ours{margin-top:6px}
@@ -269,12 +264,12 @@ body.allmine #tstrip .tpill:not(.tfollow){background:var(--me);color:#fff;border
 .evtag{font-size:10.5px;font-weight:800;letter-spacing:.5px;color:#c4b5fd;border:1px solid #6d28d9;border-radius:5px;padding:2px 5px;cursor:pointer;white-space:nowrap}
 .ttag{font-size:9px;font-weight:800;letter-spacing:.5px;color:var(--mut);border:1px dashed var(--mut);border-radius:5px;padding:1px 4px;white-space:nowrap}
 .grow.tbd .gtbd{grid-column:2/5;font-weight:600;color:var(--mut)}.grow.tent{border:1px dashed var(--line2);border-radius:8px;margin:2px 0;opacity:.9}
-.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 4px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
+.gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 47px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
 .gsub .w{color:#86efac}.gsub .l{color:#fca5a5}
 .card.evcard{padding:14px}.evcard>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px}.evcard>summary::-webkit-details-marker{display:none}
 .evcard .evh{flex:1;min-width:0}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
 .evcard>summary>.ic{width:18px;height:18px;color:var(--mut);margin-top:3px;transition:transform .15s}.evcard[open]>summary>.ic{transform:rotate(180deg)}
-.evcard .evb{margin-top:10px}.fbr{display:grid;grid-template-columns:1fr;gap:2px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13px}.fbr .fl{font-size:11px;color:var(--mut)}
+.evcard .evb{margin-top:10px}.fbr{display:grid;grid-template-columns:46px 1fr;gap:6px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13px}.fbr .fl{font-size:11px;color:var(--mut)}
 .evcard.flash{box-shadow:0 0 0 2px #6d28d9}
 .more{display:block;width:100%;border:1px dashed var(--line2);background:transparent;color:var(--link);font:inherit;font-size:14px;font-weight:700;border-radius:10px;padding:10px;cursor:pointer;margin:4px 0 8px}.root[hidden]{display:none}
 .lose,.lose.me-n,.lose.win{color:var(--mut);font-weight:500}.lo{color:var(--mut);font-weight:500}.arr{display:inline-block;font-size:.72em;color:var(--ink);padding:0 4px;vertical-align:1px}.parr{font-style:normal;font-size:.7em;margin-left:3px;vertical-align:2px}
@@ -1776,7 +1771,7 @@ function fixtureCard(D, M, g, o = {}) {
   const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
   const conf = o.neutral ? confidence(o.teams || D.teams, g.home_id, g.away_id) : null;
   const likelyTop = us ? `Likely ${sL[0] > sL[1] ? "win" : sL[0] < sL[1] ? "loss" : "draw"} ${sL[0]}–${sL[1]}` : likelyLine(LN, RN, sL);
-  return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${esc(altTxt(g))}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
+  return `<div class="${cls}" data-gid="${g.id}"><div class="when"><span>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${esc(myFull(g))}`}${us ? (flip ? " · Away" : " · Home") : ""}</span></div>
     <div class="teams t4"><div>${nm(LN, us)}</div><div class="score vs">${us && flip ? "@" : "vs"}</div><div class="a">${nm(RN)}</div><button class="imp" data-imp="${g.id}">Details ${CHEV}</button></div>
     <div class="cdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>${g.venue ? `<div>${venueLink(g.venue)}</div>` : ""}${conf ? `<div><span class="pill ${conf[1]}" title="${esc(conf[2])}">${conf[0]} confidence</span></div>` : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>
     </div>`;
@@ -1839,40 +1834,21 @@ function fieldAb(g) {
   if (!_fab.has(k)) { let a = ""; try { a = zAbbr(g.tz, zoneMs(g.date, g.time, g.tz)); } catch (e) {} _fab.set(k, a); }
   return _fab.get(k);
 }
-// pieces to drop in: after the short time (zone label + the phone's time underneath) / after a full time / in the details line
-const altCol = g => { const f = fieldAb(g), a = altTime(g);
-  return (f ? `<span class="tzab">${esc(f)}</span>` : "") + (a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""); };
-// Time headers: inside each day block, games are grouped under their start time ("10a MST · 9a PST"),
-// so rows carry no time of their own. Runs on every list as it's drawn (MutationObserver runs before paint).
-function timeHeads(root) {
-  for (const blk of (root || document).querySelectorAll(".blk:not([data-th])")) {
-    blk.dataset.th = "1";
-    let last = null;
-    for (const el of [...blk.children]) {
-      const row = el.classList.contains("grow") || el.classList.contains("fbr") ? el : el.querySelector && el.querySelector(":scope > .grow");
-      if (!row) continue;
-      const top = row.querySelector(":scope > .gtop"), gt = top && top.querySelector(".gt"), t1 = gt && gt.querySelector(".t1");
-      if (!t1) continue;
-      const ab = t1.querySelector(".tzab"), t = [...t1.childNodes].filter(n => n !== ab).map(n => n.textContent).join("").trim();
-      if (!/^(\d|TBD)/.test(t)) continue;   // a date shown in place of a time stays on the row
-      const alt = gt.querySelector(".tz2"), kslot = gt.querySelector(".kslot"), key = gt.textContent;
-      if (key !== last) {
-        const h = document.createElement("div"); h.className = "thd";
-        h.innerHTML = `<span>${esc(t)}</span>${ab ? `<span class="z">${esc(ab.textContent)}</span>` : ""}${alt ? `<span class="alt">· ${esc(alt.textContent)}</span>` : ""}`;
-        el.before(h); last = key;
-      }
-      if (kslot && kslot.innerHTML.trim()) top.querySelector(".gtags").appendChild(kslot);
-      gt.remove();
-      const tg = top.querySelector(".gtags"); if (!tg || !tg.innerHTML.trim()) top.remove();
-    }
+// One time per game, in the phone's own zone (Graham, Nov 22): same zone as the field → "8a"; elsewhere → your time
+// ("7a"), and the day header says "Your time (PST)". Details spell out both. A hidden <i class="cv"> marks converted rows.
+const myShort = g => { const a = altTime(g); return a ? a.short : shortTime(g.time); };
+const myFull = g => { const a = altTime(g); return a ? `${a.full} ${a.ab}` : fmtTime(g.time); };
+const cvMark = g => altTime(g) ? '<i class="cv"></i>' : "";
+const altDet = g => { const a = altTime(g); return a ? ` ${esc(a.fab)} at the field · ${esc(a.full)} ${esc(a.ab)} your time` : ""; };
+function yourTime(root) {
+  for (const blk of (root || document).querySelectorAll(".blk:not([data-yt])")) {
+    blk.dataset.yt = "1";
+    if (!blk.querySelector(".cv") || !PHONE_TZ) continue;
+    const d = blk.querySelector(":scope > .day");
+    if (d) d.insertAdjacentHTML("beforeend", ` <span class="yt">· Your time (${esc(zAbbr(PHONE_TZ, Date.now()))})</span>`);
   }
 }
-new MutationObserver(ms => { for (const m of ms) if (m.addedNodes.length) { timeHeads(document); return; } }).observe(document.documentElement, {childList: true, subtree: true});
-// top-right time block: "12:30p MST" with the phone's "11:30a PST" under it when different
-const timeBlock = (txt, g) => { const f = g ? fieldAb(g) : "", a = g ? altTime(g) : null;
-  return `<span class="t1">${txt}${f ? `<span class="tzab">${esc(f)}</span>` : ""}</span>${a ? `<span class="tz2">${esc(a.short)} ${esc(a.ab)}</span>` : ""}`; };
-const altTxt = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${f}` : "") + (a ? ` (${a.full} ${a.ab})` : ""); };
-const altDet = g => { const f = fieldAb(g), a = altTime(g); return (f ? ` ${esc(f)}` : "") + (a ? ` · ${esc(a.full)} ${esc(a.ab)} your time` : ""); };
+new MutationObserver(ms => { for (const m of ms) if (m.addedNodes.length) { yourTime(document); return; } }).observe(document.documentElement, {childList: true, subtree: true});
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
 // "vs"/"@" when there's no score. Tap a row for odds, venue and impact.
@@ -1882,7 +1858,7 @@ function gameRow(D, M, g, o = {}) {
   const LN = teamName(D, L, flip ? g.away : g.home), RN = teamName(D, R, flip ? g.home : g.away);
   const done = g.hs != null && g.as != null;
   let left = o.left !== undefined ? o.left : (o.showDate ? shortDate(g.date) : shortTime(g.time));
-  left = left === shortTime(g.time) ? timeBlock(left, g) : left ? `<span class="t1">${left}</span>` : "";
+  if (left === shortTime(g.time)) left = myShort(g) + cvMark(g);
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -1912,9 +1888,7 @@ function gameRow(D, M, g, o = {}) {
       toggles += `<div class="pchg" data-g="${g.id}">Our pick changed to ${lab}. <button class="reset" data-useours="${g.id}">Use ours</button></div>`;
     }
   }
-  // the time (and its zone) sits on its own line in the top-left corner, then any tags; teams get the full width below
-  const top = left || o.tag || o.toptag ? `<div class="gtop"><span class="gtags">${o.toptag || ""}</span><span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span></div>` : "";
-  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}">${top}<span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
+  return `<div class="grow${o.ours && us ? " ours" : ""}${det ? " tap" : ""}" data-gid="${g.id}">${o.toptag ? `<div class="gtop">${o.toptag}</div>` : ""}<span class="gt">${left}<span class="kslot">${o.tag || ""}</span></span><span class="gl">${ln}</span><span class="gs ${mcls}">${mid}</span><span class="gr">${rn}</span><span class="gm">${mark || (det ? CHEV : "")}</span>${o.sub ? `<div class="gsub">${o.sub}</div>` : ""}${det}${toggles}</div>${o.after || ""}`;
 }
 // "How we did": compare our pre-game likely score with the final. Margin = winner's goals minus loser's.
 const GRADE = {exact: ["EXACT", "Exact score"], called: ["CALLED", "Called it"], bigger: ["BIGGER", "Bigger win than expected"], closer: ["CLOSER", "Closer than expected"], missed: ["MISSED", "Missed"]};
@@ -1973,7 +1947,7 @@ function code(D, id, teams) {
 function waitRow(D, g, f) {
   const flip = f && g.away_id === f, us = f && (g.home_id === f || g.away_id === f);
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
-  return `<div class="rrow"><span class="rd">${fmtTime(g.time)}${altCol(g)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us && flip ? "@" : "vs"}</span> ${esc(teamName(D, R))} <span class="pill a">Waiting for score</span></span></div>`;
+  return `<div class="rrow"><span class="rd">${esc(myFull(g))}${cvMark(g)}</span><span class="rt">${us ? "<b>" : ""}${esc(teamName(D, L))}${us ? "</b>" : ""} <span class="mut">${us && flip ? "@" : "vs"}</span> ${esc(teamName(D, R))} <span class="pill a">Waiting for score</span></span></div>`;
 }
 function checkedTxt() {
   if (!STATUS) return "";
@@ -2157,7 +2131,7 @@ function renderTeam(D, fid, key) {
       for (const x of evItemsFor(T.D, T.evs, T.fid)) {
         if (x.date < a || x.date > end2 || (x.g && seen.has("e" + x.g.id))) continue;
         if (x.g) seen.add("e" + x.g.id);
-        add(x.date, x.time, x.html.replace('<span class="gtags">', `<span class="gtags">${tag} `));
+        add(x.date, x.time, x.html.replace('<div class="gtop">', `<div class="gtop">${tag} `));
         if (x.date >= a && x.date <= b && !x.ev.competition && !evW.has(x.ev.event_id)) evW.set(x.ev.event_id, [x.ev, T.k]);
       }
     }
@@ -2524,7 +2498,7 @@ function pkGameRow(D, g, tz, mine, seen, locked) {
   const P = CTX.M.probs(g.home_id, g.away_id), sc = P.scores[P.pick];
   const dr = PK.draft[g.id] || (mine ? [mine[0], mine[1]] : null);
   const done = g.hs != null && g.as != null, pts = dr && done ? pkPts(dr, g) : null;
-  const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${fmtTime(g.time)}${altTxt(g)}`;
+  const when = `${new Date(g.date + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"})} ${myFull(g)}`;
   const step = side => locked ? `<span class="pkfinal${done && (side ? g.as < g.hs : g.hs < g.as) ? " lo" : ""}">${done ? (side ? g.as : g.hs) : ""}${done && (side ? g.as > g.hs : g.hs > g.as) ? '<i class="parr">◂</i>' : ""}</span>` : `<span class="pkstep" data-side="${side}"><button data-d="-1">−</button><b>${dr ? dr[side] : "–"}</b><button data-d="1">+</button></span>`;
   const others = (seen || []).filter(x => !x.me);
   return `<div class="pkg${ours ? " ours" : ""}" data-g="${g.id}">
@@ -2721,7 +2695,7 @@ function evTbdRow(ev, day, fid, card) {
     const full = d => ({Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday", Sun: "Sunday"})[d] || d;
     const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
-    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="gtags"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</span><span class="gt">${timeBlock(times.map(shortTime).join(" / "), times.length === 1 ? day.items[0].g : null)}</span></div><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
+    return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gt">${[...new Set(day.items.map(x => myShort(x.g)))].join(" / ")}${day.items.some(x => altTime(x.g)) ? '<i class="cv"></i>' : ""}</span><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
       <div class="gsub">${why}${one && one.g.venue ? `${why ? " · " : ""}${evField(ev, one.g.venue)}` : ""}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
@@ -2730,11 +2704,11 @@ function evTbdRow(ev, day, fid, card) {
   const lines = day.items.map(x => {
     const ourSide = x.other ? (x.other === "home" ? "away" : "home") : (() => { for (const s of ["home", "away"]) { const r = m.ref(x.g[s]); if (r && r[1] === x.from.num && r[0] === (x.o === "W")) return s; } return "home"; })();
     const other = ourSide === "home" ? "away" : "home", lab = m.label.get(x.g.id);
-    const where = `${times.length > 1 ? `${fmtTime(x.g.time)}${esc(altTxt(x.g))} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
+    const where = `${times.length > 1 ? `${esc(myFull(x.g))} · ` : ""}${x.g.venue ? evField(ev, x.g.venue) : "Field TBD"}`;
     const opp = m.sideTxt(x.g, other), vs = /^one of /.test(opp) ? "" : `vs ${opp} · `;   // 3+ possible opponents: too early to name them
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
-  return `<div class="grow ours${day.tentative ? " tent" : ""}"><div class="gtop"><span class="gtags"></span><span class="gt">${timeBlock(times.map(shortTime).join(" / "), times.length === 1 ? day.items[0].g : null)}</span></div><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gt">${[...new Set(day.items.map(x => myShort(x.g)))].join(" / ")}${day.items.some(x => altTime(x.g)) ? '<i class="cv"></i>' : ""}</span><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths">${lines.join("<br>")}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2786,9 +2760,9 @@ function evCard(D, ev, fid, open, live) {
   const day3 = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {weekday: "short"});
   if (tbd.length && (!left.length || (tbd[0].date + tbd[0].time) < (left[0].date + (left[0].time || "")))) {
     const d = evOurs(ev, fid).days.find(x => x.date === tbd[0].date), one = d && d.items.length === 1 && !d.items[0].cond.length ? d.items[0] : null;
-    line = `Next: ${day3(tbd[0].date)} ${fmtTime(tbd[0].time)}${esc(altTxt(Object.assign({tz: (ev.games.find(x => x.tz) || {}).tz}, tbd[0])))} · ${one ? `vs ${m.sideTxt(one.g, one.other)}` : "opponent TBD"}`;
+    line = `Next: ${day3(tbd[0].date)} ${esc(myFull(Object.assign({tz: (ev.games.find(x => x.tz) || {}).tz}, tbd[0])))} · ${one ? `vs ${m.sideTxt(one.g, one.other)}` : "opponent TBD"}`;
   } else if (left.length) { const g = left[0], h = m.sideId(g, "home"), opp = h === fid ? m.sideId(g, "away") : h;
-    line = `Next: ${day3(g.date)} ${fmtTime(g.time)}${esc(altTxt(g))} ${h === fid ? "vs" : "@"} ${esc(m.tn(opp))}`; }
+    line = `Next: ${day3(g.date)} ${esc(myFull(g))} ${h === fid ? "vs" : "@"} ${esc(m.tn(opp))}`; }
   else if (ours.length) {
     const rec = ours.map(g => { const w = m.winnerOf(Object.assign({}, g, {home_id: m.sideId(g, "home"), away_id: m.sideId(g, "away")})), us = m.sideId(g, "home") === fid ? [g.hs, g.as] : [g.as, g.hs]; return `${w === fid ? "W" : us[0] === us[1] && w == null ? "D" : "L"} ${us[0]}–${us[1]}${us[0] === us[1] && w != null ? " pens" : ""}`; });
     const last = ours[ours.length - 1], lab = m.label.get(last.id) || "", won = m.winnerOf(Object.assign({}, last, {home_id: m.sideId(last, "home"), away_id: m.sideId(last, "away")})) === fid;
@@ -2799,7 +2773,7 @@ function evCard(D, ev, fid, open, live) {
   const rows = [...new Set(items.map(x => x.date))].map(d => blk(fmtDate(d), items.filter(x => x.date === d).map(x => x.html).join(""))).join("");
   const full = [...new Set(m.games.map(g => g.date))].map(d => blk(fmtDate(d), m.games.filter(g => g.date === d).map(g => {
     const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
-    return `<div class="fbr"><div class="gtop"><span class="gtags"></span><span class="gt">${timeBlock(shortTime(g.time), g)}</span></div><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
+    return `<div class="fbr"><span class="gt">${myShort(g)}${cvMark(g)}</span><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}${lab ? `<div class="fl">${esc(lab)}${g.venue ? " · " + evField(ev, g.venue) : ""}</div>` : g.venue ? `<div class="fl">${evField(ev, g.venue)}</div>` : ""}</span></div>`;
   }).join(""))).join("");
   return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}</div>
     <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
