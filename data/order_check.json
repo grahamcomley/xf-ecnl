@@ -1018,6 +1018,18 @@
     ]
    },
    {
+    "id": 135622,
+    "team": "Sporting California USA Pre-ECNL B2015/16 NAVY II",
+    "ours": [
+     9,
+     6
+    ],
+    "ecnl": [
+     8,
+     6
+    ]
+   },
+   {
     "id": 134417,
     "team": "Eagles SC Eagles SC Pre-ECNL B2015/16 White II",
     "ours": [
@@ -1108,6 +1120,18 @@
     "ecnl": [
      8,
      16
+    ]
+   },
+   {
+    "id": 133591,
+    "team": "CDA Slammers FC Pre White II",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     9
     ]
    },
    {
@@ -15559,8 +15583,8 @@
    133633,
    131918,
    133432,
-   133493,
    132517,
+   133493,
    133130,
    130069
   ],
@@ -15601,6 +15625,30 @@
     "ecnl": [
      7,
      13
+    ]
+   },
+   {
+    "id": 132517,
+    "team": "United PDX Pre-ECNL G2015/16",
+    "ours": [
+     9,
+     12
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
+    "id": 133130,
+    "team": "Portland City United SC PRE-ECNL G2015/16",
+    "ours": [
+     8,
+     7
+    ],
+    "ecnl": [
+     7,
+     7
     ]
    }
   ]
@@ -19583,8 +19631,8 @@
   "conf": "u14g-4304-40792",
   "name": "ECNL RL Girls Heartland",
   "ours": [
-   123156,
    132731,
+   123156,
    137130,
    130716,
    116243,
@@ -19605,6 +19653,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 123156,
+    "team": "Kansas Rush Gold",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
     "id": 132731,
     "team": "Toca Fusion Elite",
     "ours": [
@@ -19614,6 +19674,18 @@
     "ecnl": [
      10,
      20
+    ]
+   },
+   {
+    "id": 137130,
+    "team": "Omaha United SC",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     19
     ]
    },
    {
@@ -25057,12 +25129,12 @@
   "ours": [
    133993,
    132274,
+   94936,
    133192,
    133934,
    134653,
    135778,
    81461,
-   94936,
    134090
   ],
   "ecnl": [
@@ -25075,6 +25147,37 @@
    133934,
    132274,
    134090
+  ]
+ },
+ {
+  "conf": "u16g-4305-40800",
+  "name": "ECNL RL Girls Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 94936,
+    "team": "Germantown Legends",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 132274,
+    "team": "Tennessee United SC",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
@@ -25896,6 +25999,25 @@
   ]
  },
  {
+  "conf": "u16g-4395-41205",
+  "name": "ECNL RL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134317,
+    "team": "Rockford Raptors FC",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4395-41199",
   "name": "ECNL RL Girls Lake Michigan",
   "ours": [
@@ -25911,6 +26033,25 @@
    134161,
    94351,
    127919
+  ]
+ },
+ {
+  "conf": "u16g-4395-41199",
+  "name": "ECNL RL Girls Lake Michigan",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 127919,
+    "team": "Chicago Inter",
+    "ours": [
+     12,
+     28
+    ],
+    "ecnl": [
+     11,
+     25
+    ]
+   }
   ]
  },
  {
@@ -29755,9 +29896,9 @@
   "conf": "u19g-4301-41621",
   "name": "ECNL RL Girls GLA",
   "ours": [
+   113216,
    106541,
    113119,
-   113216,
    130585,
    130629,
    114226
@@ -29769,6 +29910,37 @@
    113216,
    130629,
    114226
+  ]
+ },
+ {
+  "conf": "u19g-4301-41621",
+  "name": "ECNL RL Girls GLA",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 106541,
+    "team": "WNY Flash Rochester",
+    "ours": [
+     2,
+     3
+    ],
+    "ecnl": [
+     1,
+     3
+    ]
+   },
+   {
+    "id": 113216,
+    "team": "Northern Steel",
+    "ours": [
+     1,
+     3
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   }
   ]
  },
  {
