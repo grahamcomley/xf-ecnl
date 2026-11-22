@@ -18027,6 +18027,18 @@
      10,
      13
     ]
+   },
+   {
+    "id": 134409,
+    "team": "MN Thunder Academy",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
    }
   ]
  },
@@ -18035,6 +18047,18 @@
   "name": "ECNL Girls Midwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 136035,
+    "team": "Eclipse Select Soccer Club",
+    "ours": [
+     11,
+     30
+    ],
+    "ecnl": [
+     10,
+     27
+    ]
+   },
    {
     "id": 115320,
     "team": "Nationals SC",
@@ -21021,6 +21045,18 @@
     ]
    },
    {
+    "id": 100065,
+    "team": "LV Heat Surf",
+    "ours": [
+     8,
+     5
+    ],
+    "ecnl": [
+     7,
+     4
+    ]
+   },
+   {
     "id": 131709,
     "team": "Legends FC Del Mar",
     "ours": [
@@ -21030,6 +21066,18 @@
     "ecnl": [
      7,
      2
+    ]
+   },
+   {
+    "id": 134082,
+    "team": "Sporting California USA",
+    "ours": [
+     8,
+     2
+    ],
+    "ecnl": [
+     7,
+     1
     ]
    }
   ]
@@ -22309,6 +22357,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 132178,
+    "team": "Beach Futbol Club (CA) Black",
+    "ours": [
+     8,
+     24
+    ],
+    "ecnl": [
+     7,
+     21
+    ]
+   },
+   {
     "id": 105774,
     "team": "SLAMMERS FC ECNL RL S.Cal G2012/13",
     "ours": [
@@ -22330,6 +22390,18 @@
     "ecnl": [
      6,
      4
+    ]
+   },
+   {
+    "id": 113060,
+    "team": "LV Heat Surf ECNL RL SoCal G2012/13",
+    "ours": [
+     7,
+     0
+    ],
+    "ecnl": [
+     6,
+     0
     ]
    }
   ]
