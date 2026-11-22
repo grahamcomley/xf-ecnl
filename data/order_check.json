@@ -22980,6 +22980,18 @@
     ]
    },
    {
+    "id": 69209,
+    "team": "AHFC CENTRAL ECNL RL STXCL G2011/12 I",
+    "ours": [
+     11,
+     25
+    ],
+    "ecnl": [
+     10,
+     22
+    ]
+   },
+   {
     "id": 130090,
     "team": "Dynamos ECNL RL STXCL G2011/12",
     "ours": [
@@ -23061,6 +23073,18 @@
     "ecnl": [
      9,
      5
+    ]
+   },
+   {
+    "id": 121231,
+    "team": "Force FC ECNL RL STXCL G2011/12",
+    "ours": [
+     11,
+     3
+    ],
+    "ecnl": [
+     10,
+     3
     ]
    }
   ]
@@ -25300,6 +25324,18 @@
     ]
    },
    {
+    "id": 132177,
+    "team": "Beach Futbol Club (CA) Black",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
     "id": 133712,
     "team": "Legends FC (CA) ECNL RL S. Cal G2011/12",
     "ours": [
@@ -25333,6 +25369,18 @@
     "ecnl": [
      6,
      3
+    ]
+   },
+   {
+    "id": 113059,
+    "team": "LV Heat Surf ECNL RL SoCal G2011/12",
+    "ours": [
+     7,
+     0
+    ],
+    "ecnl": [
+     6,
+     0
     ]
    }
   ]
@@ -29980,6 +30028,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134642,
+    "team": "FC Alliance TN",
+    "ours": [
+     1,
+     1
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
     "id": 47009,
     "team": "Ohio Elite SA",
     "ours": [
@@ -30022,9 +30082,9 @@
   "name": "ECNL Girls Ohio Valley",
   "ours": [
    65018,
+   47037,
    46986,
    47002,
-   47037,
    108209,
    60737
   ],
@@ -30072,6 +30132,18 @@
     "ours": [
      1,
      0
+    ],
+    "ecnl": [
+     0,
+     0
+    ]
+   },
+   {
+    "id": 47037,
+    "team": "WNY Flash",
+    "ours": [
+     1,
+     1
     ],
     "ecnl": [
      0,
@@ -31764,11 +31836,11 @@
    89528,
    129892,
    132175,
-   134175,
+   97426,
    113056,
+   134175,
    131031,
-   133726,
-   97426
+   133726
   ],
   "ecnl": [
    133710,
@@ -31813,6 +31885,30 @@
     "ecnl": [
      5,
      12
+    ]
+   },
+   {
+    "id": 134175,
+    "team": "Sporting California USA ECNL RL S.Cal G2009/10",
+    "ours": [
+     6,
+     3
+    ],
+    "ecnl": [
+     5,
+     3
+    ]
+   },
+   {
+    "id": 97426,
+    "team": "Rebels SC ECNL RL SoCal G2009/10",
+    "ours": [
+     7,
+     4
+    ],
+    "ecnl": [
+     6,
+     1
     ]
    }
   ]
