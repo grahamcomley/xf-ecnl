@@ -953,25 +953,6 @@
   ]
  },
  {
-  "conf": "u12b-4331-42135",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 92769,
-    "team": "Coastal Premier Pre-ECNL STXCL B2014/15",
-    "ours": [
-     10,
-     7
-    ],
-    "ecnl": [
-     9,
-     7
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4331-42138",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -985,12 +966,12 @@
    117162
   ],
   "ecnl": [
-   131287,
    131288,
+   131287,
    133790,
    75142,
-   118553,
    80138,
+   118553,
    132285,
    117162,
    132285
@@ -1002,42 +983,6 @@
   "kind": "points",
   "teams": [
    {
-    "id": 133790,
-    "team": "MAFC Pre-ECNL STXCL B2014/15",
-    "ours": [
-     9,
-     27
-    ],
-    "ecnl": [
-     8,
-     24
-    ]
-   },
-   {
-    "id": 118553,
-    "team": "AHFC SW Pre-ECNL STXCL B2014/15",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     15
-    ]
-   },
-   {
-    "id": 131288,
-    "team": "RISE SC Pre-ECNL STXCL B2014/15 Magenta",
-    "ours": [
-     10,
-     10
-    ],
-    "ecnl": [
-     9,
-     7
-    ]
-   },
-   {
     "id": 132285,
     "team": "Cavalry Pre-ECNL STXCL B2014/15",
     "ours": [
@@ -1047,25 +992,6 @@
     "ecnl": [
      0,
      0
-    ]
-   }
-  ]
- },
- {
-  "conf": "u12b-4331-42117",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133222,
-    "team": "Lonestar ATX NE Pre-ECNL STXCL B2014/15 Red B",
-    "ours": [
-     9,
-     21
-    ],
-    "ecnl": [
-     8,
-     18
     ]
    }
   ]
@@ -1088,37 +1014,6 @@
    131664,
    131177,
    133251
-  ]
- },
- {
-  "conf": "u12b-4331-42119",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132713,
-    "team": "San Antonio FC Pre-ECNL STXCL B2014/15 Black",
-    "ours": [
-     9,
-     6
-    ],
-    "ecnl": [
-     7,
-     3
-    ]
-   },
-   {
-    "id": 131177,
-    "team": "TC Premier SC Pre-ECNL STXCL B2014/15",
-    "ours": [
-     9,
-     3
-    ],
-    "ecnl": [
-     8,
-     3
-    ]
-   }
   ]
  },
  {
@@ -1247,71 +1142,16 @@
   ],
   "ecnl": [
    131368,
-   114833,
    134701,
    130550,
    135735,
-   75636,
    131369,
+   75636,
    135399,
    135559,
    134702,
+   114833,
    131472
-  ]
- },
- {
-  "conf": "u12b-4360-40811",
-  "name": "Pre-ECNL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131368,
-    "team": "FC Tulsa Academy Pre-ECNL B2014/15",
-    "ours": [
-     11,
-     28
-    ],
-    "ecnl": [
-     10,
-     28
-    ]
-   },
-   {
-    "id": 134701,
-    "team": "Arkansas Comets FC Pre-ECNL B2014/15 I",
-    "ours": [
-     13,
-     30
-    ],
-    "ecnl": [
-     12,
-     27
-    ]
-   },
-   {
-    "id": 131369,
-    "team": "FC Tulsa Academy Pre-ECNL B2014/15 II",
-    "ours": [
-     13,
-     16
-    ],
-    "ecnl": [
-     12,
-     13
-    ]
-   },
-   {
-    "id": 134702,
-    "team": "Arkansas Comets FC Pre-ECNL B2014/15 II",
-    "ours": [
-     15,
-     10
-    ],
-    "ecnl": [
-     14,
-     10
-    ]
-   }
   ]
  },
  {
@@ -1453,68 +1293,13 @@
    117145,
    116958,
    135308,
+   117011,
    114509,
    134889,
    113924,
    114652,
    134846,
-   111638,
-   117011
-  ]
- },
- {
-  "conf": "u12b-4364-40818",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134846,
-    "team": "East Meadow Soccer Club Pre-ECNL B2014/15",
-    "ours": [
-     10,
-     18
-    ],
-    "ecnl": [
-     9,
-     18
-    ]
-   },
-   {
-    "id": 116958,
-    "team": "Scorpions SC Pre-ECNL B2014/15",
-    "ours": [
-     10,
-     17
-    ],
-    "ecnl": [
-     9,
-     14
-    ]
-   },
-   {
-    "id": 111638,
-    "team": "FC Stars Pre-ECNL B2014/15 Blue",
-    "ours": [
-     10,
-     16
-    ],
-    "ecnl": [
-     9,
-     13
-    ]
-   },
-   {
-    "id": 114509,
-    "team": "SUSA FC Pre-ECNL B2014/15 l",
-    "ours": [
-     10,
-     9
-    ],
-    "ecnl": [
-     9,
-     9
-    ]
-   }
+   111638
   ]
  },
  {
@@ -1536,72 +1321,17 @@
   ],
   "ecnl": [
    135079,
-   114510,
    134890,
    126417,
    116959,
    117146,
+   111640,
    114653,
    113925,
    133939,
-   111640,
    117012,
-   135309
-  ]
- },
- {
-  "conf": "u12b-4364-40820",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135079,
-    "team": "East Meadow Soccer Club Pre-ECNL B2014/15 II",
-    "ours": [
-     10,
-     23
-    ],
-    "ecnl": [
-     9,
-     23
-    ]
-   },
-   {
-    "id": 114510,
-    "team": "SUSA FC Pre-ECNL B2014/15 ll",
-    "ours": [
-     10,
-     23
-    ],
-    "ecnl": [
-     9,
-     22
-    ]
-   },
-   {
-    "id": 116959,
-    "team": "Scorpions SC Pre-ECNL B2014/15 ll",
-    "ours": [
-     10,
-     17
-    ],
-    "ecnl": [
-     9,
-     16
-    ]
-   },
-   {
-    "id": 111640,
-    "team": "FC Stars Pre-ECNL B2014/15 White",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     10
-    ]
-   }
+   135309,
+   114510
   ]
  },
  {
@@ -1626,43 +1356,12 @@
    136444,
    136467,
    136470,
-   133340,
    134456,
+   133340,
    131010,
    136650,
    131009,
    134257
-  ]
- },
- {
-  "conf": "u12b-4365-41497",
-  "name": "Pre-ECNL Boys Northeast - North",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134456,
-    "team": "Fox Soccer Academy Premier Pre-ECNL 2014/15",
-    "ours": [
-     10,
-     11
-    ],
-    "ecnl": [
-     9,
-     8
-    ]
-   },
-   {
-    "id": 136650,
-    "team": "Eastern FC Pre-ECNL RL B2014/15",
-    "ours": [
-     8,
-     0
-    ],
-    "ecnl": [
-     7,
-     0
-    ]
-   }
   ]
  },
  {
@@ -1685,6 +1384,7 @@
   "ecnl": [
    55365,
    134249,
+   133135,
    135004,
    129554,
    133364,
@@ -1693,39 +1393,7 @@
    132135,
    126351,
    134944,
-   135335,
-   133135
-  ]
- },
- {
-  "conf": "u12b-4366-40821",
-  "name": "Pre-ECNL Boys North Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133364,
-    "team": "Penn Fusion Soccer Academy Pre-ECNL B2014/15",
-    "ours": [
-     11,
-     18
-    ],
-    "ecnl": [
-     10,
-     18
-    ]
-   },
-   {
-    "id": 133135,
-    "team": "STA Pre-ECNL B2014/15",
-    "ours": [
-     9,
-     17
-    ],
-    "ecnl": [
-     8,
-     14
-    ]
-   }
+   135335
   ]
  },
  {
@@ -1746,7 +1414,6 @@
    126583
   ],
   "ecnl": [
-   135473,
    135666,
    132211,
    115028,
@@ -1757,38 +1424,8 @@
    134945,
    126583,
    133143,
+   135473,
    134132
-  ]
- },
- {
-  "conf": "u12b-4366-41039",
-  "name": "Pre-ECNL Boys North Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135473,
-    "team": "Penn Fusion Soccer Academy Pre-ECNL B2014/15 ll",
-    "ours": [
-     11,
-     23
-    ],
-    "ecnl": [
-     10,
-     23
-    ]
-   },
-   {
-    "id": 133143,
-    "team": "STA Pre-ECNL B2014/15 ll",
-    "ours": [
-     9,
-     19
-    ],
-    "ecnl": [
-     8,
-     16
-    ]
-   }
   ]
  },
  {
@@ -1965,37 +1602,6 @@
   ]
  },
  {
-  "conf": "u12b-4380-41012",
-  "name": "Pre-ECNL Boys Florida",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 113965,
-    "team": "Florida Kraze Krush Pre-ECNL B2014/15 Black",
-    "ours": [
-     7,
-     18
-    ],
-    "ecnl": [
-     6,
-     15
-    ]
-   },
-   {
-    "id": 135943,
-    "team": "FC America Pre-ECNL B2014/15",
-    "ours": [
-     5,
-     9
-    ],
-    "ecnl": [
-     4,
-     9
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4383-40810",
   "name": "Pre-ECNL Boys Far West",
   "ours": [
@@ -2024,37 +1630,6 @@
   ]
  },
  {
-  "conf": "u12b-4383-40810",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131481,
-    "team": "FC Portland Pre-ECNL B2014/15 I",
-    "ours": [
-     9,
-     22
-    ],
-    "ecnl": [
-     8,
-     19
-    ]
-   },
-   {
-    "id": 126259,
-    "team": "Columbia Premier SC Pre-ECNL B2014/15 I",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     15
-    ]
-   }
-  ]
- },
- {
   "conf": "u12b-4383-41043",
   "name": "Pre-ECNL Boys Far West",
   "ours": [
@@ -2080,37 +1655,6 @@
    133496,
    133434,
    133131
-  ]
- },
- {
-  "conf": "u12b-4383-41043",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134697,
-    "team": "Columbia Premier SC Pre-ECNL B2014/15 II",
-    "ours": [
-     9,
-     21
-    ],
-    "ecnl": [
-     8,
-     21
-    ]
-   },
-   {
-    "id": 134199,
-    "team": "FC Portland Pre-ECNL B2014/15 II",
-    "ours": [
-     9,
-     19
-    ],
-    "ecnl": [
-     8,
-     16
-    ]
-   }
   ]
  },
  {
