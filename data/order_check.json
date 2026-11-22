@@ -2722,6 +2722,30 @@
      17,
      29
     ]
+   },
+   {
+    "id": 132266,
+    "team": "Tennessee United SC",
+    "ours": [
+     16,
+     21
+    ],
+    "ecnl": [
+     15,
+     18
+    ]
+   },
+   {
+    "id": 133864,
+    "team": "Germantown Legends",
+    "ours": [
+     18,
+     9
+    ],
+    "ecnl": [
+     17,
+     9
+    ]
    }
   ]
  },
@@ -11586,8 +11610,8 @@
    133689,
    133562,
    132996,
-   134585,
    110507,
+   134585,
    131964,
    133695,
    131517,
@@ -11613,6 +11637,37 @@
    135281,
    131517,
    91203
+  ]
+ },
+ {
+  "conf": "u17b-4354-41632",
+  "name": "ECNL RL Boys Southern Cal",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 68853,
+    "team": "LA Breakers Red",
+    "ours": [
+     8,
+     19
+    ],
+    "ecnl": [
+     7,
+     16
+    ]
+   },
+   {
+    "id": 134585,
+    "team": "Rebels SC ECNL RL SoCal B2009/10 White",
+    "ours": [
+     8,
+     6
+    ],
+    "ecnl": [
+     7,
+     6
+    ]
+   }
   ]
  },
  {
@@ -14658,8 +14713,8 @@
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
    134956,
-   68054,
    132373,
+   68054,
    136465,
    113926,
    134029,
@@ -14677,6 +14732,37 @@
    136452,
    133857,
    132373
+  ]
+ },
+ {
+  "conf": "u12g-4379-42031",
+  "name": "Pre-ECNL Girls Northeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132373,
+    "team": "SUSA FC Pre-ECNL G2014/15 Northeast",
+    "ours": [
+     3,
+     7
+    ],
+    "ecnl": [
+     2,
+     4
+    ]
+   },
+   {
+    "id": 133857,
+    "team": "Long Island Slammers Pre-ECNL G2014/15",
+    "ours": [
+     5,
+     1
+    ],
+    "ecnl": [
+     4,
+     1
+    ]
+   }
   ]
  },
  {
