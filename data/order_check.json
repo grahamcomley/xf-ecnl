@@ -12030,6 +12030,18 @@
     ]
    },
    {
+    "id": 129721,
+    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2009/10",
+    "ours": [
+     10,
+     26
+    ],
+    "ecnl": [
+     9,
+     23
+    ]
+   },
+   {
     "id": 133250,
     "team": "LTFC ECNL RL STXCL B2009/10",
     "ours": [
@@ -12183,6 +12195,18 @@
     "ecnl": [
      9,
      4
+    ]
+   },
+   {
+    "id": 95205,
+    "team": "SAFC ECNL RL STXCL B2009/10",
+    "ours": [
+     11,
+     3
+    ],
+    "ecnl": [
+     10,
+     3
     ]
    }
   ]
