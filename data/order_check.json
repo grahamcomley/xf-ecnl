@@ -363,6 +363,37 @@
   ]
  },
  {
+  "conf": "u11b-4360-40813",
+  "name": "Pre-ECNL Boys Frontier",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131371,
+    "team": "FC Tulsa Academy Pre-ECNL B2015/16 II",
+    "ours": [
+     14,
+     26
+    ],
+    "ecnl": [
+     13,
+     23
+    ]
+   },
+   {
+    "id": 135560,
+    "team": "Arkansas Rising Pre-ECNL B2015/16",
+    "ours": [
+     12,
+     12
+    ],
+    "ecnl": [
+     11,
+     12
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4361-41036",
   "name": "Pre-ECNL Boys Heartland",
   "ours": [
@@ -887,9 +918,9 @@
   "name": "Pre-ECNL Boys Colorado",
   "ours": [
    135738,
+   131414,
    131887,
    135932,
-   131414,
    133207,
    130971,
    132778,
@@ -904,6 +935,37 @@
    132778,
    132097,
    135932
+  ]
+ },
+ {
+  "conf": "u11b-4387-41885",
+  "name": "Pre-ECNL Boys Colorado",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135738,
+    "team": "Colorado Storm South Pre-ECNL B2015/16",
+    "ours": [
+     5,
+     12
+    ],
+    "ecnl": [
+     4,
+     12
+    ]
+   },
+   {
+    "id": 131414,
+    "team": "Colorado Storm Pre-ECNL B2015/16 North",
+    "ours": [
+     5,
+     10
+    ],
+    "ecnl": [
+     4,
+     7
+    ]
+   }
   ]
  },
  {
@@ -2335,10 +2397,10 @@
    134254,
    112981,
    113141,
+   134992,
    88601,
    131025,
-   134943,
-   134992
+   134943
   ],
   "ecnl": [
    91703,
@@ -2353,6 +2415,37 @@
    134992,
    134194,
    113141
+  ]
+ },
+ {
+  "conf": "u13b-4282-40503",
+  "name": "ECNL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134943,
+    "team": "Match Fit Surf",
+    "ours": [
+     11,
+     4
+    ],
+    "ecnl": [
+     10,
+     4
+    ]
+   },
+   {
+    "id": 134992,
+    "team": "Philadelphia Ukrainian Nationals",
+    "ours": [
+     10,
+     6
+    ],
+    "ecnl": [
+     9,
+     3
+    ]
+   }
   ]
  },
  {
@@ -4473,8 +4566,8 @@
    119294,
    119319,
    137564,
-   119462,
    119446,
+   119462,
    119271,
    137591
   ],
@@ -4493,6 +4586,37 @@
    119446,
    137591,
    119073
+  ]
+ },
+ {
+  "conf": "u14b-4339-40738",
+  "name": "ECNL RL Boys Twin Cities",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 119271,
+    "team": "Salvo SC",
+    "ours": [
+     7,
+     3
+    ],
+    "ecnl": [
+     6,
+     0
+    ]
+   },
+   {
+    "id": 119462,
+    "team": "Keliix-Intra SC",
+    "ours": [
+     7,
+     4
+    ],
+    "ecnl": [
+     6,
+     4
+    ]
+   }
   ]
  },
  {
@@ -4525,6 +4649,37 @@
    96818,
    135320,
    134884
+  ]
+ },
+ {
+  "conf": "u14b-4340-41828",
+  "name": "ECNL RL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 95343,
+    "team": "SUSA FC",
+    "ours": [
+     11,
+     26
+    ],
+    "ecnl": [
+     10,
+     23
+    ]
+   },
+   {
+    "id": 81912,
+    "team": "FC Stars",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     14
+    ]
+   }
   ]
  },
  {
@@ -7194,11 +7349,11 @@
    112302,
    129718,
    56879,
-   112940,
    115220,
    133297,
    133296,
    95204,
+   112940,
    128358,
    93726,
    131492,
@@ -7232,6 +7387,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 95661,
+    "team": "MAFC Guerreros Houston ECNL RL STXCL B2010/11",
+    "ours": [
+     12,
+     29
+    ],
+    "ecnl": [
+     11,
+     26
+    ]
+   },
+   {
     "id": 112302,
     "team": "TC Premier SC ECNL RL STXCL B2010/11",
     "ours": [
@@ -7253,6 +7420,18 @@
     "ecnl": [
      10,
      20
+    ]
+   },
+   {
+    "id": 112940,
+    "team": "Lions FC ECNL RL STXCL B2010/11 Red",
+    "ours": [
+     11,
+     16
+    ],
+    "ecnl": [
+     10,
+     16
     ]
    },
    {
@@ -9074,8 +9253,8 @@
    95357,
    129721,
    133250,
-   128363,
    131203,
+   128363,
    131491,
    80705,
    75519,
@@ -9170,6 +9349,30 @@
     "ecnl": [
      11,
      18
+    ]
+   },
+   {
+    "id": 131203,
+    "team": "FC Westlake Central ECNL RL STXCL B2009/10",
+    "ours": [
+     11,
+     19
+    ],
+    "ecnl": [
+     10,
+     16
+    ]
+   },
+   {
+    "id": 75519,
+    "team": "VCF HOUSTON ECNL RL STXCL B2009/10",
+    "ours": [
+     12,
+     17
+    ],
+    "ecnl": [
+     11,
+     17
     ]
    },
    {
@@ -9642,6 +9845,87 @@
    70531,
    69455,
    134494
+  ]
+ },
+ {
+  "conf": "u17b-4286-40537",
+  "name": "ECNL Boys Southeast",
+  "ours": [
+   68801,
+   46819,
+   134156,
+   129028,
+   67126,
+   131801,
+   69847,
+   59529,
+   68799
+  ],
+  "ecnl": [
+   68801,
+   46819,
+   134156,
+   129028,
+   67126,
+   69847,
+   131801,
+   59529,
+   68799
+  ]
+ },
+ {
+  "conf": "u17b-4286-40537",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 46819,
+    "team": "CESA Triumph",
+    "ours": [
+     13,
+     30
+    ],
+    "ecnl": [
+     12,
+     30
+    ]
+   },
+   {
+    "id": 134156,
+    "team": "NTH NASA",
+    "ours": [
+     14,
+     29
+    ],
+    "ecnl": [
+     13,
+     26
+    ]
+   },
+   {
+    "id": 67126,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     22
+    ],
+    "ecnl": [
+     14,
+     19
+    ]
+   },
+   {
+    "id": 69847,
+    "team": "South Carolina United",
+    "ours": [
+     15,
+     11
+    ],
+    "ecnl": [
+     14,
+     11
+    ]
+   }
   ]
  },
  {
@@ -17559,6 +17843,18 @@
     ]
    },
    {
+    "id": 94652,
+    "team": "FC Dallas Youth",
+    "ours": [
+     11,
+     22
+    ],
+    "ecnl": [
+     10,
+     19
+    ]
+   },
+   {
     "id": 129341,
     "team": "Challenge SC",
     "ours": [
@@ -17568,6 +17864,18 @@
     "ecnl": [
      9,
      16
+    ]
+   },
+   {
+    "id": 81918,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     10,
+     9
+    ],
+    "ecnl": [
+     9,
+     9
     ]
    }
   ]
@@ -23340,10 +23648,10 @@
   "name": "ECNL Girls Ohio Valley",
   "ours": [
    133467,
-   47038,
    60137,
    47010,
    133007,
+   47038,
    46987,
    46997,
    47003,
@@ -23372,6 +23680,30 @@
   "name": "ECNL Girls Ohio Valley",
   "kind": "points",
   "teams": [
+   {
+    "id": 133467,
+    "team": "Tennessee SC",
+    "ours": [
+     2,
+     6
+    ],
+    "ecnl": [
+     1,
+     3
+    ]
+   },
+   {
+    "id": 47038,
+    "team": "WNY Flash",
+    "ours": [
+     2,
+     3
+    ],
+    "ecnl": [
+     1,
+     3
+    ]
+   },
    {
     "id": 45768,
     "team": "FC Pride Elite",
@@ -23411,8 +23743,8 @@
    131994,
    131496,
    45834,
-   60033,
    58734,
+   60033,
    34958,
    50959,
    46901,
@@ -23436,6 +23768,61 @@
    36328,
    27972,
    34958
+  ]
+ },
+ {
+  "conf": "u19g-4270-40598",
+  "name": "ECNL Girls Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 27972,
+    "team": "CESA Liberty",
+    "ours": [
+     14,
+     29
+    ],
+    "ecnl": [
+     13,
+     28
+    ]
+   },
+   {
+    "id": 59236,
+    "team": "Concorde Fire Premier",
+    "ours": [
+     14,
+     24
+    ],
+    "ecnl": [
+     13,
+     23
+    ]
+   },
+   {
+    "id": 131496,
+    "team": "GSA",
+    "ours": [
+     14,
+     22
+    ],
+    "ecnl": [
+     13,
+     19
+    ]
+   },
+   {
+    "id": 60033,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     16
+    ],
+    "ecnl": [
+     14,
+     16
+    ]
+   }
   ]
  },
  {
@@ -23936,12 +24323,12 @@
   "ours": [
    97020,
    132927,
-   97354,
    134916,
+   97354,
    133045,
    132908,
-   132119,
    94984,
+   132119,
    48226,
    133179,
    133372,
@@ -23973,6 +24360,37 @@
    131537,
    132119,
    94497
+  ]
+ },
+ {
+  "conf": "u19g-4306-40808",
+  "name": "ECNL RL Girls Mountain",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134916,
+    "team": "NM Rapids SC",
+    "ours": [
+     2,
+     6
+    ],
+    "ecnl": [
+     1,
+     3
+    ]
+   },
+   {
+    "id": 132119,
+    "team": "Arsenal Colorado",
+    "ours": [
+     18,
+     33
+    ],
+    "ecnl": [
+     17,
+     33
+    ]
+   }
   ]
  },
  {
