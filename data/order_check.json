@@ -415,6 +415,37 @@
   ]
  },
  {
+  "conf": "u11b-4364-40817",
+  "name": "Pre-ECNL Boys New England",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134847,
+    "team": "East Meadow Soccer Club Pre-ECNL B2015/16",
+    "ours": [
+     11,
+     21
+    ],
+    "ecnl": [
+     10,
+     18
+    ]
+   },
+   {
+    "id": 117692,
+    "team": "Scorpions SC Pre-ECNL B2015/16",
+    "ours": [
+     11,
+     15
+    ],
+    "ecnl": [
+     10,
+     15
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4364-40819",
   "name": "Pre-ECNL Boys New England",
   "ours": [
@@ -1342,8 +1373,8 @@
    131009,
    114950,
    136444,
-   134257,
    136467,
+   134257,
    136470,
    134456,
    133340,
@@ -1362,6 +1393,37 @@
    136650,
    131009,
    134257
+  ]
+ },
+ {
+  "conf": "u12b-4365-41497",
+  "name": "Pre-ECNL Boys Northeast - North",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134257,
+    "team": "Long Island Slammers Pre",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     11
+    ]
+   },
+   {
+    "id": 134456,
+    "team": "Fox Soccer Academy Premier Pre-ECNL 2014/15",
+    "ours": [
+     11,
+     12
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   }
   ]
  },
  {
@@ -16848,21 +16910,20 @@
  {
   "conf": "u15g-4269-41862",
   "name": "ECNL Girls Ohio Valley",
-  "ours": [
-   59470,
-   133464,
-   134640,
-   59612,
-   95897,
-   133000
-  ],
-  "ecnl": [
-   59470,
-   134640,
-   133464,
-   59612,
-   95897,
-   133000
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134640,
+    "team": "FC Alliance TN",
+    "ours": [
+     2,
+     2
+    ],
+    "ecnl": [
+     1,
+     1
+    ]
+   }
   ]
  },
  {
@@ -16870,8 +16931,8 @@
   "name": "ECNL Girls Ohio Valley",
   "ours": [
    71333,
-   61753,
    69761,
+   61753,
    60141,
    61433,
    108211
@@ -16883,6 +16944,25 @@
    60141,
    61433,
    108211
+  ]
+ },
+ {
+  "conf": "u15g-4269-41861",
+  "name": "ECNL Girls Ohio Valley",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 69761,
+    "team": "Pittsburgh Riverhounds",
+    "ours": [
+     2,
+     2
+    ],
+    "ecnl": [
+     1,
+     1
+    ]
+   }
   ]
  },
  {
