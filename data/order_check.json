@@ -1326,6 +1326,30 @@
      4,
      7
     ]
+   },
+   {
+    "id": 132778,
+    "team": "Real Colorado Pre-ECNL Olympico B2015/16",
+    "ours": [
+     4,
+     2
+    ],
+    "ecnl": [
+     3,
+     1
+    ]
+   },
+   {
+    "id": 132097,
+    "team": "Arsenal Colorado Pre-ECNL B2015/16 Gold",
+    "ours": [
+     5,
+     1
+    ],
+    "ecnl": [
+     4,
+     0
+    ]
    }
   ]
  },
@@ -4665,9 +4689,9 @@
    133575,
    131033,
    134362,
+   96085,
    135607,
    132062,
-   96085,
    133756,
    132986,
    135606
@@ -4735,6 +4759,18 @@
     ]
    },
    {
+    "id": 134362,
+    "team": "Eagles SC",
+    "ours": [
+     9,
+     9
+    ],
+    "ecnl": [
+     8,
+     9
+    ]
+   },
+   {
     "id": 133756,
     "team": "SDSC Surf Gold",
     "ours": [
@@ -4743,6 +4779,18 @@
     ],
     "ecnl": [
      7,
+     4
+    ]
+   },
+   {
+    "id": 96085,
+    "team": "West Coast FC Navy",
+    "ours": [
+     9,
+     7
+    ],
+    "ecnl": [
+     8,
      4
     ]
    },
@@ -6315,6 +6363,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 134788,
+    "team": "Tennessee SC",
+    "ours": [
+     11,
+     29
+    ],
+    "ecnl": [
+     10,
+     26
+    ]
+   },
+   {
     "id": 133897,
     "team": "Tennessee SC Murfreesboro",
     "ours": [
@@ -6336,6 +6396,18 @@
     "ecnl": [
      8,
      6
+    ]
+   },
+   {
+    "id": 112681,
+    "team": "Germantown Legends",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     8,
+     4
     ]
    }
   ]
@@ -14876,10 +14948,10 @@
    135680,
    131420,
    135740,
-   132765,
    132692,
    130989,
-   137572
+   137572,
+   132765
   ],
   "ecnl": [
    132111,
@@ -14890,6 +14962,37 @@
    137572,
    132765,
    132692
+  ]
+ },
+ {
+  "conf": "u11g-4386-41064",
+  "name": "Pre-ECNL Girls Colorado",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132111,
+    "team": "Arsenal Colorado Pre-ECNL G2015/16 Gold",
+    "ours": [
+     4,
+     10
+    ],
+    "ecnl": [
+     3,
+     7
+    ]
+   },
+   {
+    "id": 132765,
+    "team": "Real Colorado Pre-ECNL Olympico G2015/16",
+    "ours": [
+     5,
+     4
+    ],
+    "ecnl": [
+     4,
+     4
+    ]
+   }
   ]
  },
  {
@@ -18803,6 +18906,30 @@
     ]
    },
    {
+    "id": 133040,
+    "team": "Colorado Storm Central",
+    "ours": [
+     13,
+     23
+    ],
+    "ecnl": [
+     12,
+     22
+    ]
+   },
+   {
+    "id": 114063,
+    "team": "Avalanche",
+    "ours": [
+     8,
+     12
+    ],
+    "ecnl": [
+     7,
+     11
+    ]
+   },
+   {
     "id": 99943,
     "team": "Real Colorado Olympico",
     "ours": [
@@ -22701,6 +22828,37 @@
   ]
  },
  {
+  "conf": "u16g-4264-40560",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 127911,
+    "team": "Chicago Inter",
+    "ours": [
+     15,
+     27
+    ],
+    "ecnl": [
+     14,
+     24
+    ]
+   },
+   {
+    "id": 134413,
+    "team": "MN Thunder Academy",
+    "ours": [
+     4,
+     0
+    ],
+    "ecnl": [
+     3,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u16g-4265-40566",
   "name": "ECNL Girls New England",
   "ours": [
@@ -24892,6 +25050,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 129938,
+    "team": "Dynamos ECNL RL STXCL G2009/10",
+    "ours": [
+     12,
+     36
+    ],
+    "ecnl": [
+     11,
+     33
+    ]
+   },
+   {
     "id": 52252,
     "team": "Sting CC ECNL RL STXCL G2009/10 Hennessy",
     "ours": [
@@ -24925,6 +25095,18 @@
     "ecnl": [
      9,
      19
+    ]
+   },
+   {
+    "id": 119509,
+    "team": "FIERCE United ECNL RL STXCL G2009/10",
+    "ours": [
+     12,
+     22
+    ],
+    "ecnl": [
+     11,
+     22
     ]
    },
    {
@@ -26211,6 +26393,30 @@
   "name": "ECNL RL Girls Mountain",
   "kind": "points",
   "teams": [
+   {
+    "id": 132926,
+    "team": "Utah Surf",
+    "ours": [
+     3,
+     9
+    ],
+    "ecnl": [
+     2,
+     6
+    ]
+   },
+   {
+    "id": 81507,
+    "team": "Real Colorado Olympico",
+    "ours": [
+     18,
+     34
+    ],
+    "ecnl": [
+     17,
+     34
+    ]
+   },
    {
     "id": 97022,
     "team": "NUU Avalanche",
@@ -27755,8 +27961,8 @@
    68973,
    59502,
    59850,
-   39582,
    134483,
+   39582,
    94982,
    47082,
    132696,
@@ -27780,6 +27986,37 @@
    68973,
    39582,
    132696
+  ]
+ },
+ {
+  "conf": "u19g-4272-40610",
+  "name": "ECNL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 58541,
+    "team": "FC Dallas Youth",
+    "ours": [
+     11,
+     28
+    ],
+    "ecnl": [
+     10,
+     25
+    ]
+   },
+   {
+    "id": 39582,
+    "team": "Albion Hurricanes FC",
+    "ours": [
+     15,
+     16
+    ],
+    "ecnl": [
+     14,
+     16
+    ]
+   }
   ]
  },
  {
