@@ -140,6 +140,25 @@
   ]
  },
  {
+  "conf": "u11b-4331-42134",
+  "name": "Pre-ECNL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 124688,
+    "team": "AHFC SW Pre-ECNL STXCL B2015/16",
+    "ours": [
+     10,
+     12
+    ],
+    "ecnl": [
+     9,
+     9
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u11b-4331-42137",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -169,6 +188,18 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
+   {
+    "id": 129516,
+    "team": "Dynamos Pre-ECNL STXCL B2015/16",
+    "ours": [
+     10,
+     7
+    ],
+    "ecnl": [
+     9,
+     7
+    ]
+   },
    {
     "id": 118099,
     "team": "AHFC NW Pre-ECNL STXCL B2015/16",
@@ -2049,6 +2080,37 @@
   ]
  },
  {
+  "conf": "u13b-4261-41130",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 132659,
+    "team": "Pflugerville FC ECNL RL STXCL B2013/14 Green",
+    "ours": [
+     11,
+     24
+    ],
+    "ecnl": [
+     10,
+     21
+    ]
+   },
+   {
+    "id": 102695,
+    "team": "Sting CC ECNL RL STXCL B2013/14 Stewart",
+    "ours": [
+     11,
+     2
+    ],
+    "ecnl": [
+     10,
+     2
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u13b-4273-40437",
   "name": "ECNL Boys Far West",
   "ours": [
@@ -2940,8 +3002,8 @@
    132028,
    132526,
    133014,
-   134676,
    112979,
+   134676,
    132375,
    135345
   ],
@@ -3000,6 +3062,18 @@
     ]
    },
    {
+    "id": 132526,
+    "team": "Highland FC",
+    "ours": [
+     13,
+     13
+    ],
+    "ecnl": [
+     12,
+     13
+    ]
+   },
+   {
     "id": 134676,
     "team": "Wilmington Hammerheads",
     "ours": [
@@ -3009,6 +3083,18 @@
     "ecnl": [
      11,
      8
+    ]
+   },
+   {
+    "id": 112979,
+    "team": "NC Fusion",
+    "ours": [
+     12,
+     10
+    ],
+    "ecnl": [
+     11,
+     7
     ]
    }
   ]
@@ -4553,8 +4639,8 @@
    112370,
    131185,
    132349,
-   133015,
    131294,
+   133015,
    134677,
    114748,
    135346,
@@ -4571,6 +4657,37 @@
    135346,
    95056,
    131185
+  ]
+ },
+ {
+  "conf": "u14b-4345-40612",
+  "name": "ECNL RL Boys Carolinas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133015,
+    "team": "Jacksonville Hammerheads FC",
+    "ours": [
+     11,
+     15
+    ],
+    "ecnl": [
+     10,
+     15
+    ]
+   },
+   {
+    "id": 131294,
+    "team": "Charlotte SA White",
+    "ours": [
+     12,
+     19
+    ],
+    "ecnl": [
+     11,
+     16
+    ]
+   }
   ]
  },
  {
@@ -7357,6 +7474,37 @@
    71649,
    134164,
    129029
+  ]
+ },
+ {
+  "conf": "u16b-4286-40536",
+  "name": "ECNL Boys Southeast",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 79892,
+    "team": "Atlanta Fire United",
+    "ours": [
+     15,
+     33
+    ],
+    "ecnl": [
+     14,
+     30
+    ]
+   },
+   {
+    "id": 69002,
+    "team": "CESA Triumph",
+    "ours": [
+     13,
+     23
+    ],
+    "ecnl": [
+     12,
+     23
+    ]
+   }
   ]
  },
  {
@@ -13256,8 +13404,8 @@
   "name": "ECNL RL Girls Frontier",
   "ours": [
    135877,
-   132734,
    127373,
+   132734,
    136396,
    135734,
    93175,
@@ -13288,6 +13436,18 @@
     "ecnl": [
      15,
      24
+    ]
+   },
+   {
+    "id": 127373,
+    "team": "Kansas Rush Blue",
+    "ours": [
+     15,
+     24
+    ],
+    "ecnl": [
+     14,
+     21
     ]
    }
   ]
@@ -13329,6 +13489,18 @@
     "ecnl": [
      12,
      17
+    ]
+   },
+   {
+    "id": 88815,
+    "team": "Oklahoma Cosmos",
+    "ours": [
+     12,
+     15
+    ],
+    "ecnl": [
+     11,
+     15
     ]
    }
   ]
@@ -13552,6 +13724,131 @@
     "ecnl": [
      7,
      11
+    ]
+   }
+  ]
+ },
+ {
+  "conf": "u13g-4306-40803",
+  "name": "ECNL RL Girls Mountain",
+  "ours": [
+   132857,
+   134911,
+   132096,
+   132114,
+   133174,
+   133381,
+   132925,
+   132913,
+   113985,
+   133038,
+   133996,
+   132160,
+   132771,
+   132620,
+   131542,
+   131426,
+   133358,
+   133665,
+   135587
+  ],
+  "ecnl": [
+   132857,
+   134911,
+   133174,
+   132096,
+   132114,
+   132925,
+   133381,
+   113985,
+   132913,
+   133038,
+   133996,
+   132160,
+   132620,
+   132771,
+   131542,
+   131426,
+   133358,
+   135587,
+   133665
+  ]
+ },
+ {
+  "conf": "u13g-4306-40803",
+  "name": "ECNL RL Girls Mountain",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 133174,
+    "team": "La Roca FC ECNL RL North G2013/14",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     14
+    ]
+   },
+   {
+    "id": 132925,
+    "team": "Utah Surf",
+    "ours": [
+     7,
+     13
+    ],
+    "ecnl": [
+     6,
+     13
+    ]
+   },
+   {
+    "id": 132913,
+    "team": "Colorado EDGE",
+    "ours": [
+     11,
+     20
+    ],
+    "ecnl": [
+     10,
+     17
+    ]
+   },
+   {
+    "id": 132160,
+    "team": "Colorado Rush",
+    "ours": [
+     14,
+     15
+    ],
+    "ecnl": [
+     13,
+     14
+    ]
+   },
+   {
+    "id": 132771,
+    "team": "Real Colorado Olympico",
+    "ours": [
+     16,
+     17
+    ],
+    "ecnl": [
+     15,
+     14
+    ]
+   },
+   {
+    "id": 135587,
+    "team": "El Paso Locomotive FC",
+    "ours": [
+     2,
+     0
+    ],
+    "ecnl": [
+     1,
+     0
     ]
    }
   ]
@@ -17821,6 +18118,37 @@
    "134659": 2,
    "82112": -1
   }
+ },
+ {
+  "conf": "u15g-4406-41824",
+  "name": "ECNL Girls Mid-Atlantic League Cup",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131433,
+    "team": "Charlotte SA",
+    "ours": [
+     5,
+     15
+    ],
+    "ecnl": [
+     4,
+     12
+    ]
+   },
+   {
+    "id": 129048,
+    "team": "South Carolina Surf",
+    "ours": [
+     5,
+     3
+    ],
+    "ecnl": [
+     4,
+     3
+    ]
+   }
+  ]
  },
  {
   "conf": "u15g-4407-41557",
@@ -22392,6 +22720,18 @@
   "kind": "points",
   "teams": [
    {
+    "id": 101590,
+    "team": "Kansas Rush Gold",
+    "ours": [
+     15,
+     40
+    ],
+    "ecnl": [
+     14,
+     37
+    ]
+   },
+   {
     "id": 45364,
     "team": "Kansas City Athletics",
     "ours": [
@@ -22401,6 +22741,18 @@
     "ecnl": [
      14,
      29
+    ]
+   },
+   {
+    "id": 137134,
+    "team": "Omaha United SC",
+    "ours": [
+     16,
+     14
+    ],
+    "ecnl": [
+     15,
+     14
     ]
    }
   ]
