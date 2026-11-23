@@ -792,8 +792,10 @@ async function passFetch() {   // right after a Clerk sign-in
   } catch (e) {}
 }
 let VIA_PASS = false;
+// UAT test switch: ?usepass makes this tab use only our pass, as if Clerk's 7 days were over.
+const TEST_PASS = location.hostname.startsWith("uat.") && /[?&]usepass\b/.test(location.search);
 async function token() {
-  const c = await clerkToken(); if (c) { VIA_PASS = false; return c; }
+  const c = TEST_PASS && passGet() ? null : await clerkToken(); if (c) { VIA_PASS = false; return c; }
   const p = passGet(); VIA_PASS = !!p; return p ? p.t : null;
 }
 function visitorId() { let v = store.get("sv"); if (!v) { v = Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); store.set("sv", v); } return v; }
