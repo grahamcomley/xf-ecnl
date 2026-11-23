@@ -2,12 +2,12 @@
 //
 // Storage (KV binding USERS, shared by UAT and live; SITE keeps them apart):
 //   d:<site>:<device id> -> one device that turned alerts on:
-//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr}], q: {on, s, e}, tz, badge, seen, created, upd}
+//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr, sc}], q: {on, s, e}, tz, badge, seen, created, upd}
 //     our = our game's final score (and corrections); lg = "all" | "near" | "off" for other league games
 //     ("near" = games with a team within 2 places of us); mo = big moments (a line on the score alert);
 //     rem = game-day reminder "am" (morning of) | "2h" (2 hours before) | "off"; wr = Sunday wrap-up;
-//     q = quiet hours (start/end "HH:MM", phone's time zone tz); seen = last time the app was opened;
-//     sc = schedule-change alerts (on unless false).
+//     sc = schedule-change alerts for that team (on unless false);
+//     q = quiet hours (start/end "HH:MM", phone's time zone tz); seen = last time the app was opened.
 //     KV metadata: {u: user, n: teams, t: "team,keys", tz} so the 5-minute check can skip most reads.
 //   st:<site> -> one small state record written only when something changed:
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
@@ -69,12 +69,12 @@ function cleanDevice(b) {
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
     n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
     lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: false,   // big moments and the Sunday wrap-up are retired (Nov 2026)
-    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false}));
+    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false, sc: t.sc !== false}));
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
   return {sub: app ? Object.assign({endpoint: sub.endpoint, apns: sub.endpoint.slice(5).toLowerCase()}, APNS_TOPICS.includes(sub.topic) ? {topic: sub.topic} : {}) : {endpoint: sub.endpoint, keys: {p256dh: sub.keys.p256dh.slice(0, 200), auth: sub.keys.auth.slice(0, 100)}},
-    teams, q: {on: q.on !== false, s: hhmm(q.s) || DEF_Q.s, e: hhmm(q.e) || DEF_Q.e}, tz, badge: b.badge !== false, sc: b.sc !== false};
+    teams, q: {on: q.on !== false, s: hhmm(q.s) || DEF_Q.s, e: hhmm(q.e) || DEF_Q.e}, tz, badge: b.badge !== false};
 }
 
 // ---------- the page's calls (signed in) ----------
@@ -86,14 +86,14 @@ export async function route(p, req, env, c, json) {
   const id = await devId(ep), key = devKey(env, id);
   if (p === "/api/push" && req.method === "GET") {
     const d = await env.USERS.get(key, "json");
-    return json(d && d.uid === c.sub ? {on: true, teams: d.teams, q: d.q, badge: d.badge, sc: d.sc !== false} : {on: false});
+    return json(d && d.uid === c.sub ? {on: true, teams: d.teams, q: d.q, badge: d.badge} : {on: false});
   }
   if (p === "/api/push" && req.method === "PUT") {
     const d = cleanDevice(body); if (!d) { LOG && LOG.error("alerts.bad", {uid: c.sub, kind: isApp(ep) ? "app" : "web", teams: Array.isArray(body.teams) ? body.teams.length : -1}); return json({error: "bad device"}, 400); }
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
-    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, sc: rec.sc, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
+    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}${t.sc === false ? "" : "C"}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
     return json({ok: true});
   }
   // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
@@ -411,8 +411,8 @@ async function scores(env, st, fresh, due, now, addSent, addGone) {
 }
 
 // Schedule changes (Graham, Nov 23): a new date, kickoff time or field for a followed team's game in the
-// next 14 days, already confirmed over two data runs by scripts/alerts.py (run "s" lists). On unless the
-// device turned "Schedule changes" off (d.sc === false). Several games at once come as one alert. During
+// next 14 days, already confirmed over two data runs by scripts/alerts.py (run "s" lists). Set per team,
+// like the other alerts: on unless that team's "Schedule changes" is off (t.sc === false). Several games at once come as one alert. During
 // quiet hours they wait (st.sh) and go when quiet hours end, minus games that have started by then.
 const SCH_NAME = {d: "Date", t: "Time", v: "Field"};
 function kickMs(date, time, ftz, tz) { return zonedMs(date, time || "23:59", ftz || tz || "America/Los_Angeles"); }
@@ -457,18 +457,16 @@ async function schedAlerts(env, st, fresh, now) {
     if (!d) { delete st.sh[id]; continue; }
     const tz = d.tz || "America/Los_Angeles";
     const items = [];
-    if (d.sc !== false) {
-      const mine = new Set();
-      for (const t of d.teams) for (const c of byTeam.get(t.k) || []) if (!mine.has(c.g)) { items.push({c, t: t.k}); mine.add(c.g); }
-    }
+    const mine = new Set();
+    for (const t of d.teams) if (t.sc !== false) for (const c of byTeam.get(t.k) || []) if (!mine.has(c.g)) { items.push({c, t: t.k}); mine.add(c.g); }
     if (!items.length && !held.length) continue;
     const byGame = new Map();   // one per game; the newest change wins
     for (const it of held.concat(items)) byGame.set(it.c.g, it);
     const list = [...byGame.values()];
     if (quiet(d, now)) { st.sh[id] = list.slice(-50); continue; }
     delete st.sh[id];
-    const ready = list.filter(it => kickMs(it.c.d, it.c.t, it.c.tz, tz) > now);   // games that already started: dropped
-    if (!ready.length || d.sc === false) continue;
+    const ready = list.filter(it => kickMs(it.c.d, it.c.t, it.c.tz, tz) > now && (d.teams.find(t => t.k === it.t) || {}).sc !== false);   // started games, or the team switched off: dropped
+    if (!ready.length) continue;
     const s = await send(env, d.sub, Object.assign(schedMsg(d, ready), {badge: d.badge}), "schedule", d);
     if (s === 404 || s === 410) { (dbDevice(env, null, id, null), await env.USERS.delete(m.name)); continue; }
     if (s < 300) n++;

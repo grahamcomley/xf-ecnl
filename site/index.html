@@ -78,7 +78,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 #teamhead{position:relative;z-index:2;background:var(--card);padding-bottom:8px;border-bottom:1px solid var(--line2);box-shadow:0 6px 10px -4px rgba(0,0,0,.6)}
 #tpanel{position:absolute;left:0;right:0;top:0;z-index:3}
 .tpdim{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.5)}
-.tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px 16px 10px;max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
+.tpcard{position:relative;background:var(--card);border-bottom:1px solid var(--line2);border-radius:0 0 16px 16px;padding:6px max(calc(16px + env(safe-area-inset-right,0px)),calc((100% - 948px) / 2)) 10px max(calc(16px + env(safe-area-inset-left,0px)),calc((100% - 948px) / 2));max-height:55vh;overflow-y:auto;box-shadow:0 14px 28px rgba(0,0,0,.45)}
 .tphead{display:flex;flex-direction:column;padding:6px 0 8px}.tphead b{font-size:16px}.tphead span{font-size:13px;color:var(--mut)}
 .tpsub{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:8px 0 2px}.tpsub:empty{margin:4px 0 0}
 .tpal .opt{padding:9px 0}.tsr small.tpon{color:var(--ink);border:1px solid var(--line2);border-radius:14px;padding:4px 10px}
@@ -1212,12 +1212,12 @@ function appRegister() {
     Promise.resolve(PN().register()).catch(e => { if (APNS_WAIT) { APNS_WAIT = null; rej(e); } });
   });
 }
-const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true, sc: true};
+const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
-const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h"}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
-const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off";
-const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder"].filter(Boolean).join(" · ") || "No alerts";
+const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h", sc: true}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
+const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off" || tc.sc !== false;
+const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder", tc.sc !== false && "Schedule changes"].filter(Boolean).join(" · ") || "No alerts";
 const alertsOn = () => !!store.get("alertsOn");
 // Alerts on/off is remembered per account on this phone, so signing out (or someone else signing in and
 // out) and back in puts yours back the way they were.
@@ -1237,7 +1237,7 @@ function alertsSync(soon) {
     const c = acfg();
     const teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
     let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
-    try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge, sc: c.sc !== false}); } catch (e) { console.warn("alert settings not saved", e); }
+    try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
   }, soon ? 400 : 1200);
 }
 // Signed out / deleted: this phone stops getting that account's alerts (no teams), but keeps its alert token.
@@ -1246,7 +1246,7 @@ async function alertsPause() {
   clearTimeout(ASYNC_T);
   const sub = await pushSub(); if (!sub) return;
   const c = acfg();
-  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge, sc: c.sc !== false}); } catch (e) {}
+  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge}); } catch (e) {}
 }
 const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
 async function enableAlerts() {
@@ -1327,8 +1327,6 @@ async function drawAlertsPage(b) {
       <details class="arow" data-team="__quiet" ${AOPEN.has("__quiet") ? "open" : ""}><summary><span>Quiet hours<span class="ddsub">${c.q.on ? `${hm12(c.q.s)}–${hm12(c.q.e)} · alerts wait, then arrive as one summary` : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Quiet hours</span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
         ${c.q.on ? `<div class="qt"><input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}</div></details>
-      <details class="arow" data-team="__sched" ${AOPEN.has("__sched") ? "open" : ""}><summary><span>Schedule changes<span class="ddsub">${c.sc !== false ? "On · time, date or field moves for your teams, next 14 days" : "Off"}</span></span>${icon("chev")}</summary>
-        <div class="aopts"><div class="opt"><span>Schedule changes<span class="ddsub">When a game's time, date or field changes</span></span>${aseg("sc", [["1", "On"], ["0", "Off"]], c.sc !== false ? "1" : "0")}</div></div></details>
       <details class="arow" data-team="__badge" ${AOPEN.has("__badge") ? "open" : ""}><summary><span>App icon alert<span class="ddsub">${c.badge ? "On · red number for alerts you haven't opened" : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Red number on the app icon</span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div></details></div>
     <p class="mut pgfoot">Choose each team's alerts on that team: tap a team above, or tap the team you're on at the top. Scores arrive about 15 minutes after they're posted. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
@@ -1340,9 +1338,8 @@ async function drawAlertsPage(b) {
     e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
     if (s === "master") { if (v === "0") disableAlerts(); return; }
-    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}}[s] || {}); }
+    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}, sc: {sc: v === "1"}}[s] || {}); }
     else if (s === "qon") cc.q.on = v === "1";
-    else if (s === "sc") cc.sc = v === "1";
     else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
     setAcfg(cc); refreshPage();
   };
@@ -1361,7 +1358,7 @@ async function alertsSyncNow() {
   const sub = await pushSub(); if (!sub) return;
   const c = acfg(), teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
   let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
-  await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge, sc: c.sc !== false});
+  await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge});
 }
 // New-feature prompt: until alerts are on (or turned down), a card at the top of Standings and Games
 // and a red dot on the gear point people to alerts.
@@ -2348,14 +2345,15 @@ function renderTeam(D, fid, key) {
         : `<div class="tpsub">Alerts</div><div class="aopts tpal">
             <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
             <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
-            <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div></div>`;
+            <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div>
+            <div class="opt"><span>Schedule changes<span class="ddsub">Time, date or field moves, next 14 days</span></span>${seg("sc", [["1", "On"], ["0", "Off"]], tc.sc !== false ? "1" : "0")}</div></div>`;
       $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}
         <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
       TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
       $("#tpbody").onclick = async e => {
         const sb = e.target.closest(".seg button");
-        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : {rem: v}); setAcfg(cc); teamSheet(); return; }
+        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : n === "sc" ? {sc: v === "1"} : {rem: v}); setAcfg(cc); teamSheet(); return; }
         const b = e.target.closest("button[data-a]"); if (!b) return;
         if (b.dataset.a === "share") { closeTeamSheet(); share(); }
         else if (b.dataset.a === "follow") { closeTeamSheet(); follow(); }
