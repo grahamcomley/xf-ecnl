@@ -1,7 +1,9 @@
-# Source check 2026-11-20 17:37 UTC
+# Source check 2026-11-23 19:38 UTC
 
-Crawl delay used per site: https://uat.sidelinestandings.com 10s
+Crawl delay used per site: https://api.athleteone.com 10s
 
 | Page | Allowed | Status | Size | Type | Saved as · title |
 |---|---|---|---|---|---|
-| https://uat.sidelinestandings.com/data/alerts.json | yes | 200 | 294 KB | application/json | 00_uat.sidelinestandings.com.json ·  |
+| https://api.athleteone.com/api/Event/get-event-schedule-or-standings/4486 | NO (robots.txt blocks it, or the site refuses robots.txt) |  |  |  |  |
+| https://api.athleteone.com/api/Event/get-event-schedule-or-standings/4472 | NO (robots.txt blocks it, or the site refuses robots.txt) |  |  |  |  |
+| https://api.athleteone.com/api/Event/get-event-schedule-or-standings/4473 | NO (robots.txt blocks it, or the site refuses robots.txt) |  |  |  |  |
