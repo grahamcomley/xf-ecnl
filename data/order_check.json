@@ -3347,6 +3347,18 @@
     ]
    },
    {
+    "id": 133434,
+    "team": "Oregon Premier FC Pre Tiempo",
+    "ours": [
+     8,
+     18
+    ],
+    "ecnl": [
+     7,
+     15
+    ]
+   },
+   {
     "id": 131914,
     "team": "Eugene Metro FC Pre-ECNL B2014/15 Prem 2",
     "ours": [
@@ -3356,6 +3368,18 @@
     "ecnl": [
      8,
      8
+    ]
+   },
+   {
+    "id": 133496,
+    "team": "Eastside Timbers Pre II Black",
+    "ours": [
+     9,
+     4
+    ],
+    "ecnl": [
+     8,
+     4
     ]
    }
   ]
@@ -19790,8 +19814,8 @@
    137475,
    119117,
    137568,
-   137593,
    137521,
+   137593,
    137454,
    137565,
    137455,
@@ -19829,6 +19853,30 @@
     "ecnl": [
      9,
      21
+    ]
+   },
+   {
+    "id": 137521,
+    "team": "Tonka United SA",
+    "ours": [
+     7,
+     7
+    ],
+    "ecnl": [
+     6,
+     4
+    ]
+   },
+   {
+    "id": 137593,
+    "team": "MapleBrook SC",
+    "ours": [
+     7,
+     6
+    ],
+    "ecnl": [
+     6,
+     6
     ]
    },
    {
