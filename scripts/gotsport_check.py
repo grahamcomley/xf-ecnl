@@ -21,8 +21,11 @@ except Exception as e:
 out.append(f"HTTP {status}, {len(body) // 1024} KB")
 title = re.search(r"<title>(.*?)</title>", body, re.S | re.I)
 if title: out.append(f"\nTitle: {html.unescape(title.group(1)).strip()}")
-blocked = status != 200 or not body or re.search(r"captcha|access denied|attention required|cf-chl|are you a robot", body, re.I)
-if blocked:
+m = re.search(r"access denied|attention required|cf-chl|are you a robot|verify you are human", body, re.I)
+for w in re.finditer(r"captcha", body, re.I):   # a captcha script on a normal page isn't a block; show where it is
+    out.append("\ncaptcha mention: `" + re.sub(r"\s+", " ", body[max(0, w.start() - 80):w.end() + 40]).replace("`", "'") + "`"); break
+if status != 200 or not body or m:
+    if m: out.append("\nBlock text: `" + body[max(0, m.start() - 80):m.end() + 40].replace("`", "'") + "`")
     out.append("\n**The site said no or sent a block page. Stop here and talk options.**")
 else:
     links = re.findall(r'href="([^"]*/org_event/events/56497/schedules\?[^"]*)"[^>]*>(.*?)</a>', body, re.I | re.S)
