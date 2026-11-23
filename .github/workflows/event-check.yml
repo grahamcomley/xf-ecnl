@@ -5,6 +5,10 @@ on:
       events:
         description: "AthleteOne event ids, space-separated"
         required: true
+      games:
+        description: "Flight ids to list every game for (optional)"
+        required: false
+        default: ""
 permissions:
   contents: read
 jobs:
@@ -17,4 +21,5 @@ jobs:
         with: {python-version: "3.12"}
       - env:
           EVENTS: ${{ github.event.inputs.events }}
+          SHOW_GAMES: ${{ github.event.inputs.games }}
         run: python scripts/event_check.py $EVENTS | tee -a $GITHUB_STEP_SUMMARY

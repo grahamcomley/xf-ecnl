@@ -27,6 +27,8 @@ for ev in [a for a in sys.argv[1:] if a.isdigit()]:
             out.append(f"- **{dv.get('divisionName')} · {f.get('flightName')}** (flight {fid}): teams {f.get('teamsCount')}, schedule {'yes' if f.get('hasActiveSchedule') else 'no'}, games {len(rows)}")
             if names: out.append("  - in games: " + "; ".join(names[:20]))
             if st_names: out.append("  - standings: " + "; ".join(st_names[:20]))
-            if rows and isinstance(rows[0], dict): out.append("  - game fields: " + ", ".join(sorted(rows[0].keys()))[:400])
+            if os.environ.get("SHOW_GAMES") and str(fid) in os.environ["SHOW_GAMES"].split():
+                for g in rows:
+                    out.append(f"  - #{g.get('gamenumber')} {str(g.get('gameDate'))[:10]} {g.get('gameTime') or g.get('gameTimeText') or ''} | {g.get('homeTeam') or '(blank)'} [{g.get('hometeamID')}] vs {g.get('awayTeam') or '(blank)'} [{g.get('awayteamID')}] | {g.get('complex') or ''} {g.get('venue') or ''} | flag {g.get('flagText') or ''}")
     out.append("")
 print("\n".join(out))
