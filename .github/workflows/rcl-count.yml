@@ -1,0 +1,14 @@
+name: RCL count check (manual, report only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python scripts/rcl_count.py | tee -a $GITHUB_STEP_SUMMARY
