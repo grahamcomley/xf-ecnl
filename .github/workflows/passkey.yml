@@ -1,0 +1,29 @@
+name: Sign-in pass key (manual)
+# Makes the key our server signs sign-in passes with (KV cfg:passkey, shared by prod and UAT).
+# The key is made here and written straight to Cloudflare; it is never printed or committed.
+# "rotate" makes a new key: every pass stops working and everyone signs in once more.
+on:
+  workflow_dispatch:
+    inputs:
+      rotate:
+        description: "Type ROTATE to replace the key (signs everyone out once)"
+        required: false
+        default: ""
+permissions:
+  contents: read
+jobs:
+  key:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ROTATE: ${{ github.event.inputs.rotate }}
+        run: |
+          A=f4844cb4fa247cf50ffc158d9ee9d27d; API=https://api.cloudflare.com/client/v4/accounts/$A/storage/kv/namespaces
+          ID=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" "$API?per_page=100" | jq -r '.result[]? | select(.title=="sideline-users") | .id')
+          V="$API/$ID/values/cfg%3Apasskey"
+          if curl -fsS -o /dev/null -H "Authorization: Bearer $CF_TOKEN" "$V" && [ "$ROTATE" != "ROTATE" ]; then echo "Key already there; nothing changed."; exit 0; fi
+          K=$(openssl rand 32 | base64 | tr '+/' '-_' | tr -d '=\n')
+          echo "::add-mask::$K"
+          printf '%s' "$K" | curl -fsS -X PUT -H "Authorization: Bearer $CF_TOKEN" --data-binary @- "$V" > /dev/null
+          echo "Key saved."

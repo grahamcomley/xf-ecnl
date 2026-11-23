@@ -83,6 +83,15 @@ export async function usageStats(env) {
       WHERE site = 'live' AND evt = 'api' AND json_valid(data) AND json_extract(data, '$.vid') IS NOT NULL AND ${person} GROUP BY json_extract(data, '$.vid')) WHERE first >= ?1`),
     all(`SELECT ${P} p, count(*) n, count(DISTINCT json_extract(data, '$.vid')) v FROM events WHERE ${W} AND evt = 'api' AND ${P} LIKE '/api/log/app/ask/%' AND ${person} GROUP BY p`),
     all(`SELECT count(*) n FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/log/app/signin-back/cancelled'`)]);
+  // Gave up: phones that started signing in this week (asked, or the app's sign-in sheet came back) and have
+  // not been signed in since. Expired: phones signed in before whose latest open this week was signed out
+  // (Clerk's 7-day limit, or a sign-out). Should be near 0 once our own sign-in pass is live.
+  const VID = "json_extract(data, '$.vid')";
+  const [gave, exp] = await Promise.all([
+    all(`SELECT count(*) n FROM (SELECT ${VID} vid, min(at) t FROM events WHERE ${W} AND evt = 'api' AND (${P} LIKE '/api/log/app/signin-back/%' OR ${P} LIKE '/api/log/app/ask/%') AND ${VID} IS NOT NULL GROUP BY 1) s
+      WHERE NOT EXISTS (SELECT 1 FROM events e WHERE e.site = 'live' AND e.evt = 'api' AND e.uid IS NOT NULL AND json_valid(e.data) AND json_extract(e.data, '$.vid') = s.vid AND e.at >= s.t)`),
+    all(`SELECT count(*) n FROM (SELECT ${VID} vid, max(at) lastopen FROM events WHERE ${W} AND evt = 'api' AND ${P} = '/api/config' AND ${person} AND ${VID} IS NOT NULL GROUP BY 1) w
+      JOIN (SELECT ${VID} vid, max(at) lastin FROM events WHERE site = 'live' AND evt = 'api' AND uid IS NOT NULL AND json_valid(data) AND ${VID} IS NOT NULL GROUP BY 1) s ON s.vid = w.vid WHERE w.lastopen > s.lastin`)]);
   const days = [...Array(7)].map((_, i) => ({at: start + i * 864e5, signedIn: 0, visitors: 0, opens: 0, errors: 0}));
   const fill = (rows, f) => rows.forEach(r => { if (days[r.d]) days[r.d][f] = r.n; });
   fill(vis, "visitors"); fill(sig, "signedIn"); fill(opn, "opens"); fill(err, "errors");
@@ -100,7 +109,7 @@ export async function usageStats(env) {
   const taps = {};
   for (const r of asks) { const a = dec(r.p).split("/").pop(); const k = NAMES[a] || a; taps[k] = (taps[k] || 0) + r.n; }
   const askedPhones = await (asks.length ? all(`SELECT count(DISTINCT json_extract(data, '$.vid')) n FROM events WHERE ${W} AND evt = 'api' AND ${P} LIKE '/api/log/app/ask/%' AND ${person}`).then(r => r[0].n) : 0);
-  const signups = {newPhones: np[0] ? np[0].n : 0, newApp: np[0] ? np[0].app : 0, asked: askedPhones, signedUp: n("account.created"), backedOut: back[0] ? back[0].n : 0,
+  const signups = {newPhones: np[0] ? np[0].n : 0, newApp: np[0] ? np[0].app : 0, asked: askedPhones, signedUp: n("account.created"), backedOut: back[0] ? back[0].n : 0, gaveUp: gave[0] ? gave[0].n : 0, expired: exp[0] ? exp[0].n : 0,
     taps: Object.entries(taps).sort((a, b) => b[1] - a[1]).slice(0, 3)};
   return {days, today: {ver, where, typical: ms.length ? ms[Math.floor(ms.length / 2)] : null, slowest: ms.length ? ms[ms.length - 1] : null, loads: ms.length},
     week: {follows: n("account.favs"), picks: n("picks.saved")}, signups, at: Date.now()};
