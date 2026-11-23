@@ -2,15 +2,17 @@
 //
 // Storage (KV binding USERS, shared by UAT and live; SITE keeps them apart):
 //   d:<site>:<device id> -> one device that turned alerts on:
-//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr}], q: {on, s, e}, tz, badge, seen, created, upd}
+//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr, sc}], q: {on, s, e}, tz, badge, seen, created, upd}
 //     our = our game's final score (and corrections); lg = "all" | "near" | "off" for other league games
 //     ("near" = games with a team within 2 places of us); mo = big moments (a line on the score alert);
 //     rem = game-day reminder "am" (morning of) | "2h" (2 hours before) | "off"; wr = Sunday wrap-up;
+//     sc = schedule-change alerts for that team (on unless false);
 //     q = quiet hours (start/end "HH:MM", phone's time zone tz); seen = last time the app was opened.
 //     KV metadata: {u: user, n: teams, t: "team,keys", tz} so the 5-minute check can skip most reads.
 //   st:<site> -> one small state record written only when something changed:
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
-//      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n}}
+//      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n},
+//      sh: {device: [schedule changes held by quiet hours]}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
 import {send as sendRaw, vapid, apnsSend, APNS_TOPICS} from "./push.js";
 import {wrapLine} from "./pickem.js";
@@ -67,7 +69,7 @@ function cleanDevice(b) {
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
     n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
     lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: false,   // big moments and the Sunday wrap-up are retired (Nov 2026)
-    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false}));
+    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false, sc: t.sc !== false}));
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
@@ -91,7 +93,7 @@ export async function route(p, req, env, c, json) {
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
-    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
+    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}${t.sc === false ? "" : "C"}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
     return json({ok: true});
   }
   // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
@@ -344,6 +346,7 @@ export async function check(env, now = Date.now()) {
   let sent = 0, gone = 0;
   const out = {runs: fresh.length};
   if (fresh.length || due.length) Object.assign(out, await scores(env, st, fresh, due, now, n => sent += n, () => gone++));
+  try { out.sched = await schedAlerts(env, st, fresh, now); sent += out.sched; } catch (e) { out.schedErr = String(e); }
   try { out.reminders = await reminders(env, st, data.up || [], now); sent += out.reminders; } catch (e) { out.remErr = String(e); }
   try { out.wrapups = await wrapups(env, st, data.wk || {}, now); sent += out.wrapups; } catch (e) { out.wrapErr = String(e); }
   try { out.drift = await driftAlert(env, st, now); sent += out.drift; } catch (e) { out.driftErr = String(e); }
@@ -405,6 +408,70 @@ async function scores(env, st, fresh, due, now, addSent, addGone) {
   }
   addSent(sent); for (let i = 0; i < gone; i++) addGone();
   return {changes: changes.length};
+}
+
+// Schedule changes (Graham, Nov 23): a new date, kickoff time or field for a followed team's game in the
+// next 14 days, already confirmed over two data runs by scripts/alerts.py (run "s" lists). Set per team,
+// like the other alerts: on unless that team's "Schedule changes" is off (t.sc === false). Several games at once come as one alert. During
+// quiet hours they wait (st.sh) and go when quiet hours end, minus games that have started by then.
+const SCH_NAME = {d: "Date", t: "Time", v: "Field"};
+function kickMs(date, time, ftz, tz) { return zonedMs(date, time || "23:59", ftz || tz || "America/Los_Angeles"); }
+function dayText(date) {
+  const [y, m, d] = date.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", {timeZone: "UTC", weekday: "short", month: "short", day: "numeric"}).format(Date.UTC(y, m - 1, d)).replace(",", "");
+}
+function schTime(date, time, ftz, tz) {
+  if (!time) return "Time TBD";
+  return whenText([0, 0, 0, 0, 0, 0, date, time, "", ftz || ""], ftz || tz, tz, kickMs(date, time, ftz, tz));
+}
+const stripZone = s => s.replace(/\s[A-Z][A-Za-z0-9+:-]{1,5}$/, "");
+export function schedMsg(d, items) {
+  const tz = d.tz || "America/Los_Angeles";
+  const one = it => {
+    const c = it.c, home = c.h === it.t, us = home ? c.hn : c.an, them = home ? c.an : c.hn;
+    const nt = schTime(c.d, c.t, c.tz, tz), ot = schTime(c.od, c.ot, c.otz || c.tz, tz);
+    const was = c.f.map(f => f === "d" ? dayText(c.od) : f === "t" ? (stripZone(ot) === stripZone(nt) ? ot : stripZone(ot)) : c.ov).join(", ");
+    const title = (c.f.length === 1 ? SCH_NAME[c.f[0]] + " changed" : "Schedule change") + `: ${us} ${home ? "vs" : "@"} ${them}`;
+    const body = `${dayText(c.d)}, ${nt}${c.v ? " · " + c.v : ""} (was ${was})`;
+    const line = `${us}: ${c.f.map(f => SCH_NAME[f].toLowerCase()).join(" and ")} now ${dayText(c.d)}, ${nt}${c.f.includes("v") && c.v ? " · " + c.v : ""}`;
+    return {title, body, line, u: `/#t=${it.t}&g=${c.g}&v=games`};
+  };
+  const all = items.map(one);
+  if (all.length === 1) return {t: all[0].title, b: all[0].body, u: all[0].u, tag: "s" + items[0].c.g};
+  return {t: `Schedule changes: ${all.length} of your games`, b: all.map(x => x.line).join("\n"), x: all.map(x => x.line), u: all[0].u, tag: "sched"};
+}
+async function schedAlerts(env, st, fresh, now) {
+  const changes = fresh.flatMap(r => r.s || []);
+  st.sh = st.sh || {};
+  const due = Object.keys(st.sh);
+  if (!changes.length && !due.length) return 0;
+  const byTeam = new Map();
+  for (const c of changes) for (const k of [c.h, c.a]) { if (!byTeam.has(k)) byTeam.set(k, []); byTeam.get(k).push(c); }
+  const metas = changes.length ? await deviceMeta(env) : due.map(id => ({name: devKey(env, id), metadata: {t: ""}}));
+  let n = 0;
+  for (const m of metas) {
+    const id = m.name.split(":")[2], held = st.sh[id] || [];
+    const tk = ((m.metadata || {}).t || "").split(",").filter(k => byTeam.has(k));
+    if (!tk.length && !held.length) continue;
+    const d = await env.USERS.get(m.name, "json");
+    if (!d) { delete st.sh[id]; continue; }
+    const tz = d.tz || "America/Los_Angeles";
+    const items = [];
+    const mine = new Set();
+    for (const t of d.teams) if (t.sc !== false) for (const c of byTeam.get(t.k) || []) if (!mine.has(c.g)) { items.push({c, t: t.k}); mine.add(c.g); }
+    if (!items.length && !held.length) continue;
+    const byGame = new Map();   // one per game; the newest change wins
+    for (const it of held.concat(items)) byGame.set(it.c.g, it);
+    const list = [...byGame.values()];
+    if (quiet(d, now)) { st.sh[id] = list.slice(-50); continue; }
+    delete st.sh[id];
+    const ready = list.filter(it => kickMs(it.c.d, it.c.t, it.c.tz, tz) > now && (d.teams.find(t => t.k === it.t) || {}).sc !== false);   // started games, or the team switched off: dropped
+    if (!ready.length) continue;
+    const s = await send(env, d.sub, Object.assign(schedMsg(d, ready), {badge: d.badge}), "schedule", d);
+    if (s === 404 || s === 410) { (dbDevice(env, null, id, null), await env.USERS.delete(m.name)); continue; }
+    if (s < 300) n++;
+  }
+  return n;
 }
 
 // Daily drift check: when our table's games played / points don't match ECNL's for a conference,
