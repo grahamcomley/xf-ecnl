@@ -139,6 +139,107 @@ def collect(today):
     return finals
 
 
+SCHED_TRACK_DAYS = 60   # games this far ahead are remembered, so a move into the next 14 days is seen
+SCHED_ALERT_DAYS = 14   # a change alerts only if the old or new date is within this many days
+SCHED_CONFIRM_MIN = 20  # a change must still be there on a later run at least this many minutes on
+SCHED_TAG_DAYS = 7      # the games list shows "Time changed" etc. this long
+
+
+def _tbd(t):
+    return not t or t == "00:00"
+
+
+def schedule_changes(confs, now, pt_today):
+    """Schedule changes (Graham, Nov 23): a new date, kickoff time or field for an upcoming game.
+    Confirmed only when a later run still shows it (at least SCHED_CONFIRM_MIN minutes on, and on a full
+    data run unless the game is today or tomorrow), so a one-run glitch never alerts. Never alerts for a
+    TBD time getting its first time, an opponent being filled in (games without both teams aren't
+    tracked), or a game leaving the schedule. State: site/data/_sched.json. Returns this run's
+    confirmed changes for alerts.json, and writes the last SCHED_TAG_DAYS of them into status.json
+    ("chg": {game id: [fields, when]}) for the games list."""
+    path = os.path.join(OUT, "_sched.json")
+    try:
+        with open(path) as f:
+            state = json.load(f)
+    except Exception:
+        state = None
+    status_path = os.path.join(OUT, "status.json")
+    try:
+        with open(status_path) as f:
+            status = json.load(f)
+    except Exception:
+        status = {}
+    full = status.get("mode") != "quick"
+    if os.environ.get("ALERTS_FULL"):   # testing only
+        full = os.environ["ALERTS_FULL"] == "1"
+    run_id = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    first = state is None
+    state = state or {}
+    base, pend, tags = state.get("base", {}), state.get("pend", {}), state.get("tags", {})
+    start, end = pt_today.isoformat(), (pt_today + timedelta(days=SCHED_TRACK_DAYS)).isoformat()
+    alert_to = (pt_today + timedelta(days=SCHED_ALERT_DAYS)).isoformat()
+    soon = {pt_today.isoformat(), (pt_today + timedelta(days=1)).isoformat()}
+    cur = {}
+    for cf, D in confs.items():
+        pk = D.get("pool_key")
+        short = {t["id"]: t.get("short") or t.get("name") for t in D.get("teams", [])}
+        lists = [(cf, D.get("conf_name") or "", D.get("games", []), short)] + [
+            ("", ev.get("name") or "Event", ev.get("games", []), {t["id"]: t.get("short") or t.get("name") for t in ev.get("teams", [])})
+            for ev in D.get("events", [])]
+        for c2, cn, games, names in lists:
+            for g in games:
+                gid = str(g.get("id"))
+                if g.get("hs") is not None or g.get("bad") or g.get("pending") or not g.get("home_id") or not g.get("away_id"):
+                    continue
+                if not (start <= (g.get("date") or "") <= end) or (gid in cur and cur[gid]["cf"]):
+                    continue
+                cur[gid] = {"d": g["date"], "t": "" if _tbd(g.get("time")) else g["time"], "v": (g.get("venue") or "")[:80],
+                            "tz": g.get("tz") or "", "cf": c2, "cn": cn, "h": f"{pk}-{g['home_id']}", "a": f"{pk}-{g['away_id']}",
+                            "hn": tidy(names.get(g["home_id"]) or g.get("home")), "an": tidy(names.get(g["away_id"]) or g.get("away"))}
+    out, new_base, new_pend = [], {}, {}
+    for gid, c in cur.items():
+        now_v = [c["d"], c["t"], c["v"]]
+        old = base.get(gid)
+        if old is None or first:
+            new_base[gid] = now_v + [c["tz"]]
+            continue
+        od, ot, ov = old[0], old[1], old[2]
+        fields = []
+        if c["d"] != od:
+            fields.append("d")
+        if c["t"] != ot and ot and c["t"]:   # TBD -> first time, or a time going back to TBD: no alert
+            fields.append("t")
+        if c["v"] != ov and ov and c["v"]:
+            fields.append("v")
+        if not fields or (min(od, c["d"]) > alert_to):
+            new_base[gid] = now_v + [c["tz"]]   # nothing to tell (or too far ahead): just remember it
+            continue
+        p = pend.get(gid)
+        if p and p["n"] == now_v:
+            waited = (now - datetime.fromisoformat(p["since"].replace("Z", "+00:00"))).total_seconds() / 60
+            if waited >= SCHED_CONFIRM_MIN and (full or c["d"] in soon):
+                out.append({"g": gid, "cf": c["cf"], "cn": c["cn"], "h": c["h"], "a": c["a"], "hn": c["hn"], "an": c["an"],
+                            "f": fields, "d": c["d"], "t": c["t"], "v": c["v"], "tz": c["tz"],
+                            "od": od, "ot": ot, "ov": ov, "otz": old[3] if len(old) > 3 else ""})
+                tags[gid] = [fields, run_id]
+                new_base[gid] = now_v + [c["tz"]]
+                continue
+            new_pend[gid] = p
+        else:
+            new_pend[gid] = {"n": now_v, "since": run_id}
+        new_base[gid] = old   # keep the old value until the change is confirmed
+    cut = (now - timedelta(days=SCHED_TAG_DAYS)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    tags = {k: v for k, v in tags.items() if v[1] >= cut and k in cur}
+    with open(path, "w") as f:
+        json.dump({"base": new_base, "pend": new_pend, "tags": tags}, f, separators=(",", ":"))
+    if status:
+        status["chg"] = tags
+        with open(status_path, "w") as f:
+            json.dump(status, f, separators=(",", ":"))
+    out.sort(key=lambda c: (c["d"], c["g"]))
+    return out
+
+
 def main():
     now = datetime.now(timezone.utc)
     today = now.date()
@@ -245,6 +346,8 @@ def main():
     with open(os.path.join(OUT, "replay.json"), "w") as f:
         json.dump({"from": last_fri.isoformat(), "to": last_sun.isoformat(), "c": sorted(rep, key=lambda c: (c["d"], c["g"]))}, f, separators=(",", ":"))
 
+    sched = schedule_changes(confs, now, pt_today)
+
     runs = []
     if os.path.exists(out_path):
         try:
@@ -254,14 +357,17 @@ def main():
             runs = []
     cut = (now - timedelta(hours=RUNS_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     runs = [r for r in runs if r.get("id", "") >= cut]
-    if changes:
+    if changes or sched:
         changes.sort(key=lambda c: (c["cf"], c["d"], c["g"]))
-        runs.append({"id": run_id, "c": changes, "m": moments, "pos": positions})
+        r = {"id": run_id, "c": changes, "m": moments, "pos": positions}
+        if sched:
+            r["s"] = sched
+        runs.append(r)
     with open(out_path, "w") as f:
         json.dump({"updated": run_id, "runs": runs, "up": up, "wk": wk}, f, separators=(",", ":"))
     with open(prev_path, "w") as f:
         json.dump(finals, f, separators=(",", ":"))
-    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
+    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {len(sched)} schedule changes, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
           + ("" if prev is not None else " (first run: nothing sent)"))
 
 

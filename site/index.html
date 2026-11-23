@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.76">
+<meta name="app-version" content="v1.77">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -246,6 +246,7 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 4px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.gsub .chg{color:#f0997b}
 .gtop{grid-column:1/-1;line-height:1;margin-bottom:5px}.gtop .kslot{display:inline;margin-left:5px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:4px}}
 .pviews{background:none;border:0;padding:0;gap:8px}.pviews button{border:1px solid var(--line2);background:var(--card2)}.pviews button.on{background:var(--me);border-color:var(--red);color:#fff;box-shadow:none}
@@ -1211,7 +1212,7 @@ function appRegister() {
     Promise.resolve(PN().register()).catch(e => { if (APNS_WAIT) { APNS_WAIT = null; rej(e); } });
   });
 }
-const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
+const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true, sc: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
 const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h"}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
@@ -1236,7 +1237,7 @@ function alertsSync(soon) {
     const c = acfg();
     const teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
     let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
-    try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge}); } catch (e) { console.warn("alert settings not saved", e); }
+    try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge, sc: c.sc !== false}); } catch (e) { console.warn("alert settings not saved", e); }
   }, soon ? 400 : 1200);
 }
 // Signed out / deleted: this phone stops getting that account's alerts (no teams), but keeps its alert token.
@@ -1245,7 +1246,7 @@ async function alertsPause() {
   clearTimeout(ASYNC_T);
   const sub = await pushSub(); if (!sub) return;
   const c = acfg();
-  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge}); } catch (e) {}
+  try { await api("PUT", "/api/push", {sub: sub.toJSON(), teams: [], q: c.q, tz: "America/Los_Angeles", badge: c.badge, sc: c.sc !== false}); } catch (e) {}
 }
 const keyBytes = s => { s = s.replace(/-/g, "+").replace(/_/g, "/"); while (s.length % 4) s += "="; return Uint8Array.from(atob(s), ch => ch.charCodeAt(0)); };
 async function enableAlerts() {
@@ -1326,6 +1327,8 @@ async function drawAlertsPage(b) {
       <details class="arow" data-team="__quiet" ${AOPEN.has("__quiet") ? "open" : ""}><summary><span>Quiet hours<span class="ddsub">${c.q.on ? `${hm12(c.q.s)}–${hm12(c.q.e)} · alerts wait, then arrive as one summary` : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Quiet hours</span>${aseg("qon", [["1", "On"], ["0", "Off"]], c.q.on ? "1" : "0")}</div>
         ${c.q.on ? `<div class="qt"><input type="time" id="qs" value="${c.q.s}"> to <input type="time" id="qe" value="${c.q.e}"></div>` : ""}</div></details>
+      <details class="arow" data-team="__sched" ${AOPEN.has("__sched") ? "open" : ""}><summary><span>Schedule changes<span class="ddsub">${c.sc !== false ? "On · time, date or field moves for your teams, next 14 days" : "Off"}</span></span>${icon("chev")}</summary>
+        <div class="aopts"><div class="opt"><span>Schedule changes<span class="ddsub">When a game's time, date or field changes</span></span>${aseg("sc", [["1", "On"], ["0", "Off"]], c.sc !== false ? "1" : "0")}</div></div></details>
       <details class="arow" data-team="__badge" ${AOPEN.has("__badge") ? "open" : ""}><summary><span>App icon alert<span class="ddsub">${c.badge ? "On · red number for alerts you haven't opened" : "Off"}</span></span>${icon("chev")}</summary>
         <div class="aopts"><div class="opt"><span>Red number on the app icon</span>${aseg("badge", [["1", "On"], ["0", "Off"]], c.badge ? "1" : "0")}</div></div></details></div>
     <p class="mut pgfoot">Choose each team's alerts on that team: tap a team above, or tap the team you're on at the top. Scores arrive about 15 minutes after they're posted. Several at once come as one alert. During quiet hours they wait and arrive as one morning summary.</p></div>`;
@@ -1339,6 +1342,7 @@ async function drawAlertsPage(b) {
     if (s === "master") { if (v === "0") disableAlerts(); return; }
     if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}}[s] || {}); }
     else if (s === "qon") cc.q.on = v === "1";
+    else if (s === "sc") cc.sc = v === "1";
     else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
     setAcfg(cc); refreshPage();
   };
@@ -1357,7 +1361,7 @@ async function alertsSyncNow() {
   const sub = await pushSub(); if (!sub) return;
   const c = acfg(), teams = (favs() || []).map(teamByKey).filter(Boolean).map(t => Object.assign({k: t.k, f: t.f, n: t.s, a: t.a.split(" (")[0]}, tcfg(c, t.k)));
   let tz = "America/Los_Angeles"; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || tz; } catch (e) {}
-  await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge});
+  await api("PUT", "/api/push", {sub: sub.toJSON(), teams, q: c.q, tz, badge: c.badge, sc: c.sc !== false});
 }
 // New-feature prompt: until alerts are on (or turned down), a card at the top of Standings and Games
 // and a red dot on the gear point people to alerts.
@@ -1902,7 +1906,9 @@ function gameRow(D, M, g, o = {}) {
   // bottom line: when · where · status (the time column is gone; the game line gets the full width)
   const when = left === shortTime(g.time) ? myZ(g) : left;
   const place = o.place !== undefined ? o.place : (g.venue ? evField(null, g.venue) : "");
-  const bottom = when || o.sub ? [when, place, o.sub].filter(Boolean).join(" · ") : "";
+  // schedule changed in the last 7 days (scripts/alerts.py writes them into status.json "chg")
+  const chg = !done && STATUS && STATUS.chg && STATUS.chg[g.id], chgTag = chg ? `<span class="chg">${chg[0].length === 1 ? {d: "Date", t: "Time", v: "Field"}[chg[0][0]] + " changed" : "Schedule changed"}</span>` : "";
+  const bottom = when || o.sub || chgTag ? [when, place, o.sub, chgTag].filter(Boolean).join(" · ") : "";
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
