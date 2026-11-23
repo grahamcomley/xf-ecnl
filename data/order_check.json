@@ -22824,16 +22824,16 @@
    69209,
    129371,
    130090,
+   112305,
    72197,
    130122,
-   112305,
    132757,
    132743,
    97738,
    95036,
    131209,
-   129433,
    133013,
+   129433,
    121231,
    69419
   ],
@@ -22860,14 +22860,22 @@
  {
   "conf": "u15g-4260-41144",
   "name": "ECNL RL Girls STXCL",
+  "kind": "adjusted",
+  "teams": {
+   "121231": -3
+  }
+ },
+ {
+  "conf": "u15g-4260-41144",
+  "name": "ECNL RL Girls STXCL",
   "kind": "points",
   "teams": [
    {
     "id": 57527,
     "team": "Coastal Premier ECNL RL STXCL G2011/12",
     "ours": [
-     12,
-     34
+     13,
+     37
     ],
     "ecnl": [
      11,
@@ -22890,8 +22898,8 @@
     "id": 129371,
     "team": "Challenge ECNL RL STXCL G2011/12",
     "ours": [
-     11,
-     25
+     12,
+     28
     ],
     "ecnl": [
      10,
@@ -22947,6 +22955,18 @@
     ]
    },
    {
+    "id": 112305,
+    "team": "TC Premier SC ECNL RL STXCL G2011/12",
+    "ours": [
+     9,
+     16
+    ],
+    "ecnl": [
+     8,
+     13
+    ]
+   },
+   {
     "id": 132743,
     "team": "Lonestar ATX NTH ECNL RL STXCL G2011/12 Gold",
     "ours": [
@@ -22998,12 +23018,24 @@
     "id": 133013,
     "team": "Lonestar RGV ECNL RL STXCL G2011/12",
     "ours": [
-     11,
-     5
+     12,
+     8
     ],
     "ecnl": [
      10,
      5
+    ]
+   },
+   {
+    "id": 69419,
+    "team": "Houstonians FC ECNL RL STXCL G2011/12",
+    "ours": [
+     16,
+     0
+    ],
+    "ecnl": [
+     12,
+     3
     ]
    }
   ]
