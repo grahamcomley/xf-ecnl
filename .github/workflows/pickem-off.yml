@@ -1,0 +1,19 @@
+name: Turn Pick'em off (prod and UAT, manual)
+# One-off: removes the Pick'em switch for both sites (off = no key). Turn it back on from Admin.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  off:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          A=f4844cb4fa247cf50ffc158d9ee9d27d; API=https://api.cloudflare.com/client/v4/accounts/$A/storage/kv/namespaces
+          ID=$(curl -fsS -H "Authorization: Bearer $CF_TOKEN" "$API?per_page=100" | jq -r '.result[]? | select(.title=="sideline-users") | .id')
+          for k in cfg:pickem:live cfg:pickem:uat; do
+            curl -fsS -X DELETE -H "Authorization: Bearer $CF_TOKEN" "$API/$ID/values/${k//:/%3A}" > /dev/null && echo "removed $k"
+          done
+          for s in https://sidelinestandings.com https://uat.sidelinestandings.com; do echo "$s $(curl -fsS $s/api/config)"; done
