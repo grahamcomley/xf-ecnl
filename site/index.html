@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.77">
+<meta name="app-version" content="v1.78">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -2148,7 +2148,7 @@ function renderTeam(D, fid, key) {
   const inWinM = valid.filter(g => isMe(g) && g.date >= mS && g.date <= mE && !g.pending);
   const inWM = x => x.date >= mS && x.date <= mE;
   const evWinM = events.filter(ev => !ev.competition && EVI.some(x => x.ev === ev && inWM(x)));
-  // All my teams: every followed team's games (league + events) for the window, then the next 7 days.
+  // All my teams: every followed team's games (league + events) for the window, then the next 30 days (Graham, Nov 23).
   ALLMINE_DRAW = async () => {
     if (!$("#allmine")) return;
     const teams = [];
@@ -2164,7 +2164,7 @@ function renderTeam(D, fid, key) {
       } catch (e) {}
     }
     const box = $("#allmine"); if (!box) return;   // moved on meanwhile
-    const [a, b] = stretch(teams.flatMap(x => spansOf(x.evs)), wStart, wEnd), end2 = addDays(b, 7);
+    const [a, b] = stretch(teams.flatMap(x => spansOf(x.evs)), wStart, wEnd), end2 = addDays(b, 30);
     const items = [], seen = new Set(), had = new Set(), evW = new Map();
     for (const T of teams) {
       const M2 = makeModel(T.D.teams, T.D.model), tag = `<span class="tmtag">${esc(T.lbl)}</span>`;
@@ -2191,7 +2191,7 @@ function renderTeam(D, fid, key) {
         (inA.length ? days(inA) : "<div class='mut'>No games for your teams in this window.</div>")
         + (none.length && inA.length ? `<div class="nogames">No games ${winTitle(a, b) === "This weekend" ? "this weekend" : "in this window"}: ${none.join(", ")}</div>` : "")
         + evLink(ev1.map(x => x[0]), ev1.length ? (ev1.find(x => x[1] === key) || ev1[0])[1] : ""), "am4")
-      + (later.length ? sec("div", "League", `Coming up · next 7 days`, "", days(later), "am4b", true) : "");
+      + (later.length ? sec("div", "League", `Coming up · next 30 days`, "", days(later), "am4b", true) : "");
   };
   const sec4 = winHtml(finW, waitW, upW), secM = dayHtml(inWinM, EVI.filter(inWM)) + evLink(evWinM);
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
