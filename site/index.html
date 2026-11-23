@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.75">
+<meta name="app-version" content="v1.76">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -770,17 +770,42 @@ function loadClerk() {
       if (LOCKED() && (favs() || []).length) { store.set("xfFavs", ""); store.set("lastTeam", ""); CUR = null; history.replaceState(null, "", location.pathname); route(); }
       window.Clerk.addListener(() => onAuth());
       onAuth();
-    } catch (e) { console.warn("sign-in service didn't load", e); }
+    } catch (e) { console.warn("sign-in service didn't load", e); if (passGet()) onAuth(); }
   };
+  sc.onerror = () => { if (passGet()) onAuth(); };   // sign-in service down: our pass still works
   document.head.appendChild(sc);
 }
-async function token() {
+async function clerkToken() {
+  if (!(window.Clerk && window.Clerk.session)) return null;
   try { return await Promise.race([window.Clerk.session.getToken(), new Promise(r => setTimeout(() => r(null), 5000))]); } catch (e) { return null; }
+}
+// Our own sign-in pass (api/worker.js): Clerk's free plan ends each sign-in after 7 days; the pass keeps
+// the person signed in for a year (renewed as they use it). Used whenever there's no Clerk sign-in.
+const passGet = () => { try { const p = JSON.parse(store.get("spass") || "null"); return p && p.t && p.id ? p : null; } catch (e) { return null; } };
+const passSet = v => store.set("spass", v ? JSON.stringify(v) : "");
+async function passFetch() {   // right after a Clerk sign-in
+  const u = window.Clerk && window.Clerk.user, t = await clerkToken(); if (!u || !t) return;
+  try {
+    const r = await fetch("/api/pass", {method: "POST", headers: {authorization: "Bearer " + t, "x-sv": visitorId()}, cache: "no-store"});
+    const j = r.ok ? await r.json() : null;
+    if (j && j.pass && window.Clerk.user && window.Clerk.user.id === u.id) passSet({t: j.pass, id: u.id, email: ME && ME.id === u.id ? ME.email : ""});
+  } catch (e) {}
+}
+let VIA_PASS = false;
+// UAT test switch: ?usepass makes this tab use only our pass, as if Clerk's 7 days were over.
+const TEST_PASS = location.hostname.startsWith("uat.") && /[?&]usepass\b/.test(location.search);
+async function token() {
+  const c = TEST_PASS && passGet() ? null : await clerkToken(); if (c) { VIA_PASS = false; return c; }
+  const p = passGet(); VIA_PASS = !!p; return p ? p.t : null;
 }
 function visitorId() { let v = store.get("sv"); if (!v) { v = Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); store.set("sv", v); } return v; }
 async function api(method, path, body) {
   const t = await token(); if (!t) throw new Error("no session");
+  const viaPass = VIA_PASS;
   const r = await fetch(path, {method, headers: Object.assign({authorization: "Bearer " + t, "x-sv": visitorId()}, body ? {"content-type": "application/json"} : {}), body: body ? JSON.stringify(body) : undefined, cache: "no-store"});
+  const np = r.headers.get("x-pass"), cur = passGet();
+  if (np && cur && viaPass) passSet(Object.assign(cur, {t: np}));   // renewed
+  if (r.status === 401 && viaPass) passEnded();
   if (!r.ok) throw new Error("server " + r.status);
   return r.json();
 }
@@ -833,15 +858,22 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) rech
 // The follow button in the team header: a labelled pill (the bare star wasn't noticed).
 const followHtml = on => `${icon("star", on)}<span>${on ? "Following" : "Follow"}</span>`;
 function refreshStar() { if (CUR && REDRAW_HEAD) REDRAW_HEAD(); }
+// Our pass stopped working (signed out on all devices, account deleted, or a new key): signed out.
+function passEnded() { if (!passGet()) return; passSet(null); if (!(window.Clerk && window.Clerk.user)) { ME = null; applyGate(); drawPills(); } }
 async function onAuth() {
-  const u = window.Clerk && window.Clerk.user;
+  const cu = window.Clerk && window.Clerk.user, ps = passGet();
+  if (cu && ps && ps.id !== cu.id) passSet(null);   // a different person signed in on this device
+  const u = cu ? {id: cu.id, email: (cu.primaryEmailAddress && cu.primaryEmailAddress.emailAddress) || ""} : passGet() ? {id: ps.id, email: ps.email || ""} : null;
   if (!u) { ME = null; applyGate(); return; }
-  if (ME && ME.id === u.id) { drawPills(); return; }
-  ME = {id: u.id, email: (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || "", admin: false};
+  if (ME && ME.id === u.id) { drawPills(); if (cu && !passGet()) passFetch(); return; }
+  ME = {id: u.id, email: u.email, admin: false};
   store.set("signedInOnce", "1"); applyGate();
   if (GATE_MOUNTED) { try { window.Clerk.unmountSignIn($("#gatesignin")); } catch (e) {} GATE_MOUNTED = false; }
   try {
-    const r = await api("GET", "/api/me"); ME.admin = !!r.admin; drawPills();
+    const r = await api("GET", "/api/me");
+    if (r.signedIn === false) { passEnded(); ME = null; applyGate(); drawPills(); return; }
+    ME.admin = !!r.admin; drawPills();
+    if (cu && !passGet()) passFetch();
     const local = favs() || [], first = !r.exists || !store.get("merged:" + u.id), dirty = !!store.get("favsDirty");
     const next = dirty && !first ? local : first ? [...new Set([...(r.favs || []), ...local])] : (r.favs || []);
     store.set("favsDirty", ""); store.set("askedResign", "");
@@ -995,10 +1027,18 @@ function drawAccount(b) {
   const n = (favs() || []).length;
   b.innerHTML = `<div class="pgin"><div class="setbox"><p style="margin:2px 0">Signed in as <b>${esc(ME.email || "your account")}</b></p><p class="mut" style="margin:2px 0;font-size:13px">${n} saved team${n === 1 ? "" : "s"}, kept on all your devices.</p></div>
     <button class="btn-sec" id="acctout">Sign out</button>
+    <button class="btn-sec" id="acctoutall">Sign out on all devices</button>
     <button class="btn-sec danger" id="acctdel">Delete account</button>
     <p class="mut" style="font-size:12px">Deleting removes your account, saved teams and alerts. The site keeps working without an account.</p></div>`;
   // Signing out starts the phone fresh (welcome page); the account keeps the teams for the next sign-in.
-  $("#acctout").onclick = async () => { rememberAlerts(); await alertsPause(); await window.Clerk.signOut(); store.set("alertsOn", ""); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
+  const signOutHere = async () => { rememberAlerts(); await alertsPause(); passSet(null); try { await window.Clerk.signOut(); } catch (x) {} store.set("alertsOn", ""); ME = null; store.set("signedInOnce", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null; closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Signed out"); };
+  $("#acctout").onclick = signOutHere;
+  // Every device this account is signed in on (phones, the app, computers) is signed out, this one too.
+  $("#acctoutall").onclick = async () => {
+    const b = $("#acctoutall"); b.disabled = true; b.textContent = "Signing out…";
+    try { await api("POST", "/api/pass/all"); } catch (x) { b.disabled = false; b.textContent = "Sign out on all devices"; return toast("Couldn't do that. Try again."); }
+    await signOutHere(); toast("Signed out on all devices");
+  };
   $("#acctdel").onclick = () => {
     const sh = $("#delsheet"), inp = $("#delin"), go = $("#delgo");
     inp.value = ""; go.disabled = true; sh.hidden = false; setTimeout(() => inp.focus(), 50);
@@ -1013,7 +1053,7 @@ function drawAccount(b) {
     try { await api("DELETE", "/api/me"); } catch (x) {}
     try { await window.Clerk.user.delete(); } catch (x) { console.warn(x); }
     try { await window.Clerk.signOut(); } catch (x) {}
-    ME = null; store.set("signedInOnce", ""); store.set("alertsOn", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null;
+    passSet(null); ME = null; store.set("signedInOnce", ""); store.set("alertsOn", ""); store.set("xfFavs", ""); store.set("lastTeam", ""); store.set("tab", "team"); TAB = "team"; CUR = null; CTX = null;
     closePages(); applyGate(); history.replaceState(null, "", location.pathname); route(); toast("Account deleted");
   }
 }
@@ -1068,7 +1108,8 @@ function usageHtml(u) {
     ${line("New phones", `${S.newPhones} · ${S.newApp} app · ${S.newPhones - S.newApp} web`)}
     ${line("Asked to sign in", `${S.asked} phone${S.asked === 1 ? "" : "s"}`)}
     ${line("Signed up", S.signedUp)}
-    ${line("Backed out of sign-in", S.backedOut)}
+    ${S.gaveUp != null ? line("Gave up on sign-in (phones)", S.gaveUp) : line("Backed out of sign-in", S.backedOut)}
+    ${S.expired != null ? line("Sign-in expired (phones)", S.expired) : ""}
     ${line("Top taps", S.taps.length ? S.taps.map(([k, v]) => `${esc(k)} ${v}`).join(" · ") : "-")}`)(u.signups) : ""}
     <p class="mut" style="font-size:12px;margin:8px 0 0">Prod numbers, fresh each time you open Admin</p>`;
 }

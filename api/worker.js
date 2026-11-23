@@ -49,8 +49,47 @@ async function verify(token, pem) {
 }
 async function who(req, env) {
   const m = (req.headers.get("authorization") || "").match(/^Bearer (.+)$/);
-  if (!m || !env.CLERK_JWT_KEY) return null;
+  if (!m) return null;
+  if (m[1].startsWith("sp1.")) return passCheck(m[1], env);
+  if (!env.CLERK_JWT_KEY) return null;
   try { return await verify(m[1], env.CLERK_JWT_KEY); } catch (e) { return null; }
+}
+
+// ---------- our own sign-in pass ----------
+// Clerk's free plan ends every sign-in after 7 days. After a normal Clerk sign-in, the page asks
+// /api/pass for our own pass: "sp1.<payload>.<signature>", payload {s: user id, e: the email Clerk
+// signed, i: issued, x: expires} (seconds), HMAC-SHA256 with the key in KV cfg:passkey (made by the
+// one-off "Sign-in pass key" workflow; nobody sees it). Lasts PASS_DAYS, renewed on use once it's
+// RENEW_DAYS old (new pass in the x-pass response header). Cancelled by: sign out on all devices
+// (account's passAfter time), deleting the account (gone:<id> marker), or a new key (everyone).
+// Only a real Clerk sign-in can get a pass or an app sign-in ticket, or change the sign-in settings.
+const PASS_DAYS = 365, RENEW_DAYS = 7;
+let PKEY = null, PKEY_AT = 0, PKEY_RAW = "";
+async function passKey(env) {
+  if (PKEY && Date.now() - PKEY_AT < 300e3) return PKEY;
+  const raw = await env.USERS.get("cfg:passkey");
+  PKEY_AT = Date.now();
+  if (!raw) { PKEY = null; PKEY_RAW = ""; return null; }
+  if (raw !== PKEY_RAW) { PKEY = await crypto.subtle.importKey("raw", b64urlToBytes(raw.trim()), {name: "HMAC", hash: "SHA-256"}, false, ["sign", "verify"]); PKEY_RAW = raw; }
+  return PKEY;
+}
+const bytesToB64url = b => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+async function passMake(env, sub, email) {
+  const k = await passKey(env); if (!k) return null;
+  const i = Math.floor(Date.now() / 1000);
+  const body = bytesToB64url(new TextEncoder().encode(JSON.stringify({s: sub, e: email || "", i, x: i + PASS_DAYS * 86400})));
+  return "sp1." + body + "." + bytesToB64url(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode("sp1." + body)));
+}
+async function passCheck(tok, env) {
+  try {
+    const p = tok.split(".");
+    if (p.length !== 3) return null;
+    const k = await passKey(env); if (!k) return null;
+    if (!await crypto.subtle.verify("HMAC", k, b64urlToBytes(p[2]), new TextEncoder().encode("sp1." + p[1]))) return null;
+    const d = JSON.parse(new TextDecoder().decode(b64urlToBytes(p[1])));
+    if (!d.s || typeof d.i !== "number" || typeof d.x !== "number" || Date.now() / 1000 > d.x) return null;
+    return {sub: d.s, email: d.e || "", iat: d.i, pass: true};
+  } catch (e) { return null; }
 }
 const cleanFavs = a => Array.isArray(a) ? [...new Set(a.filter(k => typeof k === "string" && /^[a-z0-9-]{3,40}$/.test(k)))].slice(0, 60) : [];
 // Saved picks: p = their pick (H/D/A), o = our pick when they made it, t = when.
@@ -94,8 +133,9 @@ export default {
     let res;
     try { res = await handle(req, env, url, p, L, who0); }
     catch (e) { L.error("api.error", {m: req.method, p, uid: who0.uid, msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}); res = json({error: "server error"}, 500); }
+    if (who0.pass && res.status < 400) { res = new Response(res.body, res); res.headers.set("x-pass", who0.pass); }   // renewed sign-in pass
     const ua = (req.headers.get("user-agent") || "").slice(0, 120), net = String((req.cf && req.cf.asOrganization) || "").slice(0, 60);
-    L.info("api", {m: req.method, p, s: res.status, uid: who0.uid, ms: Date.now() - t0, ua, net, vid: (req.headers.get("x-sv") || "").slice(0, 24) || undefined, kind: visitorKind(ua, net)});
+    L.info("api", {m: req.method, p, s: res.status, uid: who0.uid, ms: Date.now() - t0, ua, net, vid: (req.headers.get("x-sv") || "").slice(0, 24) || undefined, kind: visitorKind(ua, net), via: who0.via});
     L.flush();
     return res;
   },
@@ -136,9 +176,38 @@ async function handle(req, env, url, p, L, who0) {
     if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
-    who0.uid = c.sub;
+    who0.uid = c.sub; who0.via = c.pass ? "pass" : "clerk";
     const key = "u:" + c.sub, now = Date.now();
     let rec = await env.USERS.get(key, "json");
+    if (c.pass) {   // our own pass: still good for this account? Renew it once it's a week old.
+      const gone = rec ? 0 : +(await env.USERS.get("gone:" + c.sub) || 0);
+      if ((rec && rec.passAfter && c.iat < rec.passAfter) || (gone && c.iat < gone)) { who0.uid = null; return json({signedIn: false, pass: "cancelled"}, p === "/api/me" && req.method === "GET" ? 200 : 401); }
+      if (now / 1000 - c.iat > RENEW_DAYS * 86400) who0.pass = await passMake(env, c.sub, c.email);
+    }
+    // POST /api/pass: after a real Clerk sign-in, our own pass for this device (see passMake).
+    if (p === "/api/pass" && req.method === "POST") {
+      if (c.pass) return json({error: "sign in first"}, 403);
+      const t = await passMake(env, c.sub, cleanEmail(c.email));
+      if (!t) return json({error: "not set up"}, 503);
+      L.info("pass.issued", {uid: c.sub});
+      return json({pass: t});
+    }
+    // POST /api/pass/all: sign out on all devices (every pass made before now stops working).
+    if (p === "/api/pass/all" && req.method === "POST") {
+      if (!rec) rec = {created: now, favs: [], seen: now};
+      rec.passAfter = Math.floor(now / 1000) + 1; await put(env, c.sub, rec);
+      // and the person's Clerk sign-ins (other devices would otherwise stay in for up to 7 days)
+      const ck = await env.USERS.get("cfg:clerk", "json");
+      if (ck && ck.sk) {
+        const H = {authorization: "Bearer " + ck.sk};
+        const ss = await fetch("https://api.clerk.com/v1/sessions?status=active&user_id=" + encodeURIComponent(c.sub), {headers: H}).then(r => r.json()).catch(() => []);
+        for (const s of Array.isArray(ss) ? ss : []) await fetch("https://api.clerk.com/v1/sessions/" + s.id + "/revoke", {method: "POST", headers: H}).catch(() => null);
+      }
+      L.keep("pass.signout-all", {uid: c.sub});
+      return json({ok: true});
+    }
+    // Only a real Clerk sign-in can make app sign-in tickets or change sign-in settings.
+    if (c.pass && (p === "/api/app/ticket" || p === "/api/admin/clerk" || p === "/api/admin/reviewer")) return json({error: "sign in again for this"}, 403);
 
     // GET /api/me: the account's saved teams. Also notes "last seen".
     if (p === "/api/me" && req.method === "GET") {
@@ -180,6 +249,7 @@ async function handle(req, env, url, p, L, who0) {
     // DELETE /api/me: delete everything stored for this account.
     if (p === "/api/me" && req.method === "DELETE") {
       await env.USERS.delete(key); dbPerson(env, null, c.sub, null);
+      await env.USERS.put("gone:" + c.sub, String(Math.floor(now / 1000) + 1), {expirationTtl: (PASS_DAYS + 30) * 86400});   // its sign-in passes stop working
       await pushDeleteUser(env, c.sub);
       for (const s of ["live", "uat"]) { await env.USERS.delete(`pk:${s}:${c.sub}`); await env.USERS.delete(`pkr:${s}:${c.sub}`); }   // Pick'em name + picks
       // the sign-in account itself (the page also asks Clerk; this covers it if that fails)
