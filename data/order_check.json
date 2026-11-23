@@ -10721,218 +10721,19 @@
    95357,
    129721,
    133250,
-   131491,
-   80705,
    131203,
+   80705,
    75519,
    133295,
    93727,
-   50712,
-   133293,
    87681,
+   133293,
    113587,
    131206,
    95205,
-   128363
-  ]
- },
- {
-  "conf": "u17b-4261-41137",
-  "name": "ECNL RL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 95357,
-    "team": "MAFC ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     31
-    ],
-    "ecnl": [
-     10,
-     28
-    ]
-   },
-   {
-    "id": 129721,
-    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     29
-    ],
-    "ecnl": [
-     10,
-     26
-    ]
-   },
-   {
-    "id": 133250,
-    "team": "LTFC ECNL RL STXCL B2009/10",
-    "ours": [
-     13,
-     25
-    ],
-    "ecnl": [
-     12,
-     22
-    ]
-   },
-   {
-    "id": 131491,
-    "team": "RISE SC ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     19
-    ],
-    "ecnl": [
-     11,
-     19
-    ]
-   },
-   {
-    "id": 80705,
-    "team": "AHFC EAST ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     19
-    ],
-    "ecnl": [
-     11,
-     18
-    ]
-   },
-   {
-    "id": 131203,
-    "team": "FC Westlake Central ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     19
-    ],
-    "ecnl": [
-     10,
-     16
-    ]
-   },
-   {
-    "id": 75519,
-    "team": "VCF HOUSTON ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     17
-    ],
-    "ecnl": [
-     11,
-     17
-    ]
-   },
-   {
-    "id": 128363,
-    "team": "SG1 ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     20
-    ],
-    "ecnl": [
-     11,
-     17
-    ]
-   },
-   {
-    "id": 133295,
-    "team": "Lonestar ATX STH ECNL RL STXCL B2009/10 Gold",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     13
-    ]
-   },
-   {
-    "id": 93727,
-    "team": "JSAFC ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     14
-    ],
-    "ecnl": [
-     10,
-     14
-    ]
-   },
-   {
-    "id": 50712,
-    "team": "Houstonians FC ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     14
-    ],
-    "ecnl": [
-     10,
-     11
-    ]
-   },
-   {
-    "id": 133293,
-    "team": "Lonestar ATX NTH ECNL RL STXCL B2009/10 Gold",
-    "ours": [
-     11,
-     11
-    ],
-    "ecnl": [
-     10,
-     11
-    ]
-   },
-   {
-    "id": 87681,
-    "team": "Imperial SC ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     15
-    ],
-    "ecnl": [
-     11,
-     12
-    ]
-   },
-   {
-    "id": 113587,
-    "team": "NB AJAX ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     6
-    ],
-    "ecnl": [
-     11,
-     6
-    ]
-   },
-   {
-    "id": 131206,
-    "team": "FC Westlake North ECNL RL STXCL B2009/10",
-    "ours": [
-     11,
-     4
-    ],
-    "ecnl": [
-     10,
-     4
-    ]
-   },
-   {
-    "id": 95205,
-    "team": "SAFC ECNL RL STXCL B2009/10",
-    "ours": [
-     12,
-     4
-    ],
-    "ecnl": [
-     11,
-     3
-    ]
-   }
+   128363,
+   131491,
+   50712
   ]
  },
  {
@@ -11056,37 +10857,6 @@
   ]
  },
  {
-  "conf": "u17b-4276-40471",
-  "name": "ECNL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134782,
-    "team": "Tennessee SC",
-    "ours": [
-     18,
-     42
-    ],
-    "ecnl": [
-     17,
-     39
-    ]
-   },
-   {
-    "id": 133199,
-    "team": "Lobos Rush",
-    "ours": [
-     18,
-     38
-    ],
-    "ecnl": [
-     17,
-     38
-    ]
-   }
-  ]
- },
- {
   "conf": "u17b-4277-40465",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
@@ -11112,43 +10882,12 @@
    131391,
    135355,
    45987,
+   69685,
    37377,
    60154,
-   69685,
-   131424,
    69431,
+   131424,
    134674
-  ]
- },
- {
-  "conf": "u17b-4277-40465",
-  "name": "ECNL Boys Mid-Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 69685,
-    "team": "Highland FC",
-    "ours": [
-     3,
-     3
-    ],
-    "ecnl": [
-     2,
-     0
-    ]
-   },
-   {
-    "id": 131424,
-    "team": "Charlotte SA",
-    "ours": [
-     3,
-     0
-    ],
-    "ecnl": [
-     2,
-     0
-    ]
-   }
   ]
  },
  {
@@ -11360,87 +11099,6 @@
   ]
  },
  {
-  "conf": "u17b-4286-40537",
-  "name": "ECNL Boys Southeast",
-  "ours": [
-   68801,
-   46819,
-   134156,
-   129028,
-   67126,
-   131801,
-   69847,
-   59529,
-   68799
-  ],
-  "ecnl": [
-   68801,
-   46819,
-   134156,
-   129028,
-   67126,
-   69847,
-   131801,
-   59529,
-   68799
-  ]
- },
- {
-  "conf": "u17b-4286-40537",
-  "name": "ECNL Boys Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 46819,
-    "team": "CESA Triumph",
-    "ours": [
-     13,
-     30
-    ],
-    "ecnl": [
-     12,
-     30
-    ]
-   },
-   {
-    "id": 134156,
-    "team": "NTH NASA",
-    "ours": [
-     14,
-     29
-    ],
-    "ecnl": [
-     13,
-     26
-    ]
-   },
-   {
-    "id": 67126,
-    "team": "Atlanta Fire United",
-    "ours": [
-     15,
-     22
-    ],
-    "ecnl": [
-     14,
-     19
-    ]
-   },
-   {
-    "id": 69847,
-    "team": "South Carolina United",
-    "ours": [
-     15,
-     11
-    ],
-    "ecnl": [
-     14,
-     11
-    ]
-   }
-  ]
- },
- {
   "conf": "u17b-4287-41626",
   "name": "ECNL Boys Southwest",
   "ours": [
@@ -11563,46 +11221,15 @@
    133887
   ],
   "ecnl": [
-   130402,
    130578,
+   83052,
+   130402,
    130476,
    81005,
    96317,
-   83052,
    70532,
    136431,
    133887
-  ]
- },
- {
-  "conf": "u17b-4324-41510",
-  "name": "ECNL RL Boys GLA",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 130578,
-    "team": "Canton Force",
-    "ours": [
-     1,
-     1
-    ],
-    "ecnl": [
-     0,
-     0
-    ]
-   },
-   {
-    "id": 83052,
-    "team": "Nationals SC Capital Area Grey",
-    "ours": [
-     1,
-     1
-    ],
-    "ecnl": [
-     0,
-     0
-    ]
-   }
   ]
  },
  {
@@ -12030,44 +11657,13 @@
    131339,
    135554,
    114846,
-   72542,
    130565,
+   72542,
    69325,
    135755,
    135724,
    134713,
    55425
-  ]
- },
- {
-  "conf": "u17b-4347-40633",
-  "name": "ECNL RL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 72542,
-    "team": "Oklahoma Cosmos",
-    "ours": [
-     12,
-     21
-    ],
-    "ecnl": [
-     11,
-     21
-    ]
-   },
-   {
-    "id": 134713,
-    "team": "Arkansas Comets FC",
-    "ours": [
-     17,
-     23
-    ],
-    "ecnl": [
-     16,
-     20
-    ]
-   }
   ]
  },
  {
@@ -12164,37 +11760,6 @@
    134105,
    94940,
    112531
-  ]
- },
- {
-  "conf": "u17b-4350-40663",
-  "name": "ECNL RL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134794,
-    "team": "Tennessee SC",
-    "ours": [
-     17,
-     31
-    ],
-    "ecnl": [
-     16,
-     28
-    ]
-   },
-   {
-    "id": 94940,
-    "team": "Germantown Legends",
-    "ours": [
-     15,
-     7
-    ],
-    "ecnl": [
-     14,
-     7
-    ]
-   }
   ]
  },
  {
@@ -12368,8 +11933,8 @@
    133689,
    133562,
    132996,
-   134585,
    110507,
+   134585,
    131964,
    133695,
    113074,
@@ -12377,61 +11942,6 @@
    135281,
    131517,
    91203
-  ]
- },
- {
-  "conf": "u17b-4354-41632",
-  "name": "ECNL RL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 68853,
-    "team": "LA Breakers Red",
-    "ours": [
-     8,
-     19
-    ],
-    "ecnl": [
-     7,
-     16
-    ]
-   },
-   {
-    "id": 133689,
-    "team": "LAFC So Cal ECNL RL S.Cal B2009/10 GOLD",
-    "ours": [
-     11,
-     22
-    ],
-    "ecnl": [
-     10,
-     19
-    ]
-   },
-   {
-    "id": 134585,
-    "team": "Rebels SC ECNL RL SoCal B2009/10 White",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   },
-   {
-    "id": 132519,
-    "team": "San Diego Surf ECNL RL S.Cal B2009/10",
-    "ours": [
-     6,
-     0
-    ],
-    "ecnl": [
-     5,
-     0
-    ]
-   }
   ]
  },
  {
@@ -12451,120 +11961,17 @@
    131458
   ],
   "ecnl": [
-   131903,
    67128,
+   131903,
    134179,
    57740,
    131807,
    68805,
-   60119,
    68800,
+   60119,
    69848,
    131458,
    129034
-  ]
- },
- {
-  "conf": "u17b-4355-40723",
-  "name": "ECNL RL Boys Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131903,
-    "team": "Charlotte SA Gold",
-    "ours": [
-     18,
-     43
-    ],
-    "ecnl": [
-     17,
-     43
-    ]
-   },
-   {
-    "id": 67128,
-    "team": "Atlanta Fire United",
-    "ours": [
-     17,
-     43
-    ],
-    "ecnl": [
-     16,
-     40
-    ]
-   },
-   {
-    "id": 134179,
-    "team": "NTH NASA",
-    "ours": [
-     18,
-     35
-    ],
-    "ecnl": [
-     17,
-     32
-    ]
-   },
-   {
-    "id": 57740,
-    "team": "United Futbol Academy",
-    "ours": [
-     18,
-     32
-    ],
-    "ecnl": [
-     17,
-     29
-    ]
-   },
-   {
-    "id": 131807,
-    "team": "GSA",
-    "ours": [
-     17,
-     27
-    ],
-    "ecnl": [
-     16,
-     27
-    ]
-   },
-   {
-    "id": 68805,
-    "team": "Concorde Fire Platinum",
-    "ours": [
-     16,
-     19
-    ],
-    "ecnl": [
-     15,
-     19
-    ]
-   },
-   {
-    "id": 69848,
-    "team": "South Carolina United",
-    "ours": [
-     19,
-     15
-    ],
-    "ecnl": [
-     18,
-     15
-    ]
-   },
-   {
-    "id": 68800,
-    "team": "Concorde Fire Premier",
-    "ours": [
-     16,
-     10
-    ],
-    "ecnl": [
-     15,
-     7
-    ]
-   }
   ]
  },
  {
@@ -12635,101 +12042,22 @@
   "ecnl": [
    133683,
    132489,
-   132483,
    133119,
+   132483,
    94967,
-   132189,
    135599,
+   132189,
    133564,
-   130995,
    133563,
+   130995,
    61047,
    132973,
    133623,
-   133751,
    64643,
+   133751,
    134366,
    135598,
    131037
-  ]
- },
- {
-  "conf": "u17b-4358-40735",
-  "name": "ECNL RL Boys Southwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133683,
-    "team": "LAFC So Cal",
-    "ours": [
-     10,
-     27
-    ],
-    "ecnl": [
-     9,
-     24
-    ]
-   },
-   {
-    "id": 132483,
-    "team": "San Diego Surf ECNL RL White B2009/10",
-    "ours": [
-     7,
-     16
-    ],
-    "ecnl": [
-     6,
-     15
-    ]
-   },
-   {
-    "id": 135599,
-    "team": "Sporting California USA RED",
-    "ours": [
-     9,
-     16
-    ],
-    "ecnl": [
-     8,
-     13
-    ]
-   },
-   {
-    "id": 130995,
-    "team": "Pateadores IRV Blue",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   },
-   {
-    "id": 133623,
-    "team": "Legends FC (CA) Black",
-    "ours": [
-     7,
-     7
-    ],
-    "ecnl": [
-     6,
-     6
-    ]
-   },
-   {
-    "id": 133751,
-    "team": "SDSC Surf Gold",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   }
   ]
  },
  {
