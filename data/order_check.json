@@ -107,43 +107,12 @@
    129396
   ],
   "ecnl": [
-   129396,
    95189,
+   129396,
    97207,
    131321,
    129646,
    133743
-  ]
- },
- {
-  "conf": "u11b-4331-42128",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 129646,
-    "team": "Houstonians FC Pre-ECNL STXCL B2015/16",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     12
-    ]
-   },
-   {
-    "id": 129396,
-    "team": "Challenge United East Pre-ECNL STXCL B2015/16",
-    "ours": [
-     9,
-     7
-    ],
-    "ecnl": [
-     8,
-     7
-    ]
-   }
   ]
  },
  {
@@ -171,25 +140,6 @@
   ]
  },
  {
-  "conf": "u11b-4331-42134",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 124688,
-    "team": "AHFC SW Pre-ECNL STXCL B2015/16",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     9
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4331-42137",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -219,18 +169,6 @@
   "name": "Pre-ECNL Boys STXCL",
   "kind": "points",
   "teams": [
-   {
-    "id": 129516,
-    "team": "Dynamos Pre-ECNL STXCL B2015/16",
-    "ours": [
-     10,
-     7
-    ],
-    "ecnl": [
-     9,
-     7
-    ]
-   },
    {
     "id": 118099,
     "team": "AHFC NW Pre-ECNL STXCL B2015/16",
@@ -260,44 +198,13 @@
   ],
   "ecnl": [
    134492,
+   133235,
    133252,
    131195,
    133233,
-   133235,
-   133237,
    132662,
+   133237,
    132628
-  ]
- },
- {
-  "conf": "u11b-4331-42122",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133235,
-    "team": "Lonestar ATX NW Pre-ECNL STXCL B2015/16 Red B",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     12
-    ]
-   },
-   {
-    "id": 132662,
-    "team": "Pflugerville FC Pre-ECNL STXCL B2015/16 Green",
-    "ours": [
-     9,
-     13
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   }
   ]
  },
  {
@@ -313,68 +220,13 @@
    133511
   ],
   "ecnl": [
-   132140,
-   133608,
-   132586,
-   132157,
-   125387,
    131231,
-   133511
-  ]
- },
- {
-  "conf": "u11b-4331-42126",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132586,
-    "team": "Boerne SC Pre-ECNL STXCL B2015/16 Red",
-    "ours": [
-     9,
-     17
-    ],
-    "ecnl": [
-     8,
-     14
-    ]
-   },
-   {
-    "id": 132157,
-    "team": "JSA FC Pre-ECNL STXCL B2015/16",
-    "ours": [
-     9,
-     13
-    ],
-    "ecnl": [
-     8,
-     12
-    ]
-   },
-   {
-    "id": 131231,
-    "team": "Lions FC Pre-ECNL STXCL B2015/16 RED",
-    "ours": [
-     9,
-     3
-    ],
-    "ecnl": [
-     7,
-     3
-    ]
-   },
-   {
-    "id": 133511,
-    "team": "Premier Futbol Academy Pre-ECNL STXCL B2015/16",
-    "ours": [
-     9,
-     3
-    ],
-    "ecnl": [
-     8,
-     3
-    ]
-   }
+   133511,
+   132140,
+   132586,
+   133608,
+   132157,
+   125387
   ]
  },
  {
@@ -461,37 +313,6 @@
    135397,
    134700,
    84212
-  ]
- },
- {
-  "conf": "u11b-4360-40813",
-  "name": "Pre-ECNL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131371,
-    "team": "FC Tulsa Academy Pre-ECNL B2015/16 II",
-    "ours": [
-     14,
-     26
-    ],
-    "ecnl": [
-     13,
-     23
-    ]
-   },
-   {
-    "id": 135560,
-    "team": "Arkansas Rising Pre-ECNL B2015/16",
-    "ours": [
-     12,
-     12
-    ],
-    "ecnl": [
-     11,
-     12
-    ]
-   }
   ]
  },
  {
@@ -616,37 +437,6 @@
   ]
  },
  {
-  "conf": "u11b-4364-40817",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134847,
-    "team": "East Meadow Soccer Club Pre-ECNL B2015/16",
-    "ours": [
-     11,
-     21
-    ],
-    "ecnl": [
-     10,
-     18
-    ]
-   },
-   {
-    "id": 117692,
-    "team": "Scorpions SC Pre-ECNL B2015/16",
-    "ours": [
-     11,
-     15
-    ],
-    "ecnl": [
-     10,
-     15
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4364-40819",
   "name": "Pre-ECNL Boys New England",
   "ours": [
@@ -666,8 +456,8 @@
   "ecnl": [
    134892,
    133927,
-   135096,
    132346,
+   135096,
    133945,
    135958,
    134695,
@@ -676,37 +466,6 @@
    117010,
    135311,
    136440
-  ]
- },
- {
-  "conf": "u11b-4364-40819",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135096,
-    "team": "East Meadow Soccer Club Pre-ECNL B2015/16 II",
-    "ours": [
-     11,
-     20
-    ],
-    "ecnl": [
-     10,
-     19
-    ]
-   },
-   {
-    "id": 134695,
-    "team": "Scorpions SC Pre-ECNL B2015/16 ll",
-    "ours": [
-     11,
-     14
-    ],
-    "ecnl": [
-     10,
-     13
-    ]
-   }
   ]
  },
  {
@@ -735,37 +494,6 @@
    136468,
    131008,
    134260
-  ]
- },
- {
-  "conf": "u11b-4365-41498",
-  "name": "Pre-ECNL Boys Northeast - North",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134260,
-    "team": "Long Island Slammers Pre",
-    "ours": [
-     10,
-     21
-    ],
-    "ecnl": [
-     9,
-     18
-    ]
-   },
-   {
-    "id": 134457,
-    "team": "Fox Soccer Academy Premier Pre-ECNL 2015/16",
-    "ours": [
-     9,
-     6
-    ],
-    "ecnl": [
-     8,
-     6
-    ]
-   }
   ]
  },
  {
@@ -823,97 +551,6 @@
   ]
  },
  {
-  "conf": "u11b-4370-41049",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133700,
-    "team": "LAFC So Cal Pre PLATINUM I",
-    "ours": [
-     9,
-     24
-    ],
-    "ecnl": [
-     8,
-     21
-    ]
-   },
-   {
-    "id": 108482,
-    "team": "LA Breakers Pre-ECNL B2015/16 Blue I",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     15
-    ]
-   },
-   {
-    "id": 133546,
-    "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 Gold I",
-    "ours": [
-     10,
-     12
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   },
-   {
-    "id": 107128,
-    "team": "West Coast FC Pre-ECNL B2015/16 Navy I",
-    "ours": [
-     8,
-     12
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   },
-   {
-    "id": 119666,
-    "team": "Rebels SC Pre-ECNL B2015/16 I",
-    "ours": [
-     9,
-     10
-    ],
-    "ecnl": [
-     8,
-     10
-    ]
-   },
-   {
-    "id": 133212,
-    "team": "Legends FC (CA) PRE Gold I",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   },
-   {
-    "id": 135623,
-    "team": "Sporting California USA Pre-ECNL B2015/16 RED I",
-    "ours": [
-     9,
-     0
-    ],
-    "ecnl": [
-     8,
-     0
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4370-41047",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
@@ -937,97 +574,6 @@
   ]
  },
  {
-  "conf": "u11b-4370-41047",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133545,
-    "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 White I",
-    "ours": [
-     9,
-     25
-    ],
-    "ecnl": [
-     8,
-     22
-    ]
-   },
-   {
-    "id": 134058,
-    "team": "San Diego Surf Pre-ECNL B2015/16 White I",
-    "ours": [
-     7,
-     16
-    ],
-    "ecnl": [
-     6,
-     13
-    ]
-   },
-   {
-    "id": 133211,
-    "team": "Legends FC (CA) PRE I",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     15
-    ]
-   },
-   {
-    "id": 133701,
-    "team": "LAFC So Cal Pre GOLD I",
-    "ours": [
-     7,
-     15
-    ],
-    "ecnl": [
-     6,
-     12
-    ]
-   },
-   {
-    "id": 133588,
-    "team": "CDA Slammers FC Pre Maroon I",
-    "ours": [
-     7,
-     12
-    ],
-    "ecnl": [
-     6,
-     9
-    ]
-   },
-   {
-    "id": 132232,
-    "team": "Pateadores Pre-ECNL B2015/16 I",
-    "ours": [
-     8,
-     9
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   },
-   {
-    "id": 133121,
-    "team": "SDSC Surf Pre-ECNL B2015/16 Blue I",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4370-41051",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
@@ -1045,127 +591,12 @@
    133595,
    134465,
    133548,
-   131040,
    133215,
    119985,
    135622,
    134417,
-   133123
-  ]
- },
- {
-  "conf": "u11b-4370-41051",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133595,
-    "team": "CDA Slammers FC Pre Black II",
-    "ours": [
-     9,
-     18
-    ],
-    "ecnl": [
-     8,
-     18
-    ]
-   },
-   {
-    "id": 133123,
-    "team": "SDSC Surf Pre-ECNL B2015/16 Silver II",
-    "ours": [
-     9,
-     21
-    ],
-    "ecnl": [
-     8,
-     18
-    ]
-   },
-   {
-    "id": 134465,
-    "team": "West Coast FC Pre-ECNL B2015/16 White II",
-    "ours": [
-     9,
-     15
-    ],
-    "ecnl": [
-     8,
-     12
-    ]
-   },
-   {
-    "id": 133548,
-    "team": "Beach Futbol Club (CA) Pre-ECNL B2015/16 Black II",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     13
-    ]
-   },
-   {
-    "id": 131040,
-    "team": "Pateadores NB Pre-ECNL B2015/16 Gold II",
-    "ours": [
-     10,
-     15
-    ],
-    "ecnl": [
-     9,
-     12
-    ]
-   },
-   {
-    "id": 133215,
-    "team": "Legends FC (CA) PRE Black II",
-    "ours": [
-     8,
-     7
-    ],
-    "ecnl": [
-     7,
-     7
-    ]
-   },
-   {
-    "id": 119985,
-    "team": "Rebels SC Pre-ECNL B2015/16 Blue II",
-    "ours": [
-     9,
-     7
-    ],
-    "ecnl": [
-     8,
-     7
-    ]
-   },
-   {
-    "id": 135622,
-    "team": "Sporting California USA Pre-ECNL B2015/16 NAVY II",
-    "ours": [
-     9,
-     6
-    ],
-    "ecnl": [
-     8,
-     6
-    ]
-   },
-   {
-    "id": 134417,
-    "team": "Eagles SC Eagles SC Pre-ECNL B2015/16 White II",
-    "ours": [
-     9,
-     0
-    ],
-    "ecnl": [
-     8,
-     0
-    ]
-   }
+   133123,
+   131040
   ]
  },
  {
@@ -1188,125 +619,10 @@
    135287,
    133702,
    132234,
-   133122,
    131520,
    109007,
-   133591
-  ]
- },
- {
-  "conf": "u11b-4370-41053",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135290,
-    "team": "San Diego Surf Pre-ECNL B2015/16 Black II",
-    "ours": [
-     8,
-     24
-    ],
-    "ecnl": [
-     7,
-     21
-    ]
-   },
-   {
-    "id": 103201,
-    "team": "Rebels SC Pre-ECNL B2015/16 White II",
-    "ours": [
-     8,
-     20
-    ],
-    "ecnl": [
-     7,
-     19
-    ]
-   },
-   {
-    "id": 135287,
-    "team": "Empire Surf Pre-ECNL B2015/16 II",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     15
-    ]
-   },
-   {
-    "id": 133702,
-    "team": "LAFC So Cal Pre White II",
-    "ours": [
-     9,
-     19
-    ],
-    "ecnl": [
-     8,
-     16
-    ]
-   },
-   {
-    "id": 132234,
-    "team": "Pateadores IRV Pre-ECNL B2015/16 Blue II",
-    "ours": [
-     8,
-     15
-    ],
-    "ecnl": [
-     7,
-     12
-    ]
-   },
-   {
-    "id": 133591,
-    "team": "CDA Slammers FC Pre White II",
-    "ours": [
-     8,
-     12
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   },
-   {
-    "id": 133122,
-    "team": "SDSC Surf Pre-ECNL B2015/16 Orange II",
-    "ours": [
-     8,
-     7
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   },
-   {
-    "id": 131520,
-    "team": "Legends FC - Del Mar Pre White II",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   },
-   {
-    "id": 109007,
-    "team": "LA Breakers Pre-ECNL B2015/16 Red II",
-    "ours": [
-     7,
-     3
-    ],
-    "ecnl": [
-     6,
-     3
-    ]
-   }
+   133591,
+   133122
   ]
  },
  {
@@ -1370,37 +686,6 @@
   ]
  },
  {
-  "conf": "u11b-4380-41013",
-  "name": "Pre-ECNL Boys Florida",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135942,
-    "team": "FC America Pre-ECNL B2015/16",
-    "ours": [
-     6,
-     13
-    ],
-    "ecnl": [
-     5,
-     10
-    ]
-   },
-   {
-    "id": 114813,
-    "team": "Florida Kraze Krush Pre-ECNL B2015/16 White",
-    "ours": [
-     7,
-     3
-    ],
-    "ecnl": [
-     6,
-     3
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4383-41038",
   "name": "Pre-ECNL Boys Far West",
   "ours": [
@@ -1429,61 +714,6 @@
   ]
  },
  {
-  "conf": "u11b-4383-41038",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133435,
-    "team": "Oregon Premier FC Pre Phantom",
-    "ours": [
-     8,
-     24
-    ],
-    "ecnl": [
-     7,
-     21
-    ]
-   },
-   {
-    "id": 132514,
-    "team": "United PDX Pre-ECNL B2015/16 I Black",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     15
-    ]
-   },
-   {
-    "id": 131915,
-    "team": "Eugene Metro FC Pre-ECNL B2015/16 Prem 1",
-    "ours": [
-     9,
-     9
-    ],
-    "ecnl": [
-     8,
-     9
-    ]
-   },
-   {
-    "id": 133491,
-    "team": "Eastside Timbers Pre I Red",
-    "ours": [
-     9,
-     4
-    ],
-    "ecnl": [
-     8,
-     4
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4383-41044",
   "name": "Pre-ECNL Boys Far West",
   "ours": [
@@ -1509,61 +739,6 @@
    133492,
    133133,
    131916
-  ]
- },
- {
-  "conf": "u11b-4383-41044",
-  "name": "Pre-ECNL Boys Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133437,
-    "team": "Oregon Premier FC Pre Tiempo",
-    "ours": [
-     8,
-     24
-    ],
-    "ecnl": [
-     7,
-     21
-    ]
-   },
-   {
-    "id": 132515,
-    "team": "United PDX Pre-ECNL B2015/16 II Blue",
-    "ours": [
-     8,
-     19
-    ],
-    "ecnl": [
-     7,
-     16
-    ]
-   },
-   {
-    "id": 131916,
-    "team": "Eugene Metro FC Pre-ECNL B2015/16 Prem 2",
-    "ours": [
-     9,
-     9
-    ],
-    "ecnl": [
-     8,
-     9
-    ]
-   },
-   {
-    "id": 133492,
-    "team": "Eastside Timbers Pre II Black",
-    "ours": [
-     9,
-     5
-    ],
-    "ecnl": [
-     8,
-     5
-    ]
-   }
   ]
  },
  {
@@ -1613,68 +788,13 @@
   ],
   "ecnl": [
    135738,
-   131887,
    131414,
+   131887,
    133207,
    130971,
    132778,
    132097,
    135932
-  ]
- },
- {
-  "conf": "u11b-4387-41885",
-  "name": "Pre-ECNL Boys Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135738,
-    "team": "Colorado Storm South Pre-ECNL B2015/16",
-    "ours": [
-     5,
-     12
-    ],
-    "ecnl": [
-     4,
-     12
-    ]
-   },
-   {
-    "id": 131414,
-    "team": "Colorado Storm Pre-ECNL B2015/16 North",
-    "ours": [
-     5,
-     10
-    ],
-    "ecnl": [
-     4,
-     7
-    ]
-   },
-   {
-    "id": 132778,
-    "team": "Real Colorado Pre-ECNL Olympico B2015/16",
-    "ours": [
-     4,
-     2
-    ],
-    "ecnl": [
-     3,
-     1
-    ]
-   },
-   {
-    "id": 132097,
-    "team": "Arsenal Colorado Pre-ECNL B2015/16 Gold",
-    "ours": [
-     5,
-     1
-    ],
-    "ecnl": [
-     4,
-     0
-    ]
-   }
   ]
  },
  {
@@ -10125,195 +9245,20 @@
    95661,
    80066,
    112302,
-   129718,
    56879,
-   112940,
+   129718,
    115220,
-   133297,
-   133296,
-   128358,
    95204,
-   131492,
+   133296,
+   112940,
+   133297,
+   128358,
    93726,
+   131492,
    133249,
    95673,
    59637,
    131202
-  ]
- },
- {
-  "conf": "u16b-4261-41136",
-  "name": "ECNL RL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 95661,
-    "team": "MAFC Guerreros Houston ECNL RL STXCL B2010/11",
-    "ours": [
-     12,
-     29
-    ],
-    "ecnl": [
-     11,
-     26
-    ]
-   },
-   {
-    "id": 80066,
-    "team": "AHFC CENTRAL ECNL RL STXCL B2010/11",
-    "ours": [
-     12,
-     27
-    ],
-    "ecnl": [
-     11,
-     26
-    ]
-   },
-   {
-    "id": 131202,
-    "team": "FC Westlake ECNL RL STXCL B2010/11",
-    "ours": [
-     11,
-     25
-    ],
-    "ecnl": [
-     10,
-     22
-    ]
-   },
-   {
-    "id": 112302,
-    "team": "TC Premier SC ECNL RL STXCL B2010/11",
-    "ours": [
-     12,
-     26
-    ],
-    "ecnl": [
-     11,
-     23
-    ]
-   },
-   {
-    "id": 129718,
-    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2010/11",
-    "ours": [
-     11,
-     20
-    ],
-    "ecnl": [
-     10,
-     20
-    ]
-   },
-   {
-    "id": 56879,
-    "team": "AHFC NW ECNL RL STXCL B2010/11",
-    "ours": [
-     11,
-     21
-    ],
-    "ecnl": [
-     10,
-     18
-    ]
-   },
-   {
-    "id": 112940,
-    "team": "Lions FC ECNL RL STXCL B2010/11 Red",
-    "ours": [
-     11,
-     16
-    ],
-    "ecnl": [
-     10,
-     16
-    ]
-   },
-   {
-    "id": 133297,
-    "team": "Lonestar ATX STH ECNL RL STXCL B2010/11 Gold",
-    "ours": [
-     10,
-     14
-    ],
-    "ecnl": [
-     9,
-     14
-    ]
-   },
-   {
-    "id": 133296,
-    "team": "Lonestar ATX NTH ECNL RL STXCL B2010/11 Gold A",
-    "ours": [
-     10,
-     15
-    ],
-    "ecnl": [
-     9,
-     14
-    ]
-   },
-   {
-    "id": 128358,
-    "team": "SG1 ECNL RL STXCL B2010/11",
-    "ours": [
-     10,
-     13
-    ],
-    "ecnl": [
-     9,
-     13
-    ]
-   },
-   {
-    "id": 95204,
-    "team": "SAFC ECNL RL STXCL B2010/11",
-    "ours": [
-     11,
-     17
-    ],
-    "ecnl": [
-     10,
-     14
-    ]
-   },
-   {
-    "id": 131492,
-    "team": "RISE SC ECNL RL STXCL B2010/11",
-    "ours": [
-     13,
-     10
-    ],
-    "ecnl": [
-     12,
-     10
-    ]
-   },
-   {
-    "id": 93726,
-    "team": "JSAFC ECNL RL STXCL B2010/11",
-    "ours": [
-     10,
-     8
-    ],
-    "ecnl": [
-     9,
-     5
-    ]
-   },
-   {
-    "id": 59637,
-    "team": "Imperial SC ECNL RL STXCL B2010/11",
-    "ours": [
-     12,
-     1
-    ],
-    "ecnl": [
-     11,
-     1
-    ]
-   }
   ]
  },
  {
@@ -10437,85 +9382,6 @@
   ]
  },
  {
-  "conf": "u16b-4276-40470",
-  "name": "ECNL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134783,
-    "team": "Tennessee SC",
-    "ours": [
-     18,
-     48
-    ],
-    "ecnl": [
-     17,
-     45
-    ]
-   },
-   {
-    "id": 131561,
-    "team": "Louisiana Fire SC",
-    "ours": [
-     14,
-     35
-    ],
-    "ecnl": [
-     13,
-     32
-    ]
-   },
-   {
-    "id": 81751,
-    "team": "Alabama FC",
-    "ours": [
-     18,
-     41
-    ],
-    "ecnl": [
-     17,
-     41
-    ]
-   },
-   {
-    "id": 133196,
-    "team": "Lobos Rush",
-    "ours": [
-     18,
-     18
-    ],
-    "ecnl": [
-     16,
-     17
-    ]
-   },
-   {
-    "id": 132269,
-    "team": "Tennessee United SC",
-    "ours": [
-     18,
-     18
-    ],
-    "ecnl": [
-     16,
-     14
-    ]
-   },
-   {
-    "id": 83074,
-    "team": "Germantown Legends",
-    "ours": [
-     18,
-     6
-    ],
-    "ecnl": [
-     17,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4277-40464",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
@@ -10543,41 +9409,10 @@
    134196,
    81267,
    131423,
-   62866,
    81824,
+   62866,
    135513,
    131389
-  ]
- },
- {
-  "conf": "u16b-4277-40464",
-  "name": "ECNL Boys Mid-Atlantic",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131423,
-    "team": "Charlotte SA",
-    "ours": [
-     4,
-     4
-    ],
-    "ecnl": [
-     3,
-     3
-    ]
-   },
-   {
-    "id": 81824,
-    "team": "Highland FC",
-    "ours": [
-     3,
-     2
-    ],
-    "ecnl": [
-     2,
-     1
-    ]
-   }
   ]
  },
  {
@@ -10835,61 +9670,6 @@
   ]
  },
  {
-  "conf": "u16b-4286-40536",
-  "name": "ECNL Boys Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 79892,
-    "team": "Atlanta Fire United",
-    "ours": [
-     15,
-     33
-    ],
-    "ecnl": [
-     14,
-     30
-    ]
-   },
-   {
-    "id": 69002,
-    "team": "CESA Triumph",
-    "ours": [
-     13,
-     23
-    ],
-    "ecnl": [
-     12,
-     23
-    ]
-   },
-   {
-    "id": 82200,
-    "team": "South Carolina United",
-    "ours": [
-     15,
-     16
-    ],
-    "ecnl": [
-     14,
-     16
-    ]
-   },
-   {
-    "id": 134164,
-    "team": "NTH NASA",
-    "ours": [
-     15,
-     17
-    ],
-    "ecnl": [
-     14,
-     14
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4287-41625",
   "name": "ECNL Boys Southwest",
   "ours": [
@@ -11013,45 +9793,14 @@
   ],
   "ecnl": [
    130403,
+   83053,
    130579,
+   133889,
    130475,
    81006,
    96296,
-   83053,
    82928,
-   136432,
-   133889
-  ]
- },
- {
-  "conf": "u16b-4324-41509",
-  "name": "ECNL RL Boys GLA",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 130579,
-    "team": "Canton Force",
-    "ours": [
-     1,
-     0
-    ],
-    "ecnl": [
-     0,
-     0
-    ]
-   },
-   {
-    "id": 83053,
-    "team": "Nationals SC Capital Area Grey",
-    "ours": [
-     1,
-     3
-    ],
-    "ecnl": [
-     0,
-     0
-    ]
-   }
+   136432
   ]
  },
  {
@@ -11479,37 +10228,6 @@
   ]
  },
  {
-  "conf": "u16b-4347-40632",
-  "name": "ECNL RL Boys Frontier",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134712,
-    "team": "Arkansas Comets FC",
-    "ours": [
-     16,
-     23
-    ],
-    "ecnl": [
-     15,
-     20
-    ]
-   },
-   {
-    "id": 62776,
-    "team": "Oklahoma Cosmos",
-    "ours": [
-     13,
-     4
-    ],
-    "ecnl": [
-     12,
-     4
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4348-41603",
   "name": "ECNL RL Boys Golden State",
   "ours": [
@@ -11575,89 +10293,6 @@
    132557,
    130876,
    131952
-  ]
- },
- {
-  "conf": "u16b-4350-40662",
-  "name": "ECNL RL Boys Mid-America",
-  "ours": [
-   134792,
-   112533,
-   81752,
-   133338,
-   133762,
-   94941,
-   134012,
-   134647,
-   133895,
-   134108
-  ],
-  "ecnl": [
-   134792,
-   112533,
-   81752,
-   133762,
-   133338,
-   94941,
-   134012,
-   133895,
-   134647,
-   134108
-  ]
- },
- {
-  "conf": "u16b-4350-40662",
-  "name": "ECNL RL Boys Mid-America",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134792,
-    "team": "Tennessee SC",
-    "ours": [
-     17,
-     45
-    ],
-    "ecnl": [
-     16,
-     42
-    ]
-   },
-   {
-    "id": 133338,
-    "team": "Lobos Rush",
-    "ours": [
-     15,
-     21
-    ],
-    "ecnl": [
-     14,
-     18
-    ]
-   },
-   {
-    "id": 94941,
-    "team": "Germantown Legends",
-    "ours": [
-     15,
-     15
-    ],
-    "ecnl": [
-     14,
-     15
-    ]
-   },
-   {
-    "id": 133895,
-    "team": "Tennessee SC Murfreesboro",
-    "ours": [
-     18,
-     12
-    ],
-    "ecnl": [
-     17,
-     12
-    ]
-   }
   ]
  },
  {
@@ -11847,37 +10482,6 @@
   ]
  },
  {
-  "conf": "u16b-4354-41631",
-  "name": "ECNL RL Boys Southern Cal",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 82209,
-    "team": "LA Breakers Red",
-    "ours": [
-     7,
-     21
-    ],
-    "ecnl": [
-     6,
-     18
-    ]
-   },
-   {
-    "id": 134586,
-    "team": "Rebels SC ECNL RL SoCal B2010/11 White",
-    "ours": [
-     8,
-     9
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   }
-  ]
- },
- {
   "conf": "u16b-4355-40722",
   "name": "ECNL RL Boys Southeast",
   "ours": [
@@ -11895,119 +10499,16 @@
   ],
   "ecnl": [
    69008,
-   134180,
    131457,
+   134180,
    68840,
    131904,
    131808,
-   81339,
    79895,
+   81339,
    81343,
    129035,
    82201
-  ]
- },
- {
-  "conf": "u16b-4355-40722",
-  "name": "ECNL RL Boys Southeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 134180,
-    "team": "NTH NASA",
-    "ours": [
-     18,
-     37
-    ],
-    "ecnl": [
-     17,
-     37
-    ]
-   },
-   {
-    "id": 68840,
-    "team": "United Futbol Academy",
-    "ours": [
-     18,
-     35
-    ],
-    "ecnl": [
-     17,
-     32
-    ]
-   },
-   {
-    "id": 131904,
-    "team": "Charlotte SA Gold",
-    "ours": [
-     18,
-     32
-    ],
-    "ecnl": [
-     17,
-     29
-    ]
-   },
-   {
-    "id": 81343,
-    "team": "Concorde Fire Premier",
-    "ours": [
-     16,
-     25
-    ],
-    "ecnl": [
-     15,
-     22
-    ]
-   },
-   {
-    "id": 131808,
-    "team": "GSA",
-    "ours": [
-     18,
-     21
-    ],
-    "ecnl": [
-     17,
-     21
-    ]
-   },
-   {
-    "id": 81339,
-    "team": "Concorde Fire Platinum",
-    "ours": [
-     16,
-     10
-    ],
-    "ecnl": [
-     15,
-     10
-    ]
-   },
-   {
-    "id": 79895,
-    "team": "Atlanta Fire United",
-    "ours": [
-     18,
-     13
-    ],
-    "ecnl": [
-     17,
-     10
-    ]
-   },
-   {
-    "id": 82201,
-    "team": "South Carolina United",
-    "ours": [
-     19,
-     7
-    ],
-    "ecnl": [
-     18,
-     7
-    ]
-   }
   ]
  },
  {
@@ -12130,98 +10631,19 @@
    91204,
    94966,
    132190,
+   133118,
    131036,
    132976,
    130994,
-   133118,
+   132484,
    133566,
    80520,
    133753,
-   132484,
    135600,
    133567,
    132491,
    132978,
    134439
-  ]
- },
- {
-  "conf": "u16b-4358-40734",
-  "name": "ECNL RL Boys Southwest",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135601,
-    "team": "Sporting California USA RED",
-    "ours": [
-     9,
-     22
-    ],
-    "ecnl": [
-     8,
-     19
-    ]
-   },
-   {
-    "id": 133118,
-    "team": "SDSC Surf Blue",
-    "ours": [
-     8,
-     12
-    ],
-    "ecnl": [
-     7,
-     9
-    ]
-   },
-   {
-    "id": 133753,
-    "team": "SDSC Surf Gold",
-    "ours": [
-     7,
-     6
-    ],
-    "ecnl": [
-     6,
-     6
-    ]
-   },
-   {
-    "id": 132484,
-    "team": "San Diego Surf ECNL RL White B2010/11",
-    "ours": [
-     7,
-     9
-    ],
-    "ecnl": [
-     6,
-     6
-    ]
-   },
-   {
-    "id": 132978,
-    "team": "Legends FC (CA) Black",
-    "ours": [
-     8,
-     4
-    ],
-    "ecnl": [
-     7,
-     4
-    ]
-   },
-   {
-    "id": 135600,
-    "team": "Sporting California USA NAVY",
-    "ours": [
-     8,
-     3
-    ],
-    "ecnl": [
-     7,
-     3
-    ]
-   }
   ]
  },
  {
@@ -16549,37 +14971,6 @@
   ]
  },
  {
-  "conf": "u11g-4374-41527",
-  "name": "Pre-ECNL Girls Lake Michigan",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133721,
-    "team": "NWI Lions United Pre-ECNL G2015/16",
-    "ours": [
-     12,
-     24
-    ],
-    "ecnl": [
-     11,
-     21
-    ]
-   },
-   {
-    "id": 133421,
-    "team": "FC 1974 Libertyville Pre-ECNL G2015/16",
-    "ours": [
-     11,
-     17
-    ],
-    "ecnl": [
-     10,
-     17
-    ]
-   }
-  ]
- },
- {
   "conf": "u11g-4375-41060",
   "name": "Pre-ECNL Girls North Atlantic",
   "ours": [
@@ -16634,68 +15025,6 @@
   ]
  },
  {
-  "conf": "u11g-4379-42036",
-  "name": "Pre-ECNL Girls Northeast",
-  "ours": [
-   135030,
-   133159,
-   134073,
-   134274,
-   133053,
-   133344,
-   132365,
-   128384
-  ],
-  "ecnl": [
-   135030,
-   134073,
-   133159,
-   134274,
-   133053,
-   133344,
-   132365,
-   128384
-  ]
- },
- {
-  "conf": "u11g-4379-42036",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133159,
-    "team": "Keystone Athletic Pre-ECNL G2015/16",
-    "ours": [
-     10,
-     20
-    ],
-    "ecnl": [
-     9,
-     17
-    ]
-   }
-  ]
- },
- {
-  "conf": "u11g-4379-42034",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 136931,
-    "team": "Cherry Hill FC Pre-ECNL G2015/16",
-    "ours": [
-     10,
-     10
-    ],
-    "ecnl": [
-     9,
-     10
-    ]
-   }
-  ]
- },
- {
   "conf": "u11g-4379-42032",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
@@ -16741,37 +15070,6 @@
    136466,
    134030,
    132382
-  ]
- },
- {
-  "conf": "u11g-4379-42030",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132382,
-    "team": "SUSA FC Pre-ECNL G2015/16 Northeast",
-    "ours": [
-     2,
-     6
-    ],
-    "ecnl": [
-     1,
-     3
-    ]
-   },
-   {
-    "id": 133859,
-    "team": "Long Island Slammers Pre-ECNL G2015/16",
-    "ours": [
-     5,
-     3
-    ],
-    "ecnl": [
-     4,
-     3
-    ]
-   }
   ]
  },
  {
@@ -16836,122 +15134,12 @@
   ],
   "ecnl": [
    133633,
-   133432,
    131918,
+   133432,
    132517,
    133130,
    130069,
    133493
-  ]
- },
- {
-  "conf": "u11g-4382-41883",
-  "name": "Pre-ECNL Girls Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133633,
-    "team": "Capital FC Pre-ECNL G15/16 I",
-    "ours": [
-     9,
-     25
-    ],
-    "ecnl": [
-     8,
-     22
-    ]
-   },
-   {
-    "id": 133432,
-    "team": "Oregon Premier FC Pre-ECNL G2015/16",
-    "ours": [
-     8,
-     13
-    ],
-    "ecnl": [
-     7,
-     13
-    ]
-   },
-   {
-    "id": 132517,
-    "team": "United PDX Pre-ECNL G2015/16",
-    "ours": [
-     9,
-     12
-    ],
-    "ecnl": [
-     8,
-     9
-    ]
-   },
-   {
-    "id": 133130,
-    "team": "Portland City United SC PRE-ECNL G2015/16",
-    "ours": [
-     8,
-     7
-    ],
-    "ecnl": [
-     7,
-     7
-    ]
-   }
-  ]
- },
- {
-  "conf": "u11g-4386-41042",
-  "name": "Pre-ECNL Girls Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132764,
-    "team": "Real Colorado Pre-ECNL Athletico G2015/16",
-    "ours": [
-     4,
-     12
-    ],
-    "ecnl": [
-     3,
-     9
-    ]
-   },
-   {
-    "id": 130987,
-    "team": "Pride SC Pre-ECNL G2015/16 Predators",
-    "ours": [
-     5,
-     6
-    ],
-    "ecnl": [
-     4,
-     3
-    ]
-   },
-   {
-    "id": 132691,
-    "team": "Colorado EDGE Pre-ECNL G2015/2016 Select",
-    "ours": [
-     4,
-     0
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   },
-   {
-    "id": 132110,
-    "team": "Arsenal Colorado Pre-ECNL G2015/16 Academy",
-    "ours": [
-     4,
-     0
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   }
   ]
  },
  {
@@ -16974,39 +15162,8 @@
    135740,
    130989,
    137572,
-   132765,
-   132692
-  ]
- },
- {
-  "conf": "u11g-4386-41064",
-  "name": "Pre-ECNL Girls Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132111,
-    "team": "Arsenal Colorado Pre-ECNL G2015/16 Gold",
-    "ours": [
-     4,
-     10
-    ],
-    "ecnl": [
-     3,
-     7
-    ]
-   },
-   {
-    "id": 132765,
-    "team": "Real Colorado Pre-ECNL Olympico G2015/16",
-    "ours": [
-     5,
-     4
-    ],
-    "ecnl": [
-     4,
-     4
-    ]
-   }
+   132692,
+   132765
   ]
  },
  {
@@ -17405,43 +15562,12 @@
    134339,
    136044,
    134340,
-   112581,
    132310,
+   112581,
    128193,
    129240,
    114883,
    83783
-  ]
- },
- {
-  "conf": "u12g-4374-41528",
-  "name": "Pre-ECNL Girls Lake Michigan",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133722,
-    "team": "NWI Lions United Pre-ECNL G2014/15",
-    "ours": [
-     12,
-     31
-    ],
-    "ecnl": [
-     11,
-     28
-    ]
-   },
-   {
-    "id": 112581,
-    "team": "FC 1974 Libertyville Pre-ECNL G2014/15",
-    "ours": [
-     11,
-     11
-    ],
-    "ecnl": [
-     10,
-     11
-    ]
-   }
   ]
  },
  {
@@ -17577,44 +15703,6 @@
   ]
  },
  {
-  "conf": "u12g-4379-42037",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133160,
-    "team": "Keystone Athletic Pre-ECNL G2014/15",
-    "ours": [
-     10,
-     20
-    ],
-    "ecnl": [
-     9,
-     17
-    ]
-   }
-  ]
- },
- {
-  "conf": "u12g-4379-42035",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 137266,
-    "team": "Cherry Hill FC Pre-ECNL G2014/15",
-    "ours": [
-     10,
-     6
-    ],
-    "ecnl": [
-     9,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u12g-4379-42033",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
@@ -17662,37 +15750,6 @@
    136452,
    133857,
    132373
-  ]
- },
- {
-  "conf": "u12g-4379-42031",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132373,
-    "team": "SUSA FC Pre-ECNL G2014/15 Northeast",
-    "ours": [
-     3,
-     7
-    ],
-    "ecnl": [
-     2,
-     4
-    ]
-   },
-   {
-    "id": 133857,
-    "team": "Long Island Slammers Pre-ECNL G2014/15",
-    "ours": [
-     5,
-     1
-    ],
-    "ecnl": [
-     4,
-     1
-    ]
-   }
   ]
  },
  {
@@ -17744,85 +15801,6 @@
   ]
  },
  {
-  "conf": "u12g-4382-41882",
-  "name": "Pre-ECNL Girls Far West",
-  "ours": [
-   132950,
-   130062,
-   133431,
-   131917,
-   133129,
-   133497,
-   131484,
-   132516
-  ],
-  "ecnl": [
-   132950,
-   130062,
-   133431,
-   131917,
-   133497,
-   131484,
-   133129,
-   132516
-  ]
- },
- {
-  "conf": "u12g-4382-41882",
-  "name": "Pre-ECNL Girls Far West",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132950,
-    "team": "Capital FC Pre-ECNL G14/15 I",
-    "ours": [
-     10,
-     25
-    ],
-    "ecnl": [
-     9,
-     24
-    ]
-   },
-   {
-    "id": 133431,
-    "team": "Oregon Premier FC Pre-ECNL G2014/15",
-    "ours": [
-     10,
-     20
-    ],
-    "ecnl": [
-     9,
-     19
-    ]
-   },
-   {
-    "id": 133129,
-    "team": "Portland City United SC PRE-ECNL G2014/15",
-    "ours": [
-     10,
-     10
-    ],
-    "ecnl": [
-     9,
-     7
-    ]
-   },
-   {
-    "id": 132516,
-    "team": "United PDX Pre-ECNL G2014/15",
-    "ours": [
-     10,
-     1
-    ],
-    "ecnl": [
-     9,
-     1
-    ]
-   }
-  ]
- },
- {
   "conf": "u12g-4384-41166",
   "name": "Pre-ECNL Girls Northwest",
   "ours": [
@@ -17853,56 +15831,23 @@
  {
   "conf": "u12g-4386-41041",
   "name": "Pre-ECNL Girls Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 132770,
-    "team": "Real Colorado Pre-ECNL Athletico G2014/15",
-    "ours": [
-     4,
-     9
-    ],
-    "ecnl": [
-     3,
-     6
-    ]
-   },
-   {
-    "id": 132693,
-    "team": "Colorado EDGE Pre-ECNL G2014/2015 Select",
-    "ours": [
-     4,
-     3
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   },
-   {
-    "id": 132112,
-    "team": "Arsenal Colorado Pre-ECNL G2014/15 Academy",
-    "ours": [
-     4,
-     0
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   },
-   {
-    "id": 130984,
-    "team": "Pride SC Pre-ECNL G2014/15 Predators",
-    "ours": [
-     5,
-     0
-    ],
-    "ecnl": [
-     4,
-     0
-    ]
-   }
+  "ours": [
+   132767,
+   97272,
+   137558,
+   132770,
+   132693,
+   132112,
+   130984
+  ],
+  "ecnl": [
+   132767,
+   97272,
+   137558,
+   132693,
+   132112,
+   130984,
+   132770
   ]
  },
  {
@@ -17927,61 +15872,6 @@
    132694,
    132113,
    135683
-  ]
- },
- {
-  "conf": "u12g-4386-41063",
-  "name": "Pre-ECNL Girls Colorado",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 135648,
-    "team": "Real Colorado Pre-ECNL Olympico G2014/15",
-    "ours": [
-     5,
-     11
-    ],
-    "ecnl": [
-     4,
-     8
-    ]
-   },
-   {
-    "id": 130988,
-    "team": "Pride SC Pre-ECNL G2014/15 Copa",
-    "ours": [
-     4,
-     3
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   },
-   {
-    "id": 132694,
-    "team": "Colorado EDGE Pre-ECNL G2014/2015 United",
-    "ours": [
-     5,
-     0
-    ],
-    "ecnl": [
-     4,
-     0
-    ]
-   },
-   {
-    "id": 132113,
-    "team": "Arsenal Colorado Pre-ECNL G2014/15 Gold",
-    "ours": [
-     4,
-     0
-    ],
-    "ecnl": [
-     3,
-     0
-    ]
-   }
   ]
  },
  {
