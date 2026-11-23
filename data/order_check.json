@@ -4693,6 +4693,37 @@
   ]
  },
  {
+  "conf": "u14b-4342-40684",
+  "name": "ECNL RL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 135480,
+    "team": "Penn Fusion Soccer Academy",
+    "ours": [
+     10,
+     22
+    ],
+    "ecnl": [
+     9,
+     19
+    ]
+   },
+   {
+    "id": 131790,
+    "team": "PDA",
+    "ours": [
+     11,
+     9
+    ],
+    "ecnl": [
+     10,
+     9
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4343-41490",
   "name": "ECNL RL Boys Mountain",
   "ours": [
