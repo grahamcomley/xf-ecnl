@@ -425473,7 +425473,9 @@
    "s": [
     3,
     1
-   ]
+   ],
+   "result": "H",
+   "score": "9-0"
   },
   "5766390": {
    "date": "2026-11-22",
@@ -433203,7 +433205,9 @@
    "s": [
     2,
     1
-   ]
+   ],
+   "result": "A",
+   "score": "0-1"
   },
   "5884668": {
    "date": "2027-01-30",
@@ -457606,7 +457610,9 @@
    "s": [
     1,
     2
-   ]
+   ],
+   "result": "A",
+   "score": "0-3"
   },
   "5744431": {
    "date": "2027-01-16",
@@ -468337,7 +468343,9 @@
    "s": [
     2,
     1
-   ]
+   ],
+   "result": "A",
+   "score": "2-7"
   },
   "5773033": {
    "date": "2027-02-20",
@@ -544697,6 +544705,231 @@
     2,
     3
    ]
+  },
+  "6151915": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151972": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152139": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151953": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152008": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152101": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151897": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151990": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152064": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151872": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152027": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152120": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151933": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152083": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152046": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.433,
+    0.198,
+    0.369
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "a13b-487-487": {
@@ -569854,6 +570087,231 @@
     3,
     1
    ]
+  },
+  "6151918": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151975": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152142": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151956": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152011": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152104": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151900": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151993": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152068": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151877": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152030": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152123": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151937": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152086": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152049": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.421,
+    0.205,
+    0.374
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "a14b-488-488": {
@@ -585516,6 +585974,231 @@
    "s": [
     1,
     2
+   ]
+  },
+  "6151921": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151978": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152145": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151959": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152015": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152107": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151903": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151996": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152071": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151880": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152033": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152126": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151940": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152089": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152052": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.426,
+    0.213,
+    0.361
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
    ]
   }
  },
@@ -606515,6 +607198,231 @@
     2,
     1
    ]
+  },
+  "6151924": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151981": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152148": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151962": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152018": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152110": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151906": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151999": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152074": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151887": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152036": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152129": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151943": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152092": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152055": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.424,
+    0.219,
+    0.357
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "a16b-586-586": {
@@ -627336,6 +628244,231 @@
     0.447,
     0.212,
     0.341
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151927": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151984": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152151": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151965": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152021": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152113": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151909": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152002": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152077": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151890": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152039": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152133": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151947": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152095": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.439,
+    0.209,
+    0.353
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152058": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.439,
+    0.209,
+    0.353
    ],
    "pick": "H",
    "s": [
@@ -648207,6 +649340,231 @@
     1,
     2
    ]
+  },
+  "6151930": {
+   "date": "2027-02-27",
+   "home": "Hillsboro Rush",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151987": {
+   "date": "2027-02-27",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152154": {
+   "date": "2027-02-27",
+   "home": "Soccer Chance Academy",
+   "away": "Saints Academy",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151969": {
+   "date": "2027-03-06",
+   "home": "Oregon Surf SC",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152024": {
+   "date": "2027-03-06",
+   "home": "Saints Academy",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152117": {
+   "date": "2027-03-06",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151912": {
+   "date": "2027-03-13",
+   "home": "Hillsboro Rush",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152005": {
+   "date": "2027-03-13",
+   "home": "Saints Academy",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152080": {
+   "date": "2027-03-13",
+   "home": "Westside Metros FC South",
+   "away": "Westside Metros FC",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151893": {
+   "date": "2027-03-14",
+   "home": "Hillsboro Rush",
+   "away": "Oregon Surf SC",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152043": {
+   "date": "2027-03-14",
+   "home": "Westside Metros FC",
+   "away": "Saints Academy",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152136": {
+   "date": "2027-03-14",
+   "home": "Soccer Chance Academy",
+   "away": "Westside Metros FC South",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6151950": {
+   "date": "2027-04-03",
+   "home": "Oregon Surf SC",
+   "away": "Soccer Chance Academy",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152098": {
+   "date": "2027-04-03",
+   "home": "Westside Metros FC South",
+   "away": "Saints Academy",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
+  },
+  "6152061": {
+   "date": "2027-04-04",
+   "home": "Westside Metros FC",
+   "away": "Hillsboro Rush",
+   "p": [
+    0.438,
+    0.209,
+    0.352
+   ],
+   "pick": "H",
+   "s": [
+    2,
+    1
+   ]
   }
  },
  "a19b-546-546": {
@@ -648308,7 +649666,9 @@
    "s": [
     3,
     1
-   ]
+   ],
+   "result": "H",
+   "score": "6-1"
   },
   "5848593": {
    "date": "2026-11-22",
