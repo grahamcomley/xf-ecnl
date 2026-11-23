@@ -30913,9 +30913,9 @@
   "ours": [
    133583,
    135897,
+   68846,
    133023,
    133717,
-   68846,
    132220,
    92231,
    132166,
@@ -30954,6 +30954,30 @@
   "name": "ECNL RL Girls Southwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 133023,
+    "team": "Legends FC (CA)",
+    "ours": [
+     9,
+     19
+    ],
+    "ecnl": [
+     8,
+     19
+    ]
+   },
+   {
+    "id": 68846,
+    "team": "LA Breakers ECNL RL 2009/2010",
+    "ours": [
+     7,
+     15
+    ],
+    "ecnl": [
+     6,
+     12
+    ]
+   },
    {
     "id": 92231,
     "team": "Rebels SC",
