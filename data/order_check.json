@@ -27747,8 +27747,8 @@
    134110,
    81126,
    133718,
-   79329,
    82186,
+   79329,
    135893,
    134393,
    131716,
@@ -27779,6 +27779,18 @@
   "name": "ECNL RL Girls Southwest",
   "kind": "points",
   "teams": [
+   {
+    "id": 132167,
+    "team": "Beach Futbol Club (CA) Gold",
+    "ours": [
+     7,
+     21
+    ],
+    "ecnl": [
+     6,
+     18
+    ]
+   },
    {
     "id": 77351,
     "team": "Utah Royals FC-AZ RL G2010/11",
@@ -27825,6 +27837,18 @@
     "ecnl": [
      6,
      4
+    ]
+   },
+   {
+    "id": 79329,
+    "team": "Rebels SC",
+    "ours": [
+     9,
+     5
+    ],
+    "ecnl": [
+     8,
+     5
     ]
    },
    {
