@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.81">
+<meta name="app-version" content="v1.82">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -1944,10 +1944,10 @@ function wxFor(g) {
   if (left > 10 * 864e5) return null;
   if (left <= 48 * 36e5 && g.time && g.time !== "00:00") {
     const h = W.h && W.h[`${g.date}T${g.time.slice(0, 2)}`];
-    if (h && age <= 2 * 36e5) return {kind: "h", t: h[0], feels: h[1], pct: h[2], mph: h[3], dir: h[4], c: h[5], at: W.at, tz: W.tz};
+    if (h && age <= 2 * 36e5) return {kind: "h", t: h[0], feels: h[1], pct: h[2], mph: h[3], dir: h[4], c: h[5], at: W.at, tz: W.tz, x: !!g.zipx};
   }
   const d = W.d && W.d[g.date];
-  if (d && age <= 12 * 36e5) return {kind: "d", hi: d[0], lo: d[1], pct: d[2], c: d[3], at: W.at, tz: W.tz};
+  if (d && age <= 12 * 36e5) return {kind: "d", hi: d[0], lo: d[1], pct: d[2], c: d[3], at: W.at, tz: W.tz, x: !!g.zipx};
   return null;
 }
 function wxShort(w) {
@@ -1955,13 +1955,14 @@ function wxShort(w) {
   return `<span class="wxs">${wxIc(wet && !/rain|storm|snow/.test(wxKind(w.c)[0]) ? "Rain" : w.c)}${t}°${wet ? ` · ${w.pct}% rain` : ""}</span>`;
 }
 const COMPASS = d => ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(((d || 0) % 360) / 45) % 8];
-function wxBlock(w) {
+function wxBlock(w, firstOfTwo) {
   const [, label] = wxKind(w.c), upd = `Updated ${new Date(w.at).toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit", timeZone: PHONE_TZ || undefined})} ${zAbbr(PHONE_TZ || undefined, w.at)}`;
   const A = WX_ATTR || {}, mark = A.dark ? `<img class="wxmark" src="${esc(A.dark)}"${A.dark2 ? ` srcset="${esc(A.dark)} 1x, ${esc(A.dark2)} 2x"` : ""} alt="Apple Weather">` : `<span class="wxmark-t">Apple Weather</span>`;
   const body = w.kind === "h"
-    ? `<div class="wxh">At kickoff</div><div class="wxr">${wxIc(w.c)}<div><div class="wxm">${w.t}° · ${label}</div><div>Feels ${w.feels}° · Rain ${w.pct}% · Wind ${w.mph} mph ${COMPASS(w.dir)}</div></div></div><div class="wxu">${upd} · refreshed hourly</div>`
+    ? `<div class="wxh">At kickoff${firstOfTwo ? " · first possible time" : ""}</div><div class="wxr">${wxIc(w.c)}<div><div class="wxm">${w.t}° · ${label}</div><div>Feels ${w.feels}° · Rain ${w.pct}% · Wind ${w.mph} mph ${COMPASS(w.dir)}</div></div></div><div class="wxu">${upd} · refreshed hourly</div>`
     : `<div class="wxh">Game day forecast</div><div class="wxr">${wxIc(w.c)}<div><div class="wxm">High ${w.hi}° · Low ${w.lo}° · ${label}</div><div>Rain ${w.pct}% · kickoff-hour forecast starts 2 days before</div></div></div><div class="wxu">${upd} · refreshed every 6 hours</div>`;
-  return `<div class="wxb">${body}<div class="wxa">${mark}<a href="${esc(A.legal || "https://developer.apple.com/weatherkit/data-source-attribution/")}" target="_blank" rel="noopener">Data sources</a></div></div>`;
+  const note = w.x ? `<div class="wxu">Field not posted yet: forecast for the tournament's main complex.</div>` : "";
+  return `<div class="wxb">${body}${note}<div class="wxa">${mark}<a href="${esc(A.legal || "https://developer.apple.com/weatherkit/data-source-attribution/")}" target="_blank" rel="noopener">Data sources</a></div></div>`;
 }
 // Field ZIPs of loaded games in the next 10 days; fetch their forecasts (every 20 min at most), then redraw once
 // if new weather arrived for games on screen.
@@ -2837,6 +2838,7 @@ function evOurs(ev, fid) {
   });
   return {known, days};
 }
+const evFirst = day => day.items.map(x => x.g).filter(g => g.time && g.time !== "00:00").sort((a, b) => a.time.localeCompare(b.time))[0] || (day.items[0] || {}).g || {};   // earliest possible game of a slot
 function evTbdRow(ev, day, fid, card) {
   if (!card) {   // Games: one short line; the paths live in the event card (tap opens it)
     const m0 = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
@@ -2850,7 +2852,7 @@ function evTbdRow(ev, day, fid, card) {
     const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
     return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
-      <div class="gsub">${[[...new Set(day.items.map(x => myZ(x.g)))].join(" / "), why, one && one.g.venue ? evField(ev, one.g.venue) : ""].filter(Boolean).join(" · ")}</div></div>`;
+      <div class="gsub">${[[...new Set(day.items.map(x => myZ(x.g)))].join(" / "), why, one && one.g.venue ? evField(ev, one.g.venue) : "", (() => { const w = wxFor(evFirst(day)); return w ? wxShort(w) : ""; })()].filter(Boolean).join(" · ")}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
   const labels = [...new Set(day.items.map(x => m.label.get(x.g.id) || ""))];
@@ -2863,7 +2865,7 @@ function evTbdRow(ev, day, fid, card) {
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
   const tline = [...new Set(day.items.map(x => myZ(x.g)))].join(" / ");
-  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths"><div>${tline}</div>${lines.join("<br>")}</div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths"><div>${tline}</div>${lines.join("<br>")}${(() => { const w = wxFor(evFirst(day)); return w ? wxBlock(w, times.length > 1) : ""; })()}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {

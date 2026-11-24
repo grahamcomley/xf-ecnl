@@ -8,6 +8,7 @@ import math
 import os
 import re
 import sys
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -770,6 +771,22 @@ def main():
         for g in games:
             if g["conf"] == "event" and g["source"] == "current" and g.get("flight_id"):
                 ev_groups.setdefault((g["event_id"], g["flight_id"]), []).append(g)
+        # Weather for bracket slots with no field yet (Graham, Nov 24): borrow the ZIP most of the tournament's
+        # games use (one complex; the exact field doesn't change the forecast). Marked "zipx" so the page can say so.
+        ev_zip = {}
+        for g in games:
+            if g["conf"] == "event" and g.get("zip"):
+                ev_zip.setdefault(g["event_id"], Counter())[g["zip"]] += 1
+        ev_zip = {e: c.most_common(1)[0][0] for e, c in ev_zip.items()}
+
+        def ev_games(gs):
+            out = []
+            for g in gs:
+                o = {k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k not in ("tz", "zip")}
+                if not o.get("zip") and ev_zip.get(g.get("event_id")):
+                    o["zip"], o["zipx"] = ev_zip[g["event_id"]], 1
+                out.append(o)
+            return out
         soon = (datetime.now(timezone.utc).date() + timedelta(days=90)).isoformat()   # events up to 90 days ahead
         _t = datetime.now(timezone.utc).date()   # and back to the start of the season (Aug 1), so past events stay in Season results
         recent = f"{_t.year if _t.month >= 8 else _t.year - 1}-08-01"
@@ -783,7 +800,7 @@ def main():
                      "flight": gs[0].get("flight_name"),
                      "bracket": any(g["type"] == "Bracket" or re.search(r"winner|loser", (g["home"] or ""), re.I) for g in gs),
                      "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
-                     "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k not in ("tz", "zip")} for g in gs],
+                     "games": ev_games(gs),
                      "teams": [team_obj(t, with_record=True) for t in tids]}
             for t in tids:
                 events_by_team.setdefault(t, []).append(block)
