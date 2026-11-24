@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.83">
+<meta name="app-version" content="v1.82">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -247,12 +247,6 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 4px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.wbx{margin-top:8px}.wbtn{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--card2);border:1px solid var(--line2);border-radius:8px;color:var(--ink);padding:9px;font-weight:600;text-decoration:none;margin-top:6px}.wbtn .ic{width:15px;height:15px}
-.wnote{text-align:center;margin-top:3px;font-size:12px}.wtag{color:var(--link);text-decoration:none;white-space:nowrap}.wtag .ic{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:2px}
-.tlf{display:flex;flex-direction:column;gap:8px;padding:10px 2px;border-top:1px solid var(--line);font-size:14px}.tlf input{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:10px;font:inherit;font-size:15px}.tlf .mut{font-size:12.5px}.tlf .err{color:var(--accent)}.tlf .ic{display:inline-block;width:13px;height:13px;vertical-align:-2px;color:#4ade80}
-.tlq{border-top:1px solid var(--line);padding:10px 0}.tlq:first-child{border-top:0}.tlqh{font-weight:600}.tlqs{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.tlqb{display:flex;gap:8px;margin-top:8px}.tlqb>*{flex:1;margin:0;text-align:center;text-decoration:none}
-.tlpill{font-size:10px;font-weight:700;border:1px solid var(--line2);border-radius:5px;padding:1px 5px;color:var(--mut);margin-left:4px}
-.tsr.tsr2{font-size:13px;font-weight:500;color:var(--mut);padding:10px 2px}a.tsr{text-decoration:none}
 .wxi{width:13px;height:13px;vertical-align:-2px;margin-right:2px}.wxs{white-space:nowrap}
 .wxb{border-top:1px solid var(--line2);margin-top:8px;padding-top:8px}.wxh{font-size:11px;letter-spacing:.06em;text-transform:uppercase}.wxr{display:flex;gap:10px;align-items:center;margin-top:4px}.wxr .wxi{width:24px;height:24px;color:var(--ink)}.wxm{color:var(--ink);font-size:15px}
 .wxu{margin-top:6px}.wxa{display:flex;align-items:center;gap:10px;margin-top:6px}.wxmark{height:14px;width:auto;display:block}.wxmark-t{color:var(--ink)}.wxa a{color:var(--link,#85b7eb)}
@@ -418,9 +412,6 @@ const $ = (s, e = document) => e.querySelector(s);
 // Line icons (outline, 1.75 stroke), drawn inline so they stay crisp and match the text color.
 const ICON = {
   x: '<path d="M6 6l12 12M18 6L6 18"/>',
-  play: '<path d="M7 4v16l13-8z"/>',
-  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
-  video: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   refresh: '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
@@ -1136,7 +1127,6 @@ async function drawAdmin(b) {
     const [d, pkp, ak, wk] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false})), api("GET", "/api/admin/wxkey").catch(() => ({saved: false}))]);
     const ck = await api("GET", "/api/admin/clerk").catch(() => ({saved: false}));
     const rv = await api("GET", "/api/admin/reviewer").catch(() => ({}));
-    const tl = await api("GET", "/api/admin/links").catch(() => ({queue: [], links: {}}));
     const us = await usageP;
     const week = Date.now() - 7 * 864e5;
     if (!pageIs("admin")) return;
@@ -1156,16 +1146,6 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <button class="btn-sec" id="admevtest">Test "Schedule posted" alert on my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, false) : ""}
-      ${(() => {   // team watch links: Open shows what loads; then Approve or Reject
-        const q = tl.queue || [], ap = Object.entries(tl.links || {}).sort((a, b) => (a[1].n || a[0]).localeCompare(b[1].n || b[0]));
-        const nm = (k, n) => esc(n || ((x => x ? `${x.s} · ${ageOf(x)}` : k)(teamByKey(k))));
-        const item = (h, sub, btns) => `<div class="tlq"><div class="tlqh">${h}</div><div class="mut tlqs">${sub}</div><div class="tlqb">${btns}</div></div>`;
-        const body = (q.length ? q.slice().sort((a, b) => a.at - b.at).map(x => item(`${nm(x.t, x.n)} <span class="tlpill">${esc(x.s)}</span>`, `${esc(x.u.replace(/^https:\/\//, ""))} · from ${esc(x.e || "someone")} · ${ago(x.at)}`,
-            `<a class="btn-sec" href="${esc(x.u)}" target="_blank" rel="noopener">Open link</a><button class="btn-sec" data-tl="approve" data-id="${esc(x.id)}">Approve</button><button class="btn-sec" data-tl="reject" data-id="${esc(x.id)}">Reject</button>`)).join("") : `<p class="mut" style="margin:6px 0">Nothing waiting.</p>`)
-          + (ap.length ? `<div class="tpsub" style="margin-top:12px">Approved</div>` + ap.map(([k, L]) => item(`${nm(k, L.n)} <span class="tlpill">${esc(L.s)}</span>`, `${esc(L.u.replace(/^https:\/\//, ""))} · ${day(L.at)}`,
-            `<a class="btn-sec" href="${esc(L.u)}" target="_blank" rel="noopener">Open link</a><button class="btn-sec" data-tl="remove" data-team="${esc(k)}">Remove</button>`)).join("") : "");
-        return fold("links", "Watch links", `${q.length ? `${q.length} waiting` : "None waiting"} · ${ap.length} approved`, body, false);
-      })()}
       ${fold("pickem", "Pick'em players", `${PKON ? "On" : "Off (hidden for everyone)"} · ${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, `<button class="btn-sec" id="pkswitch">${PKON ? "Turn Pick'em off for everyone" : "Turn Pick'em on for everyone"}</button>` + (pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}${x.reports ? ` <span class="keytag" style="background:var(--red);color:#fff">REPORTED ${x.reports}</span>` : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>"), false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
@@ -1194,12 +1174,6 @@ async function drawAdmin(b) {
       const uid = btn.closest("tr").dataset.pu, act = btn.dataset.pact, body = {uid};
       if (act === "rename") { const n = prompt("New Pick'em name"); if (!n) return; body.name = n; } else body.hidden = act === "hide";
       try { await api("PUT", "/api/admin/pickem", body); toast("Saved"); refreshPage(); } catch (x) { toast("Couldn't save that name"); }
-    });
-    b.querySelectorAll("[data-tl]").forEach(btn => btn.onclick = async () => {
-      const act = btn.dataset.tl; if (act === "remove" && !confirm("Remove this team's watch link?")) return;
-      btn.textContent = "…";
-      try { await api("PUT", "/api/admin/links", act === "remove" ? {act, team: btn.dataset.team} : {act, id: btn.dataset.id}); toast(act === "approve" ? "Approved. It shows now." : act === "reject" ? "Rejected" : "Removed"); loadLinks(true); refreshPage(); }
-      catch (x) { toast("Couldn't do that. Try again."); refreshPage(); }
     });
     const psw = $("#pkswitch"); if (psw) psw.onclick = async () => {
       try { await api("PUT", "/api/admin/pickem-switch", {on: !PKON}); PKON = !PKON; store.set("pkOn", PKON ? "1" : ""); toast(PKON ? "Pick'em is on" : "Pick'em is off"); refreshPage(); } catch (x) { toast("Couldn't change it"); }
@@ -1831,7 +1805,7 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
-  setTimeout(() => { wxLoad(); loadLinks(); }, 300);
+  setTimeout(() => wxLoad(), 300);
   if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog(WAITED ? "ready-signin" : "ready", `${Math.round(performance.now() - (SHOWN_AT || 0))}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
@@ -1938,31 +1912,6 @@ const myZFull = g => { const a = altTime(g); if (a) return `${a.full} ${a.ab}`; 
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
 // "vs"/"@" when there's no score. Tap a row for odds, venue and impact.
-// ---------- Team watch links (Graham, Nov 24) ----------
-// One link per team (the club's Veo / YouTube / ... page), approved by the owner (api/links.js). Shown in every
-// game's drop-down for that team, on the team sheet, and as a small "Watch" tag on game-day rows.
-let LINKS = {}, LINKS_AT = 0, TL_FORM = null, TL_DRAFT = "";
-const LINK_SITES = [[/(^|\.)veo\.co$/, "Veo"], [/(^|\.)(youtube\.com|youtu\.be)$/, "YouTube"], [/(^|\.)traceup\.com$/, "Trace"], [/(^|\.)ballertv\.com$/, "BallerTV"], [/(^|\.)pixellot\.tv$/, "Pixellot"]];
-function linkCheck(raw) {   // same rules as the server (api/links.js)
-  let u; try { u = new URL(raw); } catch (e) { return {error: "That doesn't look like a link. Copy it from the address bar and paste it here."}; }
-  if (u.protocol !== "https:") return {error: "Use the https:// link from the address bar."};
-  const hit = LINK_SITES.find(([re]) => re.test(u.hostname.toLowerCase()));
-  return hit ? {site: hit[1]} : {error: "Only Veo, YouTube, Trace, BallerTV or Pixellot links can be added."};
-}
-async function loadLinks(force) {
-  if (!force && Date.now() - LINKS_AT < 10 * 60e3) return;
-  try { const r = await fetch("/api/links", {cache: force ? "no-store" : "default"}); if (r.ok) { const j = await r.json(), before = JSON.stringify(LINKS); LINKS = j.links || {}; LINKS_AT = Date.now(); if (JSON.stringify(LINKS) !== before && CUR) wxRedraw(); } } catch (e) {}
-}
-const linkKeys = (D, g) => [g.home_id, g.away_id].filter(Boolean).map(id => [id, `${D.pool_key}-${id}`]).filter(([, k]) => LINKS[k]);
-function watchBtns(D, g) {
-  const ks = linkKeys(D, g); if (!ks.length) return "";
-  return `<div class="wbx">${ks.map(([id, k]) => { const L = LINKS[k], nm = esc(teamName(D, id)); return `<a class="wbtn" href="${esc(L.u)}" target="_blank" rel="noopener">${icon("play")} Watch on ${esc(L.s)}${ks.length > 1 ? ` · ${nm}` : ""}</a><div class="wnote">Opens ${nm}'s team page. Look for this game there.</div>`; }).join("")}</div>`;
-}
-function watchTag(D, g) {
-  if (g.date !== todayISO() || g.hs != null) return "";
-  const ks = linkKeys(D, g); if (!ks.length) return "";
-  return `<a class="wtag" href="${esc(LINKS[ks[0][1]].u)}" target="_blank" rel="noopener">${icon("play")}Watch</a>`;
-}
 // ---------- Game weather (Graham, Nov 24) ----------
 // One forecast per field, fetched by our server from Apple Weather and shared by everyone (api/weather.js):
 // GET /api/wx?z=<field ZIPs>. Within 48 hours of kickoff: the kickoff-hour forecast (hidden if over 2 hours old);
@@ -2051,7 +2000,7 @@ function gameRow(D, M, g, o = {}) {
   // schedule changed in the last 7 days (scripts/alerts.py writes them into status.json "chg")
   const chg = !done && STATUS && STATUS.chg && STATUS.chg[g.id], chgTag = chg ? `<span class="chg">${chg[0].length === 1 ? {d: "Date", t: "Time", v: "Field"}[chg[0][0]] + " changed" : "Schedule changed"}</span>` : "";
   const wx = done || o.wait ? null : wxFor(g), wxTag = wx ? wxShort(wx) : "";   // game weather (Apple), see wxFor
-  const bottom = when || o.sub || chgTag ? [when, watchTag(D, g), place, o.sub, chgTag, wxTag].filter(Boolean).join(" · ") : "";
+  const bottom = when || o.sub || chgTag ? [when, place, o.sub, chgTag, wxTag].filter(Boolean).join(" · ") : "";
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -2065,10 +2014,9 @@ function gameRow(D, M, g, o = {}) {
     const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
     det = `<div class="gdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>
-      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${watchBtns(D, g)}${wx ? wxBlock(wx) : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
+      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${wx ? wxBlock(wx) : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
-  if (o.det) det = `<div class="gdet" hidden>${o.det}${o.noWatch ? "" : watchBtns(D, g)}</div>`;
-  else if (!det && !o.wait) { const wb = watchBtns(D, g); if (wb) det = `<div class="gdet" hidden><div>${fmtDate(g.date)} · ${fmtTime(g.time)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${wb}</div>`; }
+  if (o.det) det = `<div class="gdet" hidden>${o.det}</div>`;
   if (o.strong) { if (o.strong.has(L)) ln = `<b>${ln}</b>`; if (o.strong.has(R)) rn = `<b>${rn}</b>`; }
   let toggles = "";
   if (o.picks && !done) {
@@ -2495,18 +2443,7 @@ function renderTeam(D, fid, key) {
             <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div>
             <div class="opt"><span>Schedule changes<span class="ddsub">Time, date or field moves, next 28 days</span></span>${seg("sc", [["1", "On"], ["0", "Off"]], tc.sc !== false ? "1" : "0")}</div>
             <div class="opt"><span>New event schedules<span class="ddsub">When a tournament posts ${esc(nm)}'s games</span></span>${seg("ne", [["1", "On"], ["0", "Off"]], tc.ne !== false ? "1" : "0")}</div></div>`;
-      const tname = `${nm}${ageOf(teamByKey(key)) ? " · " + ageOf(teamByKey(key)) : ""}`, LK = LINKS[key], pend = +(store.get("tlPend:" + key) || 0) > Date.now() - 14 * 864e5;
-      const linkHtml = TL_FORM === key
-        ? `<div class="tpsub">Team watch link</div><div class="tlf"><b>Team watch link for ${esc(tname)}</b>
-            <div class="mut">One link for the team, like the club's Veo or YouTube page. Not a link for a single game. It shows on every ${esc(tname)} game.</div>
-            <input id="tlurl" type="url" inputmode="url" autocomplete="off" placeholder="https://app.veo.co/clubs/your-club/" value="${esc(TL_DRAFT || "")}">
-            <div class="mut" id="tlchk">Veo, YouTube, Trace, BallerTV or Pixellot.</div>
-            <button class="btn-sec" data-a="tlsend">Send for review</button><button class="btn-sec" data-a="tlcancel">Cancel</button>
-            <div class="mut">Links show after a quick review.</div></div>`
-        : LK ? `<div class="tpsub">Team watch link</div><a class="tsr" href="${esc(LK.u)}" target="_blank" rel="noopener">${icon("video")}<span>Watch on ${esc(LK.s)}<span class="ddsub">${esc(tname)}'s team page</span></span><small class="tpon">Open</small></a>
-            <button class="tsr tsr2" data-a="tlform"><span>${pend ? "Your new link is waiting for review" : "Suggest a different link"}</span></button>`
-        : `<div class="tpsub">Team watch link</div><button class="tsr" data-a="${pend ? "" : "tlform"}">${icon("video")}<span>Team watch link<span class="ddsub">${pend ? "Waiting for review" : "None yet"}</span></span>${pend ? "" : `<small class="tpon">Add one</small>`}</button>`;
-      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}${linkHtml}
+      $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}
         <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
       TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
@@ -2518,19 +2455,7 @@ function renderTeam(D, fid, key) {
         else if (b.dataset.a === "follow") { closeTeamSheet(); follow(); }
         else if (b.dataset.a === "signin") { closeTeamSheet(); signIn(); }
         else if (b.dataset.a === "alertson") { await enableAlerts(); if (TP_OPEN) teamSheet(); }
-        else if (b.dataset.a === "tlform") { if (!ME) { closeTeamSheet(); signIn(); return; } TL_FORM = key; TL_DRAFT = ""; teamSheet(); setTimeout(() => { const i = $("#tlurl"); if (i) i.focus(); }, 50); }
-        else if (b.dataset.a === "tlcancel") { TL_FORM = null; teamSheet(); }
-        else if (b.dataset.a === "tlsend") {
-          const v = $("#tlurl").value.trim(), ck = linkCheck(v);
-          if (ck.error) { $("#tlchk").textContent = ck.error; $("#tlchk").classList.add("err"); return; }
-          b.textContent = "Sending…";
-          let msg = "";
-          try { const t = await token(); const r = await fetch("/api/links", {method: "POST", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({team: key, name: tname, url: v})}); const j = await r.json().catch(() => ({}));
-            if (r.ok && j.ok) { store.set("tlPend:" + key, String(Date.now())); TL_FORM = null; toast("Sent for review"); teamSheet(); return; } msg = j.error; } catch (x) {}
-          b.textContent = "Send for review"; $("#tlchk").textContent = msg || "Couldn't send it. Try again."; $("#tlchk").classList.add("err");
-        }
       };
-      const ti = $("#tlurl"); if (ti) ti.oninput = () => { TL_DRAFT = ti.value; const ck = linkCheck(ti.value.trim()), el = $("#tlchk"); el.classList.toggle("err", !!(ti.value.trim() && ck.error)); el.innerHTML = !ti.value.trim() ? "Veo, YouTube, Trace, BallerTV or Pixellot." : ck.error ? esc(ck.error) : `${icon("check")} ${esc(ck.site)} link`; };
     };
   };
   drawHead(); REDRAW_HEAD = drawHead;
@@ -2945,7 +2870,7 @@ function evTbdRow(ev, day, fid, card) {
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
   const mm = evModel(ev), g = Object.assign({}, g0, {home_id: mm.sideId(g0, "home"), away_id: mm.sideId(g0, "away")});   // bracket games: real teams once known
-  const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk, pool_key: D.pool_key};
+  const Me = makeModel(ev.teams, D.model), Dl = {teams: ev.teams, __fk: D.__fk};
   const us = fid && (g.home_id === fid || g.away_id === fid);
   let sub = "", likely = "";
   const tdy = todayISO(), begun = !evDone(g) && g.date && (g.date < tdy || (g.date === tdy && g.time && g.time !== "00:00" && Date.now() >= startMs(g)));

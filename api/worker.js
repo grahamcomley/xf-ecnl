@@ -11,7 +11,6 @@ import {makeLog, dbPerson, dbDailySync, usageStats} from "./log.js";
 import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
 import {wxRefresh, wxRoute, wxAdmin} from "./weather.js";
-import {linksPublic, linksSend, linksAdmin} from "./links.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner, testNewEvOwner} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
@@ -179,7 +178,6 @@ async function handle(req, env, url, p, L, who0) {
     }
     if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
     if (p === "/api/wx" && req.method === "GET") return wxRoute(env, url);   // public: game weather (api/weather.js)
-    if (p === "/api/links" && req.method === "GET") return linksPublic(env);   // public: approved team watch links (api/links.js)
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
     who0.uid = c.sub; who0.via = c.pass ? "pass" : "clerk";
@@ -403,23 +401,6 @@ async function handle(req, env, url, p, L, who0) {
       await env.USERS.put("cfg:pickem:" + env.SITE, b.on ? "on" : "off");
       L.keep("admin.pickem", {uid: c.sub, on: !!b.on, site: env.SITE});
       return json({ok: true, on: !!b.on});
-    }
-    // POST /api/links: send a team watch link for review (api/links.js). The owner gets an alert on his devices.
-    if (p === "/api/links" && req.method === "POST") {
-      const r = await linksSend(env, req, c, rec);
-      if (r.ok) {
-        L.keep("links.sent", {uid: c.sub, team: r.item.t, site: r.site});
-        const owner = await env.USERS.get("cfg:owner");
-        if (owner) await pushNotifyOwner(env, owner, "Watch link to review", `${r.item.n || r.item.t}: ${r.site}. Admin › Watch links.`).catch(e => L.error("links.notify", {msg: String(e)}));
-      }
-      return json(r.ok ? {ok: true, site: r.site} : r, r.error ? 400 : 200);
-    }
-    // /api/admin/links: watch links waiting for review, and approved ones. PUT approves, rejects or removes.
-    if (p === "/api/admin/links") {
-      if (!isOwner(c)) return json({error: "not allowed"}, 403);
-      const r = await linksAdmin(env, req);
-      if (req.method === "PUT") L.keep("admin.links", {uid: c.sub, act: r.act || "", team: r.item ? r.item.t : "", error: r.error || null});
-      return json(r, r.error ? 400 : 200);
     }
     // /api/admin/wxkey: Apple Weather (WeatherKit) key + Services ID. GET says whether one is saved (never returns
     // it); PUT {p8, kid, sid} saves it to KV cfg:wxkey and tries one real forecast. Shared by UAT and live.
