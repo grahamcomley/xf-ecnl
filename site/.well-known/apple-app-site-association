@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["55FGL4DVG5.com.sidelinestandings.app", "55FGL4DVG5.com.sidelinestandings.app.uat"],
+        "components": [
+          {"/": "/api/*", "exclude": true},
+          {"/": "/app-signin.html", "exclude": true},
+          {"/": "/sso-callback.html", "exclude": true},
+          {"/": "/privacy.html", "exclude": true},
+          {"/": "/support.html", "exclude": true},
+          {"/": "/data/*", "exclude": true},
+          {"/": "/icons/*", "exclude": true},
+          {"/": "/*"}
+        ]
+      }
+    ]
+  }
+}

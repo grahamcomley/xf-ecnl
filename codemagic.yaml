@@ -104,6 +104,13 @@ workflows:
           cat ios/App/App/capacitor.config.json | tr ',' '\n' | grep -A20 packageClassList | head -20 || true
           grep -q '"SidelineApp"' ios/App/App/capacitor.config.json || { echo "!! SidelineApp plugin not registered by cap sync"; cat ios/App/App/capacitor.config.json; exit 1; }
           cp native/App.entitlements ios/App/App/App.entitlements
+          # Links open the app (Associated Domains): the UAT app answers uat.sidelinestandings.com links instead.
+          if [ "$APP_VARIANT" = "uat" ]; then
+            /usr/libexec/PlistBuddy -c "Delete :com.apple.developer.associated-domains" ios/App/App/App.entitlements
+            /usr/libexec/PlistBuddy -c "Add :com.apple.developer.associated-domains array" ios/App/App/App.entitlements
+            /usr/libexec/PlistBuddy -c "Add :com.apple.developer.associated-domains:0 string applinks:uat.sidelinestandings.com" ios/App/App/App.entitlements
+          fi
+          grep -A4 associated-domains ios/App/App/App.entitlements
           # Push: Capacitor's plugin needs the app delegate to hand it Apple's device token.
           AD=ios/App/App/AppDelegate.swift
           if ! grep -q didRegisterForRemoteNotificationsWithDeviceToken "$AD"; then
@@ -125,6 +132,9 @@ workflows:
             ' "$AD"
           fi
           grep -n "RemoteNotifications" "$AD" || { echo "!! push hooks not in AppDelegate"; exit 1; }
+          # Links open the app: Capacitor's AppDelegate hands tapped links to the App plugin (appUrlOpen).
+          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; exit 1; }
+          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; exit 1; }
           ruby -e '
             require "xcodeproj"
             project = Xcodeproj::Project.open("ios/App/App.xcodeproj")
@@ -299,6 +309,13 @@ workflows:
           cat ios/App/App/capacitor.config.json | tr ',' '\n' | grep -A20 packageClassList | head -20 || true
           grep -q '"SidelineApp"' ios/App/App/capacitor.config.json || { echo "!! SidelineApp plugin not registered by cap sync"; cat ios/App/App/capacitor.config.json; exit 1; }
           cp native/App.entitlements ios/App/App/App.entitlements
+          # Links open the app (Associated Domains): the UAT app answers uat.sidelinestandings.com links instead.
+          if [ "$APP_VARIANT" = "uat" ]; then
+            /usr/libexec/PlistBuddy -c "Delete :com.apple.developer.associated-domains" ios/App/App/App.entitlements
+            /usr/libexec/PlistBuddy -c "Add :com.apple.developer.associated-domains array" ios/App/App/App.entitlements
+            /usr/libexec/PlistBuddy -c "Add :com.apple.developer.associated-domains:0 string applinks:uat.sidelinestandings.com" ios/App/App/App.entitlements
+          fi
+          grep -A4 associated-domains ios/App/App/App.entitlements
           # Push: Capacitor's plugin needs the app delegate to hand it Apple's device token.
           AD=ios/App/App/AppDelegate.swift
           if ! grep -q didRegisterForRemoteNotificationsWithDeviceToken "$AD"; then
@@ -320,6 +337,9 @@ workflows:
             ' "$AD"
           fi
           grep -n "RemoteNotifications" "$AD" || { echo "!! push hooks not in AppDelegate"; exit 1; }
+          # Links open the app: Capacitor's AppDelegate hands tapped links to the App plugin (appUrlOpen).
+          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; exit 1; }
+          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; exit 1; }
           ruby -e '
             require "xcodeproj"
             project = Xcodeproj::Project.open("ios/App/App.xcodeproj")

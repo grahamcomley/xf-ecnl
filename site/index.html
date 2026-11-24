@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.84">
+<meta name="app-version" content="v1.85">
 <meta name="apple-itunes-app" content="app-id=6833709358">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
@@ -941,6 +941,21 @@ function plug(name, methods) {
 }
 const PN = () => plug("PushNotifications", ["requestPermissions", "checkPermissions", "register", "unregister", "removeAllDeliveredNotifications"]);
 const SA = () => plug("SidelineApp", ["setBadge", "signIn", "info"]);
+// Links that open the app (Universal Links, app build 1.84+): iOS hands the tapped sidelinestandings.com link to
+// the app; go to its #t=... part (team, game, shared teams). Older builds have no App plugin: nothing happens.
+const CAPAPP = () => plug("App", ["getLaunchUrl", "addListener"]);
+function openAppLink(raw) {
+  try {
+    const u = new URL(raw); if (!/(^|\.)sidelinestandings\.com$/.test(u.hostname)) return;
+    appLog("applink", (u.hash || u.pathname).slice(0, 80));
+    if (u.hash && u.hash !== location.hash) location.hash = u.hash;
+  } catch (e) {}
+}
+if (IS_APP) setTimeout(() => {
+  const A = CAPAPP(); if (!A) return;
+  try { A.addListener && A.addListener("appUrlOpen", e => e && e.url && openAppLink(e.url)); } catch (e) {}
+  try { A.getLaunchUrl && A.getLaunchUrl().then(r => { if (r && r.url) openAppLink(r.url); }).catch(() => {}); } catch (e) {}
+}, 0);
 function bridgeInfo() {
   try { if (!CAP) return "no native bridge"; return `native=${IS_APP} · plugins=[${Object.keys(CAP.Plugins || {}).join(",")}] · push=${!!PN()} · badge=${!!SA()}`; } catch (e) { return "bridge check failed"; }
 }
