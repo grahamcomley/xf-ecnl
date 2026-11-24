@@ -184,37 +184,6 @@
   ]
  },
  {
-  "conf": "u11b-4331-42116",
-  "name": "Pre-ECNL Boys STXCL",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133234,
-    "team": "Lonestar ATX NW Pre-ECNL STXCL B2015/16 Red A",
-    "ours": [
-     8,
-     18
-    ],
-    "ecnl": [
-     7,
-     15
-    ]
-   },
-   {
-    "id": 128222,
-    "team": "San Antonio FC Pre-ECNL STXCL B2015/16",
-    "ours": [
-     8,
-     6
-    ],
-    "ecnl": [
-     7,
-     6
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4331-42122",
   "name": "Pre-ECNL Boys STXCL",
   "ours": [
@@ -629,15 +598,6 @@
    133123,
    131040
   ]
- },
- {
-  "conf": "u11b-4370-41051",
-  "name": "Pre-ECNL Boys Southern Cal",
-  "kind": "adjusted",
-  "teams": {
-   "133123": -1,
-   "133595": 2
-  }
  },
  {
   "conf": "u11b-4370-41053",
