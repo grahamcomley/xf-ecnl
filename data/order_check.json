@@ -7463,6 +7463,37 @@
   ]
  },
  {
+  "conf": "u17b-4276-40471",
+  "name": "ECNL Boys Mid-America",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 131562,
+    "team": "Louisiana Fire SC",
+    "ours": [
+     14,
+     25
+    ],
+    "ecnl": [
+     13,
+     24
+    ]
+   },
+   {
+    "id": 69019,
+    "team": "Alabama FC",
+    "ours": [
+     18,
+     32
+    ],
+    "ecnl": [
+     17,
+     31
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u17b-4277-40465",
   "name": "ECNL Boys Mid-Atlantic",
   "ours": [
