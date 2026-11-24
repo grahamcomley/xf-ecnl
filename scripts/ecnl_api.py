@@ -13,7 +13,7 @@ BASE = "https://api.athleteone.com/api/"
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "cache")
 DELAY = 0.4  # seconds between live requests
 _last = [0.0]
-stats = {"live": 0, "cached": 0, "failed": 0}
+stats = {"live": 0, "cached": 0, "failed": 0, "empty": 0}
 
 
 def _cache_path(path):
@@ -35,7 +35,7 @@ def get(path, max_age_hours=0.0, permanent=False, cache=True):
             stats["cached"] += 1
             with open(cp) as f:
                 return json.load(f)
-    data = None
+    data, empty = None, False
     for attempt in range(3):
         wait = DELAY - (time.time() - _last[0])
         if wait > 0:
@@ -50,12 +50,20 @@ def get(path, max_age_hours=0.0, permanent=False, cache=True):
                 body = json.loads(r.read().decode("utf-8"))
             if isinstance(body, dict) and "data" in body:
                 data = body["data"]
+                empty = data is None   # the API answered "nothing here yet" (e.g. a tournament with no schedule): not a failure
             else:
                 data = body
             break
         except (urllib.error.URLError, TimeoutError, ValueError) as e:
             print(f"  ! {path} attempt {attempt + 1}: {e}")
             time.sleep(2 * (attempt + 1))
+    if empty:
+        stats["empty"] += 1
+        if cache:
+            os.makedirs(CACHE_DIR, exist_ok=True)
+            with open(cp, "w") as f:
+                json.dump(None, f)
+        return None
     if data is None:
         stats["failed"] += 1
         if cache and os.path.exists(cp):
