@@ -21,9 +21,13 @@ def _build():
         except Exception as e:
             print("  ziploc: couldn't get", url, e)
             continue
-        lines = text.splitlines()
-        head = [h.strip() for h in lines[0].split("\t")]
-        gi, la, lo = head.index("GEOID"), head.index("INTPTLAT"), head.index("INTPTLONG")
+        lines = text.lstrip("\ufeff").splitlines()
+        head = [h.strip().lstrip("\ufeff").upper() for h in lines[0].split("\t")]
+        col = lambda *names: next((i for i, h in enumerate(head) if h in names), None)
+        gi, la, lo = col("GEOID", "GEOID20", "ZCTA5", "ZCTA5CE20"), col("INTPTLAT"), col("INTPTLONG")
+        if None in (gi, la, lo):
+            print("  ziploc: unexpected columns in", url, head[:8])
+            continue
         out = {}
         for ln in lines[1:]:
             c = ln.split("\t")
