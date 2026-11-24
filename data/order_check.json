@@ -3123,9 +3123,9 @@
    75143,
    80655,
    112303,
+   129713,
    133302,
    133301,
-   129713,
    130099,
    115029,
    75505,
@@ -3151,6 +3151,37 @@
    133301,
    115029,
    131494
+  ]
+ },
+ {
+  "conf": "u14b-4261-41134",
+  "name": "ECNL RL Boys STXCL",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 129713,
+    "team": "CHALLENGE UNITED EAST ECNL RL STXCL B2012/13",
+    "ours": [
+     10,
+     13
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   },
+   {
+    "id": 86928,
+    "team": "Sting CC ECNL RL STXCL B2012/13 Stewart",
+    "ours": [
+     8,
+     2
+    ],
+    "ecnl": [
+     7,
+     2
+    ]
+   }
   ]
  },
  {
