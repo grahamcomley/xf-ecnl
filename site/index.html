@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.79">
+<meta name="app-version" content="v1.82">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -146,6 +146,7 @@ body.ddopen #scroller,body.ddopen #tabbar{filter:brightness(.4);transition:filte
 .authbtns{display:flex;flex-direction:column;gap:10px;margin-top:14px}.authbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border-radius:12px;padding:14px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;border:0}.authbtn.apple{background:#fff;color:#000}.authbtn.google{background:#1f2630;color:#e8eaed;border:1px solid #3a4452}.authbtn[disabled]{opacity:.6}.authemail{background:none;border:0;color:#a3acb9;font:inherit;font-size:14px;margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .setrow{display:flex;align-items:center;gap:10px;width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;margin-top:6px;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
 .setrow .ic{width:20px;height:20px;flex:none;color:var(--mut)}.setrow>span{flex:1;min-width:0}.setrow .ddsub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fold.sub{background:var(--card);margin-top:8px}.fold.sub>summary>span{font-weight:600}
 .setbox{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:6px}.setbox p{margin:4px 0 8px}
 .opt{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line)}.opt:first-of-type{border-top:0}.opt>span:first-child{flex:1;min-width:0;font-size:13px}.opt .ddsub{display:block}
 .seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex:none}.seg button{background:none;border:0;color:var(--mut);font:inherit;font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer}.seg button.on{background:var(--red);color:#fff}
@@ -246,6 +247,9 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 4px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.wxi{width:13px;height:13px;vertical-align:-2px;margin-right:2px}.wxs{white-space:nowrap}
+.wxb{border-top:1px solid var(--line2);margin-top:8px;padding-top:8px}.wxh{font-size:11px;letter-spacing:.06em;text-transform:uppercase}.wxr{display:flex;gap:10px;align-items:center;margin-top:4px}.wxr .wxi{width:24px;height:24px;color:var(--ink)}.wxm{color:var(--ink);font-size:15px}
+.wxu{margin-top:6px}.wxa{display:flex;align-items:center;gap:10px;margin-top:6px}.wxmark{height:14px;width:auto;display:block}.wxmark-t{color:var(--ink)}.wxa a{color:var(--link,#85b7eb)}
 .gsub .chg{color:#f0997b}
 .gtop{grid-column:1/-1;line-height:1;margin-bottom:5px}.gtop .kslot{display:inline;margin-left:5px}
 @media (max-width:400px){main{padding-left:calc(6px + env(safe-area-inset-left,0px));padding-right:calc(6px + env(safe-area-inset-right,0px))}.sec-body{padding-left:8px!important;padding-right:8px!important}.grow{padding-left:2px;padding-right:2px;font-size:13px;gap:4px;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 14px}.gsub,.gpaths{padding-left:4px}}
@@ -1120,7 +1124,7 @@ async function drawAdmin(b) {
   b.innerHTML = "<div class='pgin'><p class='mut'>Loading…</p></div>";
   try {
     const usageP = api("GET", "/api/admin/usage").catch(() => null);
-    const [d, pkp, ak] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false}))]);
+    const [d, pkp, ak, wk] = await Promise.all([api("GET", "/api/admin"), api("GET", "/api/admin/pickem").catch(() => ({players: []})), api("GET", "/api/admin/apns").catch(() => ({saved: false})), api("GET", "/api/admin/wxkey").catch(() => ({saved: false}))]);
     const ck = await api("GET", "/api/admin/clerk").catch(() => ({saved: false}));
     const rv = await api("GET", "/api/admin/reviewer").catch(() => ({}));
     const us = await usageP;
@@ -1133,7 +1137,7 @@ async function drawAdmin(b) {
       <div class="admtiles"><div class="stat"><div class="v">${d.total}</div><div class="k">Signed up</div></div>
         <div class="stat"><div class="v">${active}</div><div class="k">Active this week</div></div>
         <div class="stat"><div class="v">${d.total ? (saved / d.total).toFixed(1) : 0}</div><div class="k">Teams per person</div></div></div>
-      ${us ? fold("usage", "Usage", "", usageHtml(us), true) : ""}
+      ${us ? fold("usage", "Usage", "", usageHtml(us), false) : ""}
       ${d.alerts ? fold("alerts", "Alerts", `${d.alerts.people} ${d.alerts.people === 1 ? "person" : "people"} · ${d.alerts.week} sent this week`, `<div class="admtiles"><div class="stat"><div class="v">${d.alerts.people}</div><div class="k">People with alerts on</div></div>
         <div class="stat"><div class="v">${d.alerts.devices}</div><div class="k">Devices</div></div>
         <div class="stat"><div class="v">${d.alerts.week}</div><div class="k">Sent this week</div></div>
@@ -1142,25 +1146,27 @@ async function drawAdmin(b) {
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
         <button class="btn-sec" id="admevtest">Test "Schedule posted" alert on my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, false) : ""}
-      ${fold("app", "App Store app", `${ak.saved ? "Apple push key saved" : "Apple push key needed"} · ${IS_APP ? "you're in the app" : "you're in the browser"}`, `
-        <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). ${ak.chk ? (ak.chk.ok ? "Connection to Apple checked: working." : `Connection to Apple: not working yet (${esc(String(ak.chk.status))} ${esc(ak.chk.reason || "")}).`) : "Connection check runs within 5 minutes."} Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
-          <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
-          <input id="apnskid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
-          <button class="btn-sec" id="apnssave">Save push key</button></div>
-        <div class="setbox" style="font-size:13px;margin-top:8px"><b>Clerk secret key</b><div class="mut" style="margin-top:2px">${ck.saved ? `Saved (${day(ck.at)}). The app's iPhone sign-in sheet works. Paste a new one only to replace it.` : "Needed for the app's iPhone sign-in sheet. In Clerk: Configure › API keys, copy the Secret key (starts sk_live_)."}</div>
-          <input id="clerksk" placeholder="sk_live_…" autocomplete="off" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:12px ui-monospace,monospace">
-          <button class="btn-sec" id="clerksave">Save Clerk key</button></div>
-        <div class="setbox" style="font-size:13px;margin-top:8px"><b>App Review login</b><div class="mut" style="margin-top:2px">For Apple's reviewer (they can't get email codes). Put both in App Store Connect › App Review › Sign-In Information.</div>
-          <div id="rvbox" style="margin-top:6px">${rv.email ? `<div>Email: <code>${esc(rv.email)}</code></div><div>Password: <code>${esc(rv.password)}</code></div>` : ""}</div>
-          <button class="btn-sec" id="rvmake" data-who="review">${rv.email ? "Make a new password" : "Create the reviewer login"}</button></div>
-        <div class="setbox" style="font-size:13px;margin-top:8px"><b>Demo login (to delete)</b><div class="mut" style="margin-top:2px">A throwaway account for showing Delete account in the review video. Tap again after deleting it to make it again.</div>
-          <div id="dmbox" style="margin-top:6px">${rv.demo ? `<div>Email: <code>${esc(rv.demo.email)}</code></div><div>Password: <code>${esc(rv.demo.password)}</code></div>` : ""}</div>
-          <button class="btn-sec" id="dmmake" data-who="demo">${rv.demo ? "Make it again" : "Create the demo login"}</button></div>
-        <p class="mut" style="font-size:12px;margin:6px 0 0;overflow-wrap:anywhere" id="appinfo">${esc(bridgeInfo())}${IS_APP ? ` · token ${APNS_TOK ? "yes" : "no"}` : ""}</p>`, false)}
       ${fold("pickem", "Pick'em players", `${PKON ? "On" : "Off (hidden for everyone)"} · ${pkp.players.length} playing${pkp.players.filter(x => x.hidden).length ? ` · ${pkp.players.filter(x => x.hidden).length} hidden` : ""}`, `<button class="btn-sec" id="pkswitch">${PKON ? "Turn Pick'em off for everyone" : "Turn Pick'em on for everyone"}</button>` + (pkp.players.length ? `<table class="adm"><tr><th>Name</th><th>Email</th><th class="n"></th></tr>${pkp.players.map(x => `<tr data-pu="${esc(x.uid)}"><td>${esc(x.name || "(none)")}${x.hidden ? ' <span class="keytag">HIDDEN</span>' : ""}${x.reports ? ` <span class="keytag" style="background:var(--red);color:#fff">REPORTED ${x.reports}</span>` : ""}</td><td>${esc(x.email || "")}</td><td class="n"><button class="reset" data-pact="rename">Rename</button> <button class="reset" data-pact="${x.hidden ? "show" : "hide"}">${x.hidden ? "Show" : "Hide"}</button></td></tr>`).join("")}</table>` : "<p class='mut'>Nobody has played yet.</p>"), false)}
       ${fold("people", "People", `${d.total} signed up · ${active} active this week`, `<table class="adm"><tr><th>Email</th><th class="n">Teams</th><th class="n">Last on</th><th class="n">Joined</th></tr>
         ${d.users.map(u => `<tr><td>${esc(u.email || "(no email)")}</td><td class="n">${u.teams}</td><td class="n">${ago(u.seen)}</td><td class="n">${day(u.created)}</td></tr>`).join("")}</table>`, false)}
       ${d.top.length ? fold("top", "Most followed", `${d.top.length} team${d.top.length === 1 ? "" : "s"}`, `<table class="adm"><tr><th>Team</th><th class="n">People</th></tr>${d.top.map(t => { const x = teamByKey(t.k); return `<tr><td>${x ? esc(x.a.split(" (")[0] + " · " + x.s) + `<span class="ddsub" style="display:block;white-space:normal">${esc(x.c)}</span>` : esc(t.k)}</td><td class="n">${t.n}</td></tr>`; }).join("")}</table>`, false) : ""}
+      ${fold("setup", "Setup", (() => { const n = [ak.saved, wk.saved, ck.saved, rv.email].filter(x => !x).length; return n ? `Keys and logins · ${n} needed` : "Keys and logins · all saved"; })(), `
+        <details class="fold sub" data-fold="s_apns" ${(ADM_OPEN.s_apns ?? !ak.saved) ? "open" : ""}><summary><span>Apple push key<span class="ddsub">${ak.saved ? `Saved · ${day(ak.at)}${ak.chk && !ak.chk.ok ? " · not working" : ""}` : "Needed"}</span></span>${icon("chev")}</summary><div class="foldin" style="font-size:13px"><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). ${ak.chk ? (ak.chk.ok ? "Connection to Apple checked: working." : `Connection to Apple: not working yet (${esc(String(ak.chk.status))} ${esc(ak.chk.reason || "")}).`) : "Connection check runs within 5 minutes."} Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
+          <textarea id="apnsp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
+          <input id="apnskid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
+          <button class="btn-sec" id="apnssave">Save push key</button></div></details>
+        <details class="fold sub" data-fold="s_wx" ${(ADM_OPEN.s_wx ?? !wk.saved) ? "open" : ""}><summary><span>Apple Weather key<span class="ddsub">${wk.saved ? `Saved · ${day(wk.at)}${wk.chk && !wk.chk.ok ? " · not working" : ""}` : "Needed"}</span></span>${icon("chev")}</summary><div class="foldin" style="font-size:13px"><div class="mut" style="margin-top:2px">${wk.saved ? `Saved (Key ID ${esc(wk.kid)}, ${day(wk.at)}). ${wk.chk ? (wk.chk.ok ? "Connection to Apple Weather checked: working." : `Connection to Apple Weather: ${esc(wk.chk.msg || "failed")}`) : ""} Paste a new one only to replace it.` : "Needed for game weather. Paste the .p8 key that has WeatherKit turned on, its Key ID, and the Services ID."}</div>
+          <textarea id="wxp8" rows="4" placeholder="-----BEGIN PRIVATE KEY-----" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:8px;font:12px ui-monospace,monospace"></textarea>
+          <input id="wxkid" placeholder="Key ID (10 letters and numbers)" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
+          <input id="wxsid" placeholder="Services ID (com.sidelinestandings.weather)" value="${esc(wk.sid || "")}" style="width:100%;margin-top:6px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:inherit;font-size:14px">
+          <button class="btn-sec" id="wxsave">Save weather key</button></div></details>
+        <details class="fold sub" data-fold="s_clerk" ${(ADM_OPEN.s_clerk ?? !ck.saved) ? "open" : ""}><summary><span>Clerk secret key<span class="ddsub">${ck.saved ? `Saved · ${day(ck.at)}` : "Needed"}</span></span>${icon("chev")}</summary><div class="foldin" style="font-size:13px"><div class="mut" style="margin-top:2px">${ck.saved ? `Saved (${day(ck.at)}). The app's iPhone sign-in sheet works. Paste a new one only to replace it.` : "Needed for the app's iPhone sign-in sheet. In Clerk: Configure › API keys, copy the Secret key (starts sk_live_)."}</div>
+          <input id="clerksk" placeholder="sk_live_…" autocomplete="off" style="width:100%;margin-top:8px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:9px;font:12px ui-monospace,monospace">
+          <button class="btn-sec" id="clerksave">Save Clerk key</button></div></details>
+        <details class="fold sub" data-fold="s_rv" ${(ADM_OPEN.s_rv ?? !rv.email) ? "open" : ""}><summary><span>App Review login<span class="ddsub">${rv.email ? "Set up" : "Not set up"}</span></span>${icon("chev")}</summary><div class="foldin" style="font-size:13px"><div class="mut" style="margin-top:2px">For Apple's reviewer (they can't get email codes). Put both in App Store Connect › App Review › Sign-In Information.</div>
+          <div id="rvbox" style="margin-top:6px">${rv.email ? `<div>Email: <code>${esc(rv.email)}</code></div><div>Password: <code>${esc(rv.password)}</code></div>` : ""}</div>
+          <button class="btn-sec" id="rvmake" data-who="review">${rv.email ? "Make a new password" : "Create the reviewer login"}</button></div></details>
+`, false)}
       </div>`;
     b.querySelectorAll("details.fold").forEach(dt => dt.addEventListener("toggle", () => { ADM_OPEN[dt.dataset.fold] = dt.open; }));
     const rp = $("#admreplay"); if (rp) rp.onclick = async () => { rp.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/replay"); rp.textContent = r.notes ? `Sent ${r.sent} alert${r.sent === 1 ? "" : "s"} (${r.games} games, ${fmtDate(r.from)}–${fmtDate(r.to)})` : "Nothing to replay for your teams"; } catch (x) { rp.textContent = "Couldn't send. Try again."; } };
@@ -1177,6 +1183,12 @@ async function drawAdmin(b) {
       try { const t = await token(); const r = await fetch("/api/admin/apns", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({p8: $("#apnsp8").value, kid: $("#apnskid").value})}); const j = await r.json();
         if (r.ok) { toast("Push key saved"); refreshPage(); } else { as.textContent = "Save push key"; toast(j.error || "Couldn't save it"); } }
       catch (x) { as.textContent = "Save push key"; toast("Couldn't save it. Try again."); }
+    };
+    const ws = $("#wxsave"); if (ws) ws.onclick = async () => {
+      ws.textContent = "Saving and checking…";
+      try { const t = await token(); const r = await fetch("/api/admin/wxkey", {method: "PUT", headers: {authorization: "Bearer " + t, "content-type": "application/json"}, body: JSON.stringify({p8: $("#wxp8").value, kid: $("#wxkid").value, sid: $("#wxsid").value})}); const j = await r.json();
+        if (r.ok && !j.error) { toast(j.chk && j.chk.ok ? "Weather key saved and working" : "Saved, but Apple Weather didn't answer. See the note."); refreshPage(); } else { ws.textContent = "Save weather key"; toast(j.error || "Couldn't save it"); } }
+      catch (x) { ws.textContent = "Save weather key"; toast("Couldn't save it. Try again."); }
     };
     const cs = $("#clerksave"); if (cs) cs.onclick = async () => {
       cs.textContent = "Checking…";
@@ -1793,6 +1805,7 @@ async function openTeam(k) {
   const D = CONF_CACHE[t.f], fid = D.teams.find(x => `${D.pool_key}-${x.id}` === k).id;
   if (!PICKS[t.f]) { PICKS[t.f] = {}; for (const [g, v] of Object.entries(SAVED[t.f] || {})) PICKS[t.f][g] = v.p; }
   renderTeam(D, fid, k);
+  setTimeout(() => wxLoad(), 300);
   if (!READY_LOGGED) { READY_LOGGED = true; requestAnimationFrame(() => appLog(WAITED ? "ready-signin" : "ready", `${Math.round(performance.now() - (SHOWN_AT || 0))}ms ${document.querySelector('meta[name="app-version"]').content}`)); }
   store.set("lastTeam", k);
   syncHash();
@@ -1899,6 +1912,82 @@ const myZFull = g => { const a = altTime(g); if (a) return `${a.full} ${a.ab}`; 
 const shortDate = d => new Date(d + "T12:00:00").toLocaleDateString(undefined, {month: "short", day: "numeric"});
 // Compact row used in every list: [time] Team  score  Team [marker]. Results bold; likely scores gray;
 // "vs"/"@" when there's no score. Tap a row for odds, venue and impact.
+// ---------- Game weather (Graham, Nov 24) ----------
+// One forecast per field, fetched by our server from Apple Weather and shared by everyone (api/weather.js):
+// GET /api/wx?z=<field ZIPs>. Within 48 hours of kickoff: the kickoff-hour forecast (hidden if over 2 hours old);
+// 10 to 2 days out: the game-day forecast (hidden if over 12 hours old); more than 10 days out: nothing. °F.
+let WX = {}, WX_ATTR = null, WX_AT = 0, WX_BUSY = false;
+const WX_ICON = {sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  partly: '<path d="M8 3.5v1M3.5 8h1M5 5l.7.7M12.3 5.7L13 5"/><path d="M10.4 9.6A3 3 0 1 0 6 12"/><path d="M8 19h9a3.5 3.5 0 0 0 .5-7 5 5 0 0 0-9.6 1.2A3 3 0 0 0 8 19z"/>',
+  cloud: '<path d="M7 18h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 11.5 3.3 3.3 0 0 0 7 18z"/>',
+  rain: '<path d="M7 14h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 7.5 3.3 3.3 0 0 0 7 14z"/><path d="M8 17l-1 3M12 17l-1 3M16 17l-1 3"/>',
+  storm: '<path d="M7 14h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 7.5 3.3 3.3 0 0 0 7 14z"/><path d="M12 15l-2 4h3l-2 4"/>',
+  snow: '<path d="M7 14h10a4 4 0 0 0 .6-8A6 6 0 0 0 6 7.5 3.3 3.3 0 0 0 7 14z"/><path d="M8 18h.01M12 20h.01M16 18h.01"/>',
+  fog: '<path d="M4 9h16M4 13h16M6 17h12"/>', wind: '<path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/>'};
+function wxKind(c) {
+  c = String(c || "");
+  if (/Thunder|Tropical|Hurricane/.test(c)) return ["storm", "Storms"];
+  if (/Snow|Flurr|Sleet|Hail|Blizzard|FreezingRain|WintryMix/.test(c)) return ["snow", "Snow"];
+  if (/Rain|Drizzle|Showers/.test(c)) return ["rain", c === "Drizzle" ? "Drizzle" : /Heavy/.test(c) ? "Heavy rain" : "Rain"];
+  if (/Fog|Haze|Smok|Dust/.test(c)) return ["fog", /Fog/.test(c) ? "Fog" : "Hazy"];
+  if (/Wind|Breezy/.test(c)) return ["wind", "Windy"];
+  if (/PartlyCloudy|MostlyClear/.test(c)) return ["partly", c === "MostlyClear" ? "Mostly sunny" : "Partly cloudy"];
+  if (/Cloudy/.test(c)) return ["cloud", c === "MostlyCloudy" ? "Mostly cloudy" : "Cloudy"];
+  return ["sun", /Hot/.test(c) ? "Hot" : "Sunny"];
+}
+const wxIc = c => `<svg class="wxi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${WX_ICON[wxKind(c)[0]]}</svg>`;
+function wxFor(g) {
+  if (!g.zip || !g.date || g.pending) return null;
+  const W = WX[g.zip]; if (!W) return null;
+  const k = startMs(g); if (k == null || k < Date.now()) return null;
+  const left = k - Date.now(), age = Date.now() - (W.at || 0);
+  if (left > 10 * 864e5) return null;
+  if (left <= 48 * 36e5 && g.time && g.time !== "00:00") {
+    const h = W.h && W.h[`${g.date}T${g.time.slice(0, 2)}`];
+    if (h && age <= 2 * 36e5) return {kind: "h", t: h[0], feels: h[1], pct: h[2], mph: h[3], dir: h[4], c: h[5], at: W.at, tz: W.tz, x: !!g.zipx};
+  }
+  const d = W.d && W.d[g.date];
+  if (d && age <= 12 * 36e5) return {kind: "d", hi: d[0], lo: d[1], pct: d[2], c: d[3], at: W.at, tz: W.tz, x: !!g.zipx};
+  return null;
+}
+function wxShort(w) {
+  const t = w.kind === "h" ? w.t : w.hi, wet = w.pct >= 40;
+  return `<span class="wxs">${wxIc(wet && !/rain|storm|snow/.test(wxKind(w.c)[0]) ? "Rain" : w.c)}${t}°${wet ? ` · ${w.pct}% rain` : ""}</span>`;
+}
+const COMPASS = d => ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(((d || 0) % 360) / 45) % 8];
+function wxBlock(w, firstOfTwo) {
+  const [, label] = wxKind(w.c), upd = `Updated ${new Date(w.at).toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit", timeZone: PHONE_TZ || undefined})} ${zAbbr(PHONE_TZ || undefined, w.at)}`;
+  const A = WX_ATTR || {}, mark = A.dark ? `<img class="wxmark" src="${esc(A.dark)}"${A.dark2 ? ` srcset="${esc(A.dark)} 1x, ${esc(A.dark2)} 2x"` : ""} alt="Apple Weather">` : `<span class="wxmark-t">Apple Weather</span>`;
+  const body = w.kind === "h"
+    ? `<div class="wxh">At kickoff${firstOfTwo ? " · first possible time" : ""}</div><div class="wxr">${wxIc(w.c)}<div><div class="wxm">${w.t}° · ${label}</div><div>Feels ${w.feels}° · Rain ${w.pct}% · Wind ${w.mph} mph ${COMPASS(w.dir)}</div></div></div><div class="wxu">${upd} · refreshed hourly</div>`
+    : `<div class="wxh">Game day forecast</div><div class="wxr">${wxIc(w.c)}<div><div class="wxm">High ${w.hi}° · Low ${w.lo}° · ${label}</div><div>Rain ${w.pct}% · kickoff-hour forecast starts 2 days before</div></div></div><div class="wxu">${upd} · refreshed every 6 hours</div>`;
+  const note = w.x ? `<div class="wxu">Field not posted yet: forecast for the tournament's main complex.</div>` : "";
+  return `<div class="wxb">${body}${note}<div class="wxa">${mark}<a href="${esc(A.legal || "https://developer.apple.com/weatherkit/data-source-attribution/")}" target="_blank" rel="noopener">Data sources</a></div></div>`;
+}
+// Field ZIPs of loaded games in the next 10 days; fetch their forecasts (every 20 min at most), then redraw once
+// if new weather arrived for games on screen.
+async function wxLoad(force) {
+  if (WX_BUSY || (!force && Date.now() - WX_AT < 20 * 60e3)) return;
+  const zs = new Set(), to = addDays(todayISO(), 10), from = todayISO();
+  for (const D of Object.values(CONF_CACHE)) for (const gs of [D.games || []].concat((D.events || []).map(e => e.games || [])))
+    for (const g of gs) if (g.zip && g.hs == null && g.date >= from && g.date <= to) zs.add(g.zip);
+  if (!zs.size) return;
+  WX_BUSY = true;
+  try {
+    const r = await fetch("/api/wx?z=" + [...zs].slice(0, 40).join(","), {cache: "no-store"});
+    if (r.ok) {
+      const j = await r.json(), before = JSON.stringify(WX);
+      WX = Object.assign({}, WX, j.z || {}); WX_ATTR = j.attr || WX_ATTR; WX_AT = Date.now();
+      if (JSON.stringify(WX) !== before && CUR) wxRedraw();
+    }
+  } catch (e) {} finally { WX_BUSY = false; }
+}
+function wxRedraw() {   // keep the scroll position; an open drop-down closes, so only when weather is new
+  const sc = $("#scroller"), top = sc ? sc.scrollTop : 0, open = [...document.querySelectorAll(".grow.open[data-gid]")].map(e => e.dataset.gid);
+  if (store.get("gview") === "every" && ALLMINE_DRAW) ALLMINE_DRAW(); else { const t = teamByKey(CUR), D = t && CONF_CACHE[t.f]; if (D) renderTeam(D, D.teams.find(x => `${D.pool_key}-${x.id}` === CUR).id, CUR); }
+  if (sc) sc.scrollTop = top;
+  for (const id of open) { const el = document.querySelector(`.grow[data-gid="${id}"]`); if (el && !el.classList.contains("open")) el.click(); }
+}
 function gameRow(D, M, g, o = {}) {
   const f = o.focus, us = f && (g.home_id === f || g.away_id === f), flip = us && g.away_id === f;
   const L = flip ? g.away_id : g.home_id, R = flip ? g.home_id : g.away_id;
@@ -1910,7 +1999,8 @@ function gameRow(D, M, g, o = {}) {
   const place = o.place !== undefined ? o.place : (g.venue ? evField(null, g.venue) : "");
   // schedule changed in the last 7 days (scripts/alerts.py writes them into status.json "chg")
   const chg = !done && STATUS && STATUS.chg && STATUS.chg[g.id], chgTag = chg ? `<span class="chg">${chg[0].length === 1 ? {d: "Date", t: "Time", v: "Field"}[chg[0][0]] + " changed" : "Schedule changed"}</span>` : "";
-  const bottom = when || o.sub || chgTag ? [when, place, o.sub, chgTag].filter(Boolean).join(" · ") : "";
+  const wx = done || o.wait ? null : wxFor(g), wxTag = wx ? wxShort(wx) : "";   // game weather (Apple), see wxFor
+  const bottom = when || o.sub || chgTag ? [when, place, o.sub, chgTag, wxTag].filter(Boolean).join(" · ") : "";
   let mid, mcls, ln, rn, det = "", mark = "";
   if (done) {
     const ls = flip ? g.as : g.hs, rs = flip ? g.hs : g.as;
@@ -1924,7 +2014,7 @@ function gameRow(D, M, g, o = {}) {
     const pl = flip ? P.l : P.w, pr = flip ? P.w : P.l, sL = flip ? [P.score[1], P.score[0]] : P.score;
     mid = us && flip ? "@" : "vs"; mcls = "vs"; ln = nm(LN, us); rn = nm(RN);
     det = `<div class="gdet" hidden><div class="glk">${likelyLine(LN, RN, sL)}</div>
-      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
+      <div>${g.pending ? `New date not set · was ${fmtDate(g.date)}` : `${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}`}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${wx ? wxBlock(wx) : ""}${o.stake ? `<div class="root" data-root="${g.id}"></div>` : ""}</div>`;
   }
   if (o.det) det = `<div class="gdet" hidden>${o.det}</div>`;
   if (o.strong) { if (o.strong.has(L)) ln = `<b>${ln}</b>`; if (o.strong.has(R)) rn = `<b>${rn}</b>`; }
@@ -2748,6 +2838,7 @@ function evOurs(ev, fid) {
   });
   return {known, days};
 }
+const evFirst = day => day.items.map(x => x.g).filter(g => g.time && g.time !== "00:00").sort((a, b) => a.time.localeCompare(b.time))[0] || (day.items[0] || {}).g || {};   // earliest possible game of a slot
 function evTbdRow(ev, day, fid, card) {
   if (!card) {   // Games: one short line; the paths live in the event card (tap opens it)
     const m0 = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
@@ -2761,7 +2852,7 @@ function evTbdRow(ev, day, fid, card) {
     const why = what ? esc(what) : "";   // round only; who we'd play and why lives on the Events tab
     const me = esc(m0.tn(fid)), oppTxt = opp && !/^one of /.test(opp) ? opp : "Opponent TBD";
     return `<div class="grow ours tap${day.tentative ? " tent" : ""}" data-ev="${evKey(ev)}"><div class="gtop"><span class="evtag" data-ev="${evKey(ev)}">${esc(evTag(ev))}</span>${day.tentative ? ` <span class="ttag">TENTATIVE</span>` : ""}</div><span class="gl"><span class="me-n">${me}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">${oppTxt}</span></span><span class="gm"></span>
-      <div class="gsub">${[[...new Set(day.items.map(x => myZ(x.g)))].join(" / "), why, one && one.g.venue ? evField(ev, one.g.venue) : ""].filter(Boolean).join(" · ")}</div></div>`;
+      <div class="gsub">${[[...new Set(day.items.map(x => myZ(x.g)))].join(" / "), why, one && one.g.venue ? evField(ev, one.g.venue) : "", (() => { const w = wxFor(evFirst(day)); return w ? wxShort(w) : ""; })()].filter(Boolean).join(" · ")}</div></div>`;
   }
   const m = evModel(ev), times = [...new Set(day.items.map(x => x.g.time || ""))].sort();
   const labels = [...new Set(day.items.map(x => m.label.get(x.g.id) || ""))];
@@ -2774,7 +2865,7 @@ function evTbdRow(ev, day, fid, card) {
     return `${x.cond.length ? x.cond.join(", ") + " → " : ""}${lab ? `${esc(lab)} · ` : ""}${vs}${where}`;
   });
   const tline = [...new Set(day.items.map(x => myZ(x.g)))].join(" / ");
-  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths"><div>${tline}</div>${lines.join("<br>")}</div>`;
+  return `<div class="grow ours${day.tentative ? " tent" : ""}"><span class="gl"><span class="me-n">${esc(m.tn(fid))}</span></span><span class="gs vs">vs</span><span class="gr"><span class="mut">Opponent TBD</span></span><span class="gm"></span>${day.tentative ? `<div class="gsub"><span class="ttag">TENTATIVE</span></div>` : ""}</div><div class="gpaths"><div>${tline}</div>${lines.join("<br>")}${(() => { const w = wxFor(evFirst(day)); return w ? wxBlock(w, times.length > 1) : ""; })()}</div>`;
 }
 // Rows for a list of event games, as calendar items {date, time, done, html}.
 function evGameItem(D, ev, g0, fid, o = {}) {
@@ -2797,7 +2888,7 @@ function evGameItem(D, ev, g0, fid, o = {}) {
     sub += `${sub ? " · " : ""}${ours ? `${ours[0] > ours[1] ? "Won" : "Lost"} ${ours[0]}–${ours[1]} on pens` : `${g.hpk}–${g.apk} on pens`}`;
   }
   const html = gameRow(Dl, Me, g, {focus: fid, ours: !!us, neutral: true, teams: ev.teams, left: o.left, noMark: true, strong: o.strong, toptag,
-    place: evField(ev, g.venue), sub, bottomAfter: !!o.card, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${likely ? `<div>${likely}</div>` : ""}`});
+    place: evField(ev, g.venue), sub, bottomAfter: !!o.card, det: `<div>${fmtDate(g.date)} · ${fmtTime(g.time)}${altDet(g)}${g.venue ? ` · ${venueLink(g.venue)}` : ""}</div>${likely ? `<div>${likely}</div>` : ""}${(() => { const w = evDone(g) ? null : wxFor(g); return w ? wxBlock(w) : ""; })()}`});
   return {date: g.date, time: g.time || "", done: evDone(g), g, html};
 }
 // The focus team's event items (known games + TBD/TENTATIVE days), for the Games calendar and the event card.

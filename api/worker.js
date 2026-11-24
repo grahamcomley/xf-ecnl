@@ -10,6 +10,7 @@
 import {makeLog, dbPerson, dbDailySync, usageStats} from "./log.js";
 import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
+import {wxRefresh, wxRoute, wxAdmin} from "./weather.js";
 import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner, testNewEvOwner} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
@@ -145,6 +146,8 @@ export default {
     const L = makeLog(env, ctx); pushSetLog(L);
     ctx.waitUntil(dbDailySync(env).then(r => r && L.info("mirror.sync", r)).catch(e => L.error("mirror.error", {msg: String(e)})));
     ctx.waitUntil(dailyVisitors(env, L).catch(e => L.error("daily.error", {msg: String(e)})));
+    // game weather: refresh the most overdue field forecasts from Apple (api/weather.js)
+    const wx = wxRefresh(env).then(r => { if (r && (r.fetched || r.failed)) (r.failed ? L.keep : L.info).call(L, "wx", Object.assign({site: env.SITE}, r)); }).catch(e => L.error("wx.error", {msg: String(e && e.message || e)}));
     // Apple push: once per saved key, check this server can reach Apple and the key is accepted. A made-up
     // device token is used, so Apple answering "BadDeviceToken" means the connection and the key both work.
     const apnsCheck = (async () => {
@@ -159,7 +162,7 @@ export default {
     // the log is saved once, after the alerts check: wait for the Apple check too
     ctx.waitUntil(apnsCheck.then(() => pushCheck(env)).then(r => { const busy = r && (r.sent || r.gone || r.init || r.remErr || r.wrapErr); (busy ? L.keep : L.info).call(L, "check", r); })
       .catch(e => L.error("check.error", {msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}))
-      .then(() => L.flush()));
+      .then(() => wx).then(() => L.flush()));
   }
 };
 
@@ -174,6 +177,7 @@ async function handle(req, env, url, p, L, who0) {
       return json({gate: g !== "off", pickem: pk === "on"});   // Pick'em: off until Graham launches it (Admin switch)
     }
     if (p === "/api/push/key" && req.method === "GET") return pushRoute(p, req, env, null, json);
+    if (p === "/api/wx" && req.method === "GET") return wxRoute(env, url);   // public: game weather (api/weather.js)
     const c = await who(req, env);
     if (!c) return json({signedIn: false}, p === "/api/me" && req.method === "GET" ? 200 : 401);
     who0.uid = c.sub; who0.via = c.pass ? "pass" : "clerk";
@@ -397,6 +401,14 @@ async function handle(req, env, url, p, L, who0) {
       await env.USERS.put("cfg:pickem:" + env.SITE, b.on ? "on" : "off");
       L.keep("admin.pickem", {uid: c.sub, on: !!b.on, site: env.SITE});
       return json({ok: true, on: !!b.on});
+    }
+    // /api/admin/wxkey: Apple Weather (WeatherKit) key + Services ID. GET says whether one is saved (never returns
+    // it); PUT {p8, kid, sid} saves it to KV cfg:wxkey and tries one real forecast. Shared by UAT and live.
+    if (p === "/api/admin/wxkey") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      const r = await wxAdmin(env, req);
+      if (req.method === "PUT") L.keep("admin.wxkey", {uid: c.sub, kid: r.error ? "" : "saved", chk: r.chk || null, error: r.error || null});
+      return json(r, r.error ? 400 : 200);
     }
     // /api/admin/apns: Apple push key for the App Store app. GET says whether one is saved (never returns it);
     // PUT {p8, kid} checks the key opens and saves it to KV cfg:apns. Shared by UAT and live.
