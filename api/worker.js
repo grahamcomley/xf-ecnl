@@ -10,7 +10,7 @@
 import {makeLog, dbPerson, dbDailySync, usageStats} from "./log.js";
 import {apnsKey, apnsSend, APNS_TEAM, APNS_TOPIC} from "./push.js";
 import {route as pickRoute, adminList as pickList, adminSet as pickSet} from "./pickem.js";
-import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner} from "./alerts.js";
+import {setLog as pushSetLog, route as pushRoute, check as pushCheck, deleteUser as pushDeleteUser, adminStats as pushStats, testOwner as pushTestOwner, replayOwner as pushReplay, notifyOwner as pushNotifyOwner, testNewEvOwner} from "./alerts.js";
 
 const ORIGINS = ["https://sidelinestandings.com", "https://www.sidelinestandings.com", "https://uat.sidelinestandings.com"];
 const OWNERS = ["grahamcomley@gmail.com"];
@@ -315,6 +315,14 @@ async function handle(req, env, url, p, L, who0) {
       const r = await pushReplay(env, c.sub);
       L.keep("admin.replay", Object.assign({uid: c.sub}, r));
       return json(Object.assign({ok: true}, r));
+    }
+    // POST /api/admin/evtest: owner gets a test "Schedule posted" alert for a real upcoming tournament of one of
+    // their followed teams, on their own devices only (api/alerts.js testNewEvOwner).
+    if (p === "/api/admin/evtest" && req.method === "POST") {
+      if (!isOwner(c)) return json({error: "not allowed"}, 403);
+      const r = await testNewEvOwner(env, c.sub);
+      L.keep("admin.evtest", Object.assign({uid: c.sub}, r));
+      return json(r);
     }
     // POST /api/admin/pushtest: owner sends a test alert to every device they turned alerts on.
     if (p === "/api/admin/pushtest" && req.method === "POST") {

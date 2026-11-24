@@ -2,17 +2,17 @@
 //
 // Storage (KV binding USERS, shared by UAT and live; SITE keeps them apart):
 //   d:<site>:<device id> -> one device that turned alerts on:
-//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr, sc}], q: {on, s, e}, tz, badge, seen, created, upd}
+//     {uid, sub: {endpoint, keys}, teams: [{k, f, n, a, our, lg, mo, rem, wr, sc, ne}], q: {on, s, e}, tz, badge, seen, created, upd}
 //     our = our game's final score (and corrections); lg = "all" | "near" | "off" for other league games
 //     ("near" = games with a team within 2 places of us); mo = big moments (a line on the score alert);
 //     rem = game-day reminder "am" (morning of) | "2h" (2 hours before) | "off"; wr = Sunday wrap-up;
-//     sc = schedule-change alerts for that team (on unless false);
+//     sc = schedule-change alerts for that team (on unless false); ne = new event schedules (on unless false);
 //     q = quiet hours (start/end "HH:MM", phone's time zone tz); seen = last time the app was opened.
 //     KV metadata: {u: user, n: teams, t: "team,keys", tz} so the 5-minute check can skip most reads.
 //   st:<site> -> one small state record written only when something changed:
 //     {last: last alerts run handled, held: {device: [{c, t, kind, at}]}, ll: {"device|team": ms},
 //      rem: {"device|game": ms} reminders sent, wrap: {device: "Sunday date"} wrap-ups sent, sent: {week: n},
-//      sh: {device: [schedule changes held by quiet hours]}}
+//      sh: {device: [schedule changes held by quiet hours]}, eh: {device: [new event schedules held]}}
 // Where the changes come from: site/data/alerts.json, written by scripts/alerts.py on each data update.
 import {send as sendRaw, vapid, apnsSend, APNS_TOPICS} from "./push.js";
 import {wrapLine} from "./pickem.js";
@@ -69,7 +69,7 @@ function cleanDevice(b) {
     k: t.k, f: typeof t.f === "string" && /^[a-z0-9-]{3,60}$/.test(t.f) ? t.f : "",
     n: String(t.n || "").slice(0, 40), a: String(t.a || "").slice(0, 20), our: t.our !== false,
     lg: t.lg === "off" ? "off" : t.lg === "near" ? "near" : "all", mo: false,   // big moments and the Sunday wrap-up are retired (Nov 2026)
-    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false, sc: t.sc !== false}));
+    rem: t.rem === "am" || t.rem === "off" ? t.rem : "2h", wr: false, sc: t.sc !== false, ne: t.ne !== false}));
   const q = b.q || {};
   let tz = typeof b.tz === "string" && b.tz.length < 60 ? b.tz : "America/Los_Angeles";
   try { new Intl.DateTimeFormat("en-US", {timeZone: tz}); } catch (e) { tz = "America/Los_Angeles"; }
@@ -93,7 +93,7 @@ export async function route(p, req, env, c, json) {
     const old = await env.USERS.get(key, "json");
     const rec = Object.assign(d, {uid: c.sub, email: (c.email || "").toLowerCase(), seen: Date.now(), created: old && old.created || Date.now(), upd: Date.now()});
     await putDev(env, key, rec);
-    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}${t.sc === false ? "" : "C"}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
+    if (LOG) (old ? LOG.info : LOG.keep).call(LOG, old ? "alerts.settings" : "alerts.on", {uid: c.sub, dev: id, teams: rec.teams.map(t => `${t.k}:${t.our ? "S" : ""}${t.lg !== "off" ? "L" : ""}${t.mo ? "M" : ""}${t.rem}${t.wr ? "W" : ""}${t.sc === false ? "" : "C"}${t.ne === false ? "" : "N"}`).join(" "), q: rec.q.on ? rec.q.s + "-" + rec.q.e : "off", badge: rec.badge, tz: rec.tz, service: rec.sub.apns ? "app" : new URL(rec.sub.endpoint).host});
     return json({ok: true});
   }
   // The app was opened (sent at most every few hours on weekends): the Sunday wrap-up skips people
@@ -347,6 +347,7 @@ export async function check(env, now = Date.now()) {
   const out = {runs: fresh.length};
   if (fresh.length || due.length) Object.assign(out, await scores(env, st, fresh, due, now, n => sent += n, () => gone++));
   try { out.sched = await schedAlerts(env, st, fresh, now); sent += out.sched; } catch (e) { out.schedErr = String(e); }
+  try { out.newev = await newEvAlerts(env, st, fresh, now); sent += out.newev; } catch (e) { out.newevErr = String(e); }
   try { out.reminders = await reminders(env, st, data.up || [], now); sent += out.reminders; } catch (e) { out.remErr = String(e); }
   try { out.wrapups = await wrapups(env, st, data.wk || {}, now); sent += out.wrapups; } catch (e) { out.wrapErr = String(e); }
   try { out.drift = await driftAlert(env, st, now); sent += out.drift; } catch (e) { out.driftErr = String(e); }
@@ -472,6 +473,92 @@ async function schedAlerts(env, st, fresh, now) {
     if (s < 300) n++;
   }
   return n;
+}
+
+// New event schedules (Graham, Nov 23): a followed team's games posted for a tournament starting within 28 days,
+// confirmed over two runs by scripts/alerts.py (run "e" lists). Per team: on unless t.ne === false. Several teams
+// at once come as one alert; quiet hours hold them (st.eh); dropped once the first game has started.
+const shortDay = date => { const [y, m, d] = date.split("-").map(Number); return new Intl.DateTimeFormat("en-US", {timeZone: "UTC", weekday: "short"}).format(Date.UTC(y, m - 1, d)); };
+export function newEvMsg(d, items, test = false) {
+  const tz = d.tz || "America/Los_Angeles";
+  const one = it => {
+    const g = it.g[0], when = `${dayText(g.d)}, ${schTime(g.d, g.t, g.tz, tz)}`;
+    const lastD = it.g[it.g.length - 1].d, more = it.n > 1 ? ` ${it.n} games${lastD !== g.d ? `, ${dayText(g.d)} – ${dayText(lastD)}` : ""}.` : "";
+    const later = it.later && it.later.length ? ` Then bracket games ${shortDay(it.later[0])}${it.later[1] !== it.later[0] ? "–" + shortDay(it.later[1]) : ""}.` : "";
+    return {title: `Schedule posted: ${it.en}`, body: `${it.tn} · first game ${when} ${g.h ? "vs" : "@"} ${g.o}${g.v ? " · " + g.v : ""}.${more}${later}`,
+      line: `${it.tn}: ${it.en}, first game ${dayText(g.d)}`, u: `/#t=${it.k}&g=${g.id}&v=events`};
+  };
+  const all = items.map(one), pre = test ? "Test: " : "";
+  if (all.length === 1) return {t: pre + all[0].title, b: all[0].body, u: all[0].u, tag: "e" + items[0].ev + items[0].k};
+  return {t: pre + `Schedules posted: ${all.length} of your teams`, b: all.map(x => x.line).join("\n"), x: all.map(x => x.line), u: all[0].u, tag: "newev"};
+}
+async function newEvAlerts(env, st, fresh, now) {
+  const items = fresh.flatMap(r => r.e || []);
+  st.eh = st.eh || {};
+  const due = Object.keys(st.eh);
+  if (!items.length && !due.length) return 0;
+  const byTeam = new Map();
+  for (const it of items) { if (!byTeam.has(it.k)) byTeam.set(it.k, []); byTeam.get(it.k).push(it); }
+  const metas = items.length ? await deviceMeta(env) : due.map(id => ({name: devKey(env, id), metadata: {t: ""}}));
+  let n = 0;
+  for (const m of metas) {
+    const id = m.name.split(":")[2], held = st.eh[id] || [];
+    const tk = ((m.metadata || {}).t || "").split(",").filter(k => byTeam.has(k));
+    if (!tk.length && !held.length) continue;
+    const d = await env.USERS.get(m.name, "json");
+    if (!d) { delete st.eh[id]; continue; }
+    const tz = d.tz || "America/Los_Angeles", mine = [];
+    for (const t of d.teams) if (t.ne !== false) for (const it of byTeam.get(t.k) || []) mine.push(it);
+    const byKey = new Map();
+    for (const it of held.concat(mine)) byKey.set(it.k + "|" + it.ev, it);
+    const list = [...byKey.values()];
+    if (!list.length) { delete st.eh[id]; continue; }
+    if (quiet(d, now)) { st.eh[id] = list.slice(-30); continue; }
+    delete st.eh[id];
+    const ready = list.filter(it => it.g && it.g.length && kickMs(it.g[0].d, it.g[0].t, it.g[0].tz, tz) > now && (d.teams.find(t => t.k === it.k) || {}).ne !== false);
+    if (!ready.length) continue;
+    const s = await send(env, d.sub, Object.assign(newEvMsg(d, ready), {badge: d.badge}), "newevent", d);
+    if (s === 404 || s === 410) { (dbDevice(env, null, id, null), await env.USERS.delete(m.name)); continue; }
+    if (s < 300) n++;
+  }
+  return n;
+}
+// Owner test (Admin): the newest upcoming tournament posted for one of the owner's followed teams, sent as
+// "Test: Schedule posted: ..." to the owner's own alert devices only. Returns {sent, ev, key, title}.
+export async function testNewEvOwner(env, uid) {
+  const devs = [];
+  for (const m of await deviceMeta(env)) { const d = await env.USERS.get(m.name, "json"); if (d && d.uid === uid) devs.push([m.name, d]); }
+  if (!devs.length) return {sent: 0, why: "Turn on alerts on this phone first."};
+  const teams = devs[0][1].teams.filter(t => t.f);
+  const today = new Date().toISOString().slice(0, 10);
+  let best = null;
+  for (const t of teams) {
+    let D = null;
+    try { const r = await env.ASSETS.fetch(new Request(`https://assets.local/data/conf/${t.f}.json`)); D = r.ok ? await r.json() : null; } catch (e) {}
+    if (!D) continue;
+    const tid = t.k.slice(t.k.indexOf("-") + 1), evs = D.events || [];
+    for (const i of (D.team_events || {})[tid] || []) {
+      const ev = evs[i]; if (!ev || ev.competition) continue;
+      const dates = ev.games.map(g => g.date).filter(Boolean).sort(); if (!dates.length || dates[0] < today) continue;
+      const names = Object.fromEntries((ev.teams || []).map(x => [String(x.id), x.short || x.name]));
+      const ours = ev.games.filter(g => String(g.home_id) === tid || String(g.away_id) === tid).sort((a, b) => (a.date + (a.time || "")).localeCompare(b.date + (b.time || "")));
+      const real = ours.filter(g => g.home_id && g.away_id && g.time && g.time !== "00:00");
+      if (!real.length) continue;
+      const lastReal = real[real.length - 1].date, later = [...new Set(ev.games.filter(g => (!g.home_id || !g.away_id) && g.date >= lastReal).map(g => g.date))].sort();
+      const it = {k: t.k, tn: t.n || names[tid] || "Your team", ev: ev.event_id, en: (ev.name || "Event").replace(/\s*20\d\d(-\d\d)?$/, ""), first: dates[0], n: real.length,
+        g: real.slice(0, 3).map(g => ({id: String(g.id), d: g.date, t: g.time, tz: g.tz || "", h: String(g.home_id) === tid, o: names[String(String(g.home_id) === tid ? g.away_id : g.home_id)] || (String(g.home_id) === tid ? g.away : g.home), v: (g.venue || "").slice(0, 80)})),
+        later: later.length ? [later[0], later[later.length - 1]] : [], evkey: `${ev.event_id}-${ev.flight_id}`};
+      if (!best || it.first < best.first) best = it;
+    }
+  }
+  if (!best) return {sent: 0, why: "None of your teams has an upcoming tournament schedule posted."};
+  let sent = 0, msg = null;
+  for (const [name, d] of devs) {
+    msg = newEvMsg(d, [best], true);
+    const s = await send(env, d.sub, Object.assign({}, msg, {badge: d.badge}), "newevent-test", d);
+    if (s < 300) sent++;
+  }
+  return {sent, ev: best.evkey, key: best.k, title: msg && msg.t};
 }
 
 // Daily drift check: when our table's games played / points don't match ECNL's for a conference,

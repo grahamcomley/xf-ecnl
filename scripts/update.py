@@ -237,14 +237,14 @@ QUICK = "--quick" in sys.argv
 HOT = {"refetched": 0}
 
 
-SOON_DAYS = 14   # tournaments starting this soon: age groups and schedules rechecked at least hourly (Graham, Nov 23)
+SOON_DAYS = 28   # tournaments starting this soon: age groups and schedules rechecked at least hourly (Graham, Nov 23: 28 days)
 
 
 def flight_raw(event_id, flight_id, done, soon=False):
     """Schedule for one flight. Finished events: cached forever. A flight with a game that kicked
     off in the last ~12 hours and has no score yet is re-fetched every run (new scores show within
     15 minutes); one from 12-48 hours ago, or with no kickoff time, at most hourly. Otherwise reuse
-    a copy younger than 2 hours (full run) or 24 hours (quick run). A tournament starting within SOON_DAYS
+    a copy younger than 2 hours (full run) or 24 hours (quick run). A tournament on now or starting within SOON_DAYS
     (soon=True): at most an hour old on every run, so a newly posted bracket or a changed time shows
     within the hour."""
     path = f"Event/get-schedules-by-flight/{event_id}/{flight_id}/0"

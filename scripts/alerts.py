@@ -139,8 +139,95 @@ def collect(today):
     return finals
 
 
-SCHED_TRACK_DAYS = 60   # games this far ahead are remembered, so a move into the next 14 days is seen
-SCHED_ALERT_DAYS = 14   # a change alerts only if the old or new date is within this many days
+SCHED_TRACK_DAYS = 60   # games this far ahead are remembered, so a move into the next 28 days is seen
+SCHED_ALERT_DAYS = 28   # a change alerts only if the old or new date is within this many days (Graham: 28, Nov 23)
+NEWEV_DAYS = 28         # new tournament schedules alert for events starting within this many days
+NEWEV_TAG_DAYS = 3      # the Events tab shows "Just posted" this long (or until opened on that phone)
+
+
+def new_event_schedules(confs, now, pt_today):
+    """New event schedules (Graham, Nov 23): the first time a team's games (with a real opponent) appear in a
+    tournament starting within NEWEV_DAYS. Confirmed when a later run (≥ SCHED_CONFIRM_MIN minutes on) still
+    shows them; once per team per tournament; never for leagues (league files aren't "events" here) or other
+    competitions. State: site/data/_evnew.json {"seen": {"team|event": run}, "pend": {key: run}, "tags": {event: run}}.
+    Returns this run's confirmed items for alerts.json runs[].e; writes "evnew" {event id: when} into status.json."""
+    path = os.path.join(OUT, "_evnew.json")
+    try:
+        with open(path) as f:
+            state = json.load(f)
+    except Exception:
+        state = None
+    first = state is None
+    state = state or {}
+    seen, pend, tags = state.get("seen", {}), state.get("pend", {}), state.get("tags", {})
+    run_id = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    today, to = pt_today.isoformat(), (pt_today + timedelta(days=NEWEV_DAYS)).isoformat()
+    cur = {}
+    for cf, D in confs.items():
+        pk = D.get("pool_key")
+        evs = D.get("events", [])
+        for tid, idxs in (D.get("team_events") or {}).items():
+            for i in idxs:
+                ev = evs[i] if isinstance(i, int) and i < len(evs) else None
+                if not ev or ev.get("competition"):
+                    continue
+                games = ev.get("games", [])
+                dates = sorted(g["date"] for g in games if g.get("date"))
+                if not dates or not (today <= dates[0] <= to):
+                    continue
+                tnames = {str(t["id"]): t.get("short") or t.get("name") for t in ev.get("teams", [])}
+                ours = sorted([g for g in games if str(g.get("home_id")) == str(tid) or str(g.get("away_id")) == str(tid)],
+                              key=lambda g: (g.get("date") or "", g.get("time") or ""))
+                real = [g for g in ours if g.get("home_id") and g.get("away_id") and g.get("time") and g["time"] != "00:00"]
+                if not real:
+                    continue
+                key = f"{pk}-{tid}|{ev['event_id']}"
+                if key in cur:
+                    continue
+                last_real = real[-1]["date"]
+                later = sorted({g["date"] for g in games if (not g.get("home_id") or not g.get("away_id")) and g.get("date") and g["date"] >= last_real})
+                me_name = tnames.get(str(tid)) or ""
+                for t in D.get("teams", []):
+                    if str(t["id"]) == str(tid):
+                        me_name = t.get("short") or t.get("name") or me_name
+                def opp(g):
+                    o = g["away_id"] if str(g["home_id"]) == str(tid) else g["home_id"]
+                    return tidy(tnames.get(str(o)) or (g.get("away") if str(g["home_id"]) == str(tid) else g.get("home")))
+                cur[key] = {"k": f"{pk}-{tid}", "tn": tidy(me_name), "ev": ev["event_id"], "fl": ev.get("flight_id"),
+                            "en": re.sub(r"\s*20\d\d(-\d\d)?$", "", ev.get("name") or "Event").strip(), "first": dates[0],
+                            "n": len(real), "g": [{"id": str(g["id"]), "d": g["date"], "t": g["time"], "tz": g.get("tz") or "",
+                                                  "o": opp(g), "h": str(g["home_id"]) == str(tid), "v": (g.get("venue") or "")[:80]} for g in real[:3]],
+                            "later": [later[0], later[-1]] if later else []}
+    out = []
+    new_seen, new_pend = dict(seen), {}
+    for key, it in cur.items():
+        if key in seen:
+            continue
+        if first:
+            new_seen[key] = run_id
+            continue
+        since = pend.get(key)
+        if since and (now - datetime.fromisoformat(since.replace("Z", "+00:00"))).total_seconds() / 60 >= SCHED_CONFIRM_MIN:
+            out.append(it); new_seen[key] = run_id; tags[str(it["ev"])] = run_id
+        else:
+            new_pend[key] = since or run_id
+    cut_seen = (now - timedelta(days=120)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    new_seen = {k: v for k, v in new_seen.items() if v >= cut_seen or k in cur}
+    cut = (now - timedelta(days=NEWEV_TAG_DAYS)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    tags = {k: v for k, v in tags.items() if v >= cut}
+    with open(path, "w") as f:
+        json.dump({"seen": new_seen, "pend": new_pend, "tags": tags}, f, separators=(",", ":"))
+    status_path = os.path.join(OUT, "status.json")
+    try:
+        with open(status_path) as f:
+            status = json.load(f)
+        status["evnew"] = tags
+        with open(status_path, "w") as f:
+            json.dump(status, f, separators=(",", ":"))
+    except Exception:
+        pass
+    out.sort(key=lambda x: (x["first"], x["k"]))
+    return out
 SCHED_CONFIRM_MIN = 20  # a change must still be there on a later run at least this many minutes on
 SCHED_TAG_DAYS = 7      # the games list shows "Time changed" etc. this long
 
@@ -347,6 +434,7 @@ def main():
         json.dump({"from": last_fri.isoformat(), "to": last_sun.isoformat(), "c": sorted(rep, key=lambda c: (c["d"], c["g"]))}, f, separators=(",", ":"))
 
     sched = schedule_changes(confs, now, pt_today)
+    newev = new_event_schedules(confs, now, pt_today)
 
     runs = []
     if os.path.exists(out_path):
@@ -357,17 +445,19 @@ def main():
             runs = []
     cut = (now - timedelta(hours=RUNS_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     runs = [r for r in runs if r.get("id", "") >= cut]
-    if changes or sched:
+    if changes or sched or newev:
         changes.sort(key=lambda c: (c["cf"], c["d"], c["g"]))
         r = {"id": run_id, "c": changes, "m": moments, "pos": positions}
         if sched:
             r["s"] = sched
+        if newev:
+            r["e"] = newev
         runs.append(r)
     with open(out_path, "w") as f:
         json.dump({"updated": run_id, "runs": runs, "up": up, "wk": wk}, f, separators=(",", ":"))
     with open(prev_path, "w") as f:
         json.dump(finals, f, separators=(",", ":"))
-    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {len(sched)} schedule changes, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
+    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {len(sched)} schedule changes, {len(newev)} new event schedules, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
           + ("" if prev is not None else " (first run: nothing sent)"))
 
 
