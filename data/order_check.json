@@ -631,6 +631,15 @@
   ]
  },
  {
+  "conf": "u11b-4370-41051",
+  "name": "Pre-ECNL Boys Southern Cal",
+  "kind": "adjusted",
+  "teams": {
+   "133123": -1,
+   "133595": 2
+  }
+ },
+ {
   "conf": "u11b-4370-41053",
   "name": "Pre-ECNL Boys Southern Cal",
   "ours": [
@@ -2631,6 +2640,59 @@
    107345,
    75537,
    135728
+  ]
+ },
+ {
+  "conf": "u13b-4348-41594",
+  "name": "ECNL RL Boys Golden State",
+  "ours": [
+   131670,
+   132824,
+   110958,
+   133201,
+   135964,
+   99291,
+   126186
+  ],
+  "ecnl": [
+   131670,
+   110958,
+   133201,
+   132824,
+   135964,
+   99291,
+   126186
+  ]
+ },
+ {
+  "conf": "u13b-4348-41594",
+  "name": "ECNL RL Boys Golden State",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 110958,
+    "team": "Club America Nido Aguila | Valley",
+    "ours": [
+     10,
+     17
+    ],
+    "ecnl": [
+     9,
+     17
+    ]
+   },
+   {
+    "id": 132824,
+    "team": "Association FC",
+    "ours": [
+     10,
+     18
+    ],
+    "ecnl": [
+     9,
+     15
+    ]
+   }
   ]
  },
  {
@@ -16235,6 +16297,37 @@
    81762,
    46727,
    80370
+  ]
+ },
+ {
+  "conf": "u16g-4272-40608",
+  "name": "ECNL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 80240,
+    "team": "Sting Royal",
+    "ours": [
+     12,
+     27
+    ],
+    "ecnl": [
+     11,
+     24
+    ]
+   },
+   {
+    "id": 40463,
+    "team": "AHFC",
+    "ours": [
+     10,
+     10
+    ],
+    "ecnl": [
+     9,
+     10
+    ]
+   }
   ]
  },
  {
