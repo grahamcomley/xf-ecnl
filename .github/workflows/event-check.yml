@@ -17,6 +17,18 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/cache
+            site/data
+          key: apicache-none
+          restore-keys: apicache-
+      - name: What the data run's cache holds for these events
+        env:
+          EVENTS: ${{ github.event.inputs.events }}
+        run: |
+          for e in $EVENTS; do ls -la --time-style=full-iso data/cache/ | grep "__${e}__" | awk '{print $6, $7, $5, $9}' | tee -a $GITHUB_STEP_SUMMARY; done
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - env:
