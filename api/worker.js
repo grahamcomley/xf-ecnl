@@ -147,7 +147,7 @@ export default {
     ctx.waitUntil(dbDailySync(env).then(r => r && L.info("mirror.sync", r)).catch(e => L.error("mirror.error", {msg: String(e)})));
     ctx.waitUntil(dailyVisitors(env, L).catch(e => L.error("daily.error", {msg: String(e)})));
     // game weather: refresh the most overdue field forecasts from Apple (api/weather.js)
-    ctx.waitUntil(wxRefresh(env).then(r => { if (r && (r.fetched || r.failed)) (r.failed ? L.keep : L.info).call(L, "wx", Object.assign({site: env.SITE}, r)); }).catch(e => L.error("wx.error", {msg: String(e && e.message || e)})));
+    const wx = wxRefresh(env).then(r => { if (r && (r.fetched || r.failed)) (r.failed ? L.keep : L.info).call(L, "wx", Object.assign({site: env.SITE}, r)); }).catch(e => L.error("wx.error", {msg: String(e && e.message || e)}));
     // Apple push: once per saved key, check this server can reach Apple and the key is accepted. A made-up
     // device token is used, so Apple answering "BadDeviceToken" means the connection and the key both work.
     const apnsCheck = (async () => {
@@ -162,7 +162,7 @@ export default {
     // the log is saved once, after the alerts check: wait for the Apple check too
     ctx.waitUntil(apnsCheck.then(() => pushCheck(env)).then(r => { const busy = r && (r.sent || r.gone || r.init || r.remErr || r.wrapErr); (busy ? L.keep : L.info).call(L, "check", r); })
       .catch(e => L.error("check.error", {msg: String(e && e.message || e), stack: String(e && e.stack || "").slice(0, 800)}))
-      .then(() => L.flush()));
+      .then(() => wx).then(() => L.flush()));
   }
 };
 

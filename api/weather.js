@@ -84,12 +84,13 @@ export async function wxRefresh(env, now = Date.now()) {
 
 async function attribution(env, jwt, now) {
   const a = await env.USERS.get("wx:attr", "json");
-  if (a && now - a.at < 86400e3) return a;
+  if (a && a.dark && now - a.at < 86400e3) return a;   // refetch daily, or now if the logo is missing
   try {
     const r = await fetch("https://weatherkit.apple.com/attribution/en", {headers: {authorization: "Bearer " + jwt}});
     if (!r.ok) return a;
     const j = await r.json(), abs = u => u && (u.startsWith("http") ? u : "https://weatherkit.apple.com" + u);
-    const v = {dark: abs(j.logoDark1x || j.logoDark2x), light: abs(j.logoLight1x || j.logoLight2x), dark2: abs(j.logoDark2x), light2: abs(j.logoLight2x),
+    const g = k => j[k.replace("@", "")] || j[k];   // Apple's names are "logoDark@1x" etc.
+    const v = {dark: abs(g("logoDark@1x") || g("logoDark@2x")), light: abs(g("logoLight@1x") || g("logoLight@2x")), dark2: abs(g("logoDark@2x")), light2: abs(g("logoLight@2x")),
       legal: j.legalPageURL || "https://developer.apple.com/weatherkit/data-source-attribution/", name: j.serviceName || "Weather", at: now};
     await env.USERS.put("wx:attr", JSON.stringify(v));
     return v;
