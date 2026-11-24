@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.77">
+<meta name="app-version" content="v1.79">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -268,7 +268,7 @@ body.allmine #tstrip .tpill:not(.tfollow){background:var(--me);color:#fff;border
 .gpaths{font-size:12px;color:var(--mut);line-height:1.45;padding:4px 0 8px 4px}.gpaths .w{color:#86efac}.gpaths .l{color:#fca5a5}
 .gsub .w{color:#86efac}.gsub .l{color:#fca5a5}
 .card.evcard{padding:14px}.evcard>summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:10px}.evcard>summary::-webkit-details-marker{display:none}
-.evcard .evh{flex:1;min-width:0}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
+.evcard .evh{flex:1;min-width:0}.evcard .evnew{color:#f0997b;font-size:13px;font-weight:600;white-space:nowrap}.evcard .evt{font-size:16px;font-weight:700}.evcard .evnext{font-size:14px;margin-top:6px}
 .evcard>summary>.ic{width:18px;height:18px;color:var(--mut);margin-top:3px;transition:transform .15s}.evcard[open]>summary>.ic{transform:rotate(180deg)}
 .evcard .evb{margin-top:10px}.fbr{display:grid;grid-template-columns:1fr;gap:6px;padding:7px 4px;border-bottom:1px solid var(--line);font-size:13px}.fbr .fl{font-size:11px;color:var(--mut)}
 .evcard.flash{box-shadow:0 0 0 2px #6d28d9}
@@ -488,6 +488,7 @@ function showTab(t, scroll = true) {
   if (t !== "team" && LOCKED()) t = "team";
   TAB = t; try { localStorage.setItem("tab", t); } catch (e) {}
   document.querySelectorAll("#app .pane").forEach(p => p.hidden = p.dataset.tab !== t);
+  if (t === "events") document.querySelectorAll('#app .pane[data-tab="events"] details.evcard[open]').forEach(d => { if (d.querySelector(".evnew")) store.set("evSeen:" + d.dataset.ev, "1"); });   // "Just posted": seen once shown open
   document.querySelectorAll("#tabbar button").forEach(b => { b.classList.toggle("on", b.dataset.tab === t); b.setAttribute("aria-current", b.dataset.tab === t ? "page" : "false"); });
   if (scroll) $("#scroller").scrollTop = 0;
   if (t === "events" && EVDOT) EVDOT.seen();
@@ -1139,6 +1140,7 @@ async function drawAdmin(b) {
         <div class="stat"><div class="v">${d.alerts.lastWeek}</div><div class="k">Sent last week</div></div></div>
         <button class="btn-sec" id="admpush">Send a test alert to my devices</button>
         <button class="btn-sec" id="admreplay">Replay last weekend to my devices</button>
+        <button class="btn-sec" id="admevtest">Test "Schedule posted" alert on my devices</button>
         <p class="mut" style="font-size:12px;margin:6px 0 0">Last check that sent or held alerts: ${d.alerts.lastCheck ? ago(d.alerts.lastCheck) : "not yet"}</p>`, false) : ""}
       ${fold("app", "App Store app", `${ak.saved ? "Apple push key saved" : "Apple push key needed"} · ${IS_APP ? "you're in the app" : "you're in the browser"}`, `
         <div class="setbox" style="font-size:13px"><b>Apple push key</b><div class="mut" style="margin-top:2px">${ak.saved ? `Saved (Key ID ${esc(ak.kid)}, ${day(ak.at)}). ${ak.chk ? (ak.chk.ok ? "Connection to Apple checked: working." : `Connection to Apple: not working yet (${esc(String(ak.chk.status))} ${esc(ak.chk.reason || "")}).`) : "Connection check runs within 5 minutes."} Paste a new one only to replace it.` : "Needed before the app can get alerts. Paste the contents of the .p8 file and its Key ID."}</div>
@@ -1190,6 +1192,9 @@ async function drawAdmin(b) {
         else { rb.textContent = was; toast(j.error || "Couldn't create it"); } }
       catch (x) { rb.textContent = was; toast("Couldn't create it. Try again."); }
     }; });
+    // test "Schedule posted": a real upcoming tournament of one of my teams; also shows its "Just posted" label here
+    const et = $("#admevtest"); if (et) et.onclick = async () => { et.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/evtest"); if (r.ev) { store.set("evNewTest", JSON.stringify({ev: r.ev, at: Date.now()})); store.set("evSeen:" + r.ev, ""); }
+      et.textContent = r.sent ? `Sent: ${r.title}` : (r.why || "Couldn't send"); } catch (x) { et.textContent = "Couldn't send. Try again."; } };
     const ap = $("#admpush"); if (ap) ap.onclick = async () => { ap.textContent = "Sending…"; try { const r = await api("POST", "/api/admin/pushtest"); ap.textContent = r.sent ? `Sent to ${r.sent} device${r.sent === 1 ? "" : "s"}` : "No devices with alerts on yet"; } catch (x) { ap.textContent = "Couldn't send. Try again."; } };
   } catch (x) { if (pageIs("admin")) b.innerHTML = "<div class='pgin'><p class='mut'>Couldn't load the admin data.</p></div>"; }
 }
@@ -1215,9 +1220,9 @@ function appRegister() {
 const ACFG_DEF = {teams: {}, q: {on: true, s: "22:00", e: "07:00"}, badge: true};
 const acfg = () => { try { return Object.assign({}, ACFG_DEF, JSON.parse(store.get("alertCfg") || "{}")); } catch (e) { return Object.assign({}, ACFG_DEF); } };
 const setAcfg = c => { store.set("alertCfg", JSON.stringify(c)); alertsSync(true); };
-const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h", sc: true}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
-const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off" || tc.sc !== false;
-const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder", tc.sc !== false && "Schedule changes"].filter(Boolean).join(" · ") || "No alerts";
+const tcfg = (c, k) => Object.assign({our: true, lg: "all", rem: "2h", sc: true, ne: true}, c.teams[k] || {}, {mo: false, wr: false});   // big moments and the Sunday wrap-up are retired
+const teamAlertsOn = tc => tc.our || tc.lg !== "off" || tc.rem !== "off" || tc.sc !== false || tc.ne !== false;
+const alertSum = tc => [tc.our && "Our results", tc.lg !== "off" && "League results", tc.rem === "2h" ? "2-hr reminder" : tc.rem === "am" && "Morning reminder", tc.sc !== false && "Schedule changes", tc.ne !== false && "New event schedules"].filter(Boolean).join(" · ") || "No alerts";
 const alertsOn = () => !!store.get("alertsOn");
 // Alerts on/off is remembered per account on this phone, so signing out (or someone else signing in and
 // out) and back in puts yours back the way they were.
@@ -1338,7 +1343,7 @@ async function drawAlertsPage(b) {
     e.preventDefault();
     const s = btn.parentElement.dataset.seg, v = btn.dataset.v, cc = acfg(), tk = btn.closest("[data-team]");
     if (s === "master") { if (v === "0") disableAlerts(); return; }
-    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}, sc: {sc: v === "1"}}[s] || {}); }
+    if (tk && !tk.dataset.team.startsWith("__")) { const k = tk.dataset.team; cc.teams[k] = Object.assign(tcfg(cc, k), {our: {our: v === "1"}, lg: {lg: v}, mo: {mo: v === "1"}, rem: {rem: v}, wr: {wr: v === "1"}, sc: {sc: v === "1"}, ne: {ne: v === "1"}}[s] || {}); }
     else if (s === "qon") cc.q.on = v === "1";
     else if (s === "badge") { cc.badge = v === "1"; if (!cc.badge && navigator.clearAppBadge) navigator.clearAppBadge().catch(() => {}); }
     setAcfg(cc); refreshPage();
@@ -2148,7 +2153,7 @@ function renderTeam(D, fid, key) {
   const inWinM = valid.filter(g => isMe(g) && g.date >= mS && g.date <= mE && !g.pending);
   const inWM = x => x.date >= mS && x.date <= mE;
   const evWinM = events.filter(ev => !ev.competition && EVI.some(x => x.ev === ev && inWM(x)));
-  // All my teams: every followed team's games (league + events) for the window, then the next 7 days.
+  // All my teams: every followed team's games (league + events) for the window, then the next 30 days (Graham, Nov 23).
   ALLMINE_DRAW = async () => {
     if (!$("#allmine")) return;
     const teams = [];
@@ -2164,7 +2169,7 @@ function renderTeam(D, fid, key) {
       } catch (e) {}
     }
     const box = $("#allmine"); if (!box) return;   // moved on meanwhile
-    const [a, b] = stretch(teams.flatMap(x => spansOf(x.evs)), wStart, wEnd), end2 = addDays(b, 7);
+    const [a, b] = stretch(teams.flatMap(x => spansOf(x.evs)), wStart, wEnd), end2 = addDays(b, 30);
     const items = [], seen = new Set(), had = new Set(), evW = new Map();
     for (const T of teams) {
       const M2 = makeModel(T.D.teams, T.D.model), tag = `<span class="tmtag">${esc(T.lbl)}</span>`;
@@ -2191,7 +2196,7 @@ function renderTeam(D, fid, key) {
         (inA.length ? days(inA) : "<div class='mut'>No games for your teams in this window.</div>")
         + (none.length && inA.length ? `<div class="nogames">No games ${winTitle(a, b) === "This weekend" ? "this weekend" : "in this window"}: ${none.join(", ")}</div>` : "")
         + evLink(ev1.map(x => x[0]), ev1.length ? (ev1.find(x => x[1] === key) || ev1[0])[1] : ""), "am4")
-      + (later.length ? sec("div", "League", `Coming up · next 7 days`, "", days(later), "am4b", true) : "");
+      + (later.length ? sec("div", "League", `Coming up · next 30 days`, "", days(later), "am4b", true) : "");
   };
   const sec4 = winHtml(finW, waitW, upW), secM = dayHtml(inWinM, EVI.filter(inWM)) + evLink(evWinM);
   const byDay = (list, row, head = d => fmtDate(d)) => [...new Set(list.map(g => g.date))].map(d => blk(head(d), list.filter(g => g.date === d).map(row).join(""))).join("");
@@ -2346,14 +2351,15 @@ function renderTeam(D, fid, key) {
             <div class="opt"><span>Our results<span class="ddsub">${esc(nm)}'s final scores</span></span>${seg("our", [["1", "On"], ["0", "Off"]], tc.our ? "1" : "0")}</div>
             <div class="opt"><span>League results<span class="ddsub">Every other final score in ${esc(D.conf_name)}</span></span>${seg("lg", [["all", "On"], ["off", "Off"]], tc.lg === "off" ? "off" : "all")}</div>
             <div class="opt"><span>Game reminder<span class="ddsub">Only ${esc(nm)}'s games</span></span>${seg("rem", [["2h", "2 hrs"], ["am", "Morning"], ["off", "Off"]], tc.rem)}</div>
-            <div class="opt"><span>Schedule changes<span class="ddsub">Time, date or field moves, next 14 days</span></span>${seg("sc", [["1", "On"], ["0", "Off"]], tc.sc !== false ? "1" : "0")}</div></div>`;
+            <div class="opt"><span>Schedule changes<span class="ddsub">Time, date or field moves, next 28 days</span></span>${seg("sc", [["1", "On"], ["0", "Off"]], tc.sc !== false ? "1" : "0")}</div>
+            <div class="opt"><span>New event schedules<span class="ddsub">When a tournament posts ${esc(nm)}'s games</span></span>${seg("ne", [["1", "On"], ["0", "Off"]], tc.ne !== false ? "1" : "0")}</div></div>`;
       $("#tpbody").innerHTML = `<div class="tphead"><span>${esc(D.conf_name)}</span></div>${alertsHtml}
         <div class="tpsub"></div><button class="tsr" data-a="share">${icon("share")}<span>Share this team</span></button>
         <button class="tsr ${on ? "dng" : ""}" data-a="follow">${icon("star")}<span>${on ? "Unfollow" : "Follow"}</span></button>`;
       TP_OPEN = true; $("#tpanel").hidden = false; document.body.classList.add("tpopen"); $("#ttl").setAttribute("aria-expanded", "true");
       $("#tpbody").onclick = async e => {
         const sb = e.target.closest(".seg button");
-        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : n === "sc" ? {sc: v === "1"} : {rem: v}); setAcfg(cc); teamSheet(); return; }
+        if (sb) { const n = sb.parentElement.dataset.seg, v = sb.dataset.v, cc = acfg(); cc.teams[key] = Object.assign(tcfg(cc, key), n === "our" ? {our: v === "1"} : n === "lg" ? {lg: v} : n === "sc" ? {sc: v === "1"} : n === "ne" ? {ne: v === "1"} : {rem: v}); setAcfg(cc); teamSheet(); return; }
         const b = e.target.closest("button[data-a]"); if (!b) return;
         if (b.dataset.a === "share") { closeTeamSheet(); share(); }
         else if (b.dataset.a === "follow") { closeTeamSheet(); follow(); }
@@ -2665,6 +2671,16 @@ function dateRange(dates) {
 const evTag = ev => (ev.competition ? (ev.flight || ev.name || "Other") : (ev.name || "Event"))
   .replace(/\s+20\d\d(-\d\d)?\s*$/, "").replace(/^(Pre-)?ECNL\s+(RL\s+)?(Boys\s+|Girls\s+)?/i, "").replace(/^MLS NEXT\s+/i, "").trim().toUpperCase().slice(0, 14) || "EVENT";
 const evKey = ev => `${ev.event_id}-${ev.flight_id}`;
+// "Just posted" (Graham, Nov 23): a tournament schedule first posted in the last 3 days (status.json "evnew",
+// from scripts/alerts.py), until that event is opened on this phone. Admin's test alert sets it for one event.
+function justPosted(ev) {
+  const k = evKey(ev); if (store.get("evSeen:" + k)) return false;
+  let t = null; try { t = JSON.parse(store.get("evNewTest") || "null"); } catch (e) {}
+  if (t && t.ev === k && Date.now() - t.at < 3 * 864e5) return true;
+  const at = STATUS && STATUS.evnew && STATUS.evnew[String(ev.event_id)];
+  return !!at && Date.now() - Date.parse(at) < 3 * 864e5;
+}
+document.addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details.evcard") && d.open && d.querySelector(".evnew") && !d.closest(".pane[hidden]")) store.set("evSeen:" + d.dataset.ev, "1"); }, true);
 // Field name; the complex too when it isn't the event's main one
 const shortComplex = c => c.replace(/\s+(Sports|Soccer|Athletic|Regional|Youth)?\s*(Complex|Park|Fields?|Center|Centre|Facility)$/i, "").trim() || c;
 const evField = (ev, venue) => { if (!venue) return ""; const parts = venue.split("·").map(x => x.trim()), c = parts.length > 1 ? shortComplex(parts[0]) : "";
@@ -2825,7 +2841,7 @@ function evCard(D, ev, fid, open, live) {
     const done = evDone(g), lab = m.label.get(g.id) || (g.num != null && ev.bracket ? `Game ${g.num}` : "");
     return `<div class="fbr"><span>${m.sideTxt(g, "home")} ${done ? `<b>${g.hs}–${g.as}</b>${g.hs === g.as && g.hpk != null ? ` <span class="mut">(${g.hpk}–${g.apk} pens)</span>` : ""}` : "vs"} ${m.sideTxt(g, "away")}<div class="fl">${[myZ(g), lab ? esc(lab) : "", g.venue ? evField(ev, g.venue) : ""].filter(Boolean).join(" · ")}</div></span></div>`;
   }).join(""))).join("");
-  return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}</div>
+  return `<details class="card evcard" data-ev="${evKey(ev)}" ${open ? "open" : ""}><summary><div class="evh"><div class="evt">${esc(evName(ev))}${ev.flight && !ev.competition ? ` · ${esc(ev.flight)}` : ""}${live ? '<span class="evlive">LIVE</span>' : ""}${justPosted(ev) ? '<span class="evnew"> · Just posted</span>' : ""}</div>
     <div class="mut">${dates.length ? dateRange(dates) : "Dates TBD"}${complex ? ` · ${esc(complex)}` : ""}${ev.teams ? ` · ${ev.teams.length} teams` : ""}</div><div class="evnext">${line}</div></div>${CHEV}</summary>
     <div class="evb">${rows || "<div class='mut'>No games for us posted yet.</div>"}
     <details class="inner"><summary>${ev.competition ? "Full schedule" : "See full bracket"}</summary>${full}<div class="mut" style="margin-top:6px"><a class="vlink" href="${esc(ev.ecnl_link)}" target="_blank" rel="noopener">Official schedule</a></div></details></div></details>`;
