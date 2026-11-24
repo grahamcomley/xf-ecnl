@@ -237,11 +237,16 @@ QUICK = "--quick" in sys.argv
 HOT = {"refetched": 0}
 
 
-def flight_raw(event_id, flight_id, done):
+SOON_DAYS = 14   # tournaments starting this soon: age groups and schedules rechecked at least hourly (Graham, Nov 23)
+
+
+def flight_raw(event_id, flight_id, done, soon=False):
     """Schedule for one flight. Finished events: cached forever. A flight with a game that kicked
     off in the last ~12 hours and has no score yet is re-fetched every run (new scores show within
     15 minutes); one from 12-48 hours ago, or with no kickoff time, at most hourly. Otherwise reuse
-    a copy younger than 2 hours (full run) or 24 hours (quick run)."""
+    a copy younger than 2 hours (full run) or 24 hours (quick run). A tournament starting within SOON_DAYS
+    (soon=True): at most an hour old on every run, so a newly posted bracket or a changed time shows
+    within the hour."""
     path = f"Event/get-schedules-by-flight/{event_id}/{flight_id}/0"
     if done:
         return api.get(path, permanent=True) or []
@@ -279,7 +284,7 @@ def flight_raw(event_id, flight_id, done):
     if tier == "now":
         HOT["refetched"] += 1
         return api.get(path, max_age_hours=0) or []
-    if tier == "hourly":
+    if tier == "hourly" or soon:
         return api.get(path, max_age_hours=1) or []
     return api.get(path, max_age_hours=24 if QUICK else 2) or []
 
@@ -304,17 +309,19 @@ def build_pool(name, pc, cfg):
         if (e.get("start") or "") < rules["since"]:
             continue
         done = (e.get("end") or "9999") < today  # finished events never change: cache forever
-        divs = [d for d in api.event_divisions(e["event_id"], permanent=done)
+        league = catalog.is_league(e)
+        soon_to = (datetime.now(timezone.utc).date() + timedelta(days=SOON_DAYS)).isoformat()
+        soon = not league and not done and (e.get("start") or "9999") <= soon_to   # tournament on now or within 14 days
+        divs = [d for d in api.event_divisions(e["event_id"], permanent=done, max_age_hours=1 if soon else 24)
                 if catalog.division_matches(d.get("divisionName"), e, rules)]
         if not divs:
             continue
-        league = catalog.is_league(e)
         ck = f"ev{e['event_id']}" if league else "event"
         if league:
             conf_names[ck] = e["name"]
         for d in divs:
             for fl in d.get("flightList") or []:
-                raw = flight_raw(e["event_id"], fl.get("flightID"), done)
+                raw = flight_raw(e["event_id"], fl.get("flightID"), done, soon)
                 gs = normalize(raw, ck, neutral=not league)
                 for g in gs:
                     g["event_name"] = e["name"]

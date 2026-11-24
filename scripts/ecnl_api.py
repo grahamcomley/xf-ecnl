@@ -77,9 +77,9 @@ def org_clubs(org_id):
     return get(f"Event/get-org-club-list-by-orgID/{org_id}", max_age_hours=24) or []
 
 
-def event_divisions(event_id, permanent=False):
+def event_divisions(event_id, permanent=False, max_age_hours=24):
     """Returns list of {divisionID, divisionName, flightList:[...]} for boys+girls."""
-    d = get(f"Event/get-event-schedule-or-standings/{event_id}", max_age_hours=24, permanent=permanent)
+    d = get(f"Event/get-event-schedule-or-standings/{event_id}", max_age_hours=max_age_hours, permanent=permanent)
     if not d:
         return []
     out = []
