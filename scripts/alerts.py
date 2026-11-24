@@ -145,6 +145,34 @@ NEWEV_DAYS = 28         # new tournament schedules alert for events starting wit
 NEWEV_TAG_DAYS = 3      # the Events tab shows "Just posted" this long (or until opened on that phone)
 
 
+WX_DAYS = 10   # weather shows from 10 days before kickoff (Graham, Nov 23)
+
+
+def weather_needs(confs, pt_today):
+    """Which field locations need a forecast: site/data/wxneed.json {zip: [lat, lon, first date, last date, field time zone]} for
+    every unplayed game in the next WX_DAYS days with a known field ZIP. The site's server (api/weather.js)
+    fetches Apple Weather for these, hourly once a game is within 48 hours, every 6 hours before that."""
+    import ziploc
+    today, to = pt_today.isoformat(), (pt_today + timedelta(days=WX_DAYS)).isoformat()
+    need = {}
+    for D in confs.values():
+        for games in [D.get("games", [])] + [ev.get("games", []) for ev in D.get("events", [])]:
+            for g in games:
+                z, d = g.get("zip"), g.get("date") or ""
+                if not z or g.get("hs") is not None or g.get("bad") or not (today <= d <= to):
+                    continue
+                if z not in need:
+                    ll = ziploc.latlon(z)
+                    if not ll:
+                        continue
+                    need[z] = [ll[0], ll[1], d, d, g.get("tz") or "America/Los_Angeles"]
+                n = need[z]
+                n[2], n[3] = min(n[2], d), max(n[3], d)
+    with open(os.path.join(OUT, "wxneed.json"), "w") as f:
+        json.dump(need, f, separators=(",", ":"), sort_keys=True)
+    return need
+
+
 def new_event_schedules(confs, now, pt_today):
     """New event schedules (Graham, Nov 23): the first time a team's games (with a real opponent) appear in a
     tournament starting within NEWEV_DAYS. Confirmed when a later run (≥ SCHED_CONFIRM_MIN minutes on) still
@@ -435,6 +463,10 @@ def main():
 
     sched = schedule_changes(confs, now, pt_today)
     newev = new_event_schedules(confs, now, pt_today)
+    try:
+        wx = weather_needs(confs, pt_today)
+    except Exception as e:   # weather must never stop alerts
+        print("  weather needs failed:", e); wx = {}
 
     runs = []
     if os.path.exists(out_path):
@@ -457,7 +489,7 @@ def main():
         json.dump({"updated": run_id, "runs": runs, "up": up, "wk": wk}, f, separators=(",", ":"))
     with open(prev_path, "w") as f:
         json.dump(finals, f, separators=(",", ":"))
-    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {len(sched)} schedule changes, {len(newev)} new event schedules, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
+    print(f"alerts: {len(finals)} recent finals tracked, {len(changes)} changes, {len(sched)} schedule changes, {len(newev)} new event schedules, {len(wx)} weather locations, {sum(map(len, moments.values()))} big moments, {len(up)} upcoming, {len(wk)} weekend teams"
           + ("" if prev is not None else " (first run: nothing sent)"))
 
 

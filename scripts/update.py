@@ -152,6 +152,7 @@ def normalize(raw, conf_key, neutral, weight=1.0, source="current"):
             "status": status.strip(),
             "bad": bool(BAD_STATUS.search(status)),
             "tz": zip_tz(g.get("zip")),
+            "zip": (str(g.get("zip") or "").strip()[:5] or None) if str(g.get("zip") or "").strip()[:5].isdigit() else None,   # field ZIP, for weather
             "conf": conf_key, "neutral": neutral, "weight_mult": weight, "source": source,
         })
     return out
@@ -597,7 +598,7 @@ def update_prediction_log(comp, games, m, log):
 
 
 GAME_KEYS = ("id", "num", "type", "date", "time", "home_id", "away_id", "home", "away",
-             "hs", "as", "hpk", "apk", "venue", "status", "bad", "tz")
+             "hs", "as", "hpk", "apk", "venue", "status", "bad", "tz", "zip")
 
 
 def league_type(name):
@@ -782,7 +783,7 @@ def main():
                      "flight": gs[0].get("flight_name"),
                      "bracket": any(g["type"] == "Bracket" or re.search(r"winner|loser", (g["home"] or ""), re.I) for g in gs),
                      "ecnl_link": f"https://app.athleteone.com/public/event/{eid}/schedules-standings",
-                     "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
+                     "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k not in ("tz", "zip")} for g in gs],
                      "teams": [team_obj(t, with_record=True) for t in tids]}
             for t in tids:
                 events_by_team.setdefault(t, []).append(block)
@@ -801,7 +802,7 @@ def main():
                 block = {"event_id": gs[0]["event_id"], "flight_id": gs[0]["flight_id"], "name": gs[0].get("event_name"),
                          "flight": gs[0].get("flight_name"), "bracket": False, "competition": True,
                          "ecnl_link": "https://www.mlssoccer.com/mlsnext/schedule/all/",
-                         "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
+                         "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k not in ("tz", "zip")} for g in gs],
                          "teams": [team_obj(t) for t in tids]}
                 for t in others:
                     events_by_team.setdefault(t, []).append(block)
@@ -905,7 +906,7 @@ def main():
                 "model": {"mu": round(m["mu"], 4), "home": round(m["home"], 4)} if m else None,
                 "pool_stats": {"teams_rated": len(ranked), "games_rated": len(rg), "backtest": bt and {k: v for k, v in bt.items() if k != "preds"}},
                 "teams": [team_obj(t) for t in tids],
-                "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k != "tz"} for g in gs],
+                "games": [{k: g.get(k) for k in GAME_KEYS if g.get(k) is not None or k not in ("tz", "zip")} for g in gs],
                 "members": mids if members is not None else None,
                 "adj": adj or None,
                 "official": official, "computed": standings_from_games(gs, mids),
