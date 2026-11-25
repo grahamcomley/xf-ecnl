@@ -132,9 +132,23 @@ workflows:
             ' "$AD"
           fi
           grep -n "RemoteNotifications" "$AD" || { echo "!! push hooks not in AppDelegate"; exit 1; }
-          # Links open the app: Capacitor's AppDelegate hands tapped links to the App plugin (appUrlOpen).
-          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; exit 1; }
-          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; exit 1; }
+          # Links open the app: the AppDelegate must hand tapped links to Capacitor (the App plugin sends appUrlOpen).
+          if ! grep -q "continue userActivity" "$AD"; then
+            ruby -e '
+              f = ARGV[0]; s = File.read(f)
+              hook = <<~SW
+
+                  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+                      return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
+                  }
+              SW
+              i = s.rindex("}") or abort("no closing brace in AppDelegate")
+              s.insert(i, hook.gsub(/^/, "    ").sub(/\A\s*\n/, "\n"))
+              File.write(f, s)
+            ' "$AD"
+          fi
+          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; cat "$AD"; exit 1; }
+          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; cat ios/App/App/capacitor.config.json; ls node_modules/@capacitor; exit 1; }
           ruby -e '
             require "xcodeproj"
             project = Xcodeproj::Project.open("ios/App/App.xcodeproj")
@@ -337,9 +351,23 @@ workflows:
             ' "$AD"
           fi
           grep -n "RemoteNotifications" "$AD" || { echo "!! push hooks not in AppDelegate"; exit 1; }
-          # Links open the app: Capacitor's AppDelegate hands tapped links to the App plugin (appUrlOpen).
-          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; exit 1; }
-          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; exit 1; }
+          # Links open the app: the AppDelegate must hand tapped links to Capacitor (the App plugin sends appUrlOpen).
+          if ! grep -q "continue userActivity" "$AD"; then
+            ruby -e '
+              f = ARGV[0]; s = File.read(f)
+              hook = <<~SW
+
+                  func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+                      return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
+                  }
+              SW
+              i = s.rindex("}") or abort("no closing brace in AppDelegate")
+              s.insert(i, hook.gsub(/^/, "    ").sub(/\A\s*\n/, "\n"))
+              File.write(f, s)
+            ' "$AD"
+          fi
+          grep -n "continue userActivity" "$AD" || { echo "!! AppDelegate doesn't pass links on"; cat "$AD"; exit 1; }
+          grep -q '"AppPlugin"' ios/App/App/capacitor.config.json || { echo "!! @capacitor/app not registered by cap sync"; cat ios/App/App/capacitor.config.json; ls node_modules/@capacitor; exit 1; }
           ruby -e '
             require "xcodeproj"
             project = Xcodeproj::Project.open("ios/App/App.xcodeproj")

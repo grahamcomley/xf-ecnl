@@ -122,6 +122,11 @@ jobs:
                         | select(.status=="failed" or .status=="error") | .name // "?"]
                         | if length==0 then "no step was named" else join(", ") end')
                 echo "::error title=Codemagic build ${ST}::Failing step(s): ${STEP}. Open the build at https://codemagic.io/app/${{ steps.find.outputs.appid }}/build/${BID} for the log."
+                # The end of the failed step's log, so the cause shows here (build steps only: no secrets are printed by them).
+                for LU in $(echo "$B" | jq -r '[(.build.buildActions // [])[] | select(.status=="failed" or .status=="error") | .logUrl // empty] | .[]'); do
+                  echo "----- end of the failed step's log -----"
+                  curl -fsSL --max-time 30 -H "x-auth-token: $CODEMAGIC_API_TOKEN" "$LU" | tail -40 || echo "(log not available)"
+                done
                 exit 1 ;;
             esac
           done
