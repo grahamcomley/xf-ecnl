@@ -19447,6 +19447,37 @@
   ]
  },
  {
+  "conf": "u19g-4264-40562",
+  "name": "ECNL Girls Midwest",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134109,
+    "team": "Michigan Hawks",
+    "ours": [
+     13,
+     37
+    ],
+    "ecnl": [
+     12,
+     36
+    ]
+   },
+   {
+    "id": 94331,
+    "team": "Nationals SC",
+    "ours": [
+     13,
+     34
+    ],
+    "ecnl": [
+     12,
+     33
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19g-4265-40568",
   "name": "ECNL Girls New England",
   "ours": [
