@@ -1,0 +1,126 @@
+import asyncio, json
+from playwright.async_api import async_playwright
+U="http://localhost:8767/"
+FAVS=['n16b-7232','a16b-8523','n17b-5767']
+res=[]
+def ok(name, cond, info=""): res.append((name, bool(cond), info))
+async def run(width):
+  async with async_playwright() as p:
+    b=await p.chromium.launch(executable_path="/usr/bin/google-chrome")
+    ctx=await b.new_context(viewport={"width":width,"height":900}, service_workers="block"); pg=await ctx.new_page()
+    errs=[]; pg.on("pageerror", lambda e: errs.append(str(e))); pg.on("console", lambda m: m.type=="error" and "Failed to load resource" not in m.text and errs.append("console: "+m.text))
+    await pg.route("**/api/**", lambda r: r.fulfill(status=401, body="{}", content_type="application/json"))
+    await pg.route("**clerk**", lambda r: r.abort())
+    q=lambda js: pg.evaluate(js)
+    W=f"[{width}] "
+    await pg.goto(U); await pg.evaluate(f"()=>{{localStorage.clear();localStorage.setItem('signedInOnce','1');localStorage.setItem('xfFavs',JSON.stringify({json.dumps(FAVS)}))}}")
+    await pg.goto(U+"#t=a16b-8523"); await pg.wait_for_timeout(2500)
+    # header
+    h=await q("()=>{const r=e=>e.getBoundingClientRect();return {ttl:$('#ttl .ttn').textContent,hid:$('#ttl').hidden,has:$('.topline').classList.contains('hasteam'),brandLeft:r($('.appname')).left<r($('#ttl')).left,gearIn:r($('#settop')).right<=innerWidth+1,sub:getComputedStyle($('.subline')).display,ttlTrunc:$('#ttl .ttn').scrollWidth>$('#ttl .ttn').clientWidth}}")
+    ok(W+"top bar: brand then team title, gear on screen, no time/version", h['has'] and not h['hid'] and h['brandLeft'] and h['gearIn'] and h['sub']=='none', h)
+    ages=await q("()=>[...document.querySelectorAll('#tstrip .tpill')].map(b=>b.textContent.trim())")
+    ok(W+"pills youngest to oldest", ages==sorted(ages,key=lambda s:int(s.split('U')[-1][:2])), ages)
+    # watch for blank title
+    await q("()=>{window.__bad=0;const tl=document.querySelector('.topline'),b=$('#ttl');new MutationObserver(()=>{if(!tl.classList.contains('hasteam')||b.hidden||!b.querySelector('.ttn').textContent)window.__bad++}).observe(document.querySelector('header'),{subtree:true,childList:true,attributes:true,characterData:true})}")
+    for tab in ["team","games","predict"]:
+      await q(f"()=>showTab('{tab}')"); await pg.wait_for_timeout(300)
+      w1=await q("()=>[...document.querySelectorAll('#tstrip .tpill')].map(b=>Math.round(b.getBoundingClientRect().width))")
+      await q("()=>document.querySelectorAll('#tstrip .tpill')[0].click()"); await pg.wait_for_timeout(1300)
+      st=await q("()=>[TAB,CUR,$('#ttl .ttn').textContent]")
+      w2=await q("()=>[...document.querySelectorAll('#tstrip .tpill')].map(b=>Math.round(b.getBoundingClientRect().width))")
+      ok(W+f"switch team on {tab}: tab kept, title updated, pills same size", st[0]==tab and st[1]==FAVS[0] and "U16" in st[2] and w1==w2, (st,w1,w2))
+      await q("()=>document.querySelectorAll('#tstrip .tpill')[1].click()"); await pg.wait_for_timeout(1300)
+    ok(W+"no blank/old title during switches", await q("()=>window.__bad")==0)
+    # standings
+    await q("()=>showTab('team')"); await pg.wait_for_timeout(300)
+    s=await q("()=>{const h=[...document.querySelectorAll('.pane[data-tab=team] .sec h2')][0];return [h&&h.innerText, document.querySelectorAll('.pane[data-tab=team] table tr').length]}")
+    ok(W+"Standings: Where we stand + league name + table", s[0] and "Where we stand" in s[0] and s[1]>3, s)
+    # games
+    await q("()=>showTab('games')"); await pg.wait_for_timeout(300)
+    gv=await q("()=>[...document.querySelectorAll('#gviews button')].map(b=>b.textContent+(b.classList.contains('on')?'*':''))")
+    ok(W+"Games: <team> | <region> toggles", len(gv)>=2 and "U" in gv[0] and "U" in gv[1], gv)
+    await q("()=>document.querySelector('#gviews [data-gv=all]').click()"); await pg.wait_for_timeout(200)
+    secs=await q("()=>[...document.querySelectorAll('.gv[data-gv=all] > details > summary, .gv[data-gv=all] .sec h2')].map(e=>e.innerText.split('\\n')[0]).slice(0,4)")
+    vis=await q("()=>!document.querySelector('.gv[data-gv=all]').hidden && document.querySelector('.gv[data-gv=mine]').hidden")
+    ok(W+"Games: region view shows its sections", vis, secs)
+    await pg.reload(); await pg.wait_for_timeout(2000); await q("()=>showTab('games')"); await pg.wait_for_timeout(300)
+    ok(W+"Games view remembered after reload", await q("()=>!document.querySelector('.gv[data-gv=all]').hidden"))
+    await q("()=>document.querySelector('#gviews [data-gv=mine]').click()")
+    await q("()=>showTab('league')"); await pg.wait_for_timeout(300)
+    ok(W+"old League link opens Games · All teams", await q("()=>TAB==='games' && !document.querySelector('.gv[data-gv=all]').hidden"))
+    gid=await q("()=>{const e=document.querySelector('.gv[data-gv=all] [data-gid]');return e&&e.dataset.gid}")
+    if gid:
+      await q("()=>setGv('mine',false)"); await q(f"()=>focusGames(['{gid}'],'games')"); await pg.wait_for_timeout(500)
+      ok(W+"alert tap lands on the game (switches view if needed)", await q(f"()=>{{const e=[...document.querySelectorAll('[data-gid=\"{gid}\"]')].find(x=>!x.closest('.gv').hidden);return !!e}}"))
+    await q("()=>showTab('predict')"); await pg.wait_for_timeout(400)
+    ok(W+"Predict tab opens", await q("()=>TAB==='predict' && !document.querySelector('.pane[data-tab=predict]').hidden"))
+    await q("()=>showTab('team')")
+    # team sheet
+    await pg.click("#ttl"); await pg.wait_for_timeout(400)
+    sh=await q("()=>[TP_OPEN,$('#ttl').getAttribute('aria-expanded'),$('#tpbody').innerText.replace(/\\n+/g,' | ')]")
+    ok(W+"team sheet opens from title (league, alerts, share, unfollow)", sh[0] and sh[1]=="true" and "Share this team" in sh[2] and "Unfollow" in sh[2] and "Updated" not in sh[2], sh[2][:160])
+    await pg.click("#ttl"); await pg.wait_for_timeout(300); ok(W+"title tap closes sheet", await q("()=>!TP_OPEN"))
+    await q("()=>document.querySelector('#tstrip .tpill.on').click()"); await pg.wait_for_timeout(400)
+    ok(W+"tapping the current pill does nothing", await q("()=>!TP_OPEN && $('#tpanel').hidden"))
+    await pg.click("#ttl"); await pg.wait_for_timeout(300); await q("()=>$('#scroller').dispatchEvent(new Event('scroll'))"); await pg.wait_for_timeout(200)
+    ok(W+"scroll closes sheet", await q("()=>!TP_OPEN"))
+    await pg.click("#ttl"); await pg.wait_for_timeout(300); await pg.click(".tsr[data-a=follow]"); await pg.wait_for_timeout(800)
+    uf=await q("()=>[!!document.querySelector('.tvisit'), !!document.querySelector('#starbtn'), (JSON.parse(localStorage.xfFavs)).includes(CUR)]")
+    ok(W+"unfollow: dashed pill + Follow button", uf[0] and uf[1] and not uf[2], uf)
+    await pg.click("#starbtn"); await pg.wait_for_timeout(800)
+    rf=await q("()=>[!document.querySelector('.tvisit'), (JSON.parse(localStorage.xfFavs)).includes(CUR)]")
+    ok(W+"follow again: back in the row", all(rf), rf)
+    await q("()=>document.querySelectorAll('.toast,.sheet').forEach(e=>e.remove&&0)")
+    # search
+    await pg.click("#tsearch"); await pg.wait_for_timeout(400)
+    sr=await q("()=>[document.body.classList.contains('fopen'), getComputedStyle($('#tstrip')).pointerEvents, $('#tsearch').getAttribute('aria-label'), [...document.querySelectorAll('.fages [data-a].on')].map(b=>b.textContent), [...document.querySelectorAll('.fages [data-l].on')].map(b=>b.textContent), document.querySelectorAll('#fbody .f-row').length, document.querySelectorAll('#fbody .fgrp').length]")
+    ok(W+"search opens under pills: pills dim/untappable, X, age preset, All, divisions closed", sr[0] and sr[1]=="none" and sr[2]=="Close search" and sr[3]==["U16"] and sr[4]==["All"] and sr[5]==0 and sr[6]>0, sr)
+    names=await q("()=>[...document.querySelectorAll('#fbody .fgrp')].map(b=>b.dataset.grp)")
+    import locale
+    bad=[(a,b2) for a,b2 in zip(names,names[1:]) if a.lower().replace("-"," ")>b2.lower().replace("-"," ")]
+    ok(W+"divisions A-Z", not bad, bad[:3])
+    await pg.click(".fages [data-l='ECNL RL Boys']"); await pg.wait_for_timeout(300)
+    await pg.click("#fbody .fgrp"); await pg.wait_for_timeout(300)
+    tn=await q("()=>[...document.querySelectorAll('#fbody .f-row .nm')].map(e=>e.firstChild.textContent)")
+    ok(W+"ECNL RL filter + open division: clean names A-Z", len(tn)>3 and tn==sorted(tn,key=str.lower) and not any("B20" in t for t in tn), tn[:4])
+    await pg.fill("#fq","rush"); await pg.wait_for_timeout(400)
+    rr=await q("()=>[$('.fcount').innerText, [...document.querySelectorAll('#fbody .f-row .nm')].every(e=>/rush/i.test(e.innerText))]")
+    ok(W+"typing narrows within filters", rr[1] and "ECNL RL" in rr[0], rr[0])
+    await pg.click("[data-clear]"); await pg.wait_for_timeout(300)
+    ok(W+"Clear goes back to start", await q("()=>$('#fq').value==='' && [...document.querySelectorAll('.fages [data-l].on')].map(b=>b.textContent).join()==='All'"))
+    await pg.click(".fseg [data-g=Girls]"); await pg.wait_for_timeout(300)
+    gl=await q("()=>[...document.querySelectorAll('.fages [data-l]')].map(b=>b.textContent)")
+    ok(W+"Girls: no MLS NEXT league chips", not any("MLS" in x or "Academy" in x for x in gl), gl)
+    await pg.click(".fseg [data-g=Boys]"); await pg.wait_for_timeout(200)
+    if not await q("()=>!!document.querySelector('#fbody .fgrp')"): await pg.click(".fages [data-a^='U16']"); await pg.wait_for_timeout(200)
+    await pg.click("#fbody .fgrp"); await pg.wait_for_timeout(200)
+    k=await q("()=>document.querySelector('#fbody .f-row[data-k]').dataset.k"); fol=await q(f"()=>JSON.parse(localStorage.xfFavs).includes('{k}')")
+    if not fol:
+      await pg.click(f"#fbody [data-star='{k}']"); await pg.wait_for_timeout(300)
+      ok(W+"Follow from search adds the pill", await q(f"()=>!!document.querySelector('#tstrip .tpill[data-k=\"{k}\"]') && $('#fbody [data-star=\"{k}\"]').innerText.includes('Following')"))
+      await pg.click(f"#fbody [data-star='{k}']"); await pg.wait_for_timeout(300)
+    await pg.click(f"#fbody .f-row[data-k='{k}'] .nm"); await pg.wait_for_timeout(1500)
+    ok(W+"tap team in search opens it, search closes", await q(f"()=>CUR==='{k}' && !$('#finder').classList.contains('open') && !document.body.classList.contains('fopen')"))
+    await pg.click("#tsearch"); await pg.wait_for_timeout(300); await pg.mouse.click(width//2, 880); await pg.wait_for_timeout(300)
+    ok(W+"tap outside closes search", await q("()=>!$('#finder').classList.contains('open')"))
+    # settings
+    await pg.click("#settop"); await pg.wait_for_timeout(600)
+    ok(W+"Settings shows time + version", await q("()=>$('#pgver').innerText.includes(document.querySelector('meta[name=app-version]').content)"), await q("()=>$('#pgver').innerText"))
+    await pg.keyboard.press("Escape"); await pg.goto(U+"#t="+FAVS[1]); await pg.reload(); await pg.wait_for_timeout(1500)
+    # shared link to a team you don't follow
+    await pg.goto(U+"#t=n13b-5767" if False else U+"#t="+k); await pg.wait_for_timeout(1500)
+    ok(W+"shared link to unfollowed team: dashed pill + Follow", await q("()=>!!document.querySelector('.tvisit') && !!document.querySelector('#starbtn')"))
+    # welcome page
+    await q("()=>{localStorage.setItem('xfFavs','[]');localStorage.removeItem('lastTeam');localStorage.removeItem('ttlText')}"); await pg.goto(U); await pg.reload(); await pg.wait_for_timeout(1500)
+    wl=await q("()=>[$('#ttl').hidden, $('.topline').classList.contains('hasteam'), !!document.querySelector('.land-browse [data-lg=Girls]')]")
+    ok(W+"welcome page: plain title", wl[0] and not wl[1], wl)
+    if wl[2]:
+      await pg.click(".land-browse [data-lg=Girls]"); await pg.wait_for_timeout(300)
+      ok(W+"welcome Boys/Girls opens full-screen search", await q("()=>$('#finder').classList.contains('open') && !$('#finder').classList.contains('drop') && $('.fseg .on').innerText==='Girls'"))
+    ok(W+"no page errors", not errs, errs[:3])
+    await b.close()
+async def main():
+  for w in (440, 375): await run(w)
+  for n,c,i in res: print(("PASS " if c else "FAIL ")+n+("" if c else f"  -> {i}"))
+  print(f"{sum(c for _,c,_ in res)}/{len(res)} passed")
+asyncio.run(main())
