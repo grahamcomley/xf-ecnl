@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.86">
+<meta name="app-version" content="v1.87">
 <meta name="apple-itunes-app" content="app-id=6833709358">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
@@ -1022,7 +1022,7 @@ function shareAddSheet(keys) {
   keys = keys.filter(teamByKey).slice(0, SHARE_MAX); if (!keys.length) return;
   if (!ME && LOCKED()) { store.set("shareAdd", keys.join(",")); return; }   // signed out: shown once they sign in
   const have = new Set(favs() || []), fresh = keys.filter(k => !have.has(k));
-  if (!fresh.length) { store.set("shareAdd", ""); return; }
+  if (!fresh.length) { store.set("shareAdd", ""); toast(keys.length > 1 ? `You already follow these ${keys.length} teams` : "You already follow this team"); return; }
   openTshare(`${keys.length} team${keys.length > 1 ? "s" : ""} shared with you`, `<p class="mut" style="margin:0 0 6px">Tap to leave any out.</p>${tickList(keys, k => true, k => have.has(k) ? "Following" : "")}
     <button class="btn-main" id="tsharego"></button>`);
   const body = $("#tsharebody"), go = $("#tsharego");
