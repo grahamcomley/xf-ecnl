@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.85">
+<meta name="app-version" content="v1.86">
 <meta name="apple-itunes-app" content="app-id=6833709358">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
@@ -1094,7 +1094,8 @@ function drawSettings(b) {
   b.innerHTML = `<div class="pgin"><div class="seth">Account</div>
       ${ME ? setRow("account", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("signin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
     ${ME ? `<div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary()).replace(/(<svg(?:(?!<svg)[^])*)$/, alertNew() ? '<span class="rdot"></span>$1' : "$1")}
-    ${canSuggestHome() ? (IOS_WEB() ? `<div class="seth">iPhone app</div>${setRow("a2hs", "phone", "Get the iPhone app", "Free on the App Store, with alerts")}` : `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app")}`) : ""}` : ""}
+    ${canSuggestHome() && !IOS_WEB() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app")}` : ""}` : ""}
+    ${IOS_WEB() ? `<div class="seth">iPhone app</div>${setRow("a2hs", "phone", "Get the iPhone app", "Free on the App Store, with alerts")}` : ""}
     ${(favs() || []).filter(teamByKey).length >= 2 ? `<div class="seth">Your teams</div>${setRow("shareteams", "share", "Share my teams", "One link adds up to 10 teams")}` : ""}
     <div class="seth">About</div>
       ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
