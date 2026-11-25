@@ -437,37 +437,6 @@
   ]
  },
  {
-  "conf": "u11b-4364-40817",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133926,
-    "team": "SUSA FC Pre-ECNL B2015/16 l",
-    "ours": [
-     11,
-     21
-    ],
-    "ecnl": [
-     10,
-     18
-    ]
-   },
-   {
-    "id": 111639,
-    "team": "FC Stars Pre-ECNL B2015/16 Blue",
-    "ours": [
-     11,
-     0
-    ],
-    "ecnl": [
-     10,
-     0
-    ]
-   }
-  ]
- },
- {
   "conf": "u11b-4364-40819",
   "name": "Pre-ECNL Boys New England",
   "ours": [
@@ -497,37 +466,6 @@
    117010,
    135311,
    136440
-  ]
- },
- {
-  "conf": "u11b-4364-40819",
-  "name": "Pre-ECNL Boys New England",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 133927,
-    "team": "SUSA FC Pre-ECNL B2015/16 ll",
-    "ours": [
-     11,
-     27
-    ],
-    "ecnl": [
-     10,
-     24
-    ]
-   },
-   {
-    "id": 127267,
-    "team": "FC Stars Pre-ECNL B2015/16 White",
-    "ours": [
-     11,
-     7
-    ],
-    "ecnl": [
-     10,
-     7
-    ]
-   }
   ]
  },
  {
