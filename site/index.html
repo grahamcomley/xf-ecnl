@@ -12,7 +12,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Sideline">
 <title>Sideline Standings</title>
-<meta name="app-version" content="v1.82">
+<meta name="app-version" content="v1.87">
+<meta name="apple-itunes-app" content="app-id=6833709358">
 <style>
 /* Dark theme. Every text/background pair below is checked for WCAG AA contrast (tests/contrast.py). */
 :root{
@@ -109,7 +110,7 @@ details.evrow>summary{list-style:none;cursor:pointer;padding:10px;position:relat
 .steps .ic{width:22px;height:22px;flex:none;color:var(--link)}
 .btn-main{display:block;width:100%;background:var(--red);color:#fff;border:0;border-radius:10px;padding:12px;font:inherit;font-weight:700;font-size:15px;margin-top:8px;cursor:pointer}.btn-sec{display:block;width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:10px;padding:11px;font:inherit;font-weight:600;font-size:14px;margin-top:8px;cursor:pointer}.btn-sec.danger{color:var(--dn)}.adm{width:100%;border-collapse:collapse;font-size:13px}.adm th{text-align:left;font-size:11px;color:var(--mut);font-weight:600;padding:4px 6px 4px 0;border-bottom:1px solid var(--line2)}.adm td{text-align:left;padding:7px 6px 7px 0;border-bottom:1px solid var(--line);word-break:break-word}.adm .n{text-align:right;white-space:nowrap;color:var(--mut)}.admh{margin:16px 0 4px;font-size:14px}.adm tr.ustoday td{font-weight:700;font-size:15px;color:var(--ink)}.usl{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px;white-space:nowrap}.usl>span:last-child{overflow:hidden;text-overflow:ellipsis}.admcard{max-height:92vh}.admswitch{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:10px 12px;margin-top:10px}.admswitch>div{flex:1}.admtoggle{width:auto;margin:0;padding:8px 12px;white-space:nowrap}
 .admtiles{margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-#a2hs,#anudge,#nudge,#nsheet,#tsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
+#a2hs,#tshare,#anudge,#nudge,#nsheet,#tsheet{z-index:80}.bellbtn{position:relative;width:36px;height:36px;flex:none;margin-right:-6px}.bellbtn .ic{width:21px;height:21px}.bellcount{position:absolute;top:3px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;line-height:17px;text-align:center}
 .inrow{display:flex;gap:10px;align-items:flex-start;width:100%;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);font:inherit;text-align:left;padding:11px 12px;cursor:pointer}.inrow:first-child{border-top:0}.inrow .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:6px;background:transparent}.inrow.unread .dot{background:var(--red)}.inrow>span{flex:1;min-width:0}.inrow b{display:block;font-size:14px}.inrow.unread b{font-weight:800}.inrow .ddsub{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.inrow .when{flex:none;font-size:11px;color:var(--mut);margin-top:2px}
 .ntitle{font-size:17px;font-weight:800;margin:8px 0 8px}.nlines{font-size:14px;line-height:1.45;margin-bottom:4px}.nsp{height:10px}
 .nhero{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:10px 0 10px;font-size:17px;font-weight:700}.nhero span:first-child{text-align:right}.nhero b{font-size:26px;font-weight:800}
@@ -247,6 +248,8 @@ h3{font-size:14px;margin:10px 0 6px}
 .chev{width:16px;height:16px;color:var(--mut);transition:transform .15s;display:inline-block;vertical-align:middle}.grow.open .chev,.imp.open .chev{transform:rotate(180deg)}
 .kslot{display:block;margin-top:3px}.kslot:empty{display:none}
 .gsub{grid-column:1/-1;font-size:12px;color:var(--mut);padding:0 0 0 4px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tck{display:flex;align-items:center;gap:10px;padding:10px 2px;border-top:1px solid var(--line);font-size:15px}.tck input{width:20px;height:20px;accent-color:var(--red);flex:none}.tck span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tck small{font-size:12px}
+#tshare .btn-main:disabled{opacity:.5}
 .wxi{width:13px;height:13px;vertical-align:-2px;margin-right:2px}.wxs{white-space:nowrap}
 .wxb{border-top:1px solid var(--line2);margin-top:8px;padding-top:8px}.wxh{font-size:11px;letter-spacing:.06em;text-transform:uppercase}.wxr{display:flex;gap:10px;align-items:center;margin-top:4px}.wxr .wxi{width:24px;height:24px;color:var(--ink)}.wxm{color:var(--ink);font-size:15px}
 .wxu{margin-top:6px}.wxa{display:flex;align-items:center;gap:10px;margin-top:6px}.wxmark{height:14px;width:auto;display:block}.wxmark-t{color:var(--ink)}.wxa a{color:var(--link,#85b7eb)}
@@ -392,8 +395,12 @@ body.tpopen header{z-index:40}
   </div>
 </div>
 <div id="a2hs" class="sheet" hidden><div class="sheet-card">
-  <div class="sheet-head"><b>Add it to your Home Screen</b><button class="icon-btn" id="a2hsclose">Not now</button></div>
+  <div class="sheet-head"><b id="a2hshead">Add it to your Home Screen</b><button class="icon-btn" id="a2hsclose">Not now</button></div>
   <div id="a2hsbody"></div>
+</div></div>
+<div id="tshare" class="sheet" hidden><div class="sheet-card">
+  <div class="sheet-head"><b id="tsharehead">Share my teams</b><button class="icon-btn" id="tshareclose">Close</button></div>
+  <div id="tsharebody"></div>
 </div></div>
 <div id="nudge" class="sheet" hidden><div class="sheet-card">
   <div class="sheet-head"><b>Keep your teams everywhere</b><button class="icon-btn" id="nudgeclose">Not now</button></div>
@@ -894,7 +901,7 @@ async function onAuth() {
     if (was === "1" && !alertsOn() && PUSH_OK() && !permDenied()) store.set("alertsOn", "1");   // yours were on: back on
     else if (was === "0" && alertsOn()) store.set("alertsOn", "");                           // yours were off: stay off
     alertsSync(true); seenPing();
-    showAlertPrompt(); runPending();
+    showAlertPrompt(); runPending(); maybeShareAdd();
     if (CUR && $("#pickem")) loadPickem(true);
     if (IS_APP) { clearBadge(); loadInbox(); }
     mergePicks(r.picks || {});
@@ -934,6 +941,21 @@ function plug(name, methods) {
 }
 const PN = () => plug("PushNotifications", ["requestPermissions", "checkPermissions", "register", "unregister", "removeAllDeliveredNotifications"]);
 const SA = () => plug("SidelineApp", ["setBadge", "signIn", "info"]);
+// Links that open the app (Universal Links, app build 1.84+): iOS hands the tapped sidelinestandings.com link to
+// the app; go to its #t=... part (team, game, shared teams). Older builds have no App plugin: nothing happens.
+const CAPAPP = () => plug("App", ["getLaunchUrl", "addListener"]);
+function openAppLink(raw) {
+  try {
+    const u = new URL(raw); if (!/(^|\.)sidelinestandings\.com$/.test(u.hostname)) return;
+    appLog("applink", (u.hash || u.pathname).slice(0, 80));
+    if (u.hash && u.hash !== location.hash) location.hash = u.hash;
+  } catch (e) {}
+}
+if (IS_APP) setTimeout(() => {
+  const A = CAPAPP(); if (!A) return;
+  try { A.addListener && A.addListener("appUrlOpen", e => e && e.url && openAppLink(e.url)); } catch (e) {}
+  try { A.getLaunchUrl && A.getLaunchUrl().then(r => { if (r && r.url) openAppLink(r.url); }).catch(() => {}); } catch (e) {}
+}, 0);
 function bridgeInfo() {
   try { if (!CAP) return "no native bridge"; return `native=${IS_APP} · plugins=[${Object.keys(CAP.Plugins || {}).join(",")}] · push=${!!PN()} · badge=${!!SA()}`; } catch (e) { return "bridge check failed"; }
 }
@@ -949,21 +971,77 @@ function inappNote() {
   n.innerHTML = IS_IOS ? "<b>Open this in Safari first.</b> You're in another app's browser, which can't keep you signed in or add to your Home Screen. Tap <b>⋯</b> or the compass icon and choose <b>Open in Safari</b>."
                        : "<b>Open this in Chrome first.</b> You're in another app's browser. Tap <b>⋮</b> and choose <b>Open in Chrome</b> (or Open in browser).";
 }
+// iPhone (Graham, Nov 24): point to the App Store app instead of Add to Home Screen. Android and computers keep it.
+const APP_STORE = "https://apps.apple.com/app/sideline-standings/id6833709358";
+const IOS_WEB = () => IS_IOS && !IS_APP;
 function openA2hs() {
   const b = $("#a2hsbody");
-  if (INAPP) b.innerHTML = `<p>You're in another app's browser. Open this page in ${IS_IOS ? "Safari" : "Chrome"} first, then come back to this menu.</p><button class="btn-main" id="a2hsok">OK</button>`;
+  $("#a2hshead").textContent = IOS_WEB() ? "Get the iPhone app" : "Add it to your Home Screen";
+  if (IOS_WEB()) b.innerHTML = `<p>Sideline Standings is free on the App Store. It stays signed in and sends your team's scores, schedule changes and game-day alerts.</p>
+    <a class="btn-main" id="a2hsapp" href="${APP_STORE}" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">Get it on the App Store</a>
+    <p class="mut" style="font-size:12px;text-align:center">Your teams carry over when you sign in.</p>`;
+  else if (INAPP) b.innerHTML = `<p>You're in another app's browser. Open this page in ${IS_IOS ? "Safari" : "Chrome"} first, then come back to this menu.</p><button class="btn-main" id="a2hsok">OK</button>`;
   else if (INSTALL_EVT) b.innerHTML = `<p>Install Sideline Standings so it opens like an app, full screen, from your home screen.</p><button class="btn-main" id="a2hsinstall">Install app</button>`;
   else b.innerHTML = `<p>It opens like an app, full screen, and stays signed in. Four taps:</p>
     <ol class="steps"><li>${icon("dots")}<span>Tap <b>⋯</b> next to the address bar</span></li><li>${icon("share")}<span>Tap <b>Share</b></span></li><li>${icon("chev")}<span>Tap <b>View More</b></span></li><li>${icon("plussq")}<span>Tap <b>Add to Home Screen</b>, then <b>Add</b></span></li></ol>
     <p class="mut" style="font-size:12px">Then open Sideline from your Home Screen. If you see a Share button at the bottom instead of ⋯, tap that first.</p>
     <button class="btn-main" id="a2hsok">Done</button>`;
   $("#a2hs").hidden = false;
+  const ap = $("#a2hsapp"); if (ap) ap.onclick = () => { store.set("appTapped", String(Date.now())); $("#a2hs").hidden = true; appLog("appstore", "sheet"); };
   const ok = $("#a2hsok"); if (ok) ok.onclick = () => { store.set("a2hsDone", "1"); $("#a2hs").hidden = true; drawPills(); };
   const ins = $("#a2hsinstall"); if (ins) ins.onclick = async () => { const ev = INSTALL_EVT; if (!ev) return; ev.prompt(); try { await ev.userChoice; } catch (e) {} INSTALL_EVT = null; $("#a2hs").hidden = true; drawPills(); };
 }
 $("#a2hsclose").onclick = () => { store.set("a2hsLater", String(Date.now())); $("#a2hs").hidden = true; };
 // Offer it once, a moment after someone is signed in and using the site in a plain browser tab.
+// ---------- share several teams (Graham, Nov 24) ----------
+// Settings › Share my teams: pick up to 10 followed teams; the link is /#t=a,b,c&add=1. Opening it shows
+// "N teams shared with you" with each team ticked; Follow adds them. Signed out: kept until they sign in.
+const SHARE_MAX = 10;
+const tLabel = k => { const t = teamByKey(k); if (!t) return k; const m = /U(\d+)\s+(Boys|Girls)/.exec(t.a || ""); return `${pillName(t.s)}${m ? ` · U${m[1]}${m[2] === "Girls" ? "G" : ""}` : ""}`; };
+function tickList(keys, on, mark) {
+  return keys.map(k => `<label class="tck"><input type="checkbox" value="${esc(k)}"${on(k) ? " checked" : ""}><span>${esc(tLabel(k))}</span>${mark && mark(k) ? `<small class="mut">${mark(k)}</small>` : ""}</label>`).join("");
+}
+function openTshare(head, body) { $("#tsharehead").textContent = head; $("#tsharebody").innerHTML = body; $("#tshare").hidden = false; }
+$("#tshareclose").onclick = () => { $("#tshare").hidden = true; store.set("shareAdd", ""); };
+function shareTeamsSheet() {
+  const keys = (favs() || []).filter(teamByKey).sort((a, b) => tLabel(a).localeCompare(tLabel(b)));
+  openTshare("Share my teams", `<p class="mut" style="margin:0 0 6px">Pick up to ${SHARE_MAX}. One link adds them all.</p>${tickList(keys, (k) => keys.indexOf(k) < SHARE_MAX)}
+    <button class="btn-main" id="tsharego"></button><p class="mut" id="tsharemsg" style="font-size:12px;text-align:center"></p>`);
+  const body = $("#tsharebody"), go = $("#tsharego");
+  const upd = () => { const n = body.querySelectorAll("input:checked").length; go.textContent = n ? `Share ${n} team${n > 1 ? "s" : ""}` : "Pick at least one team"; go.disabled = !n;
+    $("#tsharemsg").textContent = n > SHARE_MAX ? `That's more than ${SHARE_MAX}. Untick ${n - SHARE_MAX}.` : ""; if (n > SHARE_MAX) go.disabled = true; };
+  body.onchange = upd; upd();
+  go.onclick = async () => {
+    const pick = [...body.querySelectorAll("input:checked")].map(i => i.value).slice(0, SHARE_MAX);
+    const url = location.origin + location.pathname + "#t=" + pick.join(",") + (pick.length > 1 ? "&add=1" : "");
+    if (navigator.share) { try { await navigator.share({title: pick.length > 1 ? `${pick.length} teams on Sideline Standings` : tLabel(pick[0]), url}); $("#tshare").hidden = true; return; } catch (e) { if (e && e.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(url); toast("Link copied"); $("#tshare").hidden = true; } catch (e) { prompt("Copy this link:", url); }
+  };
+}
+function shareAddSheet(keys) {
+  keys = keys.filter(teamByKey).slice(0, SHARE_MAX); if (!keys.length) return;
+  if (!ME && LOCKED()) { store.set("shareAdd", keys.join(",")); return; }   // signed out: shown once they sign in
+  const have = new Set(favs() || []), fresh = keys.filter(k => !have.has(k));
+  if (!fresh.length) { store.set("shareAdd", ""); toast(keys.length > 1 ? `You already follow these ${keys.length} teams` : "You already follow this team"); return; }
+  openTshare(`${keys.length} team${keys.length > 1 ? "s" : ""} shared with you`, `<p class="mut" style="margin:0 0 6px">Tap to leave any out.</p>${tickList(keys, k => true, k => have.has(k) ? "Following" : "")}
+    <button class="btn-main" id="tsharego"></button>`);
+  const body = $("#tsharebody"), go = $("#tsharego");
+  body.querySelectorAll("input").forEach(i => { if (have.has(i.value)) i.disabled = true; });
+  const upd = () => { const n = [...body.querySelectorAll("input:checked")].filter(i => !i.disabled).length; go.textContent = n ? `Follow ${n} team${n > 1 ? "s" : ""}` : "Close"; };
+  body.onchange = upd; upd();
+  go.onclick = () => {
+    const add = [...body.querySelectorAll("input:checked")].filter(i => !i.disabled).map(i => i.value);
+    store.set("shareAdd", ""); $("#tshare").hidden = true;
+    if (!add.length) return;
+    setFavs([...(favs() || []), ...add.filter(k => !(favs() || []).includes(k))]);
+    if (ME && typeof pushFavs === "function") pushFavs(true);
+    refreshStar && refreshStar(); toast(`Following ${add.length} team${add.length > 1 ? "s" : ""}`);
+    appLog("shareadd", String(add.length));
+  };
+}
+function maybeShareAdd() { const p = store.get("shareAdd"); if (p) shareAddSheet(p.split(",")); }
 function maybeOfferHome() {
+  if (IOS_WEB() && !STANDALONE()) { if (store.get("appOffered") || store.get("appTapped")) return; store.set("appOffered", "1"); setTimeout(openA2hs, 1500); return; }
   if (STANDALONE() || store.get("a2hsDone") || store.get("a2hsOffered")) return;
   if (!(IS_IOS || INSTALL_EVT || INAPP)) return;
   store.set("a2hsOffered", "1"); setTimeout(openA2hs, 1500);
@@ -1009,14 +1087,16 @@ function openAdmin() { if (ME && ME.admin) openPage("admin", true); }
 function setRow(id, ic, label, sub) { return `<button class="setrow" data-go="${id}">${icon(ic)}<span>${label}${sub ? `<span class="ddsub">${sub}</span>` : ""}</span>${icon("right")}</button>`; }
 function alertsSummary() {
   if (alertsOn()) { const n = (favs() || []).filter(teamByKey).length; return `On · ${n} team${n === 1 ? "" : "s"}`; }
-  return alertsBlocker() && IS_IOS && !STANDALONE() ? "Off · works from the Home Screen app" : "Off";
+  return alertsBlocker() && IS_IOS && !STANDALONE() ? "Off · works in the iPhone app" : "Off";
 }
 function drawSettings(b) {
   const ver = document.querySelector('meta[name="app-version"]').content;
   b.innerHTML = `<div class="pgin"><div class="seth">Account</div>
       ${ME ? setRow("account", "user", "Your account", esc(ME.email || "Signed in")) : CLERK_READY ? setRow("signin", "user", "Sign in", "Keeps your teams on all your devices") : `<div class="setbox mut">Loading sign-in…</div>`}
     ${ME ? `<div class="seth">Alerts</div>${setRow("alerts", "bell", "Alerts", alertsSummary()).replace(/(<svg(?:(?!<svg)[^])*)$/, alertNew() ? '<span class="rdot"></span>$1' : "$1")}
-    ${canSuggestHome() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app" + (IS_IOS ? " and allows alerts" : ""))}` : ""}` : ""}
+    ${canSuggestHome() && !IOS_WEB() ? `<div class="seth">Home Screen</div>${setRow("a2hs", "phone", INSTALL_EVT ? "Install the app" : "Add to Home Screen", "Opens like an app")}` : ""}` : ""}
+    ${IOS_WEB() ? `<div class="seth">iPhone app</div>${setRow("a2hs", "phone", "Get the iPhone app", "Free on the App Store, with alerts")}` : ""}
+    ${(favs() || []).filter(teamByKey).length >= 2 ? `<div class="seth">Your teams</div>${setRow("shareteams", "share", "Share my teams", "One link adds up to 10 teams")}` : ""}
     <div class="seth">About</div>
       ${setRow("about", "info", "About Sideline Standings", "Where the data comes from, how predictions work")}
       ${setRow("privacy", "lock", "Privacy", "What we store and how to delete it")}
@@ -1025,7 +1105,7 @@ function drawSettings(b) {
   b.onclick = e => {
     const r = e.target.closest("[data-go]"); if (!r) return;
     const g = r.dataset.go;
-    if (g === "signin") { closePages(); signIn(); } else if (g === "a2hs") openA2hs(); else openPage(g);
+    if (g === "signin") { closePages(); signIn(); } else if (g === "a2hs") openA2hs(); else if (g === "shareteams") { closePages(); shareTeamsSheet(); } else openPage(g);
   };
 }
 function drawAccount(b) {
@@ -1067,7 +1147,7 @@ const ABOUT = [
   ["Unofficial", "Not run by or affiliated with the ECNL or MLS NEXT. Scores and schedules come from their public schedule pages and appear here once clubs enter them."],
   ["Predictions", "Every team is rated from all of this season's games across the country (plus last season's, lightly), then the rest of the season is played out thousands of times. They're estimates, not guarantees."],
   ["Find your team", "Open the team menu at the top, tap <b>Find a team</b>, pick Boys or Girls, then age, league and conference, or search by club name. Tap the star to save a team."],
-  ["Alerts", "Turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts work from the Home Screen app."],
+  ["Alerts", "Turn them on in Settings to get your team's final score, and other results in your league, as soon as they're posted. On iPhone, alerts come through the free Sideline Standings app from the App Store."],
   ["Share a team", "Open the team and tap the share icon. The link opens straight to that team."],
   ["Your account", "Free, and keeps your starred teams on all your devices. Google or Apple sign-in takes one tap."]];
 function drawAbout(b) {
@@ -1303,7 +1383,7 @@ function alertsBlocker() {
     if (permDenied()) return {msg: "Alerts are blocked for Sideline Standings. Turn them on in your iPhone's Settings › Notifications › Sideline Standings, then come back."};
     return null;
   }
-  if (IS_IOS && !STANDALONE()) return {msg: "On iPhone, alerts work from the Home Screen app. Add Sideline to your Home Screen, open it from there, then turn on alerts in Settings.", btn: ["a2hs", "Show me how"]};
+  if (IS_IOS && !STANDALONE()) return {msg: "On iPhone, alerts come through the free app. Get Sideline Standings from the App Store, sign in, then turn on alerts.", btn: ["a2hs", "Get the iPhone app"]};
   if (INAPP) return {msg: `Open this page in ${IS_IOS ? "Safari" : "Chrome"} to use alerts.`};
   if (!PUSH_OK()) return {msg: "This browser can't show alerts. Try Chrome, Edge or Safari."};
   if (!ME) return {msg: "Sign in to turn on alerts.", btn: ["signin", "Sign in"]};
@@ -1392,8 +1472,8 @@ function alertCard() {
   const t = (favs() || []).map(teamByKey).filter(Boolean)[0]; if (!t) return "";
   const home = IS_IOS && !STANDALONE();
   return `<div class="acard"><div class="ah">${icon("bell")}<span>New: game alerts</span></div>
-    <p>Get ${esc(t.s)}'s scores, every result in your league and game-day reminders on your phone the moment they're posted.${home ? " On iPhone, alerts work from the Home Screen app: add it first, then open Sideline from your Home Screen." : ""}</p>
-    <button class="btn-main acardgo" data-home="${home ? 1 : ""}">${home ? "Add to Home Screen" : "Turn on alerts"}</button><button class="acardno">Not now</button></div>`;
+    <p>Get ${esc(t.s)}'s scores, every result in your league and game-day reminders on your phone the moment they're posted.${home ? " On iPhone, alerts come through the free app." : ""}</p>
+    <button class="btn-main acardgo" data-home="${home ? 1 : ""}">${home ? "Get the iPhone app" : "Turn on alerts"}</button><button class="acardno">Not now</button></div>`;
 }
 function showAlertPrompt() {
   setGearDot();
@@ -1519,8 +1599,10 @@ function route() {
   if (keys.length) {
     if (keys[0] !== store.get("lastTeam") && !KEEP_TAB) TAB = "team";   // a shared link to a different team opens on Standings; switching teams in the app keeps your tab
     KEEP_TAB = false;
-    if (f === null && !LOCKED()) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite (signed out: the star asks to sign in)
+    const multi = new URLSearchParams(h).get("add") === "1" && keys.length > 1;
+    if (f === null && !LOCKED() && !multi) { f = keys.slice(); setFavs(f); }     // first visit from a shared link: that team becomes the favorite (signed out: the star asks to sign in)
     deepLink(h, keys[0]);
+    if (multi) { setTimeout(() => shareAddSheet(keys), 600); history.replaceState(null, "", "#t=" + keys[0]); }
   } else if (f && f.length) {
     openTeam(f[0]);
   } else if (LOCKED() && teamByKey(store.get("lastTeam") || "")) {
