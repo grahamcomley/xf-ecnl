@@ -10691,37 +10691,6 @@
   ]
  },
  {
-  "conf": "u11g-4379-42032",
-  "name": "Pre-ECNL Girls Northeast",
-  "kind": "points",
-  "teams": [
-   {
-    "id": 131799,
-    "team": "Scorpions SC South Pre-ECNL G2015/16",
-    "ours": [
-     9,
-     19
-    ],
-    "ecnl": [
-     8,
-     16
-    ]
-   },
-   {
-    "id": 132538,
-    "team": "Connecticut FC Legacy Pre",
-    "ours": [
-     9,
-     1
-    ],
-    "ecnl": [
-     8,
-     1
-    ]
-   }
-  ]
- },
- {
   "conf": "u11g-4379-42030",
   "name": "Pre-ECNL Girls Northeast",
   "ours": [
