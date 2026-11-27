@@ -19587,6 +19587,37 @@
   ]
  },
  {
+  "conf": "u19g-4272-40610",
+  "name": "ECNL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 58541,
+    "team": "FC Dallas Youth",
+    "ours": [
+     12,
+     31
+    ],
+    "ecnl": [
+     11,
+     28
+    ]
+   },
+   {
+    "id": 47082,
+    "team": "DKSC",
+    "ours": [
+     11,
+     10
+    ],
+    "ecnl": [
+     10,
+     10
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u19g-4296-40754",
   "name": "ECNL RL Girls Carolinas",
   "ours": [
@@ -20404,6 +20435,37 @@
    81272,
    68999,
    131269
+  ]
+ },
+ {
+  "conf": "u19g-4317-41393",
+  "name": "ECNL RL Girls Texas",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 69489,
+    "team": "FC Dallas Youth",
+    "ours": [
+     10,
+     28
+    ],
+    "ecnl": [
+     9,
+     25
+    ]
+   },
+   {
+    "id": 81272,
+    "team": "DKSC",
+    "ours": [
+     9,
+     0
+    ],
+    "ecnl": [
+     8,
+     0
+    ]
+   }
   ]
  },
  {
