@@ -3766,6 +3766,37 @@
   ]
  },
  {
+  "conf": "u14b-4342-40684",
+  "name": "ECNL RL Boys North Atlantic",
+  "kind": "points",
+  "teams": [
+   {
+    "id": 134991,
+    "team": "Philadelphia Ukrainian Nationals",
+    "ours": [
+     11,
+     14
+    ],
+    "ecnl": [
+     10,
+     11
+    ]
+   },
+   {
+    "id": 134954,
+    "team": "Match Fit Surf",
+    "ours": [
+     12,
+     0
+    ],
+    "ecnl": [
+     11,
+     0
+    ]
+   }
+  ]
+ },
+ {
   "conf": "u14b-4343-41490",
   "name": "ECNL RL Boys Mountain",
   "ours": [
